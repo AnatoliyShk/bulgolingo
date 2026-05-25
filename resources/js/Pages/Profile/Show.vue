@@ -52,6 +52,12 @@ defineProps({
                 </div>
             </div>
 
+
+            <div v-for="lesson in user.lessons" :key="lesson.id" class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-4">
+                <h2 class="text-sm font-medium text-gray-800">{{ lesson.description }}</h2>
+                <p class="text-xs text-gray-400 mt-1">{{ lesson.created_at }}</p>
+            </div>
+
         </div>
     </div>
 </template>

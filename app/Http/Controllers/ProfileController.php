@@ -16,11 +16,7 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         return Inertia::render('Profile/Show', [
-            'user' => [
-                'name'       => auth()->user()->name,
-                'email'      => auth()->user()->email,
-                'created_at' => auth()->user()->created_at->format('M Y'),
-            ],
+            'user' => auth()->user()->load('lessons'),
         ]);
     }
     /**
