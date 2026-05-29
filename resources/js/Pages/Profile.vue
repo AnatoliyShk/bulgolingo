@@ -1,15 +1,22 @@
 <!-- resources/js/Pages/Profile/Show.vue -->
 <script setup>
-defineProps({
+import { usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
+const props = defineProps({
     user: Object,
+    lessons: Array,
 })
+
+const page = usePage()
+const lessons = computed(() => props.user.lessons)
+console.log(lessons.value)
 </script>
 
 <template>
     <div class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-md p-8">
 
-            <h1 class="text-xl font-semibold text-gray-900 text-center mb-6">Profile</h1>
+            <h1 class="text-xl font-semibold text-gray-900 text-center mb-6">Dashboard</h1>
 
             <div class="space-y-4">
                 <div class="flex items-center gap-3">
@@ -52,6 +59,12 @@ defineProps({
                 </div>
             </div>
 
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-md p-8 mt-6">
+            <div v-for="lesson in lessons" :key="lesson.id" class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-4">
+                <h2 class="text-sm font-medium text-gray-800">{{ lesson.description }}</h2>
+                <p class="text-xs text-gray-400 mt-1">{{ lesson.created_at }}</p>
+            </div>
         </div>
     </div>
 </template>

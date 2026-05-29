@@ -1,12 +1,12 @@
 <script setup>
-defineProps({
-    appName: {
-        type: String,
-        default: 'Laravel',
-    },
-})
-</script>
+    import { usePage } from '@inertiajs/vue3'
+    import { computed } from 'vue'
 
+    const page = usePage()
+    const user = computed(() => page.props.auth.user)
+    const isAuthenticated = computed(() => !!page.props.auth.user)
+    const appName = computed(() => page.props.appName)
+</script>
 <template>
     <div class="page">
         <!-- Background decoration -->
@@ -21,9 +21,13 @@ defineProps({
                     <a href="#features" class="nav__link">Features</a>
                     <a href="#about" class="nav__link">About</a>
                     <a href="/profile" class="nav__link">Profile</a>
-                    <a href="/register" class="nav__link">Register</a>
-                    <a href="/login" class="nav__link">Login</a>
-                    <a href="#" class="nav__cta">Get started</a>
+                    <template v-if="isAuthenticated">
+                        <a href="/dashboard" class="nav__link">Dashboard</a>
+                    </template>
+                    <template v-else>
+                        <a href="/register" class="nav__link">Register</a>
+                        <a href="/login" class="nav__link">Login</a>
+                    </template>
                 </div>
             </nav>
         </header>
