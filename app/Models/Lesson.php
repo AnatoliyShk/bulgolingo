@@ -16,4 +16,9 @@ class Lesson extends Model
     {
         return $this->belongsToMany(User::class, 'user_lesson');
     }
+
+    public function exercises()
+    {
+        return $this->hasMany(Exercise::class);
+    }
 }
