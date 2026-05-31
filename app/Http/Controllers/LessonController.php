@@ -37,7 +37,9 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        return Inertia::render('Lesson/Show', ['lesson' => $lesson]);
+        return Inertia::render('Lesson/Show', [
+            'lesson' => $lesson->load('exercises'),
+        ]);
     }
 
     /**
