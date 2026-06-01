@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreExerciseRequest;
-use App\Http\Requests\UpdateExerciseRequest;
+use App\Http\Requests\Exercise\StoreExerciseRequest;
+use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
 
 class ExerciseController extends Controller
