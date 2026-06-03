@@ -19,4 +19,17 @@ enum ExerciseType: string
             self::IMAGE_MATCHING => 'Image Matching',
         };
     }
+
+    public function dataRules(): array
+    {
+        return match ($this) {
+            self::FILL_IN_THE_BLANK => [
+                'sentence' => ['required', 'string'],
+                'options' => ['required', 'array'],
+                'correct_option' => ['required', 'integer'],
+                'explanation' => ['required', 'string'],
+            ],
+            default => [],
+        };
+    }
 }

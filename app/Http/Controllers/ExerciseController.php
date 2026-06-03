@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ExerciseType;
 use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
+use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {
@@ -29,7 +31,10 @@ class ExerciseController extends Controller
      */
     public function store(StoreExerciseRequest $request)
     {
-        //
+        $exercise = Exercise::create($request->validated());
+
+        return redirect()->route('lesson.show', $exercise->lesson_id)
+            ->with('success', 'Exercise added successfully');
     }
 
     /**
@@ -37,7 +42,15 @@ class ExerciseController extends Controller
      */
     public function show(Exercise $exercise)
     {
-        return Inertia::render('Exercise/Show', ['exercise' => $exercise]);
+        $exerciseTypes = array_map(
+            fn(ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
+            ExerciseType::cases()
+        );
+
+        return Inertia::render('Exercise/Show', [
+            'exercise'      => $exercise,
+            'exerciseTypes' => $exerciseTypes,
+        ]);
     }
 
     /**

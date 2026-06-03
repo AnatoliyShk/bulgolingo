@@ -1,12 +1,23 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
+import UpdateExerciseForm from "@/Components/Forms/UpdateExerciseForm.vue";
 
 const props = defineProps({
     lesson: {
         type: Object,
         required: true,
     },
+    exercise: {
+        type: Object,
+        required: true,
+    },
+    exerciseTypes: {
+        type: Array,
+        required: true,
+    },
 })
+
+const showForm = ref(false);
 
 const questions = [
     {
@@ -177,8 +188,23 @@ function restart() {
                 {{ state.checked ? 'Continue' : 'Check' }}
             </button>
 
+            <button
+                @click="showForm = !showForm"
+                class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+                {{ showForm ? 'Cancel' : 'Edit Exercise' }}
+            </button>
+
+            <UpdateExerciseForm
+                v-if="showForm"
+                :exercise="exercise"
+                :exercise-types="exerciseTypes"
+                @success="showForm = false"
+                @cancel="showForm = false"
+            />
         </template>
     </div>
+
 </template>
 
 <style scoped>
