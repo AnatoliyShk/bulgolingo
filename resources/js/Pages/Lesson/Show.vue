@@ -63,37 +63,13 @@ function submit() {
             {{ showForm ? 'Cancel' : 'Add Exercise' }}
         </button>
 
-            <h2 class="text-lg font-semibold">New Exercise</h2>
-
-            <div>
-                <label class="block text-sm font-medium mb-1">Name</label>
-                <input
-                    v-model="form.name"
-                    type="text"
-                    class="w-full border rounded px-3 py-2"
-                    placeholder="Exercise name"
-                />
-                <p v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</p>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-1">Type</label>
-                <select v-model="form.decision_type" class="w-full border rounded px-3 py-2">
-                    <option value="" disabled>Select a type</option>
-                    <option v-for="type in exerciseTypes" :key="type.value" :value="type.value">
-                        {{ type.label }}
-                    </option>
-                </select>
-                <p v-if="form.errors.decision_type" class="text-red-500 text-sm mt-1">{{ form.errors.decision_type }}</p>
-            </div>
-
-            <CreateExerciseForm
-                v-if="showForm"
-                :lesson-id="lesson.id"
-                :exercise-types="exerciseTypes"
-                @success="showForm = false"
-                @cancel="showForm = false"
-            />
+        <CreateExerciseForm
+            v-if="showForm"
+            :lesson-id="lesson.id"
+            :exercise-types="exerciseTypes"
+            @success="showForm = false"
+            @cancel="showForm = false"
+        />
     </div>
 </template>
 
