@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\Admin\LessonController as AdminLessonController;
+use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -10,9 +12,6 @@ use Inertia\Inertia;
 
 Route::get('/', function (Request $request) {
     return Inertia::render('Welcome', [
-        'auth' => [
-            'user' => $request->user(),
-        ],
         'appName' => config('app.name'),
     ]);
 });
@@ -25,6 +24,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', fn () => Inertia::render('Admin/Index'))->name('index');
+    Route::resource('lessons', AdminLessonController::class);
+    Route::delete('exercises/{exercise}', [AdminExerciseController::class, 'destroy'])->name('exercises.destroy');
 });
 
 Route::resource('exercise', ExerciseController::class);

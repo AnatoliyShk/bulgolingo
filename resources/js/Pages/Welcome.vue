@@ -6,6 +6,8 @@
     const user = computed(() => page.props.auth.user)
     const isAuthenticated = computed(() => !!page.props.auth.user)
     const appName = computed(() => page.props.appName)
+    const isAdmin = computed(() => page.props.auth.isAdmin)
+    console.log(isAdmin.value)
 </script>
 <template>
     <div class="page">
@@ -23,6 +25,7 @@
                     <a href="/profile" class="nav__link">Profile</a>
                     <template v-if="isAuthenticated">
                         <a href="/dashboard" class="nav__link">Dashboard</a>
+                        <a v-if="isAdmin" href="/admin" class="nav__link">Admin Panel</a>
                     </template>
                     <template v-else>
                         <a href="/register" class="nav__link">Register</a>

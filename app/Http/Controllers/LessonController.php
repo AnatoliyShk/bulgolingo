@@ -7,15 +7,18 @@ use App\Http\Requests\Lesson\StoreLessonRequest;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class LessonController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return Inertia::render('Admin/Lessons/Index', [
+            'lessons' => Lesson::withCount('exercises')->orderBy('created_at', 'desc')->get(),
+        ]);
     }
 
     /**
