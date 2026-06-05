@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
-import { usePage } from '@inertiajs/vue3'
+import { usePage, router, Link } from '@inertiajs/vue3'
 import UpdateExerciseForm from "@/Components/Forms/UpdateExerciseForm.vue";
 
 const props = defineProps({
@@ -15,6 +15,10 @@ const props = defineProps({
     exerciseTypes: {
         type: Array,
         required: true,
+    },
+    nextExerciseId: {
+        type: Number,
+        default: null,
     },
 })
 
@@ -76,12 +80,22 @@ function check() {
 }
 
 function next() {
-    if (state.current >= questions.length - 1 || state.lives <= 0) {
+    if (state.lives <= 0) {
         state.done = true
-    } else {
+        return
+    }
+
+    if (state.current < questions.length - 1) {
         state.current++
         state.selected = null
         state.checked = false
+        return
+    }
+
+    if (props.nextExerciseId) {
+        router.visit(route('exercise.show', props.nextExerciseId))
+    } else {
+        state.done = true
     }
 }
 
@@ -99,6 +113,14 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 
 <template>
     <div class="lesson">
+
+        <!-- Back to profile -->
+        <div class="mb-4">
+            <Link
+                :href="route('dashboard')"
+                class="text-sm text-gray-500 hover:text-gray-700"
+            >← Back to Profile</Link>
+        </div>
 
         <!-- Complete screen -->
         <div v-if="state.done || state.lives <= 0" class="complete">
