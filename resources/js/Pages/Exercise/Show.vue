@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 import UpdateExerciseForm from "@/Components/Forms/UpdateExerciseForm.vue";
 
 const props = defineProps({
@@ -19,39 +20,23 @@ const props = defineProps({
 
 const showForm = ref(false);
 
-const questions = [
-    {
-        template: ['The', '__', 'is', 'on', 'the', 'table'],
-        blank: 1,
-        answer: 'book',
-        choices: ['book', 'cat', 'run', 'blue'],
-        translation: 'La ____ está en la mesa',
-    },
-    {
-        template: ['She', '__', 'to', 'school', 'every', 'day'],
-        blank: 1,
-        answer: 'walks',
-        choices: ['walks', 'sleep', 'happy', 'yellow'],
-        translation: 'Ella ____ a la escuela cada día',
-    },
-    {
-        template: ['They', 'are', 'eating', '__', 'for', 'lunch'],
-        blank: 3,
-        answer: 'pizza',
-        choices: ['pizza', 'loud', 'quickly', 'after'],
-        translation: 'Ellos están comiendo ____ en el almuerzo',
-    },
-    {
-        template: ['The', 'dog', '__', 'in', 'the', 'park'],
-        blank: 2,
-        answer: 'plays',
-        choices: ['plays', 'cold', 'never', 'the'],
-        translation: 'El perro ____ en el parque',
-    },
-]
-
 const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5)
 
+function clauseToQuestion(clause) {
+    const parts = (clause.sentence ?? '').split(/\s+/)
+    const blank = parts.findIndex(w => w === '___')
+    const options = clause.options ?? []
+    return {
+        template: blank === -1 ? [...parts, '___'] : parts,
+        blank:    blank === -1 ? parts.length : blank,
+        answer:   options[clause.correct_option ?? 0] ?? '',
+        choices:  options,
+        translation: clause.explanation ?? '',
+    }
+}
+
+const questions = [clauseToQuestion(props.exercise.clause ?? {})]
+console.log(questions)
 const state = reactive({
     current: 0,
     selected: null,
@@ -64,11 +49,9 @@ const state = reactive({
 
 const shuffledChoices = ref(questions.map((q) => shuffle(q.choices)))
 
-const question     = computed(() => questions[state.current])
-const progress     = computed(() => (state.current / questions.length) * 100)
-const isCorrect    = computed(() => state.checked && state.selected === question.value.answer)
-const isWrong      = computed(() => state.checked && state.selected !== question.value.answer)
-const canCheck     = computed(() => !!state.selected && !state.checked)
+const question  = computed(() => questions[state.current])
+const progress  = computed(() => (state.current / questions.length) * 100)
+const isCorrect = computed(() => state.checked && state.selected === question.value.answer)
 
 function selectChoice(word) {
     if (state.checked) return
@@ -109,6 +92,9 @@ function restart() {
     })
     shuffledChoices.value = questions.map((q) => shuffle(q.choices))
 }
+
+const page = usePage()
+const isAdmin = computed(() => page.props.auth.isAdmin)
 </script>
 
 <template>

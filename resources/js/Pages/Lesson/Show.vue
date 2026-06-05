@@ -55,21 +55,6 @@ function submit() {
                 <Link :href="route('exercise.show', exercise.id)" class="text-sm font-medium text-gray-800">{{ exercise.name }}</Link>
             </div>
         </div>
-
-        <button
-            @click="showForm = !showForm"
-            class="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-            {{ showForm ? 'Cancel' : 'Add Exercise' }}
-        </button>
-
-        <CreateExerciseForm
-            v-if="showForm"
-            :lesson-id="lesson.id"
-            :exercise-types="exerciseTypes"
-            @success="showForm = false"
-            @cancel="showForm = false"
-        />
     </div>
 </template>
 

@@ -70,17 +70,6 @@ console.log(lessons.value)
             <Link :href="route('lesson.show', lesson.id)" class="text-sm font-medium text-gray-800">{{ lesson.description }}</Link>
             <p class="text-xs text-gray-400 mt-1">{{ lesson.name }}</p>
             <p class="text-xs text-gray-400 mt-1">{{ lesson.created_at }}</p>
-            <button
-                type="button"
-                @click="deleteLesson(lesson.id)"
-                class="text-gray-300 hover:text-red-400 transition flex-shrink-0"
-                title="Delete lesson"
-            >
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" />
-                </svg>
-            </button>
         </div>
         <Link :href="route('lesson.create')" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Create Lesson</Link>
     </div>

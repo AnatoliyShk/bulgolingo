@@ -20,6 +20,7 @@ function saveLesson() {
 }
 
 // ── Exercise inline editing ────────────────────────────────────────────
+const showAddForm = ref(false);
 const editingExercise = ref(null);
 
 const exerciseForm = useForm({
@@ -139,6 +140,16 @@ function deleteExercise(exerciseId) {
                             {{ showAddForm ? '✕ Cancel' : '+ Add Exercise' }}
                         </button>
                     </div>
+
+                    <div v-if="showAddForm" class="mb-6">
+                        <CreateExerciseForm
+                            :lesson-id="lesson.id"
+                            :exercise-types="exerciseTypes"
+                            @success="showAddForm = false"
+                            @cancel="showAddForm = false"
+                        />
+                    </div>
+
                     <div v-if="lesson.exercises.length === 0 && !showAddForm" class="text-sm text-gray-500 dark:text-gray-400">
                         No exercises yet.
                     </div>
