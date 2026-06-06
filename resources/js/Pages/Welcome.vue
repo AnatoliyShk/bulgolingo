@@ -27,6 +27,7 @@
                     <a href="/profile" class="nav__link">Profile</a>
                     <template v-if="isAuthenticated">
                         <a href="/dashboard" class="nav__link">Dashboard</a>
+                        <a href="/learning-path" class="nav__link">Learning Path</a>
                         <a v-if="isAdmin" href="/admin" class="nav__link">Admin Panel</a>
                     </template>
                     <template v-else>

@@ -1,24 +1,14 @@
 <!-- resources/js/Pages/Profile/Show.vue -->
 <script setup>
 import { usePage } from '@inertiajs/vue3'
-import { computed } from 'vue'
-import { Link, useForm } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 
 const props = defineProps({
     user: Object,
-    lessons: Array,
 })
 
 const page = usePage()
-const lessons = computed(() => props.user.lessons)
 const { theme, toggleTheme } = useTheme()
-
-function deleteLesson(id) {
-    useForm({}).delete(route('lesson.destroy', id))
-}
-
-console.log(lessons.value)
 </script>
 
 <template>
@@ -75,12 +65,6 @@ console.log(lessons.value)
             </div>
 
         </div>
-        <div v-for="lesson in lessons" :key="lesson.id" class="lesson-card">
-            <Link :href="route('lesson.show', lesson.id)" class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ lesson.description }}</Link>
-            <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ lesson.name }}</p>
-            <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ lesson.created_at }}</p>
-        </div>
-        <Link :href="route('lesson.create')" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">Create Lesson</Link>
     </div>
 </template>
 
@@ -95,30 +79,10 @@ console.log(lessons.value)
     padding: 2rem;
 }
 
-.lesson-card {
-    background: #ffffff;
-    border-radius: 0.75rem;
-    border: 1px solid #f3f4f6;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-}
-
-.lesson-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.08);
-    border-color: #a5b4fc;
-}
 </style>
 
 <style>
 html.dark .user-card {
-    background: #1f2937;
-    border-color: #374151;
-}
-
-html.dark .lesson-card {
     background: #1f2937;
     border-color: #374151;
 }

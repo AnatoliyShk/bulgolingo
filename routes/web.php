@@ -4,6 +4,7 @@ use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
+use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -19,6 +20,10 @@ Route::get('/', function (Request $request) {
 Route::get('/dashboard', [ProfileController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::get('/learning-path', [LearningPathController::class, 'show'])
+    ->middleware(['auth', 'verified'])
+    ->name('learning-path.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
