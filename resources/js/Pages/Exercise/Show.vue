@@ -2,6 +2,9 @@
 import { ref, computed, reactive } from 'vue'
 import { usePage, router, Link } from '@inertiajs/vue3'
 import UpdateExerciseForm from "@/Components/Forms/UpdateExerciseForm.vue";
+import { useTheme } from '@/composables/useTheme';
+
+const { theme, toggleTheme } = useTheme();
 
 const props = defineProps({
     lesson: {
@@ -113,12 +116,17 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 
 <template>
     <div class="lesson">
+        <button
+            @click="toggleTheme"
+            class="fixed top-4 right-4 z-50 rounded-md border border-gray-200 bg-white px-2 py-1 text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
+        >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
 
         <!-- Back to profile -->
         <div class="mb-4">
             <Link
                 :href="route('dashboard')"
-                class="text-sm text-gray-500 hover:text-gray-700"
+                class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >← Back to Profile</Link>
         </div>
 
@@ -354,4 +362,22 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 .trophy { font-size: 64px; margin-bottom: 1rem; }
 .complete h2 { font-size: 26px; font-weight: 700; margin-bottom: .5rem; }
 .complete p { color: #666; margin-bottom: 1.5rem; }
+</style>
+
+<style>
+html.dark .lesson { color: #e8e8f0; }
+html.dark .progress-bar { background: #374151; }
+html.dark .label { color: #6b7280; }
+html.dark .question { color: #f3f4f6; }
+html.dark .sentence-area { border-bottom-color: #374151; }
+html.dark .sentence-word { color: #e5e7eb; }
+html.dark .blank { border-bottom-color: #4b5563; }
+html.dark .blank.filled { border-bottom-color: #1cb0f6; }
+html.dark .blank-placeholder { color: #6b7280; }
+html.dark .xp { color: #9ca3af; }
+html.dark .choice-btn { background: #1f2937; border-color: #374151; color: #e5e7eb; }
+html.dark .choice-btn:hover:not(:disabled) { border-color: #1cb0f6; }
+html.dark .btn-check:disabled { background: #374151; color: #6b7280; }
+html.dark .complete h2 { color: #f3f4f6; }
+html.dark .complete p { color: #9ca3af; }
 </style>

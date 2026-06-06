@@ -15,6 +15,9 @@
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
+    <script>
+        (function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.classList.add(t);})();
+    </script>
     <body class="font-sans antialiased">
         @inertia
     </body>

@@ -1,16 +1,18 @@
 <script setup>
     import { usePage } from '@inertiajs/vue3'
     import { computed } from 'vue'
+    import { useTheme } from '@/composables/useTheme'
 
     const page = usePage()
     const user = computed(() => page.props.auth.user)
     const isAuthenticated = computed(() => !!page.props.auth.user)
     const appName = computed(() => page.props.appName)
     const isAdmin = computed(() => page.props.auth.isAdmin)
-    console.log(isAdmin.value)
+
+    const { theme, toggleTheme } = useTheme()
 </script>
 <template>
-    <div class="page">
+    <div class="page" :class="theme">
         <!-- Background decoration -->
         <div class="bg-orb bg-orb--1" />
         <div class="bg-orb bg-orb--2" />
@@ -31,6 +33,9 @@
                         <a href="/register" class="nav__link">Register</a>
                         <a href="/login" class="nav__link">Login</a>
                     </template>
+                    <button class="theme-toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
+                        {{ theme === 'dark' ? '☀️' : '🌙' }}
+                    </button>
                 </div>
             </nav>
         </header>
@@ -38,44 +43,20 @@
         <main>
             <!-- Hero -->
             <section class="hero">
-                <div class="hero__badge">
-                    <span class="hero__badge-dot" />
-                    Now with Vue + Inertia
-                </div>
                 <h1 class="hero__title">
-                    Build something<br />
-                    <em>remarkable.</em>
+                    Become<br />
+                    <em>Balkan</em>
                 </h1>
-                <p class="hero__subtitle">
-                    A full-stack foundation built on Laravel, Vue 3, and Inertia —
-                    ready for whatever you're imagining next.
-                </p>
-                <div class="hero__actions">
-                    <a href="#" class="btn btn--primary">Start building</a>
-                    <a href="#" class="btn btn--ghost">Read the docs →</a>
-                </div>
             </section>
 
-            <!-- Features -->
-            <section class="features" id="features">
-                <div class="features__grid">
-                    <article class="card" v-for="feature in features" :key="feature.title">
-                        <div class="card__icon">{{ feature.icon }}</div>
-                        <h3 class="card__title">{{ feature.title }}</h3>
-                        <p class="card__body">{{ feature.desc }}</p>
-                    </article>
-                </div>
-            </section>
         </main>
-
-        <footer class="footer">
-            <p>Built with Laravel &amp; Vue · {{ new Date().getFullYear() }}</p>
-        </footer>
     </div>
 </template>
 
 <script>
 import '../../css/home.css'
+import '../../css/home-dark.css'
+import '../../css/home-light.css'
 export default {
     data() {
         return {

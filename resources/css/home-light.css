@@ -1,0 +1,12 @@
+.page.light {
+    --clr-bg:      #f4f4fb;
+    --clr-surface: #ffffff;
+    --clr-border:  rgba(0,0,0,0.08);
+    --clr-text:    #1a1a2e;
+    --clr-muted:   #6b6b8a;
+    --clr-accent:  #6c5ce7;
+    --clr-accent2: #e8559a;
+    --clr-nav-bg:  rgba(244,244,251,0.75);
+    --clr-orb1:    rgba(108,92,231,.15);
+    --clr-orb2:    rgba(232,85,154,.12);
+}

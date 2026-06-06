@@ -6,8 +6,10 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import { useTheme } from '@/composables/useTheme';
 
 const showingNavigationDropdown = ref(false);
+const { theme, toggleTheme } = useTheme();
 </script>
 
 <template>
@@ -42,7 +44,14 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div class="hidden sm:ms-6 sm:flex sm:items-center gap-2">
+                            <!-- Theme toggle -->
+                            <button
+                                @click="toggleTheme"
+                                class="rounded-md border border-gray-200 px-2 py-1 text-sm text-gray-500 transition hover:border-gray-400 dark:border-gray-700 dark:text-gray-400 dark:hover:border-gray-500"
+                                :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
+                            >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+
                             <!-- Settings Dropdown -->
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
