@@ -25,6 +25,10 @@ Route::get('/learning-path', [LearningPathController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('learning-path.show');
 
+Route::get('/stats', fn () => Inertia::render('Stats/Show'))
+    ->middleware(['auth', 'verified'])
+    ->name('stats.show');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

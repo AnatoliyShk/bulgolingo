@@ -1,6 +1,6 @@
 <!-- resources/js/Pages/Profile/Show.vue -->
 <script setup>
-import { usePage } from '@inertiajs/vue3'
+import { usePage, Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 
 const props = defineProps({
@@ -62,6 +62,10 @@ const { theme, toggleTheme } = useTheme()
                         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ user.created_at }}</p>
                     </div>
                 </div>
+            </div>
+
+            <div class="text-center mt-6">
+                <Link :href="route('stats.show')" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">View your stats</Link>
             </div>
 
         </div>
