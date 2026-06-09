@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('learning_paths', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('language');
             $table->timestamps();

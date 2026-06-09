@@ -33,11 +33,6 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return (bool) $this->is_admin;
-    }
-
-    public function lessons()
-    {
-        return $this->belongsToMany(Lesson::class, 'user_lesson');
+        return (bool)$this->is_admin;
     }
 }

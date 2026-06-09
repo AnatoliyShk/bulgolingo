@@ -16,13 +16,19 @@ return new class extends Migration
             $table->foreignId('lesson_id')->constrained()->cascadeOnDelete();
             $table->primary(['learning_path_id', 'lesson_id']);
         });
+
+        Schema::dropIfExists('user_lesson');
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        Schema::create('user_lesson', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('lesson_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
+        });
+
         Schema::dropIfExists('learning_path_lesson');
     }
 };
