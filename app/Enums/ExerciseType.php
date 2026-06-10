@@ -23,6 +23,17 @@ enum ExerciseType: string
     public function dataRules(): array
     {
         return match ($this) {
+            self::MULTIPLE_CHOICE => [
+                'pairs' => ['required', 'array'],
+                'pairs.*' => ['required', 'array', 'size:2'],
+                'pairs.*.*' => ['required', 'string'],
+                'explanation' => ['required', 'string'],
+            ],
+            self::TRUE_FALSE => [
+                'sentence' => ['required', 'string'],
+                'correct_option' => ['required', 'boolean'],
+                'explanation' => ['required', 'string'],
+            ],
             self::FILL_IN_THE_BLANK => [
                 'sentence' => ['required', 'string'],
                 'options' => ['required', 'array'],

@@ -8,26 +8,48 @@ const props = defineProps({
     exerciseTypes: Array,
 });
 
+function defaultClause(type, source = {}) {
+    if (type === 'true_false') {
+        return {
+            sentence: source.sentence ?? '',
+            correct_option: source.correct_option ?? true,
+            explanation: source.explanation ?? '',
+        };
+    }
+
+    if (type === 'multiple_choice') {
+        return {
+            pairs: source.pairs ?? [['', ''], ['', ''], ['', ''], ['', '']],
+            explanation: source.explanation ?? '',
+        };
+    }
+
+    return {
+        sentence: source.sentence ?? '',
+        options: source.options ?? ['', '', '', ''],
+        correct_option: source.correct_option ?? 0,
+        explanation: source.explanation ?? '',
+    };
+}
+
 const form = useForm({
     name: props.exercise.name,
     decision_type: props.exercise.decision_type,
-    clause: {
-        sentence: props.exercise.clause?.sentence ?? '',
-        options: props.exercise.clause?.options ?? ['', '', '', ''],
-        correct_option: props.exercise.clause?.correct_option ?? 0,
-        explanation: props.exercise.clause?.explanation ?? '',
-    },
+    clause: defaultClause(props.exercise.decision_type, props.exercise.clause ?? {}),
 });
 
 watch(() => form.decision_type, (newType, oldType) => {
     if (newType === oldType) return;
-    form.clause = {
-        sentence: '',
-        options: ['', '', '', ''],
-        correct_option: 0,
-        explanation: '',
-    };
+    form.clause = defaultClause(newType);
 });
+
+function addPair() {
+    form.clause.pairs.push(['', '']);
+}
+
+function removePair(index) {
+    form.clause.pairs.splice(index, 1);
+}
 
 function submit() {
     form.put(route('admin.exercises.update', props.exercise.id));
@@ -80,6 +102,90 @@ function submit() {
                             </select>
                             <p v-if="form.errors.decision_type" class="mt-1 text-xs text-red-500">{{ form.errors.decision_type }}</p>
                         </div>
+
+                        <!-- Multiple Choice fields -->
+                        <template v-if="form.decision_type === 'multiple_choice'">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Word pairs</label>
+                                <div
+                                    v-for="(pair, index) in form.clause.pairs"
+                                    :key="index"
+                                    class="flex items-center gap-2 mb-2"
+                                >
+                                    <input
+                                        v-model="pair[0]"
+                                        type="text"
+                                        class="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                        placeholder="Word"
+                                    />
+                                    <input
+                                        v-model="pair[1]"
+                                        type="text"
+                                        class="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                        placeholder="Translation"
+                                    />
+                                    <button
+                                        type="button"
+                                        @click="removePair(index)"
+                                        class="text-xs text-red-500 hover:underline dark:text-red-400"
+                                    >Remove</button>
+                                </div>
+                                <button
+                                    type="button"
+                                    @click="addPair"
+                                    class="text-xs font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400"
+                                >+ Add pair</button>
+                                <p v-if="form.errors['clause.pairs']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.pairs'] }}</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Explanation</label>
+                                <textarea
+                                    v-model="form.clause.explanation"
+                                    rows="3"
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 resize-none"
+                                    placeholder="Explain the correct answer"
+                                />
+                                <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
+                            </div>
+                        </template>
+
+                        <!-- True/False fields -->
+                        <template v-if="form.decision_type === 'true_false'">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sentence</label>
+                                <input
+                                    v-model="form.clause.sentence"
+                                    type="text"
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                    placeholder="e.g. The sky is green."
+                                />
+                                <p v-if="form.errors['clause.sentence']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.sentence'] }}</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correct answer</label>
+                                <select
+                                    v-model="form.clause.correct_option"
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                >
+                                    <option :value="true">True</option>
+                                    <option :value="false">False</option>
+                                </select>
+                                <p v-if="form.errors['clause.correct_option']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.correct_option'] }}</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Explanation</label>
+                                <textarea
+                                    v-model="form.clause.explanation"
+                                    rows="3"
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 resize-none"
+                                    placeholder="Explain the correct answer"
+                                />
+                                <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
+                            </div>
+                        </template>
 
                         <!-- Fill in the Blank fields -->
                         <template v-if="form.decision_type === 'fill_in_the_blank'">
