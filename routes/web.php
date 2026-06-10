@@ -45,6 +45,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/', fn () => Inertia::render('Admin/Index'))->name('index');
     Route::resource('lessons', AdminLessonController::class);
     Route::resource('learning-paths', AdminLearningPathController::class);
+    Route::get('lessons/{lesson}/exercises/create', [AdminExerciseController::class, 'create'])->name('exercises.create');
+    Route::post('lessons/{lesson}/exercises', [AdminExerciseController::class, 'store'])->name('exercises.store');
+    Route::get('exercises/{exercise}/edit', [AdminExerciseController::class, 'edit'])->name('exercises.edit');
+    Route::put('exercises/{exercise}', [AdminExerciseController::class, 'update'])->name('exercises.update');
     Route::delete('exercises/{exercise}', [AdminExerciseController::class, 'destroy'])->name('exercises.destroy');
 });
 

@@ -49,7 +49,6 @@ const state = reactive({
     selected: null,
     checked: false,
     score: 0,
-    lives: 3,
     streak: 0,
     done: false,
 })
@@ -77,17 +76,11 @@ function check() {
         state.score += 10 + state.streak * 2
         state.streak++
     } else {
-        state.lives--
         state.streak = 0
     }
 }
 
 function next() {
-    if (state.lives <= 0) {
-        state.done = true
-        return
-    }
-
     if (state.current < questions.length - 1) {
         state.current++
         state.selected = null
@@ -107,7 +100,7 @@ function next() {
 function restart() {
     Object.assign(state, {
         current: 0, selected: null, checked: false,
-        score: 0, lives: 3, streak: 0, done: false,
+        score: 0, streak: 0, done: false,
     })
     shuffledChoices.value = questions.map((q) => shuffle(q.choices))
 }
@@ -133,11 +126,10 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
         </div>
 
         <!-- Complete screen -->
-        <div v-if="state.done || state.lives <= 0" class="complete">
-            <div class="trophy">{{ state.lives > 0 ? '🏆' : '💔' }}</div>
-            <h2>{{ state.lives > 0 ? 'Lesson complete!' : 'Out of lives!' }}</h2>
-            <p v-if="state.lives > 0">You scored <strong>{{ state.score }} XP</strong></p>
-            <p v-else>Better luck next time!</p>
+        <div v-if="state.done" class="complete">
+            <div class="trophy">🏆</div>
+            <h2>Lesson complete!</h2>
+            <p>You scored <strong>{{ state.score }} XP</strong></p>
             <button class="btn-check" @click="restart">Try again</button>
         </div>
 
@@ -151,9 +143,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 
             <!-- Status row -->
             <div class="status-row">
-                <div class="hearts">
-                    <span v-for="i in 3" :key="i" :class="['heart', { lost: i > state.lives }]">❤️</span>
-                </div>
                 <span v-if="state.streak >= 2" class="streak">🔥 {{ state.streak }} streak</span>
                 <span v-else />
                 <span class="xp">{{ state.score }} XP</span>
@@ -255,9 +244,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
     align-items: center;
     margin-bottom: 1.5rem;
 }
-.hearts { display: flex; gap: 4px; }
-.heart { font-size: 20px; transition: opacity 0.3s; }
-.heart.lost { opacity: 0.2; filter: grayscale(1); }
 .streak { font-size: 13px; font-weight: 700; color: #ff9600; }
 .xp { font-size: 13px; font-weight: 600; color: #777; }
 
