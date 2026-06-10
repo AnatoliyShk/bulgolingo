@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LearningPath;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class LearningPathController extends Controller
 {
-    public function show(Request $request)
+    public function index()
+    {
+        return Inertia::render('LearningPath/Index', [
+            'paths' => LearningPath::all(),
+        ]);
+    }
+
+    public function show(LearningPath $learningPath)
     {
         return Inertia::render('LearnPath/Show', [
-            'lessons' => auth()->user()->lessons,
+            'learningPath' => $learningPath,
+            'lessons'      => $learningPath->lessons,
         ]);
     }
 }

@@ -42,8 +42,8 @@ const { theme, toggleTheme } = useTheme();
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('learning-path.show')"
-                                    :active="route().current('learning-path.show')"
+                                    :href="route('learning-paths.index')"
+                                    :active="route().current('learning-paths.index')"
                                 >
                                     Learning Path
                                 </NavLink>
@@ -162,8 +162,8 @@ const { theme, toggleTheme } = useTheme();
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('learning-path.show')"
-                            :active="route().current('learning-path.show')"
+                            :href="route('learning-paths.index')"
+                            :active="route().current('learning-paths.index')"
                         >
                             Learning Path
                         </ResponsiveNavLink>

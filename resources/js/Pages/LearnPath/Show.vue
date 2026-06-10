@@ -3,6 +3,7 @@ import { Link, useForm } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 
 const props = defineProps({
+    learningPath: Object,
     lessons: Array,
 })
 
@@ -12,9 +13,8 @@ function deleteLesson(id) {
     useForm({}).delete(route('lesson.destroy', id))
 }
 
-// TODO: replace with real lesson.completed from pivot
-function isCompleted(index) {
-    return index < 2
+function isCompleted(lesson) {
+    return lesson.is_completed
 }
 </script>
 
@@ -26,14 +26,15 @@ function isCompleted(index) {
             :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
         >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
 
-        <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100 text-center mb-8">Learning Path</h1>
+        <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100 text-center mb-1">{{ learningPath.name }}</h1>
+        <p class="text-sm text-gray-400 dark:text-gray-500 mb-8">{{ learningPath.language }}</p>
 
         <div class="timeline">
             <div
-                v-for="(lesson, index) in lessons"
+                v-for="lesson in lessons"
                 :key="lesson.id"
                 class="timeline-item"
-                :class="{ 'is-completed': isCompleted(index) }"
+                :class="{ 'is-completed': isCompleted(lesson) }"
             >
                 <div class="timeline-side">
                     <div class="timeline-dot"></div>

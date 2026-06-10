@@ -35,4 +35,9 @@ class User extends Authenticatable
     {
         return (bool)$this->is_admin;
     }
+
+    public function learningPaths()
+    {
+        return $this->belongsToMany(LearningPath::class, 'learning_path_user');
+    }
 }

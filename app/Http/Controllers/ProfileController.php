@@ -17,6 +17,7 @@ class ProfileController extends Controller
     {
         return Inertia::render('Profile/Show', [
             'user' => auth()->user(),
+            'learningPaths' => auth()->user()->learningPaths,
         ]);
     }
     /**

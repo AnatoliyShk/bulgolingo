@@ -13,12 +13,14 @@ class Exercise extends Model
         'lesson_id',
         'clause',
         'decision_type',
+        'is_completed',
     ];
     protected function casts(): array
     {
         return [
             'decision_type' => ExerciseType::class,
-            'clause' => 'array'
+            'clause' => 'array',
+            'is_completed' => 'boolean',
         ];
     }
 

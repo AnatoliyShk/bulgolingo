@@ -76,4 +76,15 @@ class ExerciseController extends Controller
     {
         //
     }
+
+    /**
+     * Mark the exercise as completed and refresh the parent lesson's status.
+     */
+    public function complete(Exercise $exercise)
+    {
+        $exercise->update(['is_completed' => true]);
+        $exercise->lesson->refreshCompletionStatus();
+
+        return back();
+    }
 }

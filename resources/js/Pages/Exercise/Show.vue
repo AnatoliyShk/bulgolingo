@@ -95,6 +95,8 @@ function next() {
         return
     }
 
+    router.post(route('exercise.complete', props.exercise.id), {}, { preserveScroll: true, preserveState: true })
+
     if (props.nextExerciseId) {
         router.visit(route('exercise.show', props.nextExerciseId))
     } else {

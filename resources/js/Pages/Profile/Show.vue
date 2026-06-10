@@ -5,6 +5,7 @@ import { useTheme } from '@/composables/useTheme'
 
 const props = defineProps({
     user: Object,
+    learningPaths: Array,
 })
 
 const page = usePage()
@@ -21,7 +22,15 @@ const { theme, toggleTheme } = useTheme()
 
         <div class="user-card">
 
-            <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100 text-center mb-6">Dashboard</h1>
+            <div class="flex items-center mb-6">
+                <Link href="/" class="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </Link>
+                <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100 flex-1 text-center">Dashboard</h1>
+                <div class="w-5"></div>
+            </div>
 
             <div class="space-y-4">
                 <div class="flex items-center gap-3">
@@ -64,7 +73,32 @@ const { theme, toggleTheme } = useTheme()
                 </div>
             </div>
 
-            <div class="text-center mt-6">
+            <div class="mt-6 border-t border-gray-100 dark:border-gray-700 pt-5">
+                <p class="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-3">Learning Paths</p>
+
+                <div v-if="learningPaths && learningPaths.length > 0" class="space-y-2">
+                    <Link
+                        v-for="path in learningPaths"
+                        :key="path.id"
+                        :href="route('learning-paths.show', path.id)"
+                        class="flex items-center justify-between rounded-lg px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                    >
+                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ path.name }}</span>
+                        <span class="text-xs text-gray-400 dark:text-gray-500 ml-3">{{ path.language }}</span>
+                    </Link>
+                </div>
+
+                <div v-else class="text-center py-2">
+                    <Link
+                        :href="route('learning-paths.index')"
+                        class="inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition-colors"
+                    >
+                        Choose path
+                    </Link>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
                 <Link :href="route('stats.show')" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">View your stats</Link>
             </div>
 
