@@ -5,6 +5,7 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
 use App\Http\Controllers\Admin\LearningPathController as AdminLearningPathController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
@@ -43,8 +44,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => Inertia::render('Admin/Index'))->name('index');
+    Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
     Route::resource('lessons', AdminLessonController::class);
     Route::resource('learning-paths', AdminLearningPathController::class);
+    Route::get('exercises', [AdminExerciseController::class, 'index'])->name('exercises.index');
     Route::get('lessons/{lesson}/exercises/create', [AdminExerciseController::class, 'create'])->name('exercises.create');
     Route::post('lessons/{lesson}/exercises', [AdminExerciseController::class, 'store'])->name('exercises.store');
     Route::get('exercises/{exercise}/edit', [AdminExerciseController::class, 'edit'])->name('exercises.edit');

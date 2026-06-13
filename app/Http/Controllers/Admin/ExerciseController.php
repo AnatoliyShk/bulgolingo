@@ -12,6 +12,14 @@ use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {
+    public function index()
+    {
+        return Inertia::render('Admin/Exercises/Index', [
+            'exercises' => Exercise::with('lesson')->latest()->get(),
+            'exerciseTypes' => $this->exerciseTypes(),
+        ]);
+    }
+
     public function create(Lesson $lesson)
     {
         return Inertia::render('Admin/Exercises/Create', [
@@ -44,10 +52,9 @@ class ExerciseController extends Controller
 
     public function destroy(Exercise $exercise)
     {
-        $lessonId = $exercise->lesson_id;
         $exercise->delete();
 
-        return redirect()->route('admin.lessons.edit', $lessonId)->with('success', 'Exercise deleted.');
+        return redirect()->back()->with('success', 'Exercise deleted.');
     }
 
     private function exerciseTypes(): array
