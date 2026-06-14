@@ -16,8 +16,14 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         return Inertia::render('Profile/Show', [
+            'appName' => config('app.name'),
             'user' => auth()->user(),
-            'learningPaths' => auth()->user()->learningPaths,
+            'learningPaths' => auth()->user()->learningPaths()
+                ->withCount([
+                    'lessons',
+                    'lessons as completed_lessons_count' => fn ($query) => $query->where('is_completed', true),
+                ])
+                ->get(),
         ]);
     }
     /**

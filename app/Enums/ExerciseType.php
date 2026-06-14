@@ -10,6 +10,8 @@ enum ExerciseType: string
 
     case IMAGE_MATCHING = 'image_matching';
 
+    case BOT_DIALOG = 'bot_dialog';
+
     public function getDescription(): string
     {
         return match ($this) {
@@ -17,6 +19,7 @@ enum ExerciseType: string
             self::TRUE_FALSE => 'True/False',
             self::FILL_IN_THE_BLANK => 'Fill in the Blank',
             self::IMAGE_MATCHING => 'Image Matching',
+            self::BOT_DIALOG => 'Bot Dialog',
         };
     }
 
@@ -38,6 +41,14 @@ enum ExerciseType: string
                 'sentence' => ['required', 'string'],
                 'options' => ['required', 'array'],
                 'correct_option' => ['required', 'integer'],
+                'explanation' => ['required', 'string'],
+            ],
+            self::BOT_DIALOG => [
+                'sentence' => ['required', 'string'],
+                'options' => ['required', 'array'],
+                'correct_option' => ['required', 'integer'],
+                'next_sentence_id' => ['required', 'integer'],
+                'previous_sentence_id' => ['required', 'integer'],
                 'explanation' => ['required', 'string'],
             ],
             default => [],

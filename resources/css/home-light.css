@@ -1,12 +1,14 @@
 .page.light {
-    --clr-bg:      #f4f4fb;
-    --clr-surface: #ffffff;
-    --clr-border:  rgba(0,0,0,0.08);
-    --clr-text:    #1a1a2e;
-    --clr-muted:   #6b6b8a;
-    --clr-accent:  #6c5ce7;
-    --clr-accent2: #e8559a;
-    --clr-nav-bg:  rgba(244,244,251,0.75);
-    --clr-orb1:    rgba(108,92,231,.15);
-    --clr-orb2:    rgba(232,85,154,.12);
+    --clr-bg:        #faf6f0;
+    --clr-surface:   #ffffff;
+    --clr-surface-2: #f1e8db;
+    --clr-border:    rgba(43,36,32,0.12);
+    --clr-text:      #2b2420;
+    --clr-muted:     #7a6f63;
+    --clr-red:       #c1334a;
+    --clr-red-soft:  rgba(193,51,74,0.10);
+    --clr-green:     #3f6e54;
+    --clr-gold:      #c9974a;
+    --clr-thread-b:  var(--clr-gold);
+    --clr-nav-bg:    rgba(250,246,240,0.8);
 }

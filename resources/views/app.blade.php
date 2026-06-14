@@ -9,6 +9,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=pt-serif:400,700|pt-sans:400,700|old-standard-tt:400,400i,700|caveat:400,600&subset=latin,cyrillic&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @routes
