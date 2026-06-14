@@ -29,6 +29,12 @@ class StoreExerciseRequest extends FormRequest
             'lesson_id'     => ['required', 'integer', 'exists:lessons,id'],
             'clause'        => ['required', 'array'],
             'decision_type' => ['required', 'string', Rule::enum(ExerciseType::class)],
+            'image'         => [
+                Rule::requiredIf($this->input('decision_type') === ExerciseType::IMAGE_MATCHING->value),
+                'nullable',
+                'image',
+                'max:5120',
+            ],
         ];
     }
 }

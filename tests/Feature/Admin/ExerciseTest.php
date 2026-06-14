@@ -3,9 +3,13 @@
 namespace Tests\Feature\Admin;
 
 use App\Enums\ExerciseType;
+use App\Models\Exercise;
+use App\Models\Images;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ExerciseTest extends TestCase
@@ -106,5 +110,97 @@ class ExerciseTest extends TestCase
 
         $response->assertForbidden();
         $this->assertDatabaseCount('exercises', 0);
+    }
+
+    public function test_admin_can_create_image_matching_exercise_with_image(): void
+    {
+        Storage::fake('public');
+
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $response = $this
+            ->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Match the picture',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::IMAGE_MATCHING->value,
+                'clause' => [
+                    'options' => ['Куче', 'Котка', 'Птица'],
+                    'correct_option' => 0,
+                    'explanation' => 'Куче means dog.',
+                ],
+                'image' => UploadedFile::fake()->image('dog.jpg'),
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('admin.lessons.edit', $lesson));
+
+        $exercise = Exercise::where('name', 'Match the picture')->firstOrFail();
+
+        $this->assertCount(1, $exercise->images);
+        Storage::disk('public')->assertExists($exercise->images->first()->filepath);
+    }
+
+    public function test_image_matching_exercise_requires_image(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $response = $this
+            ->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Match the picture',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::IMAGE_MATCHING->value,
+                'clause' => [
+                    'options' => ['Куче', 'Котка', 'Птица'],
+                    'correct_option' => 0,
+                    'explanation' => 'Куче means dog.',
+                ],
+            ]);
+
+        $response->assertSessionHasErrors(['image']);
+        $this->assertDatabaseCount('exercises', 0);
+    }
+
+    public function test_admin_can_replace_image_on_image_matching_exercise(): void
+    {
+        Storage::fake('public');
+
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $exercise = Exercise::create([
+            'name' => 'Match the picture',
+            'lesson_id' => $lesson->id,
+            'decision_type' => ExerciseType::IMAGE_MATCHING->value,
+            'clause' => [
+                'options' => ['Куче', 'Котка', 'Птица'],
+                'correct_option' => 0,
+                'explanation' => 'Куче means dog.',
+            ],
+        ]);
+
+        $oldPath = UploadedFile::fake()->image('dog.jpg')->store('exercise-images', 'public');
+        $exercise->images()->attach(Images::create(['filepath' => $oldPath]));
+
+        $response = $this
+            ->actingAs($admin)
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => $exercise->name,
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => $exercise->clause,
+                'image' => UploadedFile::fake()->image('cat.jpg'),
+            ]);
+
+        $response->assertSessionHasNoErrors();
+
+        Storage::disk('public')->assertMissing($oldPath);
+
+        $exercise->refresh();
+        $this->assertCount(1, $exercise->images);
+        Storage::disk('public')->assertExists($exercise->images->first()->filepath);
     }
 }

@@ -18,6 +18,7 @@ class UpdateExerciseRequest extends FormRequest
             'name'          => ['required', 'string', 'max:255'],
             'decision_type' => ['required', 'string'],
             'clause'        => ['required', 'array'],
+            'image'         => ['nullable', 'image', 'max:5120'],
         ];
     }
 }

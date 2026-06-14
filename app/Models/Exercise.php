@@ -38,7 +38,7 @@ class Exercise extends Model
 
     public function images(): BelongsToMany
     {
-        return $this->hasMany(Images::class);
+        return $this->belongsToMany(Images::class, 'exercise_image', 'exercise_id', 'image_id');
     }
 
     protected static function booted(): void

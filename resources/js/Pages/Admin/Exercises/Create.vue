@@ -1,5 +1,5 @@
 <script setup>
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
@@ -24,6 +24,14 @@ function defaultClause(type) {
         };
     }
 
+    if (type === 'image_matching') {
+        return {
+            options: ['', '', '', ''],
+            correct_option: 0,
+            explanation: '',
+        };
+    }
+
     return {
         sentence: '',
         options: ['', '', '', ''],
@@ -37,10 +45,15 @@ const form = useForm({
     name: '',
     decision_type: '',
     clause: defaultClause(''),
+    image: null,
 });
+
+const imagePreview = ref(null);
 
 watch(() => form.decision_type, (newType) => {
     form.clause = defaultClause(newType);
+    form.image = null;
+    imagePreview.value = null;
 });
 
 function addPair() {
@@ -49,6 +62,12 @@ function addPair() {
 
 function removePair(index) {
     form.clause.pairs.splice(index, 1);
+}
+
+function onImageChange(event) {
+    const file = event.target.files[0] ?? null;
+    form.image = file;
+    imagePreview.value = file ? URL.createObjectURL(file) : null;
 }
 
 function submit() {
@@ -173,6 +192,67 @@ function submit() {
                                     <option :value="true">True</option>
                                     <option :value="false">False</option>
                                 </select>
+                                <p v-if="form.errors['clause.correct_option']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.correct_option'] }}</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Explanation</label>
+                                <textarea
+                                    v-model="form.clause.explanation"
+                                    rows="3"
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 resize-none"
+                                    placeholder="Explain the correct answer"
+                                />
+                                <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
+                            </div>
+                        </template>
+
+                        <!-- Image Matching fields -->
+                        <template v-if="form.decision_type === 'image_matching'">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    @change="onImageChange"
+                                    class="block w-full text-sm text-gray-800 dark:text-gray-100"
+                                />
+                                <img
+                                    v-if="imagePreview"
+                                    :src="imagePreview"
+                                    alt="Preview"
+                                    class="mt-2 h-32 w-32 rounded-lg object-cover border border-gray-200 dark:border-gray-700"
+                                />
+                                <p v-if="form.errors.image" class="mt-1 text-xs text-red-500">{{ form.errors.image }}</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Options</label>
+                                <div
+                                    v-for="(_, index) in form.clause.options"
+                                    :key="index"
+                                    class="flex items-center gap-2 mb-2"
+                                >
+                                    <span class="text-xs text-gray-400 w-4">{{ index + 1 }}.</span>
+                                    <input
+                                        v-model="form.clause.options[index]"
+                                        type="text"
+                                        class="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                        :placeholder="`Option ${index + 1}`"
+                                    />
+                                </div>
+                                <p v-if="form.errors['clause.options']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.options'] }}</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correct option (0-based index)</label>
+                                <input
+                                    v-model.number="form.clause.correct_option"
+                                    type="number"
+                                    min="0"
+                                    :max="form.clause.options.length - 1"
+                                    class="w-24 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                />
                                 <p v-if="form.errors['clause.correct_option']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.correct_option'] }}</p>
                             </div>
 

@@ -7,7 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
+use App\Models\Images;
 use App\Models\Lesson;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ExerciseController extends Controller
@@ -30,7 +33,9 @@ class ExerciseController extends Controller
 
     public function store(StoreExerciseRequest $request, Lesson $lesson)
     {
-        Exercise::create($request->validated());
+        $exercise = Exercise::create($request->safe()->except('image'));
+
+        $this->syncImage($request, $exercise);
 
         return redirect()->route('admin.lessons.edit', $lesson)->with('success', 'Exercise created.');
     }
@@ -38,23 +43,47 @@ class ExerciseController extends Controller
     public function edit(Exercise $exercise)
     {
         return Inertia::render('Admin/Exercises/Edit', [
-            'exercise' => $exercise->load('lesson'),
+            'exercise' => $exercise->load('lesson', 'images'),
             'exerciseTypes' => $this->exerciseTypes(),
         ]);
     }
 
     public function update(UpdateExerciseRequest $request, Exercise $exercise)
     {
-        $exercise->update($request->validated());
+        $exercise->update($request->safe()->except('image'));
+
+        $this->syncImage($request, $exercise);
 
         return redirect()->route('admin.lessons.edit', $exercise->lesson_id)->with('success', 'Exercise updated.');
     }
 
     public function destroy(Exercise $exercise)
     {
+        foreach ($exercise->images as $image) {
+            Storage::disk('public')->delete($image->filepath);
+            $image->delete();
+        }
+
         $exercise->delete();
 
         return redirect()->back()->with('success', 'Exercise deleted.');
+    }
+
+    private function syncImage(Request $request, Exercise $exercise): void
+    {
+        if (! $request->hasFile('image')) {
+            return;
+        }
+
+        foreach ($exercise->images as $image) {
+            Storage::disk('public')->delete($image->filepath);
+            $exercise->images()->detach($image);
+            $image->delete();
+        }
+
+        $path = $request->file('image')->store('exercise-images', 'public');
+
+        $exercise->images()->attach(Images::create(['filepath' => $path]));
     }
 
     private function exerciseTypes(): array

@@ -43,6 +43,12 @@ enum ExerciseType: string
                 'correct_option' => ['required', 'integer'],
                 'explanation' => ['required', 'string'],
             ],
+            self::IMAGE_MATCHING => [
+                'options' => ['required', 'array', 'min:2'],
+                'options.*' => ['required', 'string'],
+                'correct_option' => ['required', 'integer'],
+                'explanation' => ['required', 'string'],
+            ],
             self::BOT_DIALOG => [
                 'sentence' => ['required', 'string'],
                 'options' => ['required', 'array'],
