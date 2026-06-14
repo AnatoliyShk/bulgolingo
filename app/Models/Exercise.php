@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Enums\ExerciseType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Exercise extends Model
 {
@@ -29,9 +31,14 @@ class Exercise extends Model
         parent::__construct();
     }
 
-    public function lesson()
+    public function lesson(): BelongsTo
     {
         return $this->belongsTo(Lesson::class);
+    }
+
+    public function images(): BelongsToMany
+    {
+        return $this->hasMany(Images::class);
     }
 
     protected static function booted(): void
