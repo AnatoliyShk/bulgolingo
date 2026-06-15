@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(LearningPath::class, 'learning_path_user');
     }
+
+    public function learnedWords()
+    {
+        return $this->belongsToMany(LearnedWords::class, 'user_learned_word', 'user_id', 'learned_word_id');
+    }
 }

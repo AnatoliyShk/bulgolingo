@@ -1,6 +1,8 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useTheme } from '@/composables/useTheme'
+import { VueUiDonut, VueUiKpi, VueUiWordCloud } from 'vue-data-ui'
+import 'vue-data-ui/style.css'
 
 const { theme, toggleTheme } = useTheme()
 
@@ -21,7 +23,13 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    learnedWords: {
+        type: Array,
+        default: () => [],
+    },
 })
+
+const isDark = computed(() => theme.value === 'dark')
 
 // colors mirror App\Enums\ExerciseType::getDescription() labels
 const typeColors = {
@@ -31,52 +39,114 @@ const typeColors = {
     'Image Matching': '#ec4899',
 }
 
-const donutSegments = computed(() => {
-    const total = props.exercisesByType.reduce((sum, stat) => sum + stat.count, 0) || 1
-    let cumulative = 0
+function kpiConfig(title, lightColor, darkColor) {
+    return computed(() => ({
+        title,
+        titleFontSize: 12,
+        titleColor: isDark.value ? '#6b7280' : '#9ca3af',
+        titleClass: 'kpi-title',
+        layoutClass: 'kpi-layout',
+        valueFontSize: 36,
+        valueBold: true,
+        valueColor: isDark.value ? darkColor : lightColor,
+        backgroundColor: 'transparent',
+        useAnimation: true,
+        animationFrames: 60,
+    }))
+}
 
-    return props.exercisesByType.map((stat) => {
-        const percent = (stat.count / total) * 100
-        const segment = {
-            ...stat,
-            color: typeColors[stat.type] ?? '#9ca3af',
-            percent: Math.round(percent),
-            dashArray: `${percent} ${100 - percent}`,
-            dashOffset: -cumulative,
-        }
-        cumulative += percent
-        return segment
-    })
-})
+const lessonsConfig = kpiConfig('Completed lessons', '#4f46e5', '#818cf8')
+const exercisesConfig = kpiConfig('Completed exercises', '#059669', '#34d399')
+const pathsConfig = kpiConfig('Completed learning paths', '#d97706', '#fbbf24')
+
+const donutDataset = computed(() =>
+    props.exercisesByType.map((stat) => ({
+        name: stat.type,
+        values: [stat.count],
+        color: typeColors[stat.type] ?? '#9ca3af',
+    }))
+)
+
+const donutConfig = computed(() => ({
+    theme: isDark.value ? 'minimalDark' : 'minimal',
+    responsive: true,
+    useCssAnimation: true,
+    startAnimation: {
+        show: true,
+        durationMs: 700,
+    },
+    style: {
+        chart: {
+            backgroundColor: 'transparent',
+            layout: {
+                labels: {
+                    dataLabels: {
+                        show: false,
+                    },
+                    hollow: {
+                        show: true,
+                        total: {
+                            show: true,
+                            text: 'exercises',
+                        },
+                    },
+                },
+                donut: {
+                    strokeWidth: 48,
+                    borderWidth: 2,
+                    borderColorAuto: true,
+                },
+            },
+            legend: {
+                show: true,
+                backgroundColor: 'transparent',
+                position: 'bottom',
+                showValue: false,
+                showPercentage: true,
+            },
+            tooltip: {
+                show: true,
+            },
+            title: {
+                show: false,
+            },
+        },
+    },
+}))
+
+const wordCloudDataset = computed(() =>
+    props.learnedWords.map((item) => ({
+        name: item.word,
+        value: item.count,
+    }))
+)
+
+const wordCloudConfig = computed(() => ({
+    theme: isDark.value ? 'celebrationNight' : 'celebration',
+    responsive: true,
+    useCssAnimation: true,
+    style: {
+        chart: {
+            backgroundColor: 'transparent',
+            width: 512,
+            height: 320,
+            controls: {
+                backgroundColor: 'transparent',
+                buttonColor: 'transparent',
+            },
+            title: {
+                show: false,
+            },
+        },
+    },
+}))
 
 const ready = ref(false)
-const animatedLessons = ref(0)
-const animatedExercises = ref(0)
-const animatedPaths = ref(0)
-
-function animateCount(target, valueRef, duration = 800) {
-    const start = performance.now()
-
-    function tick(now) {
-        const progress = Math.min((now - start) / duration, 1)
-        valueRef.value = Math.round(target * (1 - Math.pow(1 - progress, 3)))
-
-        if (progress < 1) {
-            requestAnimationFrame(tick)
-        }
-    }
-
-    requestAnimationFrame(tick)
-}
 
 onMounted(() => {
     requestAnimationFrame(() => {
         ready.value = true
     })
-
-    animateCount(props.completedLessons, animatedLessons)
-    animateCount(props.completedExercises, animatedExercises)
-    animateCount(props.completedLearningPaths, animatedPaths)
 })
 </script>
 
@@ -91,62 +161,31 @@ onMounted(() => {
         <h1 class="enter-item text-xl font-semibold text-gray-900 dark:text-gray-100 text-center mb-8" :class="{ 'is-visible': ready }">Your Stats</h1>
 
         <div class="stats-row">
-            <div class="stat-card enter-item flex flex-col items-center justify-center" :class="{ 'is-visible': ready }" style="transition-delay: 0.1s">
-                <p class="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500">Completed lessons</p>
-                <p class="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mt-2">{{ animatedLessons }}</p>
+            <div class="stat-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.1s">
+                <VueUiKpi :dataset="completedLessons" :config="lessonsConfig" />
             </div>
 
-            <div class="stat-card enter-item flex flex-col items-center justify-center" :class="{ 'is-visible': ready }" style="transition-delay: 0.18s">
-                <p class="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500">Completed exercises</p>
-                <p class="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mt-2">{{ animatedExercises }}</p>
+            <div class="stat-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.18s">
+                <VueUiKpi :dataset="completedExercises" :config="exercisesConfig" />
             </div>
 
-            <div class="stat-card enter-item flex flex-col items-center justify-center" :class="{ 'is-visible': ready }" style="transition-delay: 0.26s">
-                <p class="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500">Completed learning paths</p>
-                <p class="text-4xl font-bold text-amber-600 dark:text-amber-400 mt-2">{{ animatedPaths }}</p>
+            <div class="stat-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.26s">
+                <VueUiKpi :dataset="completedLearningPaths" :config="pathsConfig" />
             </div>
         </div>
 
         <div class="stat-card donut-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.34s">
             <p class="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500 text-center mb-4">Exercises by type</p>
 
-            <div class="flex flex-col sm:flex-row items-center gap-6">
-                <svg viewBox="0 0 36 36" class="donut">
-                    <circle class="donut-ring" cx="18" cy="18" r="15.9155" fill="transparent" stroke-width="3.5" />
-                    <circle
-                        v-for="(segment, index) in donutSegments"
-                        :key="segment.type"
-                        class="donut-segment"
-                        cx="18" cy="18" r="15.9155"
-                        fill="transparent"
-                        stroke-width="3.5"
-                        stroke-linecap="round"
-                        :stroke="segment.color"
-                        :stroke-dasharray="ready ? segment.dashArray : '0 100'"
-                        :stroke-dashoffset="segment.dashOffset"
-                        :style="{ transitionDelay: `${0.4 + index * 0.12}s` }"
-                    />
-                    <text x="18" y="17" text-anchor="middle" class="donut-count">{{ animatedExercises }}</text>
-                    <text x="18" y="22" text-anchor="middle" class="donut-label">exercises</text>
-                </svg>
+            <VueUiDonut v-if="donutDataset.length" :dataset="donutDataset" :config="donutConfig" />
+            <p v-else class="text-sm text-gray-400 dark:text-gray-500 text-center py-8">No completed exercises yet</p>
+        </div>
 
-                <ul class="legend">
-                    <li
-                        v-for="(segment, index) in donutSegments"
-                        :key="segment.type"
-                        class="legend-item enter-item"
-                        :class="{ 'is-visible': ready }"
-                        :style="{ transitionDelay: `${0.45 + index * 0.08}s` }"
-                    >
-                        <span class="legend-dot" :style="{ backgroundColor: segment.color }"></span>
-                        <span class="text-sm text-gray-700 dark:text-gray-300">{{ segment.type }}</span>
-                        <span class="text-sm font-medium text-gray-400 dark:text-gray-500 ml-auto">{{ segment.percent }}%</span>
-                    </li>
-                    <li v-if="!donutSegments.length" class="text-sm text-gray-400 dark:text-gray-500 text-center">
-                        No completed exercises yet
-                    </li>
-                </ul>
-            </div>
+        <div class="stat-card donut-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.42s">
+            <p class="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500 text-center mb-4">Words you've learned</p>
+
+            <VueUiWordCloud v-if="wordCloudDataset.length" :dataset="wordCloudDataset" :config="wordCloudConfig" />
+            <p v-else class="text-sm text-gray-400 dark:text-gray-500 text-center py-8">No learned words yet</p>
         </div>
     </div>
 </template>
@@ -191,57 +230,16 @@ onMounted(() => {
     max-width: 40rem;
 }
 
-.donut {
-    width: 9rem;
-    height: 9rem;
-    flex-shrink: 0;
-    transform: rotate(-90deg);
-}
-
-.donut-ring {
-    stroke: #e5e7eb;
-}
-
-.donut-segment {
-    transition: stroke-dasharray 0.6s ease;
-}
-
-.donut-count,
-.donut-label {
-    transform: rotate(90deg);
-    transform-box: fill-box;
-    transform-origin: center;
-    fill: #374151;
-}
-
-.donut-count {
-    font-size: 0.3rem;
-    font-weight: 700;
-}
-
-.donut-label {
-    font-size: 0.18rem;
-    fill: #9ca3af;
-}
-
-.legend {
-    width: 100%;
+:deep(.kpi-layout) {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-}
-
-.legend-item {
-    display: flex;
     align-items: center;
-    gap: 0.5rem;
+    text-align: center;
 }
 
-.legend-dot {
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 50%;
-    flex-shrink: 0;
+:deep(.kpi-title) {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 </style>
 
@@ -249,17 +247,5 @@ onMounted(() => {
 html.dark .stat-card {
     background: #1f2937;
     border-color: #374151;
-}
-
-html.dark .donut-ring {
-    stroke: #374151;
-}
-
-html.dark .donut-count {
-    fill: #f3f4f6;
-}
-
-html.dark .donut-label {
-    fill: #6b7280;
 }
 </style>
