@@ -1,113 +1,130 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import '../../../css/home.css'
+import '../../../css/home-light.css'
+import '../../../css/home-dark.css'
+import '../../../css/auth.css'
+
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
+import { useTheme } from '@/composables/useTheme'
+
+const page = usePage()
+const appName = computed(() => page.props.appName)
+const { theme, toggleTheme } = useTheme()
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-});
+})
 
 const submit = () => {
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
+    })
+}
 </script>
 
 <template>
-    <GuestLayout>
+    <div class="page" :class="theme">
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+        <header class="header">
+            <nav class="nav">
+                <a href="/" class="nav__logo">
+                    <span class="nav__mark" aria-hidden="true">Ъ</span>
+                    {{ appName }}
+                </a>
+                <div class="nav__links">
+                    <a href="/login" class="nav__link">Log in</a>
+                    <button class="theme-toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
+                        {{ theme === 'dark' ? '☀️' : '🌙' }}
+                    </button>
+                </div>
+            </nav>
+        </header>
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+        <main class="auth">
+            <span class="page__mark" aria-hidden="true">Ъ</span>
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
+            <section class="auth-card">
+                <div class="auth-card__head">
+                    <p class="auth-card__eyebrow">
+                        <span lang="bg">Регистрация</span>
+                        <span class="auth-card__eyebrow-en">sign up</span>
+                    </p>
+                    <h1 class="auth-card__title">Start your journey</h1>
+                    <p class="auth-card__caption" lang="bg">«Да започваме»</p>
+                    <p class="auth-card__subtitle">Create an account to save your progress and keep your streak.</p>
+                    <div class="thread-divider" aria-hidden="true"></div>
+                </div>
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <form class="auth-form" @submit.prevent="submit">
+                    <div class="field">
+                        <label for="name" class="field__label">Name</label>
+                        <input
+                            id="name"
+                            v-model="form.name"
+                            type="text"
+                            class="field__input"
+                            required
+                            autofocus
+                            autocomplete="name"
+                        />
+                        <p v-if="form.errors.name" class="field__error">{{ form.errors.name }}</p>
+                    </div>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+                    <div class="field">
+                        <label for="email" class="field__label">Email</label>
+                        <input
+                            id="email"
+                            v-model="form.email"
+                            type="email"
+                            class="field__input"
+                            required
+                            autocomplete="username"
+                        />
+                        <p v-if="form.errors.email" class="field__error">{{ form.errors.email }}</p>
+                    </div>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+                    <div class="field">
+                        <label for="password" class="field__label">Password</label>
+                        <input
+                            id="password"
+                            v-model="form.password"
+                            type="password"
+                            class="field__input"
+                            required
+                            autocomplete="new-password"
+                        />
+                        <p v-if="form.errors.password" class="field__error">{{ form.errors.password }}</p>
+                    </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                    <div class="field">
+                        <label for="password_confirmation" class="field__label">Confirm password</label>
+                        <input
+                            id="password_confirmation"
+                            v-model="form.password_confirmation"
+                            type="password"
+                            class="field__input"
+                            required
+                            autocomplete="new-password"
+                        />
+                        <p v-if="form.errors.password_confirmation" class="field__error">{{ form.errors.password_confirmation }}</p>
+                    </div>
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+                    <button type="submit" class="btn btn--primary auth-form__submit" :disabled="form.processing">
+                        Create account
+                    </button>
+                </form>
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+                <div class="auth-card__footer">
+                    <Link :href="route('login')" class="auth-card__link auth-card__link--accent">
+                        Already have an account? Log in
+                    </Link>
+                </div>
+            </section>
+        </main>
+    </div>
 </template>
