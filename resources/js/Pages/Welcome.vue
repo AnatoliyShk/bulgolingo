@@ -157,44 +157,6 @@ const steps = [
 
             <div class="thread-divider" aria-hidden="true"></div>
 
-            <!-- Letters -->
-            <section id="letters" class="letters">
-                <div class="section__head">
-                    <p class="section__eyebrow">Букви · Letters</p>
-                    <h2 class="section__title">Six sounds English doesn't have</h2>
-                    <p class="section__subtitle">They show up in everyday words. Flip a card to see how it's written — and how it's said.</p>
-                </div>
-
-                <div class="letters__grid">
-                    <button
-                        v-for="(letter, i) in letters"
-                        :key="letter.char"
-                        type="button"
-                        class="letter-card"
-                        :class="{ 'is-flipped': flipped[i] }"
-                        :aria-pressed="flipped[i]"
-                        :aria-label="`${letter.char}, ${letter.name}. Press to flip.`"
-                        @click="flipped[i] = !flipped[i]"
-                    >
-                        <span class="letter-card__inner">
-                            <span class="letter-card__face letter-card__face--front">
-                                <span class="letter-card__glyph" lang="bg">{{ letter.char }}</span>
-                                <span class="letter-card__name">{{ letter.name }}</span>
-                            </span>
-                            <span class="letter-card__face letter-card__face--back">
-                                <span class="letter-card__sound">{{ letter.sound }}</span>
-                                <span class="letter-card__example" lang="bg">{{ letter.example }}</span>
-                                <span class="letter-card__meaning">{{ letter.meaning }}</span>
-                            </span>
-                        </span>
-                    </button>
-                </div>
-
-                <p class="letters__note">Psst — «Щ» is just «Ш» with a tail. Different letter, different sound.</p>
-            </section>
-
-            <div class="thread-divider" aria-hidden="true"></div>
-
             <!-- Path -->
             <section id="path" class="path">
                 <div class="section__head">
