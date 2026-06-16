@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ExerciseType;
-use App\Observers\UserObserver;
+use App\Observers\ExerciseObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[ObservedBy(UserObserver::class)]
+#[ObservedBy(ExerciseObserver::class)]
 class Exercise extends Model
 {
     protected $fillable = [
@@ -65,7 +65,7 @@ class Exercise extends Model
 
     public function getExerciseWords(): array
     {
-        if ($this->decisionType === ExerciseType::FILL_IN_THE_BLANK) {
+        if ($this->decision_type === ExerciseType::FILL_IN_THE_BLANK) {
             return $this->clause['options'] ?? [];
         }
         return [];
