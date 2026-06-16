@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Enums\ExerciseType;
+use App\Observers\UserObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+#[ObservedBy(UserObserver::class)]
 class Exercise extends Model
 {
     protected $fillable = [
@@ -52,26 +55,6 @@ class Exercise extends Model
         $this->attributes['clause'] = json_encode($value);
     }
 
-    public function getDecisionTypeAttribute($value)
-    {
-        return ExerciseType::from($value);
-    }
-
-    public function setDecisionTypeAttribute($value)
-    {
-        $this->attributes['decision_type'] = $value->value;
-    }
-
-    public function getIsCompletedAttribute($value)
-    {
-        return (bool)$value;
-    }
-
-    public function setIsCompletedAttribute($value)
-    {
-        $this->attributes['is_completed'] = (bool)$value;
-    }
-
     public function recentlyCompleted(?Carbon $date = null)
     {
         return Exercise::select()
@@ -80,32 +63,11 @@ class Exercise extends Model
             ->get();
     }
 
-    public function getExerciseWords(Exercise $exercise)
+    public function getExerciseWords(): array
     {
-        if($exercise->decisionType === ExerciseType::FILL_IN_THE_BLANK)
-        {
-            return $exercise->clause->options;
+        if ($this->decisionType === ExerciseType::FILL_IN_THE_BLANK) {
+            return $this->clause['options'] ?? [];
         }
         return [];
-    }
-
-    protected static function booted(): void
-    {
-        static::saving(function (Exercise $item) {
-            if (! $item->decision_type instanceof ExerciseType) {
-                return;
-            }
-
-            $rules = $item->decision_type->dataRules();
-
-            $prefixed = collect($rules)
-                ->mapWithKeys(fn ($rule, $key) => ["clause.$key" => $rule])
-                ->all();
-
-            Validator::make(
-                ['clause' => $item->clause ?? []],
-                $prefixed
-            )->validate();
-        });
     }
 }
