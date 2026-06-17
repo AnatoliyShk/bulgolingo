@@ -27,8 +27,7 @@ class ExerciseObserver
         Log::info('Exercise updated');
         Log::info(Auth::check() && $exercise->isDirty('is_completed'));
         if(Auth::check() && $exercise->isDirty('is_completed')) {
-//            LearnedWordCountUpdate::dispatch(Auth::user(), $exercise);
-            (new LearnedWordCountUpdate(Auth::user(), $exercise))->handle();
+            LearnedWordCountUpdate::dispatch(Auth::user(), $exercise);
         }
     }
 
