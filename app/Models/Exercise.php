@@ -7,7 +7,6 @@ use App\Observers\ExerciseObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -19,14 +18,12 @@ class Exercise extends Model
         'lesson_id',
         'clause',
         'decision_type',
-        'is_completed',
     ];
     protected function casts(): array
     {
         return [
             'decision_type' => ExerciseType::class,
             'clause' => 'array',
-            'is_completed' => 'boolean',
         ];
     }
 
@@ -53,14 +50,6 @@ class Exercise extends Model
     public function setClauseAttribute($value)
     {
         $this->attributes['clause'] = json_encode($value);
-    }
-
-    public function recentlyCompleted(?Carbon $date = null)
-    {
-        return Exercise::select()
-            ->where('is_completed', true)
-            ->where('created_at', '>=', $date ?? now())
-            ->get();
     }
 
     public function getExerciseWords(): array

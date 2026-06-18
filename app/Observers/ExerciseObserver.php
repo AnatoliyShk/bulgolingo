@@ -3,10 +3,7 @@
 namespace App\Observers;
 
 use App\Enums\ExerciseType;
-use App\Jobs\LearnedWordCountUpdate;
 use App\Models\Exercise;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ExerciseObserver
@@ -24,11 +21,7 @@ class ExerciseObserver
      */
     public function updated(Exercise $exercise): void
     {
-        Log::info('Exercise updated');
-        Log::info(Auth::check() && $exercise->isDirty('is_completed'));
-        if(Auth::check() && $exercise->isDirty('is_completed')) {
-            LearnedWordCountUpdate::dispatch(Auth::user(), $exercise);
-        }
+        //
     }
 
     /**

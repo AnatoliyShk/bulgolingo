@@ -15,6 +15,13 @@ class LearningPathController extends Controller
         ]);
     }
 
+    public function start(Request $request, LearningPath $learningPath)
+    {
+        $request->user()->learningPaths()->syncWithoutDetaching([$learningPath->id]);
+
+        return redirect()->route('learning-paths.show', $learningPath);
+    }
+
     public function show(LearningPath $learningPath)
     {
         return Inertia::render('LearnPath/Show', [

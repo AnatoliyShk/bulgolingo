@@ -136,18 +136,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
         <!-- Active lesson -->
         <template v-else>
 
-            <!-- Progress -->
-            <div class="progress-bar">
-                <div class="progress-fill" :style="{ width: progress + '%' }" />
-            </div>
-
-            <!-- Status row -->
-            <div class="status-row">
-                <span v-if="state.streak >= 2" class="streak">🔥 {{ state.streak }} streak</span>
-                <span v-else />
-                <span class="xp">{{ state.score }} XP</span>
-            </div>
-
             <!-- Prompt -->
             <p class="label">Fill in the blank</p>
             <p class="question">{{ question.translation }}</p>

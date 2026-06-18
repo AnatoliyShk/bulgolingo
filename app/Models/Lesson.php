@@ -17,13 +17,24 @@ class Lesson extends Model
         return $this->hasMany(Exercise::class);
     }
 
+    public function learningPath()
+    {
+        return $this->belongsToMany(LearningPath::class, 'learning_path_lesson');
+    }
+
     public function refreshCompletionStatus(): void
     {
-        $allCompleted = $this->exercises()->exists()
-            && $this->exercises()->where('is_completed', false)->doesntExist();
+        //
+    }
 
-        if ($this->is_completed !== $allCompleted) {
-            $this->update(['is_completed' => $allCompleted]);
-        }
+    public static function getCompletedLessonStats(): array
+    {
+        return static::where('is_completed', true)
+            ->withCount('exercises')
+            ->get()
+            ->pipe(fn ($lessons) => [
+                'completed_lessons' => $lessons->count(),
+                'total_exercises'   => $lessons->sum('exercises_count'),
+            ]);
     }
 }

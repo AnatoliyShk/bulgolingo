@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ExerciseType;
 use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
+use App\Jobs\LearnedWordCountUpdate;
 use App\Models\Exercise;
 use Inertia\Inertia;
 
@@ -82,7 +83,7 @@ class ExerciseController extends Controller
      */
     public function complete(Exercise $exercise)
     {
-        $exercise->update(['is_completed' => true]);
+        LearnedWordCountUpdate::dispatch(auth()->user(), $exercise);
         $exercise->lesson->refreshCompletionStatus();
 
         return back();

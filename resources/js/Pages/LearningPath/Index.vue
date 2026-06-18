@@ -1,5 +1,5 @@
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 
 const props = defineProps({
@@ -7,6 +7,10 @@ const props = defineProps({
 })
 
 const { theme, toggleTheme } = useTheme()
+
+function start(pathId) {
+    router.post(route('learning-paths.start', pathId))
+}
 </script>
 
 <template>
@@ -30,12 +34,12 @@ const { theme, toggleTheme } = useTheme()
                         </span>
                     </div>
                 </div>
-                <Link
-                    :href="route('learning-paths.show', path.id)"
+                <button
+                    @click="start(path.id)"
                     class="mt-4 block w-full text-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition-colors"
                 >
                     Start
-                </Link>
+                </button>
             </div>
         </div>
 

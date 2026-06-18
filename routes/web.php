@@ -28,6 +28,10 @@ Route::get('/learning-paths', [LearningPathController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('learning-paths.index');
 
+Route::post('/learning-paths/{learningPath}/start', [LearningPathController::class, 'start'])
+    ->middleware(['auth', 'verified'])
+    ->name('learning-paths.start');
+
 Route::get('/learning-paths/{learningPath}', [LearningPathController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('learning-paths.show');
