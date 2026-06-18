@@ -14,7 +14,7 @@ function deleteLesson(id) {
 }
 
 function isCompleted(lesson) {
-    return lesson.is_completed
+    return lesson.pivot?.is_completed
 }
 </script>
 

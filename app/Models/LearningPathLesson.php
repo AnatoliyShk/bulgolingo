@@ -9,4 +9,8 @@ class LearningPathLesson extends Pivot
     protected $table = 'learning_path_lesson';
 
     public $timestamps = false;
+
+    protected $casts = [
+        'is_completed' => 'boolean',
+    ];
 }

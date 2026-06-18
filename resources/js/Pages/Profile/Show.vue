@@ -422,6 +422,45 @@ function progressPercent(path) {
     color: var(--rose);
 }
 
+/* ── Lesson list ── */
+.path__lessons {
+    list-style: none;
+    margin: .5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    border-top: 1px solid var(--border);
+    padding-top: .75rem;
+}
+
+.path__lesson {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-size: .78rem;
+    color: var(--muted);
+}
+
+.path__lesson-dot {
+    flex-shrink: 0;
+    width: .55rem;
+    height: .55rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--muted);
+    background: transparent;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.path__lesson--done .path__lesson-dot {
+    background: var(--forest);
+    border-color: var(--forest);
+}
+
+.path__lesson--done .path__lesson-name {
+    color: var(--ink);
+}
+
 /* ── Empty state ── */
 .paths__empty {
     text-align: center;

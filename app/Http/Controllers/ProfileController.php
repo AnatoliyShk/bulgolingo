@@ -19,9 +19,10 @@ class ProfileController extends Controller
             'appName' => config('app.name'),
             'user' => auth()->user(),
             'learningPaths' => auth()->user()->learningPaths()
+                ->with(['lessons' => fn ($q) => $q->orderBy('lessons.id')])
                 ->withCount([
                     'lessons',
-                    'lessons as completed_lessons_count' => fn ($query) => $query->where('is_completed', true),
+                    'lessons as completed_lessons_count' => fn ($q) => $q->where('learning_path_lesson.is_completed', true),
                 ])
                 ->get(),
         ]);

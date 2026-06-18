@@ -7,10 +7,6 @@ import { useTheme } from '@/composables/useTheme';
 const { theme, toggleTheme } = useTheme();
 
 const props = defineProps({
-    lesson: {
-        type: Object,
-        required: true,
-    },
     exercise: {
         type: Object,
         required: true,
@@ -19,9 +15,13 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    nextExerciseId: {
+    totalExercises: {
         type: Number,
-        default: null,
+        default: 0,
+    },
+    completedCount: {
+        type: Number,
+        default: 0,
     },
 })
 
@@ -43,21 +43,20 @@ function clauseToQuestion(clause) {
 }
 
 const questions = [clauseToQuestion(props.exercise.clause ?? {})]
-console.log(questions)
 const state = reactive({
     current: 0,
     selected: null,
     checked: false,
     score: 0,
     streak: 0,
-    done: false,
 })
 
 const shuffledChoices = ref(questions.map((q) => shuffle(q.choices)))
 
-const question  = computed(() => questions[state.current])
-const progress  = computed(() => (state.current / questions.length) * 100)
-const isCorrect = computed(() => state.checked && state.selected === question.value.answer)
+const question    = computed(() => questions[state.current])
+const isCorrect   = computed(() => state.checked && state.selected === question.value.answer)
+const progressPct = computed(() => props.totalExercises > 0 ? (props.completedCount / props.totalExercises) * 100 : 0)
+const remaining   = computed(() => props.totalExercises - props.completedCount)
 
 function selectChoice(word) {
     if (state.checked) return
@@ -81,6 +80,14 @@ function check() {
 }
 
 function next() {
+    if (!state.checked) return
+
+    if (!isCorrect.value) {
+        state.selected = null
+        state.checked = false
+        return
+    }
+
     if (state.current < questions.length - 1) {
         state.current++
         state.selected = null
@@ -88,21 +95,7 @@ function next() {
         return
     }
 
-    router.post(route('exercise.complete', props.exercise.id), {}, { preserveScroll: true, preserveState: true })
-
-    if (props.nextExerciseId) {
-        router.visit(route('exercise.show', props.nextExerciseId))
-    } else {
-        state.done = true
-    }
-}
-
-function restart() {
-    Object.assign(state, {
-        current: 0, selected: null, checked: false,
-        score: 0, streak: 0, done: false,
-    })
-    shuffledChoices.value = questions.map((q) => shuffle(q.choices))
+    router.post(route('exercise.complete', props.exercise.id))
 }
 
 const page = usePage()
@@ -125,19 +118,17 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
             >← Back to Profile</Link>
         </div>
 
-        <!-- Complete screen -->
-        <div v-if="state.done" class="complete">
-            <div class="trophy">🏆</div>
-            <h2>Lesson complete!</h2>
-            <p>You scored <strong>{{ state.score }} XP</strong></p>
-            <button class="btn-check" @click="restart">Try again</button>
+        <!-- Progress -->
+        <div class="progress-header">
+            <span class="progress-label">{{ remaining }} exercise{{ remaining === 1 ? '' : 's' }} remaining</span>
+            <span class="progress-label">{{ completedCount }} / {{ totalExercises }}</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" :style="{ width: progressPct + '%' }" />
         </div>
 
-        <!-- Active lesson -->
-        <template v-else>
-
-            <!-- Prompt -->
-            <p class="label">Fill in the blank</p>
+        <!-- Prompt -->
+        <p class="label">Fill in the blank</p>
             <p class="question">{{ question.translation }}</p>
 
             <!-- Sentence with blank -->
@@ -169,10 +160,10 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
             </div>
 
             <!-- Feedback -->
-            <div v-if="state.checked" :class="['feedback', isCorrect ? 'feedback--correct' : 'feedback--wrong']">
-                <p class="feedback-title">{{ isCorrect ? '✓ Correct!' : '✗ Incorrect' }}</p>
-                <p v-if="isWrong">Correct answer: <strong>{{ question.answer }}</strong></p>
-            </div>
+        <div v-if="state.checked" :class="['feedback', isCorrect ? 'feedback--correct' : 'feedback--wrong']">
+            <p class="feedback-title">{{ isCorrect ? '✓ Correct!' : '✗ Incorrect — try again' }}</p>
+            <p v-if="!isCorrect">Correct answer: <strong>{{ question.answer }}</strong></p>
+        </div>
 
             <!-- Check / Continue button -->
             <button
@@ -197,7 +188,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
                 @success="showForm = false"
                 @cancel="showForm = false"
             />
-        </template>
     </div>
 
 </template>
@@ -211,6 +201,16 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 }
 
 /* Progress */
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .4rem;
+}
+.progress-label {
+    font-size: 12px;
+    color: #aaa;
+    font-weight: 600;
+}
 .progress-bar {
     height: 8px;
     background: #e5e5e5;

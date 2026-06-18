@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\ExerciseType;
 use App\Http\Requests\Lesson\StoreLessonRequest;
-use App\Models\Exercise;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -52,21 +51,13 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        $exerciseTypes = array_map(
-            fn(ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
-            ExerciseType::cases()
-        );
+        $firstExercise = $lesson->exercises()->orderBy('id')->first();
 
-        $exerciseIds = $lesson->exercises()->orderBy('id')->pluck('id')->values();
-        $currentIndex = $exerciseIds->search($lesson->exercises()->first()?->id);
-        $nextExerciseId = $exerciseIds->get($currentIndex + 1);
+        if (!$firstExercise) {
+            return redirect()->back();
+        }
 
-        return Inertia::render('Exercise/Show', [
-            'exercise'       => $lesson->exercises()->first(),
-            'exerciseTypes'  => $exerciseTypes,
-            'lesson'         => $lesson,
-            'nextExerciseId' => $nextExerciseId,
-        ]);
+        return redirect()->route('exercise.show', $firstExercise->id);
     }
 
     /**

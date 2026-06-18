@@ -14,7 +14,7 @@ class StatsController extends Controller
         $exercisesByType = collect([]);
 
         $completedLearningPaths = LearningPath::has('lessons')
-            ->whereDoesntHave('lessons', fn ($query) => $query->where('is_completed', false))
+            ->whereDoesntHave('lessons', fn ($query) => $query->where('lessons.is_completed', false))
             ->count();
 
         $learnedWords = UserLearnedWord::learnedWords(auth()->user());
