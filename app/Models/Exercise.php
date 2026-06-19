@@ -55,7 +55,10 @@ class Exercise extends Model
     public function getExerciseWords(): array
     {
         if ($this->decision_type === ExerciseType::FILL_IN_THE_BLANK) {
-            return $this->clause['options'] ?? [];
+            $options      = $this->clause['options'] ?? [];
+            $correctIndex = $this->clause['correct_option'] ?? 0;
+            $word         = $options[$correctIndex] ?? null;
+            return $word ? [$word] : [];
         }
         return [];
     }

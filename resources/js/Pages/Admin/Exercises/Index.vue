@@ -1,11 +1,16 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
+import Breadcrumb from '@/Components/Breadcrumb.vue';
+import { ref } from 'vue';
 
 const props = defineProps({
     exercises: Array,
     exerciseTypes: Array,
+    lessons: Array,
 });
+
+const selectedLesson = ref('');
 
 function typeLabel(value) {
     return props.exerciseTypes.find((type) => type.value === value)?.label ?? value;
@@ -21,9 +26,28 @@ function deleteExercise(id) {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                Exercises
-            </h2>
+            <div class="flex items-center justify-between gap-3">
+                <Breadcrumb :items="[
+                    { label: 'Admin', href: route('admin.index') },
+                    { label: 'Exercises' },
+                ]" />
+                <div class="flex items-center gap-2">
+                    <select
+                        v-model="selectedLesson"
+                        class="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                    >
+                        <option value="">Select lesson…</option>
+                        <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">{{ lesson.name }}</option>
+                    </select>
+                    <Link
+                        :href="selectedLesson ? route('admin.exercises.create', selectedLesson) : '#'"
+                        :class="selectedLesson
+                            ? 'rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700'
+                            : 'rounded bg-blue-300 px-4 py-2 text-sm text-white cursor-not-allowed dark:bg-blue-900'"
+                        @click.prevent="selectedLesson && router.visit(route('admin.exercises.create', selectedLesson))"
+                    >+ New Exercise</Link>
+                </div>
+            </div>
         </template>
 
         <div class="py-12">

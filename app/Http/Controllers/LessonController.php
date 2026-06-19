@@ -6,6 +6,7 @@ use App\Enums\ExerciseType;
 use App\Http\Requests\Lesson\StoreLessonRequest;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -51,11 +52,44 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        $firstExercise = $lesson->exercises()->orderBy('id')->first();
+        $exerciseIds = $lesson->exercises()->orderBy('id')->pluck('id');
 
-        if (!$firstExercise) {
+        if ($exerciseIds->isEmpty()) {
             return redirect()->back();
         }
+
+        $completedIds = DB::table('user_exercise_completions')
+            ->where('user_id', auth()->id())
+            ->whereIn('exercise_id', $exerciseIds)
+            ->pluck('exercise_id');
+
+        if ($completedIds->count() >= $exerciseIds->count()) {
+            return Inertia::render('Lesson/Show', ['lesson' => $lesson]);
+        }
+
+        $firstIncompleteId = $exerciseIds->diff($completedIds)->first();
+
+        return redirect()->route('exercise.show', $firstIncompleteId);
+    }
+
+    public function restart(Lesson $lesson)
+    {
+        $exerciseIds = $lesson->exercises()->pluck('id');
+
+        DB::table('user_exercise_completions')
+            ->where('user_id', auth()->id())
+            ->whereIn('exercise_id', $exerciseIds)
+            ->delete();
+
+        $learningPath = auth()->user()->learningPaths()
+            ->whereHas('lessons', fn ($q) => $q->where('lessons.id', $lesson->id))
+            ->first();
+
+        if ($learningPath) {
+            $learningPath->lessons()->updateExistingPivot($lesson->id, ['is_completed' => false]);
+        }
+
+        $firstExercise = $lesson->exercises()->orderBy('id')->first();
 
         return redirect()->route('exercise.show', $firstExercise->id);
     }

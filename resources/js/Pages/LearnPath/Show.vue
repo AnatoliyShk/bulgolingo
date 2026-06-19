@@ -20,6 +20,16 @@ function isCompleted(lesson) {
 
 <template>
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center p-6 pt-16">
+        <Link
+            :href="route('learning-paths.index')"
+            class="fixed top-4 left-4 z-50 flex items-center justify-center rounded-md border border-gray-200 bg-white p-1.5 text-gray-500 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+            aria-label="Go back"
+        >
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </Link>
+
         <button
             @click="toggleTheme"
             class="fixed top-4 right-4 z-50 rounded-md border border-gray-200 bg-white px-2 py-1 text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"

@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
+import Breadcrumb from '@/Components/Breadcrumb.vue';
 
 defineProps({
     learningPaths: Array,
@@ -17,9 +18,10 @@ function deletePath(id) {
     <AuthenticatedLayout>
         <template #header>
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Learning Paths
-                </h2>
+                <Breadcrumb :items="[
+                    { label: 'Admin', href: route('admin.index') },
+                    { label: 'Learning Paths' },
+                ]" />
                 <Link
                     :href="route('admin.learning-paths.create')"
                     class="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"

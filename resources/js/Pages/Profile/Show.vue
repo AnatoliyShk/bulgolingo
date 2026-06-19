@@ -81,19 +81,23 @@ function progressPercent(path) {
                     <Link
                         v-for="path in learningPaths"
                         :key="path.id"
-                        :href="route('learning-paths.show', path.id)"
+                        :href="path.continue_lesson_id ? route('lesson.show', path.continue_lesson_id) : route('learning-paths.show', path.id)"
                         class="path"
                     >
                         <div class="path__head">
                             <h2 class="path__name">{{ path.name }}</h2>
                             <span class="path__tag">{{ path.language }}</span>
                         </div>
+                        <div v-if="path.exercise_types?.length" class="path__types">
+                            <span v-for="t in path.exercise_types" :key="t" class="path__type">{{ t }}</span>
+                        </div>
+
                         <div class="path__track">
                             <div class="path__fill" :style="{ width: progressPercent(path) + '%' }"></div>
                         </div>
                         <div class="path__foot">
                             <span>{{ path.completed_lessons_count ?? 0 }} / {{ path.lessons_count ?? 0 }} lessons</span>
-                            <span class="path__go">Continue →</span>
+                            <span class="path__btn">Continue</span>
                         </div>
                     </Link>
                 </div>
@@ -409,6 +413,24 @@ function progressPercent(path) {
     transition: width .8s ease .3s;
 }
 
+.path__types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+}
+
+.path__type {
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 100px;
+    padding: .15rem .5rem;
+    opacity: .85;
+}
+
 .path__foot {
     display: flex;
     align-items: center;
@@ -417,9 +439,21 @@ function progressPercent(path) {
     color: var(--muted);
 }
 
-.path__go {
+.path__btn {
+    display: inline-block;
+    padding: .45rem 1.1rem;
+    border-radius: .55rem;
+    background: linear-gradient(135deg, var(--rose), var(--gold));
+    color: #fff6ea;
+    font-size: .8rem;
     font-weight: 700;
-    color: var(--rose);
+    letter-spacing: .03em;
+    transition: opacity .2s ease, transform .15s ease;
+}
+
+.path:hover .path__btn {
+    opacity: .9;
+    transform: translateY(-1px);
 }
 
 /* ── Lesson list ── */

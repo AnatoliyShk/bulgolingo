@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Breadcrumb from '@/Components/Breadcrumb.vue';
 
 defineProps({
     users: Array,
@@ -9,9 +10,10 @@ defineProps({
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                Users
-            </h2>
+            <Breadcrumb :items="[
+                { label: 'Admin', href: route('admin.index') },
+                { label: 'Users' },
+            ]" />
         </template>
 
         <div class="py-12">

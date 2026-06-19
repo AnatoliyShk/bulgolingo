@@ -1,6 +1,7 @@
 <script setup>
 import { useForm, router, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Breadcrumb from '@/Components/Breadcrumb.vue';
 
 const props = defineProps({
     lesson: Object,
@@ -27,16 +28,11 @@ function deleteExercise(exerciseId) {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center gap-3">
-                <Link
-                    :href="route('admin.lessons.index')"
-                    class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                >← Lessons</Link>
-                <span class="text-gray-300 dark:text-gray-600">/</span>
-                <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Edit Lesson
-                </h2>
-            </div>
+            <Breadcrumb :items="[
+                { label: 'Admin', href: route('admin.index') },
+                { label: 'Lessons', href: route('admin.lessons.index') },
+                { label: lesson.name },
+            ]" />
         </template>
 
         <div class="py-12">

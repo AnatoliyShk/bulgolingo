@@ -1,7 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import Breadcrumb from '@/Components/Breadcrumb.vue';
 
 const props = defineProps({
     learningPath: Object,
@@ -15,6 +16,13 @@ const form = useForm({
 });
 
 const attachedIds = computed(() => new Set(form.lesson_ids));
+
+const lessonSearch = ref('');
+const visibleLessons = computed(() => {
+    const q = lessonSearch.value.trim().toLowerCase();
+    if (q) return props.lessons.filter(l => l.name.toLowerCase().includes(q));
+    return props.lessons.slice(-5).reverse();
+});
 
 function toggleLesson(id) {
     if (attachedIds.value.has(id)) {
@@ -32,16 +40,11 @@ function submit() {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center gap-3">
-                <Link
-                    :href="route('admin.learning-paths.index')"
-                    class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                >← Learning Paths</Link>
-                <span class="text-gray-300 dark:text-gray-600">/</span>
-                <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Edit Learning Path
-                </h2>
-            </div>
+            <Breadcrumb :items="[
+                { label: 'Admin', href: route('admin.index') },
+                { label: 'Learning Paths', href: route('admin.learning-paths.index') },
+                { label: learningPath.name },
+            ]" />
         </template>
 
         <div class="py-12">
@@ -74,11 +77,21 @@ function submit() {
 
                         <!-- Lessons picker -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Lessons</label>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lessons</label>
+                                <span class="text-xs text-gray-400 dark:text-gray-500">{{ form.lesson_ids.length }} selected</span>
+                            </div>
+                            <input
+                                v-model="lessonSearch"
+                                type="text"
+                                placeholder="Search lessons…"
+                                class="w-full mb-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                            />
                             <div v-if="lessons.length === 0" class="text-sm text-gray-400">No lessons available.</div>
+                            <div v-else-if="visibleLessons.length === 0" class="text-sm text-gray-400 py-2">No lessons match your search.</div>
                             <ul v-else class="divide-y divide-gray-100 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600">
                                 <li
-                                    v-for="lesson in lessons"
+                                    v-for="lesson in visibleLessons"
                                     :key="lesson.id"
                                     class="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer"
                                     @click="toggleLesson(lesson.id)"

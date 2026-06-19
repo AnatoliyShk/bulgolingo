@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, watch } from 'vue'
 import { usePage, router, Link } from '@inertiajs/vue3'
 import UpdateExerciseForm from "@/Components/Forms/UpdateExerciseForm.vue";
 import { useTheme } from '@/composables/useTheme';
@@ -31,10 +31,10 @@ const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5)
 
 function clauseToQuestion(clause) {
     const parts = (clause.sentence ?? '').split(/\s+/)
-    const blank = parts.findIndex(w => w === '___')
+    const blank = parts.findIndex(w => w === '__')
     const options = clause.options ?? []
     return {
-        template: blank === -1 ? [...parts, '___'] : parts,
+        template: blank === -1 ? [...parts, '__'] : parts,
         blank:    blank === -1 ? parts.length : blank,
         answer:   options[clause.correct_option ?? 0] ?? '',
         choices:  options,
@@ -42,7 +42,8 @@ function clauseToQuestion(clause) {
     }
 }
 
-const questions = [clauseToQuestion(props.exercise.clause ?? {})]
+const questions = computed(() => [clauseToQuestion(props.exercise.clause ?? {})])
+
 const state = reactive({
     current: 0,
     selected: null,
@@ -51,9 +52,16 @@ const state = reactive({
     streak: 0,
 })
 
-const shuffledChoices = ref(questions.map((q) => shuffle(q.choices)))
+const shuffledChoices = ref(questions.value.map((q) => shuffle(q.choices)))
 
-const question    = computed(() => questions[state.current])
+watch(() => props.exercise.id, () => {
+    shuffledChoices.value = questions.value.map(q => shuffle(q.choices))
+    state.current = 0
+    state.selected = null
+    state.checked = false
+})
+
+const question    = computed(() => questions.value[state.current])
 const isCorrect   = computed(() => state.checked && state.selected === question.value.answer)
 const progressPct = computed(() => props.totalExercises > 0 ? (props.completedCount / props.totalExercises) * 100 : 0)
 const remaining   = computed(() => props.totalExercises - props.completedCount)
@@ -74,28 +82,15 @@ function check() {
     if (isCorrect.value) {
         state.score += 10 + state.streak * 2
         state.streak++
+        router.post(route('exercise.complete', props.exercise.id))
     } else {
         state.streak = 0
     }
 }
 
-function next() {
-    if (!state.checked) return
-
-    if (!isCorrect.value) {
-        state.selected = null
-        state.checked = false
-        return
-    }
-
-    if (state.current < questions.length - 1) {
-        state.current++
-        state.selected = null
-        state.checked = false
-        return
-    }
-
-    router.post(route('exercise.complete', props.exercise.id))
+function retry() {
+    state.selected = null
+    state.checked = false
 }
 
 const page = usePage()
@@ -103,46 +98,52 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 </script>
 
 <template>
-    <div class="lesson">
-        <button
-            @click="toggleTheme"
-            class="fixed top-4 right-4 z-50 rounded-md border border-gray-200 bg-white px-2 py-1 text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-        >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+    <div class="ex" :class="theme">
+        <div class="ex__watermark" aria-hidden="true">Ъ</div>
 
-        <!-- Back to profile -->
-        <div class="mb-4">
-            <Link
-                :href="route('dashboard')"
-                class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            >← Back to Profile</Link>
-        </div>
+        <!-- Top bar -->
+        <header class="bar">
+            <Link :href="route('dashboard')" class="bar__back" aria-label="Back to dashboard">
+                <svg class="bar__back-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </Link>
 
-        <!-- Progress -->
-        <div class="progress-header">
-            <span class="progress-label">{{ remaining }} exercise{{ remaining === 1 ? '' : 's' }} remaining</span>
-            <span class="progress-label">{{ completedCount }} / {{ totalExercises }}</span>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-fill" :style="{ width: progressPct + '%' }" />
-        </div>
+            <!-- Progress bar -->
+            <div class="bar__progress">
+                <div class="bar__track">
+                    <div class="bar__fill" :style="{ width: progressPct + '%' }" />
+                </div>
+                <span class="bar__count">{{ completedCount }} / {{ totalExercises }}</span>
+            </div>
 
-        <!-- Prompt -->
-        <p class="label">Fill in the blank</p>
-            <p class="question">{{ question.translation }}</p>
+            <button class="bar__theme" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
+                {{ theme === 'dark' ? '☀️' : '🌙' }}
+            </button>
+        </header>
+
+        <main class="sheet">
+            <!-- Eyebrow label -->
+            <p class="eyebrow">
+                <span class="eyebrow__bg">Упражнение</span>
+                <span class="eyebrow__en">fill in the blank · {{ remaining }} remaining</span>
+            </p>
+
+            <!-- Translation / prompt -->
+            <p class="prompt">{{ question.translation }}</p>
 
             <!-- Sentence with blank -->
-            <div class="sentence-area">
+            <div class="sentence">
                 <template v-for="(word, i) in question.template" :key="i">
-                    <!-- blank slot -->
-                    <span v-if="i === question.blank" :class="['blank', { filled: state.selected }]">
-            <span v-if="state.selected" class="blank-word" @click="removeSelected">
-              {{ state.selected }}
-            </span>
-            <span v-else class="blank-placeholder">tap a word</span>
-          </span>
-                    <!-- regular word -->
-                    <span v-else class="sentence-word">{{ word }}</span>
+                    <span
+                        v-if="i === question.blank"
+                        :class="['blank', { 'blank--filled': state.selected, 'blank--correct': isCorrect, 'blank--wrong': state.checked && !isCorrect }]"
+                        @click="removeSelected"
+                    >
+                        <span v-if="state.selected" class="blank__word">{{ state.selected }}</span>
+                        <span v-else class="blank__hint">tap a word</span>
+                    </span>
+                    <span v-else class="sentence__word">{{ word }}</span>
                 </template>
             </div>
 
@@ -151,7 +152,8 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
                 <button
                     v-for="word in shuffledChoices[state.current]"
                     :key="word"
-                    class="choice-btn"
+                    class="choice"
+                    :class="{ 'choice--used': state.selected === word || state.checked }"
                     :disabled="state.selected === word || state.checked"
                     @click="selectChoice(word)"
                 >
@@ -159,201 +161,382 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
                 </button>
             </div>
 
-            <!-- Feedback -->
-        <div v-if="state.checked" :class="['feedback', isCorrect ? 'feedback--correct' : 'feedback--wrong']">
-            <p class="feedback-title">{{ isCorrect ? '✓ Correct!' : '✗ Incorrect — try again' }}</p>
-            <p v-if="!isCorrect">Correct answer: <strong>{{ question.answer }}</strong></p>
-        </div>
+            <!-- Wrong answer feedback -->
+            <div v-if="state.checked && !isCorrect" class="feedback feedback--wrong">
+                <p class="feedback__title">✗ Incorrect — try again</p>
+                <p class="feedback__body">Correct answer: <strong>{{ question.answer }}</strong></p>
+            </div>
 
-            <!-- Check / Continue button -->
+            <!-- Action button -->
             <button
-                class="btn-check"
+                class="btn-action"
+                :class="{ 'btn-action--disabled': !state.selected && !state.checked }"
                 :disabled="!state.selected && !state.checked"
-                @click="state.checked ? next() : check()"
+                @click="state.checked ? retry() : check()"
             >
-                {{ state.checked ? 'Continue' : 'Check' }}
+                {{ state.checked ? (isCorrect ? 'Next Exercise' : 'Try Again') : 'Check' }}
             </button>
 
-            <button
-                @click="showForm = !showForm"
-                class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-                {{ showForm ? 'Cancel' : 'Edit Exercise' }}
-            </button>
-
-            <UpdateExerciseForm
-                v-if="showForm"
-                :exercise="exercise"
-                :exercise-types="exerciseTypes"
-                @success="showForm = false"
-                @cancel="showForm = false"
-            />
+            <!-- Admin edit -->
+            <div v-if="isAdmin" class="edit-toggle">
+                <button class="edit-toggle__btn" @click="showForm = !showForm">
+                    {{ showForm ? 'Cancel' : 'Edit Exercise' }}
+                </button>
+                <UpdateExerciseForm
+                    v-if="showForm"
+                    :exercise="exercise"
+                    :exercise-types="exerciseTypes"
+                    @success="showForm = false"
+                    @cancel="showForm = false"
+                />
+            </div>
+        </main>
     </div>
-
 </template>
 
 <style scoped>
-.lesson {
-    max-width: 520px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    font-family: sans-serif;
+/* ── Theme tokens ── */
+.ex {
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'PT Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    transition: background .3s ease, color .3s ease;
 }
 
-/* Progress */
-.progress-header {
+.ex.light {
+    --bg: #fbf6ec;
+    --surface: #ffffff;
+    --ink: #2b231b;
+    --muted: #8a7a66;
+    --rose: #b3273e;
+    --gold: #b9862e;
+    --forest: #3d6b4f;
+    --forest-bg: #edf5f0;
+    --rose-bg: #fdf0f2;
+    --border: rgba(43, 35, 27, .12);
+}
+
+.ex.dark {
+    --bg: #1b1712;
+    --surface: #27201a;
+    --ink: #f3e9d8;
+    --muted: #a4937c;
+    --rose: #e2697b;
+    --gold: #e0b45a;
+    --forest: #7cb698;
+    --forest-bg: #1a2e25;
+    --rose-bg: #2e1a1d;
+    --border: rgba(243, 233, 216, .1);
+}
+
+/* ── Watermark ── */
+.ex__watermark {
+    position: fixed;
+    top: 50%;
+    right: -8vw;
+    transform: translateY(-50%);
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: min(70vw, 60rem);
+    line-height: 1;
+    color: var(--ink);
+    opacity: .03;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+/* ── Top bar ── */
+.bar {
+    position: relative;
+    z-index: 1;
     display: flex;
-    justify-content: space-between;
-    margin-bottom: .4rem;
+    align-items: center;
+    gap: 1rem;
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem 0;
 }
-.progress-label {
-    font-size: 12px;
-    color: #aaa;
-    font-weight: 600;
+
+.bar__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    color: var(--muted);
+    transition: color .2s ease;
 }
-.progress-bar {
-    height: 8px;
-    background: #e5e5e5;
-    border-radius: 99px;
-    margin-bottom: 1.5rem;
+.bar__back:hover { color: var(--rose); }
+.bar__back-icon { width: 1.1rem; height: 1.1rem; }
+
+.bar__progress {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.bar__track {
+    flex: 1;
+    height: 7px;
+    border-radius: 100px;
+    background: var(--border);
     overflow: hidden;
 }
-.progress-fill {
+
+.bar__fill {
     height: 100%;
-    background: #58cc02;
-    border-radius: 99px;
-    transition: width 0.4s ease;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    transition: width .6s ease;
 }
 
-/* Status */
-.status-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-.streak { font-size: 13px; font-weight: 700; color: #ff9600; }
-.xp { font-size: 13px; font-weight: 600; color: #777; }
-
-/* Prompt */
-.label {
-    font-size: 12px;
+.bar__count {
+    flex-shrink: 0;
+    font-size: .72rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: #aaa;
-    margin-bottom: .4rem;
-}
-.question {
-    font-size: 20px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 1.5rem;
-    line-height: 1.4;
+    color: var(--muted);
+    letter-spacing: .04em;
 }
 
-/* Sentence */
-.sentence-area {
+.bar__theme {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--muted);
+    transition: color .2s ease, border-color .2s ease;
+}
+.bar__theme:hover { color: var(--rose); border-color: var(--rose); }
+
+/* ── Sheet ── */
+.sheet {
+    position: relative;
+    z-index: 1;
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+}
+
+/* ── Eyebrow ── */
+.eyebrow {
+    display: flex;
+    align-items: baseline;
+    gap: .5em;
+    margin: 0 0 1rem;
+}
+
+.eyebrow__bg {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: .8rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--rose);
+}
+
+.eyebrow__en {
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.eyebrow__en::before { content: '· '; }
+
+/* ── Prompt ── */
+.prompt {
+    font-family: 'PT Serif', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0 0 2rem;
+}
+
+/* ── Sentence ── */
+.sentence {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #e5e5e5;
-    margin-bottom: 1.5rem;
-    min-height: 52px;
+    gap: .4rem .5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 1.75rem;
+    min-height: 3rem;
 }
-.sentence-word { font-size: 18px; color: #333; }
+
+.sentence__word {
+    font-size: 1.15rem;
+    color: var(--ink);
+}
+
 .blank {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 88px;
-    height: 36px;
-    border-bottom: 3px solid #ddd;
-    padding: 0 8px;
-}
-.blank.filled { border-bottom-color: #1cb0f6; }
-.blank-word {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1cb0f6;
+    min-width: 5.5rem;
+    height: 2.25rem;
+    border-bottom: 3px solid var(--muted);
+    padding: 0 .6rem;
     cursor: pointer;
+    transition: border-color .2s ease;
 }
-.blank-word:hover { opacity: 0.7; }
-.blank-placeholder { font-size: 12px; color: #bbb; }
 
-/* Choices */
+.blank--filled { border-bottom-color: var(--gold); }
+.blank--correct { border-bottom-color: var(--forest); }
+.blank--wrong   { border-bottom-color: var(--rose); }
+
+.blank__word {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold);
+    transition: color .2s ease;
+}
+
+.blank--correct .blank__word { color: var(--forest); }
+.blank--wrong   .blank__word { color: var(--rose); }
+
+.blank__hint {
+    font-size: .75rem;
+    color: var(--muted);
+    letter-spacing: .04em;
+}
+
+/* ── Choices ── */
 .choices {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 1.5rem;
+    gap: .65rem;
+    margin-bottom: 2rem;
 }
-.choice-btn {
-    padding: 10px 20px;
-    border-radius: 12px;
-    border: 2px solid #ddd;
-    background: #fff;
-    color: #333;
-    font-size: 15px;
+
+.choice {
+    padding: .6rem 1.25rem;
+    border-radius: .6rem;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: 'PT Sans', sans-serif;
+    font-size: .95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.1s, border-color 0.15s;
+    transition: border-color .15s ease, transform .1s ease, color .15s ease;
 }
-.choice-btn:hover:not(:disabled) {
-    border-color: #1cb0f6;
+
+.choice:hover:not(:disabled) {
+    border-color: var(--rose);
+    color: var(--rose);
     transform: translateY(-2px);
 }
-.choice-btn:disabled { opacity: 0.35; cursor: default; }
 
-/* Feedback */
+.choice--used,
+.choice:disabled {
+    opacity: .35;
+    cursor: default;
+    transform: none;
+}
+
+/* ── Feedback ── */
 .feedback {
-    border-radius: 12px;
-    padding: 12px 16px;
-    margin-bottom: 1rem;
+    border-radius: .75rem;
+    padding: .85rem 1.1rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid transparent;
 }
-.feedback--correct { background: #d7ffb8; color: #3c7d00; }
-.feedback--wrong   { background: #ffdfe0; color: #9e1c1c; }
-.feedback-title    { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
 
-/* Check button */
-.btn-check {
-    width: 100%;
-    padding: 14px;
-    border-radius: 14px;
-    border: none;
-    background: #58cc02;
-    color: #fff;
-    font-size: 16px;
+.feedback--wrong {
+    background: var(--rose-bg);
+    border-color: var(--rose);
+    color: var(--rose);
+}
+
+.feedback__title {
     font-weight: 700;
-    cursor: pointer;
-    transition: background 0.15s;
+    font-size: .9rem;
+    margin: 0 0 .25rem;
 }
-.btn-check:hover:not(:disabled) { background: #46a302; }
-.btn-check:disabled { background: #e5e5e5; color: #aaa; cursor: default; }
 
-/* Complete */
-.complete { text-align: center; padding: 3rem 0; }
-.trophy { font-size: 64px; margin-bottom: 1rem; }
-.complete h2 { font-size: 26px; font-weight: 700; margin-bottom: .5rem; }
-.complete p { color: #666; margin-bottom: 1.5rem; }
-</style>
+.feedback__body {
+    font-size: .85rem;
+    margin: 0;
+    opacity: .85;
+}
 
-<style>
-html.dark .lesson { color: #e8e8f0; }
-html.dark .progress-bar { background: #374151; }
-html.dark .label { color: #6b7280; }
-html.dark .question { color: #f3f4f6; }
-html.dark .sentence-area { border-bottom-color: #374151; }
-html.dark .sentence-word { color: #e5e7eb; }
-html.dark .blank { border-bottom-color: #4b5563; }
-html.dark .blank.filled { border-bottom-color: #1cb0f6; }
-html.dark .blank-placeholder { color: #6b7280; }
-html.dark .xp { color: #9ca3af; }
-html.dark .choice-btn { background: #1f2937; border-color: #374151; color: #e5e7eb; }
-html.dark .choice-btn:hover:not(:disabled) { border-color: #1cb0f6; }
-html.dark .btn-check:disabled { background: #374151; color: #6b7280; }
-html.dark .complete h2 { color: #f3f4f6; }
-html.dark .complete p { color: #9ca3af; }
+/* ── Action button ── */
+.btn-action {
+    width: 100%;
+    padding: .9rem 1.5rem;
+    border-radius: .75rem;
+    border: none;
+    background: linear-gradient(135deg, var(--rose), var(--gold));
+    color: #fff6ea;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    cursor: pointer;
+    transition: opacity .2s ease, transform .15s ease;
+}
+
+.btn-action:hover:not(:disabled) {
+    opacity: .9;
+    transform: translateY(-2px);
+}
+
+.btn-action--disabled,
+.btn-action:disabled {
+    background: var(--border);
+    color: var(--muted);
+    cursor: default;
+    transform: none;
+    opacity: 1;
+}
+
+/* ── Admin edit ── */
+.edit-toggle {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.edit-toggle__btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: .5rem;
+    color: var(--muted);
+    font-size: .82rem;
+    font-weight: 600;
+    padding: .4rem .9rem;
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease;
+}
+.edit-toggle__btn:hover { border-color: var(--rose); color: var(--rose); }
+
+/* ── Focus ── */
+.bar__back:focus-visible,
+.bar__theme:focus-visible,
+.choice:focus-visible,
+.btn-action:focus-visible {
+    outline: 2px solid var(--rose);
+    outline-offset: 2px;
+}
+
+/* ── Motion ── */
+@media (prefers-reduced-motion: reduce) {
+    .bar__fill, .blank, .choice, .btn-action { transition: none; }
+}
 </style>

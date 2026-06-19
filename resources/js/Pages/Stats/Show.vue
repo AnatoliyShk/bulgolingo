@@ -1,17 +1,18 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
-import { VueUiDonut, VueUiKpi, VueUiWordCloud } from 'vue-data-ui'
+import { VueUiWordCloud } from 'vue-data-ui'
 import 'vue-data-ui/style.css'
 
 const { theme, toggleTheme } = useTheme()
 
 const props = defineProps({
-    completedLessons: {
+    completedExercises: {
         type: Number,
         default: 0,
     },
-    completedExercises: {
+    completedLessons: {
         type: Number,
         default: 0,
     },
@@ -19,100 +20,17 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
-    exercisesByType: {
-        type: Array,
-        default: () => [],
-    },
     learnedWords: {
         type: Array,
         default: () => [],
     },
+    appName: {
+        type: String,
+        default: 'Balkanbuddy',
+    },
 })
 
 const isDark = computed(() => theme.value === 'dark')
-
-// colors mirror App\Enums\ExerciseType::getDescription() labels
-const typeColors = {
-    'Multiple Choice': '#6366f1',
-    'True/False': '#22c55e',
-    'Fill in the Blank': '#f59e0b',
-    'Image Matching': '#ec4899',
-}
-
-function kpiConfig(title, lightColor, darkColor) {
-    return computed(() => ({
-        title,
-        titleFontSize: 12,
-        titleColor: isDark.value ? '#6b7280' : '#9ca3af',
-        titleClass: 'kpi-title',
-        layoutClass: 'kpi-layout',
-        valueFontSize: 36,
-        valueBold: true,
-        valueColor: isDark.value ? darkColor : lightColor,
-        backgroundColor: 'transparent',
-        useAnimation: true,
-        animationFrames: 60,
-    }))
-}
-
-const lessonsConfig = kpiConfig('Completed lessons', '#4f46e5', '#818cf8')
-const exercisesConfig = kpiConfig('Completed exercises', '#059669', '#34d399')
-const pathsConfig = kpiConfig('Completed learning paths', '#d97706', '#fbbf24')
-
-const donutDataset = computed(() =>
-    props.exercisesByType.map((stat) => ({
-        name: stat.type,
-        values: [stat.count],
-        color: typeColors[stat.type] ?? '#9ca3af',
-    }))
-)
-
-const donutConfig = computed(() => ({
-    theme: isDark.value ? 'minimalDark' : 'minimal',
-    responsive: true,
-    useCssAnimation: true,
-    startAnimation: {
-        show: true,
-        durationMs: 700,
-    },
-    style: {
-        chart: {
-            backgroundColor: 'transparent',
-            layout: {
-                labels: {
-                    dataLabels: {
-                        show: false,
-                    },
-                    hollow: {
-                        show: true,
-                        total: {
-                            show: true,
-                            text: 'exercises',
-                        },
-                    },
-                },
-                donut: {
-                    strokeWidth: 48,
-                    borderWidth: 2,
-                    borderColorAuto: true,
-                },
-            },
-            legend: {
-                show: true,
-                backgroundColor: 'transparent',
-                position: 'bottom',
-                showValue: false,
-                showPercentage: true,
-            },
-            tooltip: {
-                show: true,
-            },
-            title: {
-                show: false,
-            },
-        },
-    },
-}))
 
 const wordCloudDataset = computed(() =>
     props.learnedWords.map((item) => ({
@@ -142,110 +60,302 @@ const wordCloudConfig = computed(() => ({
 }))
 
 const ready = ref(false)
+onMounted(() => requestAnimationFrame(() => { ready.value = true }))
 
-onMounted(() => {
-    requestAnimationFrame(() => {
-        ready.value = true
-    })
-})
+const stats = computed(() => [
+    { bg: 'Упражнения', en: 'completed exercises', value: props.completedExercises },
+    { bg: 'Уроци',      en: 'completed lessons',   value: props.completedLessons },
+    { bg: 'Пътища',     en: 'completed paths',     value: props.completedLearningPaths },
+])
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center p-6 pt-16">
-        <button
-            @click="toggleTheme"
-            class="fixed top-4 right-4 z-50 rounded-md border border-gray-200 bg-white px-2 py-1 text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-        >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+    <div class="pg" :class="theme">
+        <div class="pg__watermark" aria-hidden="true">Ъ</div>
 
-        <h1 class="enter-item text-xl font-semibold text-gray-900 dark:text-gray-100 text-center mb-8" :class="{ 'is-visible': ready }">Your Stats</h1>
+        <!-- Top bar -->
+        <header class="bar">
+            <Link :href="route('dashboard')" class="bar__back" aria-label="Back to dashboard">
+                <svg class="bar__back-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </Link>
+            <span class="bar__mark">{{ appName }}</span>
+            <button class="bar__theme" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
+                {{ theme === 'dark' ? '☀️' : '🌙' }}
+            </button>
+        </header>
 
-        <div class="stats-row">
-            <div class="stat-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.1s">
-                <VueUiKpi :dataset="completedLessons" :config="lessonsConfig" />
+        <main class="sheet">
+            <!-- Heading -->
+            <p class="eyebrow rise" :class="{ 'rise--in': ready }">
+                <span class="eyebrow__bg">Статистика</span>
+                <span class="eyebrow__en">your stats</span>
+            </p>
+
+            <!-- KPI cards -->
+            <div class="kpi-grid">
+                <div
+                    v-for="(stat, i) in stats"
+                    :key="stat.en"
+                    class="kpi rise"
+                    :class="{ 'rise--in': ready }"
+                    :style="{ transitionDelay: (i * 0.08) + 's' }"
+                >
+                    <span class="kpi__value">{{ stat.value }}</span>
+                    <span class="kpi__bg">{{ stat.bg }}</span>
+                    <span class="kpi__en">{{ stat.en }}</span>
+                </div>
             </div>
 
-            <div class="stat-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.18s">
-                <VueUiKpi :dataset="completedExercises" :config="exercisesConfig" />
-            </div>
+            <!-- Seam -->
+            <div class="seam rise" :class="{ 'rise--in': ready }" style="transition-delay:.28s" aria-hidden="true"></div>
 
-            <div class="stat-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.26s">
-                <VueUiKpi :dataset="completedLearningPaths" :config="pathsConfig" />
-            </div>
-        </div>
+            <!-- Word cloud -->
+            <section class="rise" :class="{ 'rise--in': ready }" style="transition-delay:.36s">
+                <p class="eyebrow">
+                    <span class="eyebrow__bg">Думи</span>
+                    <span class="eyebrow__en">words you've learned</span>
+                </p>
 
-        <div class="stat-card donut-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.34s">
-            <p class="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500 text-center mb-4">Exercises by type</p>
+                <div class="kpi rise" :class="{ 'rise--in': ready }" style="transition-delay:.3s; margin-bottom:1rem;">
+                    <span class="kpi__value">{{ learnedWords.length }}</span>
+                    <span class="kpi__bg">Уникални думи</span>
+                    <span class="kpi__en">unique words learned</span>
+                </div>
 
-            <VueUiDonut v-if="donutDataset.length" :dataset="donutDataset" :config="donutConfig" />
-            <p v-else class="text-sm text-gray-400 dark:text-gray-500 text-center py-8">No completed exercises yet</p>
-        </div>
-
-        <div class="stat-card donut-card enter-item" :class="{ 'is-visible': ready }" style="transition-delay: 0.42s">
-            <p class="text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500 text-center mb-4">Words you've learned</p>
-
-            <VueUiWordCloud v-if="wordCloudDataset.length" :dataset="wordCloudDataset" :config="wordCloudConfig" />
-            <p v-else class="text-sm text-gray-400 dark:text-gray-500 text-center py-8">No learned words yet</p>
-        </div>
+                <div class="cloud-wrap">
+                    <VueUiWordCloud v-if="wordCloudDataset.length" :dataset="wordCloudDataset" :config="wordCloudConfig" />
+                    <p v-else class="empty">No learned words yet.</p>
+                </div>
+            </section>
+        </main>
     </div>
 </template>
 
 <style scoped>
-.enter-item {
-    opacity: 0;
-    transform: translateY(1rem);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+/* ── Theme tokens ── */
+.pg {
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'PT Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    transition: background .3s ease, color .3s ease;
 }
 
-.enter-item.is-visible {
+.pg.light {
+    --bg: #fbf6ec;
+    --surface: #ffffff;
+    --ink: #2b231b;
+    --muted: #8a7a66;
+    --rose: #b3273e;
+    --gold: #b9862e;
+    --border: rgba(43, 35, 27, .12);
+}
+
+.pg.dark {
+    --bg: #1b1712;
+    --surface: #27201a;
+    --ink: #f3e9d8;
+    --muted: #a4937c;
+    --rose: #e2697b;
+    --gold: #e0b45a;
+    --border: rgba(243, 233, 216, .1);
+}
+
+/* ── Watermark ── */
+.pg__watermark {
+    position: fixed;
+    top: 50%;
+    right: -8vw;
+    transform: translateY(-50%);
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: min(70vw, 60rem);
+    line-height: 1;
+    color: var(--ink);
+    opacity: .03;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+/* ── Top bar ── */
+.bar {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 0;
+}
+
+.bar__back,
+.bar__theme {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    color: var(--muted);
+    transition: color .2s ease, border-color .2s ease;
+}
+.bar__back:hover { color: var(--rose); }
+.bar__back-icon { width: 1.1rem; height: 1.1rem; }
+
+.bar__mark {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: .8rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.bar__theme {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+.bar__theme:hover { color: var(--rose); border-color: var(--rose); }
+
+/* ── Sheet ── */
+.sheet {
+    position: relative;
+    z-index: 1;
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 2.75rem 1.5rem 4rem;
+}
+
+/* ── Eyebrow ── */
+.eyebrow {
+    display: flex;
+    align-items: baseline;
+    gap: .5em;
+    margin: 0 0 1.5rem;
+}
+.eyebrow__bg {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: .8rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--rose);
+}
+.eyebrow__en {
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.eyebrow__en::before { content: '· '; }
+
+/* ── KPI grid ── */
+.kpi-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    margin-bottom: 0;
+}
+
+@media (min-width: 36rem) {
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.kpi {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .3rem;
+    padding: 1.75rem 1rem;
+    border-radius: .85rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+.kpi__value {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--rose), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.kpi__bg {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: .75rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-top: .35rem;
+}
+
+.kpi__en {
+    font-size: .7rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+/* ── Seam ── */
+.seam {
+    height: 10px;
+    margin: 2.5rem 0;
+    background-image:
+        repeating-linear-gradient(135deg, var(--rose) 0 4px, transparent 4px 9px),
+        repeating-linear-gradient(45deg, var(--gold) 0 4px, transparent 4px 9px);
+    opacity: .5;
+}
+
+/* ── Word cloud ── */
+.cloud-wrap {
+    border-radius: .85rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    overflow: hidden;
+    height: 22rem;
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: .9rem;
+    padding: 3rem 0;
+}
+
+/* ── Entrance animation ── */
+.rise {
+    opacity: 0;
+    transform: translateY(.75rem);
+    transition: opacity .5s ease, transform .5s ease;
+}
+.rise--in {
     opacity: 1;
     transform: translateY(0);
 }
 
-.stats-row {
-    width: 100%;
-    max-width: 40rem;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    margin-bottom: 1.25rem;
+@media (prefers-reduced-motion: reduce) {
+    .rise { transition: none; opacity: 1; transform: none; }
 }
 
-@media (min-width: 640px) {
-    .stats-row {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-.stat-card {
-    background: #ffffff;
-    border-radius: 0.75rem;
-    border: 1px solid #f3f4f6;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    padding: 1.5rem;
-}
-
-.donut-card {
-    width: 100%;
-    max-width: 40rem;
-}
-
-:deep(.kpi-layout) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-:deep(.kpi-title) {
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-</style>
-
-<style>
-html.dark .stat-card {
-    background: #1f2937;
-    border-color: #374151;
+/* ── Focus ── */
+.bar__back:focus-visible,
+.bar__theme:focus-visible {
+    outline: 2px solid var(--rose);
+    outline-offset: 2px;
 }
 </style>

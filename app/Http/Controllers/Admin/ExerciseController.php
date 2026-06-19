@@ -20,6 +20,7 @@ class ExerciseController extends Controller
         return Inertia::render('Admin/Exercises/Index', [
             'exercises' => Exercise::with('lesson')->latest()->get(),
             'exerciseTypes' => $this->exerciseTypes(),
+            'lessons' => Lesson::orderBy('name')->get(['id', 'name']),
         ]);
     }
 

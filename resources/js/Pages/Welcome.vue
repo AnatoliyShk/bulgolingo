@@ -11,6 +11,10 @@ const page = usePage()
 const isAuthenticated = computed(() => !!page.props.auth.user)
 const appName = computed(() => page.props.appName)
 const isAdmin = computed(() => page.props.auth.isAdmin)
+const continueLessonId = computed(() => page.props.continueLessonId ?? null)
+const continueHref = computed(() =>
+    continueLessonId.value ? `/lesson/${continueLessonId.value}` : '/learning-paths'
+)
 
 const { theme, toggleTheme } = useTheme()
 
@@ -145,7 +149,7 @@ const steps = [
 
                 <div class="hero__actions">
                     <template v-if="isAuthenticated">
-                        <a href="/learning-paths" class="btn btn--primary">Continue learning</a>
+                        <a :href="continueHref" class="btn btn--primary">Continue learning</a>
                         <a href="/dashboard" class="btn btn--ghost">Dashboard</a>
                     </template>
                     <template v-else>
@@ -161,7 +165,7 @@ const steps = [
             <section id="path" class="path">
                 <div class="section__head">
                     <p class="section__eyebrow">Твоят път · Your path</p>
-                    <h2 class="section__title">How Bulgolingo works</h2>
+                    <h2 class="section__title">How {{ appName }} works</h2>
                 </div>
 
                 <ol class="path__steps">

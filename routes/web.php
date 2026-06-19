@@ -15,8 +15,19 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function (Request $request) {
+    $continueLessonId = null;
+    if (auth()->check()) {
+        $path = auth()->user()->learningPaths()
+            ->with(['lessons' => fn ($q) => $q->orderBy('lessons.id')])
+            ->first();
+        if ($path) {
+            $firstUncompleted = $path->lessons->first(fn ($l) => ! $l->pivot->is_completed);
+            $continueLessonId = $firstUncompleted?->id;
+        }
+    }
     return Inertia::render('Welcome', [
-        'appName' => config('app.name'),
+        'appName'          => config('app.name'),
+        'continueLessonId' => $continueLessonId,
     ]);
 });
 
@@ -63,6 +74,7 @@ Route::resource('exercise', ExerciseController::class);
 Route::post('exercise/{exercise}/complete', [ExerciseController::class, 'complete'])
     ->middleware(['auth'])
     ->name('exercise.complete');
+Route::post('lesson/{lesson}/restart', [LessonController::class, 'restart'])->middleware('auth')->name('lesson.restart');
 Route::resource('lesson', LessonController::class);
 
 require __DIR__.'/auth.php';

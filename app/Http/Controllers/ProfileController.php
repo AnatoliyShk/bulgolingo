@@ -19,12 +19,26 @@ class ProfileController extends Controller
             'appName' => config('app.name'),
             'user' => auth()->user(),
             'learningPaths' => auth()->user()->learningPaths()
-                ->with(['lessons' => fn ($q) => $q->orderBy('lessons.id')])
+                ->with([
+                    'lessons'            => fn ($q) => $q->orderBy('lessons.id'),
+                    'lessons.exercises'  => fn ($q) => $q->select('id', 'lesson_id', 'decision_type'),
+                ])
                 ->withCount([
                     'lessons',
                     'lessons as completed_lessons_count' => fn ($q) => $q->where('learning_path_lesson.is_completed', true),
                 ])
-                ->get(),
+                ->get()
+                ->map(function ($path) {
+                    $firstUncompleted = $path->lessons->first(fn ($l) => ! $l->pivot->is_completed);
+                    $path->continue_lesson_id = $firstUncompleted?->id;
+                    $path->exercise_types = $path->lessons
+                        ->flatMap(fn ($l) => $l->exercises->pluck('decision_type'))
+                        ->unique()
+                        ->map(fn ($type) => $type->getDescription())
+                        ->values()
+                        ->toArray();
+                    return $path;
+                }),
         ]);
     }
     /**

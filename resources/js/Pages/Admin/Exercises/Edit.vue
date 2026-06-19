@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Breadcrumb from '@/Components/Breadcrumb.vue';
 
 const props = defineProps({
     exercise: Object,
@@ -79,16 +80,12 @@ function submit() {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center gap-3">
-                <Link
-                    :href="route('admin.lessons.edit', exercise.lesson_id)"
-                    class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                >← {{ exercise.lesson?.name }}</Link>
-                <span class="text-gray-300 dark:text-gray-600">/</span>
-                <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Edit Exercise
-                </h2>
-            </div>
+            <Breadcrumb :items="[
+                { label: 'Admin', href: route('admin.index') },
+                { label: 'Lessons', href: route('admin.lessons.index') },
+                { label: exercise.lesson?.name, href: route('admin.lessons.edit', exercise.lesson_id) },
+                { label: 'Edit Exercise' },
+            ]" />
         </template>
 
         <div class="py-12">
@@ -277,8 +274,9 @@ function submit() {
                                     v-model="form.clause.sentence"
                                     type="text"
                                     class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
-                                    placeholder="e.g. The ___ is on the table"
+                                    placeholder="e.g. The __ is on the table"
                                 />
+                                <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">Use <code class="font-mono">__</code> to mark the blank position in the sentence.</p>
                                 <p v-if="form.errors['clause.sentence']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.sentence'] }}</p>
                             </div>
 
