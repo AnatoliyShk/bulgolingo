@@ -15,30 +15,58 @@ class ProfileController extends Controller
 {
     public function show(Request $request)
     {
+        $user = auth()->user();
+
+        $paths = $user->learningPaths()
+            ->with([
+                'lessons'           => fn ($q) => $q->orderBy('lessons.id'),
+                'lessons.exercises' => fn ($q) => $q->select('id', 'lesson_id', 'decision_type'),
+            ])
+            ->withCount('lessons')
+            ->get();
+
+        // Collect every exercise ID across all enrolled paths in one pass
+        $allExerciseIds = $paths->flatMap(
+            fn ($path) => $path->lessons->flatMap(fn ($l) => $l->exercises->pluck('id'))
+        )->unique()->values();
+
+        // Single query to fetch this user's completions
+        $completedSet = $user->completedExercises()
+            ->whereIn('exercise_id', $allExerciseIds)
+            ->pluck('exercise_id')
+            ->flip(); // O(1) lookup via ->has()
+
+        $paths = $paths->map(function ($path) use ($completedSet) {
+            $completedLessons = 0;
+            $continueLesson   = null;
+
+            foreach ($path->lessons as $lesson) {
+                $ids    = $lesson->exercises->pluck('id');
+                $allDone = $ids->isNotEmpty() && $ids->every(fn ($id) => $completedSet->has($id));
+
+                if ($allDone) {
+                    $completedLessons++;
+                } elseif ($continueLesson === null) {
+                    $continueLesson = $lesson;
+                }
+            }
+
+            $path->completed_lessons_count = $completedLessons;
+            $path->continue_lesson_id      = $continueLesson?->id;
+            $path->exercise_types          = $path->lessons
+                ->flatMap(fn ($l) => $l->exercises->pluck('decision_type'))
+                ->unique()
+                ->map(fn ($type) => $type->getDescription())
+                ->values()
+                ->toArray();
+
+            return $path;
+        });
+
         return Inertia::render('Profile/Show', [
-            'appName' => config('app.name'),
-            'user' => auth()->user(),
-            'learningPaths' => auth()->user()->learningPaths()
-                ->with([
-                    'lessons'            => fn ($q) => $q->orderBy('lessons.id'),
-                    'lessons.exercises'  => fn ($q) => $q->select('id', 'lesson_id', 'decision_type'),
-                ])
-                ->withCount([
-                    'lessons',
-                    'lessons as completed_lessons_count' => fn ($q) => $q->where('learning_path_lesson.is_completed', true),
-                ])
-                ->get()
-                ->map(function ($path) {
-                    $firstUncompleted = $path->lessons->first(fn ($l) => ! $l->pivot->is_completed);
-                    $path->continue_lesson_id = $firstUncompleted?->id;
-                    $path->exercise_types = $path->lessons
-                        ->flatMap(fn ($l) => $l->exercises->pluck('decision_type'))
-                        ->unique()
-                        ->map(fn ($type) => $type->getDescription())
-                        ->values()
-                        ->toArray();
-                    return $path;
-                }),
+            'appName'       => config('app.name'),
+            'user'          => $user,
+            'learningPaths' => $paths,
         ]);
     }
     /**

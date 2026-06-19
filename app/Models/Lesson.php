@@ -27,14 +27,33 @@ class Lesson extends Model
         //
     }
 
-    public static function getCompletedLessonStats(): array
+    public static function getCompletedLessonStats(int $userId): array
     {
-        return static::where('is_completed', true)
-            ->withCount('exercises')
-            ->get()
-            ->pipe(fn ($lessons) => [
-                'completed_lessons' => $lessons->count(),
-                'total_exercises'   => $lessons->sum('exercises_count'),
-            ]);
+        $lessons = static::whereHas('learningPath', fn ($q) =>
+            $q->whereHas('users', fn ($q2) => $q2->where('users.id', $userId))
+        )
+        ->with('exercises:id,lesson_id')
+        ->get();
+
+        $completedSet = User::find($userId)
+            ->completedExercises()
+            ->pluck('exercise_id')
+            ->flip();
+
+        $completedLessons = 0;
+        $totalExercises   = 0;
+
+        foreach ($lessons as $lesson) {
+            $ids = $lesson->exercises->pluck('id');
+            if ($ids->isNotEmpty() && $ids->every(fn ($id) => $completedSet->has($id))) {
+                $completedLessons++;
+                $totalExercises += $ids->count();
+            }
+        }
+
+        return [
+            'completed_lessons' => $completedLessons,
+            'total_exercises'   => $totalExercises,
+        ];
     }
 }

@@ -99,19 +99,15 @@ function submit() {
                         class="flex-1 border rounded px-3 py-2"
                         :placeholder="`Option ${index + 1}`"
                     />
+                    <input
+                        type="radio"
+                        :value="index"
+                        v-model="form.clause.correct_option"
+                        class="w-4 h-4 accent-green-600"
+                        :title="`Mark option ${index + 1} as correct`"
+                    />
                 </div>
                 <p v-if="form.errors['clause.options']" class="text-red-500 text-sm mt-1">{{ form.errors['clause.options'] }}</p>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-1">Correct Option (0-based index)</label>
-                <input
-                    v-model.number="form.clause.correct_option"
-                    type="number"
-                    min="0"
-                    :max="form.clause.options.length - 1"
-                    class="w-full border rounded px-3 py-2"
-                />
                 <p v-if="form.errors['clause.correct_option']" class="text-red-500 text-sm mt-1">{{ form.errors['clause.correct_option'] }}</p>
             </div>
 

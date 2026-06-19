@@ -67,6 +67,13 @@ function progressPercent(path) {
                     <p class="id__line">{{ user.email }}</p>
                     <p v-if="memberSince" class="id__line id__line--muted">Learning Bulgarian since {{ memberSince }}</p>
                 </div>
+
+                <Link :href="route('profile.edit')" class="id__edit" aria-label="Edit profile">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </Link>
             </section>
 
             <div class="seam" aria-hidden="true"></div>
@@ -292,6 +299,25 @@ function progressPercent(path) {
     margin: 0;
 }
 
+.id__edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: auto;
+    align-self: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: .6rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s ease, border-color .2s ease;
+}
+.id__edit svg { width: 1.4rem; height: 1.4rem; }
+.id__edit:hover { color: var(--rose); border-color: var(--rose); }
+
 .id__line--muted {
     color: var(--muted);
     font-size: .8rem;
@@ -348,11 +374,6 @@ function progressPercent(path) {
     grid-template-columns: 1fr;
 }
 
-@media (min-width: 36rem) {
-    .paths__grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
 
 .path {
     display: flex;

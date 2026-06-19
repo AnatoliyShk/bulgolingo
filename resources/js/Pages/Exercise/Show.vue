@@ -1,107 +1,53 @@
 <script setup>
-import { ref, computed, reactive, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { usePage, router, Link } from '@inertiajs/vue3'
-import UpdateExerciseForm from "@/Components/Forms/UpdateExerciseForm.vue";
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@/composables/useTheme'
+import UpdateExerciseForm from '@/Components/Forms/UpdateExerciseForm.vue'
+import FillInTheBlank from './FillInTheBlank.vue'
+import MultipleChoice from './MultipleChoice.vue'
 
-const { theme, toggleTheme } = useTheme();
+const { theme, toggleTheme } = useTheme()
 
 const props = defineProps({
-    exercise: {
-        type: Object,
-        required: true,
-    },
-    exerciseTypes: {
-        type: Array,
-        required: true,
-    },
-    totalExercises: {
-        type: Number,
-        default: 0,
-    },
-    completedCount: {
-        type: Number,
-        default: 0,
-    },
+    exercise:       { type: Object, required: true },
+    exerciseTypes:  { type: Array,  required: true },
+    totalExercises: { type: Number, default: 0 },
+    completedCount: { type: Number, default: 0 },
 })
 
-const showForm = ref(false);
-
-const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5)
-
-function clauseToQuestion(clause) {
-    const parts = (clause.sentence ?? '').split(/\s+/)
-    const blank = parts.findIndex(w => w === '__')
-    const options = clause.options ?? []
-    return {
-        template: blank === -1 ? [...parts, '__'] : parts,
-        blank:    blank === -1 ? parts.length : blank,
-        answer:   options[clause.correct_option ?? 0] ?? '',
-        choices:  options,
-        translation: clause.explanation ?? '',
-    }
-}
-
-const questions = computed(() => [clauseToQuestion(props.exercise.clause ?? {})])
-
-const state = reactive({
-    current: 0,
-    selected: null,
-    checked: false,
-    score: 0,
-    streak: 0,
-})
-
-const shuffledChoices = ref(questions.value.map((q) => shuffle(q.choices)))
-
-watch(() => props.exercise.id, () => {
-    shuffledChoices.value = questions.value.map(q => shuffle(q.choices))
-    state.current = 0
-    state.selected = null
-    state.checked = false
-})
-
-const question    = computed(() => questions.value[state.current])
-const isCorrect   = computed(() => state.checked && state.selected === question.value.answer)
-const progressPct = computed(() => props.totalExercises > 0 ? (props.completedCount / props.totalExercises) * 100 : 0)
-const remaining   = computed(() => props.totalExercises - props.completedCount)
-
-function selectChoice(word) {
-    if (state.checked) return
-    state.selected = word
-}
-
-function removeSelected() {
-    if (state.checked) return
-    state.selected = null
-}
-
-function check() {
-    if (!state.selected || state.checked) return
-    state.checked = true
-    if (isCorrect.value) {
-        state.score += 10 + state.streak * 2
-        state.streak++
-        router.post(route('exercise.complete', props.exercise.id))
-    } else {
-        state.streak = 0
-    }
-}
-
-function retry() {
-    state.selected = null
-    state.checked = false
-}
-
-const page = usePage()
+const page    = usePage()
 const isAdmin = computed(() => page.props.auth.isAdmin)
+
+const showForm = ref(false)
+watch(() => props.exercise.id, () => { showForm.value = false })
+
+const progressPct = computed(() =>
+    props.totalExercises > 0 ? (props.completedCount / props.totalExercises) * 100 : 0
+)
+const remaining = computed(() => props.totalExercises - props.completedCount)
+
+const typeLabel = computed(() => {
+    const match = props.exerciseTypes.find(t => t.value === props.exercise.decision_type)
+    return match?.label ?? props.exercise.decision_type ?? ''
+})
+
+const exerciseComponent = computed(() => {
+    switch (props.exercise.decision_type) {
+        case 'fill_in_the_blank': return FillInTheBlank
+        case 'multiple_choice':   return MultipleChoice
+        default:                  return null
+    }
+})
+
+function onComplete() {
+    router.post(route('exercise.complete', props.exercise.id))
+}
 </script>
 
 <template>
     <div class="ex" :class="theme">
         <div class="ex__watermark" aria-hidden="true">Ъ</div>
 
-        <!-- Top bar -->
         <header class="bar">
             <Link :href="route('dashboard')" class="bar__back" aria-label="Back to dashboard">
                 <svg class="bar__back-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +55,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
                 </svg>
             </Link>
 
-            <!-- Progress bar -->
             <div class="bar__progress">
                 <div class="bar__track">
                     <div class="bar__fill" :style="{ width: progressPct + '%' }" />
@@ -123,61 +68,22 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
         </header>
 
         <main class="sheet">
-            <!-- Eyebrow label -->
             <p class="eyebrow">
                 <span class="eyebrow__bg">Упражнение</span>
-                <span class="eyebrow__en">fill in the blank · {{ remaining }} remaining</span>
+                <span class="eyebrow__en">{{ typeLabel }} · {{ remaining }} remaining</span>
             </p>
 
-            <!-- Translation / prompt -->
-            <p class="prompt">{{ question.translation }}</p>
+            <component
+                v-if="exerciseComponent"
+                :is="exerciseComponent"
+                :clause="exercise.clause"
+                @complete="onComplete"
+            />
 
-            <!-- Sentence with blank -->
-            <div class="sentence">
-                <template v-for="(word, i) in question.template" :key="i">
-                    <span
-                        v-if="i === question.blank"
-                        :class="['blank', { 'blank--filled': state.selected, 'blank--correct': isCorrect, 'blank--wrong': state.checked && !isCorrect }]"
-                        @click="removeSelected"
-                    >
-                        <span v-if="state.selected" class="blank__word">{{ state.selected }}</span>
-                        <span v-else class="blank__hint">tap a word</span>
-                    </span>
-                    <span v-else class="sentence__word">{{ word }}</span>
-                </template>
+            <div v-else class="unsupported">
+                Exercise type <strong>{{ typeLabel }}</strong> is not yet supported in the player.
             </div>
 
-            <!-- Word choices -->
-            <div class="choices">
-                <button
-                    v-for="word in shuffledChoices[state.current]"
-                    :key="word"
-                    class="choice"
-                    :class="{ 'choice--used': state.selected === word || state.checked }"
-                    :disabled="state.selected === word || state.checked"
-                    @click="selectChoice(word)"
-                >
-                    {{ word }}
-                </button>
-            </div>
-
-            <!-- Wrong answer feedback -->
-            <div v-if="state.checked && !isCorrect" class="feedback feedback--wrong">
-                <p class="feedback__title">✗ Incorrect — try again</p>
-                <p class="feedback__body">Correct answer: <strong>{{ question.answer }}</strong></p>
-            </div>
-
-            <!-- Action button -->
-            <button
-                class="btn-action"
-                :class="{ 'btn-action--disabled': !state.selected && !state.checked }"
-                :disabled="!state.selected && !state.checked"
-                @click="state.checked ? retry() : check()"
-            >
-                {{ state.checked ? (isCorrect ? 'Next Exercise' : 'Try Again') : 'Check' }}
-            </button>
-
-            <!-- Admin edit -->
             <div v-if="isAdmin" class="edit-toggle">
                 <button class="edit-toggle__btn" @click="showForm = !showForm">
                     {{ showForm ? 'Cancel' : 'Edit Exercise' }}
@@ -186,6 +92,7 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
                     v-if="showForm"
                     :exercise="exercise"
                     :exercise-types="exerciseTypes"
+                    :submit-route="route('admin.exercises.update', exercise.id)"
                     @success="showForm = false"
                     @cancel="showForm = false"
                 />
@@ -195,7 +102,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 </template>
 
 <style scoped>
-/* ── Theme tokens ── */
 .ex {
     position: relative;
     min-height: 100vh;
@@ -232,7 +138,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
     --border: rgba(243, 233, 216, .1);
 }
 
-/* ── Watermark ── */
 .ex__watermark {
     position: fixed;
     top: 50%;
@@ -249,7 +154,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
     z-index: 0;
 }
 
-/* ── Top bar ── */
 .bar {
     position: relative;
     z-index: 1;
@@ -272,8 +176,8 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
     color: var(--muted);
     transition: color .2s ease;
 }
-.bar__back:hover { color: var(--rose); }
-.bar__back-icon { width: 1.1rem; height: 1.1rem; }
+.bar__back:hover  { color: var(--rose); }
+.bar__back-icon   { width: 1.1rem; height: 1.1rem; }
 
 .bar__progress {
     flex: 1;
@@ -323,7 +227,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 }
 .bar__theme:hover { color: var(--rose); border-color: var(--rose); }
 
-/* ── Sheet ── */
 .sheet {
     position: relative;
     z-index: 1;
@@ -332,14 +235,12 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
     padding: 2.5rem 1.5rem 4rem;
 }
 
-/* ── Eyebrow ── */
 .eyebrow {
     display: flex;
     align-items: baseline;
     gap: .5em;
     margin: 0 0 1rem;
 }
-
 .eyebrow__bg {
     font-family: 'PT Serif', serif;
     font-weight: 700;
@@ -348,7 +249,6 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
     text-transform: uppercase;
     color: var(--rose);
 }
-
 .eyebrow__en {
     font-size: .72rem;
     letter-spacing: .08em;
@@ -357,156 +257,15 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 }
 .eyebrow__en::before { content: '· '; }
 
-/* ── Prompt ── */
-.prompt {
-    font-family: 'PT Serif', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.35;
-    color: var(--ink);
-    margin: 0 0 2rem;
-}
-
-/* ── Sentence ── */
-.sentence {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: .4rem .5rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 2px solid var(--border);
-    margin-bottom: 1.75rem;
-    min-height: 3rem;
-}
-
-.sentence__word {
-    font-size: 1.15rem;
-    color: var(--ink);
-}
-
-.blank {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 5.5rem;
-    height: 2.25rem;
-    border-bottom: 3px solid var(--muted);
-    padding: 0 .6rem;
-    cursor: pointer;
-    transition: border-color .2s ease;
-}
-
-.blank--filled { border-bottom-color: var(--gold); }
-.blank--correct { border-bottom-color: var(--forest); }
-.blank--wrong   { border-bottom-color: var(--rose); }
-
-.blank__word {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--gold);
-    transition: color .2s ease;
-}
-
-.blank--correct .blank__word { color: var(--forest); }
-.blank--wrong   .blank__word { color: var(--rose); }
-
-.blank__hint {
-    font-size: .75rem;
+.unsupported {
+    padding: 2rem;
+    text-align: center;
     color: var(--muted);
-    letter-spacing: .04em;
-}
-
-/* ── Choices ── */
-.choices {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .65rem;
-    margin-bottom: 2rem;
-}
-
-.choice {
-    padding: .6rem 1.25rem;
-    border-radius: .6rem;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--ink);
-    font-family: 'PT Sans', sans-serif;
-    font-size: .95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: border-color .15s ease, transform .1s ease, color .15s ease;
-}
-
-.choice:hover:not(:disabled) {
-    border-color: var(--rose);
-    color: var(--rose);
-    transform: translateY(-2px);
-}
-
-.choice--used,
-.choice:disabled {
-    opacity: .35;
-    cursor: default;
-    transform: none;
-}
-
-/* ── Feedback ── */
-.feedback {
-    border-radius: .75rem;
-    padding: .85rem 1.1rem;
-    margin-bottom: 1.25rem;
-    border: 1px solid transparent;
-}
-
-.feedback--wrong {
-    background: var(--rose-bg);
-    border-color: var(--rose);
-    color: var(--rose);
-}
-
-.feedback__title {
-    font-weight: 700;
     font-size: .9rem;
-    margin: 0 0 .25rem;
+    border: 1px dashed var(--border);
+    border-radius: .85rem;
 }
 
-.feedback__body {
-    font-size: .85rem;
-    margin: 0;
-    opacity: .85;
-}
-
-/* ── Action button ── */
-.btn-action {
-    width: 100%;
-    padding: .9rem 1.5rem;
-    border-radius: .75rem;
-    border: none;
-    background: linear-gradient(135deg, var(--rose), var(--gold));
-    color: #fff6ea;
-    font-family: 'PT Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: .03em;
-    cursor: pointer;
-    transition: opacity .2s ease, transform .15s ease;
-}
-
-.btn-action:hover:not(:disabled) {
-    opacity: .9;
-    transform: translateY(-2px);
-}
-
-.btn-action--disabled,
-.btn-action:disabled {
-    background: var(--border);
-    color: var(--muted);
-    cursor: default;
-    transform: none;
-    opacity: 1;
-}
-
-/* ── Admin edit ── */
 .edit-toggle {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
@@ -526,17 +285,13 @@ const isAdmin = computed(() => page.props.auth.isAdmin)
 }
 .edit-toggle__btn:hover { border-color: var(--rose); color: var(--rose); }
 
-/* ── Focus ── */
 .bar__back:focus-visible,
-.bar__theme:focus-visible,
-.choice:focus-visible,
-.btn-action:focus-visible {
+.bar__theme:focus-visible {
     outline: 2px solid var(--rose);
     outline-offset: 2px;
 }
 
-/* ── Motion ── */
 @media (prefers-reduced-motion: reduce) {
-    .bar__fill, .blank, .choice, .btn-action { transition: none; }
+    .bar__fill { transition: none; }
 }
 </style>

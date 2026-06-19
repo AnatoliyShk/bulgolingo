@@ -7,7 +7,6 @@ use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Jobs\LearnedWordCountUpdate;
 use App\Models\Exercise;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ExerciseController extends Controller
@@ -44,6 +43,8 @@ class ExerciseController extends Controller
      */
     public function show(Exercise $exercise)
     {
+        $user = auth()->user();
+
         $exerciseTypes = array_map(
             fn(ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
             ExerciseType::cases()
@@ -52,8 +53,7 @@ class ExerciseController extends Controller
         $lessonId    = $exercise->lesson_id;
         $exerciseIds = Exercise::where('lesson_id', $lessonId)->orderBy('id')->pluck('id');
         $total       = $exerciseIds->count();
-        $done        = DB::table('user_exercise_completions')
-            ->where('user_id', auth()->id())
+        $done        = $user->completedExercises()
             ->whereIn('exercise_id', $exerciseIds)
             ->count();
 
@@ -100,17 +100,13 @@ class ExerciseController extends Controller
         LearnedWordCountUpdate::dispatch($user, $exercise);
 
         // Record this exercise as completed for this user (ignore if already recorded)
-        DB::table('user_exercise_completions')->insertOrIgnore([
-            'user_id'     => $user->id,
-            'exercise_id' => $exercise->id,
-        ]);
+        $user->completedExercises()->syncWithoutDetaching($exercise->id);
 
         // Find all exercises in this lesson ordered by ID
         $allIds = Exercise::where('lesson_id', $lessonId)->orderBy('id')->pluck('id');
 
         // Find which ones this user has not yet completed
-        $completedIds = DB::table('user_exercise_completions')
-            ->where('user_id', $user->id)
+        $completedIds = $user->completedExercises()
             ->whereIn('exercise_id', $allIds)
             ->pluck('exercise_id');
 

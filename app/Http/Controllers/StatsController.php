@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\UserLearnedWord;
 use Inertia\Inertia;
@@ -11,22 +10,22 @@ class StatsController extends Controller
 {
     public function show()
     {
-        $exercisesByType = collect([]);
+        $user = auth()->user();
 
-        $completedLearningPaths = LearningPath::has('lessons')
-            ->whereDoesntHave('lessons', fn ($query) => $query->where('lessons.is_completed', false))
+        $completedLessonStats = Lesson::getCompletedLessonStats($user->id);
+
+        $completedLearningPaths = $user->learningPaths()
+            ->wherePivot('is_completed', true)
             ->count();
 
-        $learnedWords = UserLearnedWord::learnedWords(auth()->user());
-
-        $completedLessonStats = Lesson::getCompletedLessonStats();
+        $learnedWords = UserLearnedWord::learnedWords($user);
 
         return Inertia::render('Stats/Show', [
-            'completedLessons' => $completedLessonStats['completed_lessons'],
-            'completedExercises' => $completedLessonStats['total_exercises'],
+            'completedLessons'       => $completedLessonStats['completed_lessons'],
+            'completedExercises'     => $completedLessonStats['total_exercises'],
             'completedLearningPaths' => $completedLearningPaths,
-            'exercisesByType' => $exercisesByType,
-            'learnedWords' => $learnedWords,
+            'exercisesByType'        => collect([]),
+            'learnedWords'           => $learnedWords,
         ]);
     }
 }
