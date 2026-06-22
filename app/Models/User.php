@@ -43,7 +43,7 @@ class User extends Authenticatable
 
     public function completedExercises()
     {
-        return $this->belongsToMany(Exercise::class, 'user_exercise_completions')->using(UserExerciseCompletion::class)->withPivot('created_at');
+        return $this->belongsToMany(Exercise::class, 'user_exercise_completions')->using(UserExerciseCompletion::class)->withPivot('created_at', 'updated_at');
     }
 
     public function learnedWords()

@@ -8,9 +8,10 @@ class UserExerciseCompletion extends Pivot
 {
     protected $table = 'user_exercise_completions';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $casts = [
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 }

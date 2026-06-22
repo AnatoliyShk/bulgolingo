@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
-import { VueUiWordCloud } from 'vue-data-ui'
+import { VueUiWordCloud, VueUiDonutEvolution } from 'vue-data-ui'
 import 'vue-data-ui/style.css'
 
 const { theme, toggleTheme } = useTheme()
@@ -21,6 +21,14 @@ const props = defineProps({
         default: 0,
     },
     learnedWords: {
+        type: Array,
+        default: () => [],
+    },
+    activityByType: {
+        type: Array,
+        default: () => [],
+    },
+    activityDays: {
         type: Array,
         default: () => [],
     },
@@ -54,6 +62,51 @@ const wordCloudConfig = computed(() => ({
             },
             title: {
                 show: false,
+            },
+        },
+    },
+}))
+
+const activityConfig = computed(() => ({
+    style: {
+        fontFamily: "'PT Sans', sans-serif",
+        chart: {
+            backgroundColor: 'transparent',
+            color: isDark.value ? '#f3e9d8' : '#2b231b',
+            layout: {
+                grid: {
+                    stroke: isDark.value ? 'rgba(243,233,216,0.08)' : 'rgba(43,35,27,0.1)',
+                    xAxis: {
+                        dataLabels: {
+                            show: true,
+                            values: props.activityDays,
+                            fontSize: 13,
+                            color: isDark.value ? '#f3e9d8' : '#2b231b',
+                        },
+                    },
+                    yAxis: {
+                        dataLabels: {
+                            show: true,
+                            fontSize: 13,
+                            bold: true,
+                            color: isDark.value ? '#f3e9d8' : '#2b231b',
+                        },
+                    },
+                },
+                dataLabels: {
+                    show: true,
+                    fontSize: 14,
+                    bold: true,
+                    color: isDark.value ? '#f3e9d8' : '#2b231b',
+                },
+            },
+            legend: {
+                fontSize: 14,
+                bold: true,
+                color: isDark.value ? '#f3e9d8' : '#2b231b',
+                showValue: true,
+                showPercentage: true,
+                roundingPercentage: 1,
             },
         },
     },
@@ -127,6 +180,26 @@ const stats = computed(() => [
                 <div class="cloud-wrap">
                     <VueUiWordCloud v-if="wordCloudDataset.length" :dataset="wordCloudDataset" :config="wordCloudConfig" />
                     <p v-else class="empty">No learned words yet.</p>
+                </div>
+            </section>
+
+            <!-- Seam -->
+            <div class="seam rise" :class="{ 'rise--in': ready }" style="transition-delay:.44s" aria-hidden="true"></div>
+
+            <!-- Activity -->
+            <section class="rise" :class="{ 'rise--in': ready }" style="transition-delay:.52s">
+                <p class="eyebrow">
+                    <span class="eyebrow__bg">Активност</span>
+                    <span class="eyebrow__en">activity</span>
+                </p>
+
+                <div class="activity-wrap">
+                    <VueUiDonutEvolution
+                        v-if="activityByType.length"
+                        :dataset="activityByType"
+                        :config="activityConfig"
+                    />
+                    <p v-else class="empty">No activity yet.</p>
                 </div>
             </section>
         </main>
@@ -318,6 +391,15 @@ const stats = computed(() => [
         repeating-linear-gradient(135deg, var(--rose) 0 4px, transparent 4px 9px),
         repeating-linear-gradient(45deg, var(--gold) 0 4px, transparent 4px 9px);
     opacity: .5;
+}
+
+/* ── Activity ── */
+.activity-wrap {
+    border-radius: .85rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    overflow: hidden;
 }
 
 /* ── Word cloud ── */

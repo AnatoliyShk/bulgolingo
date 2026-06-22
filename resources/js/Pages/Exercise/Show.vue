@@ -5,6 +5,7 @@ import { useTheme } from '@/composables/useTheme'
 import UpdateExerciseForm from '@/Components/Forms/UpdateExerciseForm.vue'
 import FillInTheBlank from './FillInTheBlank.vue'
 import MultipleChoice from './MultipleChoice.vue'
+import TrueFalse from './TrueFalse.vue'
 
 const { theme, toggleTheme } = useTheme()
 
@@ -35,6 +36,7 @@ const exerciseComponent = computed(() => {
     switch (props.exercise.decision_type) {
         case 'fill_in_the_blank': return FillInTheBlank
         case 'multiple_choice':   return MultipleChoice
+        case 'true_false':        return TrueFalse
         default:                  return null
     }
 })

@@ -93,12 +93,9 @@ const steps = [
                     {{ appName }}
                 </a>
                 <div class="nav__links">
-                    <a href="#letters" class="nav__link">Letters</a>
-                    <a href="#path" class="nav__link">Your path</a>
-                    <a href="/profile" class="nav__link">Profile</a>
+                    <a :href="isAuthenticated ? continueHref : '#path'" class="nav__link">Your path</a>
                     <template v-if="isAuthenticated">
-                        <a href="/dashboard" class="nav__link">Dashboard</a>
-                        <a href="/learning-paths" class="nav__link">Learning Path</a>
+                        <a href="/dashboard" class="nav__link">Profile</a>
                         <a v-if="isAdmin" href="/admin" class="nav__link">Admin Panel</a>
                     </template>
                     <template v-else>
