@@ -95,8 +95,26 @@ const openInfo = (key) => {
 }
 const closeInfo = () => { activeInfo.value = null }
 const onKeydown = (e) => { if (e.key === 'Escape') closeInfo() }
-onMounted(() => window.addEventListener('keydown', onKeydown))
-onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
+
+let revealObserver = null
+onMounted(() => {
+    window.addEventListener('keydown', onKeydown)
+    revealObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(({ target, isIntersecting }) => {
+                if (!isIntersecting) return
+                target.classList.add('nb-in-view')
+                revealObserver.unobserve(target)
+            })
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -48px 0px' }
+    )
+    document.querySelectorAll('.nb-reveal').forEach(el => revealObserver.observe(el))
+})
+onBeforeUnmount(() => {
+    window.removeEventListener('keydown', onKeydown)
+    revealObserver?.disconnect()
+})
 </script>
 
 <template>
@@ -222,16 +240,17 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                 </button>
 
                 <header class="nb-path__head">
-                    <span class="nb-badge nb-badge--ink">Твоят път</span>
-                    <h2 class="nb-path__title">How {{ appName }} works</h2>
+                    <span class="nb-badge nb-badge--ink nb-reveal nb-reveal--pop">Твоят път</span>
+                    <h2 class="nb-path__title nb-reveal nb-reveal--left" style="--reveal-delay: 90ms">How {{ appName }} works</h2>
                 </header>
 
                 <ol class="nb-steps">
                     <li
                         v-for="(step, i) in steps"
                         :key="step.bg"
-                        class="nb-card"
+                        class="nb-card nb-reveal nb-reveal--pop"
                         :class="`nb-card--${step.tone}`"
+                        :style="{ '--reveal-delay': `${i * 130}ms` }"
                     >
                         <span class="nb-card__num">{{ String(i + 1).padStart(2, '0') }}</span>
                         <h3 class="nb-card__title" lang="bg">{{ step.bg }}</h3>
@@ -240,7 +259,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                     </li>
                 </ol>
 
-                <div class="nb-cta-band">
+                <div class="nb-cta-band nb-reveal" style="--reveal-delay: 60ms">
                     <!-- Rakia — fruit brandy in a bottle, наздраве! -->
                     <button type="button" class="nb-rakia nb-motif" @click="openInfo('rakia')" aria-label="About rakia">
                         <span class="nb-bottle">
@@ -264,8 +283,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
         <!-- ── Footer ── -->
         <footer class="nb-footer">
-            <span class="nb-logo__mark" aria-hidden="true">Ъ</span>
-            <p class="nb-footer__text">
+            <span class="nb-logo__mark nb-reveal" aria-hidden="true">Ъ</span>
+            <p class="nb-footer__text nb-reveal" style="--reveal-delay: 120ms">
                 <strong>{{ appName }}</strong>
                 <span lang="bg"> — учи български, дума по дума.</span>
                 <br>Learn Bulgarian, one word at a time.
@@ -393,7 +412,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     display: grid; grid-template-columns: 1.15fr 0.85fr;
     gap: clamp(1.5rem, 5vw, 4rem); align-items: center;
 }
-.nb-hero__text { animation: nb-rise 0.5s ease-out backwards; }
+.nb-hero__text .nb-badge   { animation: nb-rise 0.45s ease-out 0ms backwards; }
+.nb-hero__text .nb-display { animation: nb-rise 0.55s cubic-bezier(0.22,1,0.36,1) 0.1s backwards; }
+.nb-hero__text .nb-lede    { animation: nb-rise 0.5s ease-out 0.22s backwards; }
+.nb-hero__text .nb-actions { animation: nb-rise 0.5s ease-out 0.38s backwards; }
 
 .nb-badge {
     display: inline-block;
@@ -462,7 +484,6 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 .nb-hero__art {
     position: relative; min-height: 260px;
     display: flex; align-items: center; justify-content: center;
-    animation: nb-rise 0.5s ease-out 0.15s backwards;
 }
 .nb-tile {
     width: clamp(11rem, 22vw, 15rem); aspect-ratio: 1;
@@ -471,6 +492,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     box-shadow: var(--shadow);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 0.3rem; transform: rotate(3deg);
+    animation: nb-pop-in 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.24s backwards;
 }
 .nb-tile__glyph { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: clamp(5rem, 12vw, 8rem); line-height: 1; }
 .nb-tile__name { font-weight: 800; font-size: 0.72rem; letter-spacing: 0.22em; }
@@ -481,9 +503,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     padding: 0.45rem 0.8rem; border: var(--border); border-radius: 999px;
     box-shadow: var(--shadow-sm);
 }
-.nb-chip--pink  { background: var(--pink);   top: 4%;   right: 2%;  transform: rotate(6deg); }
-.nb-chip--cyan  { background: var(--cyan); bottom: 16%; left: -2%; transform: rotate(-7deg); }
-.nb-chip--green { background: var(--green);  bottom: -2%; right: 12%; transform: rotate(4deg); }
+.nb-chip--pink  { background: var(--pink);   top: 4%;   right: 2%;  transform: rotate(6deg);  animation: nb-pop-in 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.34s backwards; }
+.nb-chip--cyan  { background: var(--cyan);   bottom: 16%; left: -2%; transform: rotate(-7deg); animation: nb-pop-in 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.46s backwards; }
+.nb-chip--green { background: var(--green);  bottom: -2%; right: 12%; transform: rotate(4deg); animation: nb-pop-in 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.58s backwards; }
 
 /* ── Clickable cultural motifs ── */
 .nb-motif {
@@ -506,6 +528,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     position: absolute; top: -10px; left: 0; z-index: 4;
     display: flex; flex-direction: column; align-items: center;
     transform: rotate(-5deg); transform-origin: top center;
+    animation: nb-pop-in 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.48s backwards;
 }
 .nb-marten__cord {
     width: 7px; height: 32px;
@@ -730,15 +753,37 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 .nb-modal-leave-to .nb-modal__box { transform: scale(0.96); }
 
 /* ══════════════ Animations ══════════════ */
-@keyframes nb-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes nb-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes nb-rise    { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes nb-pop-in  { from { opacity: 0; scale: 0.65; } to { opacity: 1; scale: 1; } }
+@keyframes nb-scroll  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ══════════════ Scroll reveal ══════════════ */
+/* Uses CSS individual transform properties (translate / scale) so they
+   compose with element-level transform (rotate, hover translate) cleanly. */
+.nb-reveal {
+    opacity: 0;
+    translate: 0 36px;
+    transition:
+        opacity 0.5s ease,
+        translate 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+        scale    0.52s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+.nb-reveal--pop  { scale: 0.82; translate: 0 20px; }
+.nb-reveal--left { translate: -32px 0; }
+.nb-reveal.nb-in-view { opacity: 1; translate: 0 0; scale: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-    .nb-hero__text, .nb-hero__art { animation: none; }
+    .nb-hero__text .nb-badge,
+    .nb-hero__text .nb-display,
+    .nb-hero__text .nb-lede,
+    .nb-hero__text .nb-actions,
+    .nb-tile, .nb-chip--pink, .nb-chip--cyan, .nb-chip--green, .nb-marten { animation: none; }
     .nb-marquee__track { animation: none; }
     .nb-modal-enter-active .nb-modal__box,
     .nb-modal-leave-active .nb-modal__box { transition: none; }
     .nb-modal-enter-from .nb-modal__box { transform: none; }
+    .nb-reveal { opacity: 1; translate: 0 0; scale: 1; transition: none; }
 }
 
 /* ══════════════ Responsive ══════════════ */
