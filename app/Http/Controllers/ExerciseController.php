@@ -58,7 +58,7 @@ class ExerciseController extends Controller
             ->count();
 
         return Inertia::render('Exercise/Show', [
-            'exercise'       => $exercise,
+            'exercise'       => $exercise->load('images'),
             'exerciseTypes'  => $exerciseTypes,
             'totalExercises' => $total,
             'completedCount' => $done,

@@ -1,8 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import ImageUpload from '@/Components/Forms/ImageUpload.vue';
 
 const props = defineProps({
     lesson: Object,
@@ -49,12 +50,9 @@ const form = useForm({
     image: null,
 });
 
-const imagePreview = ref(null);
-
 watch(() => form.decision_type, (newType) => {
     form.clause = defaultClause(newType);
     form.image = null;
-    imagePreview.value = null;
 });
 
 function addPair() {
@@ -63,12 +61,6 @@ function addPair() {
 
 function removePair(index) {
     form.clause.pairs.splice(index, 1);
-}
-
-function onImageChange(event) {
-    const file = event.target.files[0] ?? null;
-    form.image = file;
-    imagePreview.value = file ? URL.createObjectURL(file) : null;
 }
 
 function submit() {
@@ -206,22 +198,10 @@ function submit() {
 
                         <!-- Image Matching fields -->
                         <template v-if="form.decision_type === 'image_matching'">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image</label>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    @change="onImageChange"
-                                    class="block w-full text-sm text-gray-800 dark:text-gray-100"
-                                />
-                                <img
-                                    v-if="imagePreview"
-                                    :src="imagePreview"
-                                    alt="Preview"
-                                    class="mt-2 h-32 w-32 rounded-lg object-cover border border-gray-200 dark:border-gray-700"
-                                />
-                                <p v-if="form.errors.image" class="mt-1 text-xs text-red-500">{{ form.errors.image }}</p>
-                            </div>
+                            <ImageUpload
+                                :error="form.errors.image"
+                                @change="form.image = $event"
+                            />
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Options</label>

@@ -4,6 +4,7 @@ import { usePage, router, Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import UpdateExerciseForm from '@/Components/Forms/UpdateExerciseForm.vue'
 import FillInTheBlank from './FillInTheBlank.vue'
+import ImageMatching from './ImageMatching.vue'
 import MultipleChoice from './MultipleChoice.vue'
 import TrueFalse from './TrueFalse.vue'
 
@@ -35,11 +36,14 @@ const typeLabel = computed(() => {
 const exerciseComponent = computed(() => {
     switch (props.exercise.decision_type) {
         case 'fill_in_the_blank': return FillInTheBlank
+        case 'image_matching':    return ImageMatching
         case 'multiple_choice':   return MultipleChoice
         case 'true_false':        return TrueFalse
         default:                  return null
     }
 })
+
+const exerciseImageUrl = computed(() => props.exercise.images?.[0]?.url ?? null)
 
 function onComplete() {
     router.post(route('exercise.complete', props.exercise.id))
@@ -79,6 +83,7 @@ function onComplete() {
                 v-if="exerciseComponent"
                 :is="exerciseComponent"
                 :clause="exercise.clause"
+                :image-url="exerciseImageUrl"
                 @complete="onComplete"
             />
 

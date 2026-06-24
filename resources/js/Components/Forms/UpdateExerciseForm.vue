@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
+import ImageUpload from '@/Components/Forms/ImageUpload.vue';
 
 const props = defineProps({
     exercise:     { type: Object, required: true },
@@ -31,24 +32,16 @@ const form = useForm({
     image: null,
 });
 
-const imagePreview = ref(null);
 const existingImageUrl = computed(() => props.exercise.images?.[0]?.url ?? null);
 
 watch(() => form.decision_type, (newType, oldType) => {
     if (newType === oldType) return;
     form.clause = defaultClause(newType);
     form.image = null;
-    imagePreview.value = null;
 });
 
 function addPair() { form.clause.pairs.push(['', '']); }
 function removePair(index) { form.clause.pairs.splice(index, 1); }
-
-function onImageChange(event) {
-    const file = event.target.files[0] ?? null;
-    form.image = file;
-    imagePreview.value = file ? URL.createObjectURL(file) : null;
-}
 
 function submit() {
     form.put(props.submitRoute, {
@@ -86,6 +79,14 @@ function submit() {
             </select>
             <p v-if="form.errors.decision_type" class="mt-1 text-xs text-red-500">{{ form.errors.decision_type }}</p>
         </div>
+
+        <!-- Image (all types) -->
+        <ImageUpload
+            :key="form.decision_type"
+            :existing-url="existingImageUrl"
+            :error="form.errors.image"
+            @change="form.image = $event"
+        />
 
         <!-- Multiple Choice -->
         <template v-if="form.decision_type === 'multiple_choice'">
@@ -173,24 +174,6 @@ function submit() {
 
         <!-- Image Matching -->
         <template v-if="form.decision_type === 'image_matching'">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image</label>
-                <img
-                    v-if="imagePreview || existingImageUrl"
-                    :src="imagePreview || existingImageUrl"
-                    alt="Preview"
-                    class="mb-2 h-32 w-32 rounded-lg object-cover border border-gray-200 dark:border-gray-700"
-                />
-                <input
-                    type="file"
-                    accept="image/*"
-                    @change="onImageChange"
-                    class="block w-full text-sm text-gray-800 dark:text-gray-100"
-                />
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Upload a new image to replace the current one.</p>
-                <p v-if="form.errors.image" class="mt-1 text-xs text-red-500">{{ form.errors.image }}</p>
-            </div>
-
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Options</label>
                 <div
