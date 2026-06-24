@@ -3,6 +3,9 @@
 import { computed } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
+import { useForm } from '@inertiajs/vue3'
+
+const logoutForm = useForm({})
 
 const props = defineProps({
     user: Object,
@@ -46,11 +49,18 @@ function progressPercent(path) {
                 </svg>
             </Link>
             <span class="bar__mark">{{ appName }}</span>
-            <button
-                class="bar__theme"
-                @click="toggleTheme"
-                :aria-label="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-            >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+            <div class="bar__right">
+                <button
+                    class="bar__theme"
+                    @click="toggleTheme"
+                    :aria-label="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+                >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+                <button
+                    class="bar__logout"
+                    @click="logoutForm.post(route('logout'))"
+                    aria-label="Log out"
+                >Log out</button>
+            </div>
         </header>
 
         <main class="sheet">
@@ -230,6 +240,32 @@ function progressPercent(path) {
 }
 
 .bar__theme:hover {
+    color: var(--rose);
+    border-color: var(--rose);
+}
+
+.bar__right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bar__logout {
+    height: 2.25rem;
+    padding: 0 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: 'PT Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.bar__logout:hover {
     color: var(--rose);
     border-color: var(--rose);
 }

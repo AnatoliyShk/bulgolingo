@@ -77,6 +77,7 @@ const submit = () => {
                             id="email"
                             v-model="form.email"
                             type="email"
+                            name="email"
                             class="field__input"
                             required
                             autofocus
@@ -91,6 +92,7 @@ const submit = () => {
                             id="password"
                             v-model="form.password"
                             type="password"
+                            name="password"
                             class="field__input"
                             required
                             autocomplete="current-password"

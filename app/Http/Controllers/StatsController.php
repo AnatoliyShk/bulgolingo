@@ -38,7 +38,6 @@ class StatsController extends Controller
             'multiple_choice'   => '#f59e0b',
             'true_false'        => '#10b981',
             'image_matching'    => '#ec4899',
-            'bot_dialog'        => '#8b5cf6',
         ];
 
         $activityByType = collect(ExerciseType::cases())->map(function ($type) use ($days, $rawActivity, $typeColors) {

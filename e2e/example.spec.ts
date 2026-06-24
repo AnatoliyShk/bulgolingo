@@ -16,3 +16,15 @@ test('get started link', async ({ page }) => {
   // Expects page to have a heading with the name of Installation.
   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
 });
+
+
+test('user can login', async ({page}) => {
+    await page.goto('http://localhost/login');
+
+    await page.fill('input[name=email]', 'playwright@gmail.com');
+    await page.fill('input[name=password]', 'password111');
+
+    await page.click('button[type=submit]');
+
+    await expect(page).toHaveURL('http://localhost/dashboard');
+})
