@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('scripted_dialogues', function (Blueprint $table) {
+        Schema::create('scripted_lines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('recipient_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('scripted_dialogues');
+        Schema::dropIfExists('scripted_lines');
     }
 };
