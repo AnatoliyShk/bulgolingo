@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('scripted_lines', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('scripted_dialogue_id')->constrained()->cascadeOnDelete();
+            $table->jsonb('clause');
             $table->timestamps();
         });
     }

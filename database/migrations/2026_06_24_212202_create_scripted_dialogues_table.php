@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('scripted_dialogues', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('recipient_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('bot_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
 use App\Http\Controllers\Admin\LearningPathController as AdminLearningPathController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\BotController as AdminBotController;
+use App\Http\Controllers\Admin\ScriptedDialogueController as AdminScriptedDialogueController;
+use App\Http\Controllers\Admin\ScriptedLineController as AdminScriptedLineController;
 use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
@@ -68,6 +71,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('exercises/{exercise}/edit', [AdminExerciseController::class, 'edit'])->name('exercises.edit');
     Route::put('exercises/{exercise}', [AdminExerciseController::class, 'update'])->name('exercises.update');
     Route::delete('exercises/{exercise}', [AdminExerciseController::class, 'destroy'])->name('exercises.destroy');
+    Route::resource('bots', AdminBotController::class);
+    Route::resource('scripted-dialogues', AdminScriptedDialogueController::class);
+    Route::resource('scripted-lines', AdminScriptedLineController::class);
 });
 
 Route::resource('exercise', ExerciseController::class);
