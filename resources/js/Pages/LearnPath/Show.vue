@@ -1,5 +1,7 @@
 <script setup>
-import { Link, useForm } from '@inertiajs/vue3'
+import '@/assets/scss/components/learn-path/show.scss'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 
 const props = defineProps({
@@ -8,154 +10,185 @@ const props = defineProps({
 })
 
 const { theme, toggleTheme } = useTheme()
+const page    = usePage()
+const isAdmin = computed(() => page.props.auth.isAdmin)
 
-function deleteLesson(id) {
-    useForm({}).delete(route('lesson.destroy', id))
+// ── Map geometry ──
+const ROW_GAP = 132   // vertical px between nodes
+const TOP_PAD = 88    // px above the first node (room for the "you are here" pin)
+const NODE_R  = 38    // default node radius
+const BOSS_R  = 50    // final ("boss") node radius
+
+// The stage width drives the horizontal swing; tracked so the path stays
+// inside the container on every viewport.
+const mapEl = ref(null)
+const width = ref(360)
+let resizeObserver = null
+
+onMounted(() => {
+    if (!mapEl.value) return
+    width.value = mapEl.value.clientWidth
+    resizeObserver = new ResizeObserver(([entry]) => {
+        width.value = entry.contentRect.width
+    })
+    resizeObserver.observe(mapEl.value)
+})
+onBeforeUnmount(() => resizeObserver?.disconnect())
+
+// First lesson that isn't completed yet — that's where the player "is".
+const currentIndex = computed(() =>
+    props.lessons.findIndex(l => !l.pivot?.is_completed)
+)
+
+const nodes = computed(() => {
+    const w   = width.value
+    const n   = props.lessons.length
+    const amp = Math.min(w * 0.30, 120)
+
+    return props.lessons.map((lesson, i) => {
+        const isBoss = n > 1 && i === n - 1
+        const r      = isBoss ? BOSS_R : NODE_R
+        const margin = r + 8
+
+        let x = w / 2 + Math.sin(i * 0.9 + 0.6) * amp
+        x = Math.max(margin, Math.min(w - margin, x))
+        const y = TOP_PAD + i * ROW_GAP
+
+        // Every lesson stays openable; status only drives the map's visuals.
+        const done   = !!lesson.pivot?.is_completed
+        const status = done ? 'done' : (currentIndex.value === i ? 'current' : 'upcoming')
+        const side   = x < w / 2 ? 'right' : 'left'
+
+        return { lesson, i, x, y, r, isBoss, status, side, num: i + 1 }
+    })
+})
+
+const segments = computed(() => {
+    const ns  = nodes.value
+    const out = []
+    for (let i = 0; i < ns.length - 1; i++) {
+        out.push({
+            x1: ns[i].x,   y1: ns[i].y,
+            x2: ns[i + 1].x, y2: ns[i + 1].y,
+            done: ns[i].status === 'done',
+        })
+    }
+    return out
+})
+
+const mapHeight = computed(() =>
+    TOP_PAD + Math.max(0, props.lessons.length - 1) * ROW_GAP + BOSS_R + 96
+)
+
+function glyph(node) {
+    if (node.isBoss)            return '👑'
+    if (node.status === 'done') return '✓'
+    return String(node.num)
 }
 
-function isCompleted(lesson) {
-    return lesson.pivot?.is_completed
+function nodeStyle(node) {
+    return {
+        left:   node.x + 'px',
+        top:    node.y + 'px',
+        width:  node.r * 2 + 'px',
+        height: node.r * 2 + 'px',
+    }
+}
+
+function labelStyle(node) {
+    const gap = node.r + 16
+    const base = { top: node.y + 'px' }
+    if (node.side === 'right') {
+        base.left     = (node.x + gap) + 'px'
+        base.maxWidth = Math.max(120, width.value - node.x - gap - 8) + 'px'
+    } else {
+        base.right    = (width.value - node.x + gap) + 'px'
+        base.maxWidth = Math.max(120, node.x - gap - 8) + 'px'
+    }
+    return base
 }
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center p-6 pt-16">
-        <Link
-            :href="route('learning-paths.index')"
-            class="fixed top-4 left-4 z-50 flex items-center justify-center rounded-md border border-gray-200 bg-white p-1.5 text-gray-500 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
-            aria-label="Go back"
-        >
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-        </Link>
+    <Head>
+        <link
+            href="https://fonts.bunny.net/css?family=unbounded:400,600,700,800,900|manrope:400,500,600,700,800&subset=cyrillic,latin&display=swap"
+            rel="stylesheet"
+        />
+    </Head>
 
-        <button
-            @click="toggleTheme"
-            class="fixed top-4 right-4 z-50 rounded-md border border-gray-200 bg-white px-2 py-1 text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-        >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+    <div class="lp" :class="theme">
+        <header class="lp__bar">
+            <Link :href="route('learning-paths.index')" class="lp__btn" aria-label="Back to paths">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                </svg>
+            </Link>
+            <span class="lp__bar-spacer" />
+            <button
+                class="lp__btn lp__btn--toggle"
+                @click="toggleTheme"
+                :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
+            >{{ theme === 'dark' ? '☀' : '☾' }}</button>
+        </header>
 
-        <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100 text-center mb-1">{{ learningPath.name }}</h1>
-        <p class="text-sm text-gray-400 dark:text-gray-500 mb-8">{{ learningPath.language }}</p>
+        <div class="lp__head">
+            <span class="lp__kicker">Твоят път · Your path</span>
+            <h1 class="lp__title">{{ learningPath.name }}</h1>
+            <span class="lp__lang">{{ learningPath.language }}</span>
 
-        <div class="timeline">
-            <div
-                v-for="lesson in lessons"
-                :key="lesson.id"
-                class="timeline-item"
-                :class="{ 'is-completed': isCompleted(lesson) }"
-            >
-                <div class="timeline-side">
-                    <div class="timeline-dot"></div>
-                </div>
-
-                <div class="lesson-card">
-                    <Link :href="route('lesson.show', lesson.id)" class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ lesson.description }}</Link>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ lesson.name }}</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ lesson.created_at }}</p>
-                </div>
+            <div class="lp__legend">
+                <span class="lp__legend-item"><span class="lp__legend-dot lp__legend-dot--done" /> Done</span>
+                <span class="lp__legend-item"><span class="lp__legend-dot lp__legend-dot--current" /> You are here</span>
+                <span class="lp__legend-item"><span class="lp__legend-dot lp__legend-dot--upcoming" /> Up next</span>
             </div>
         </div>
 
-        <Link :href="route('lesson.create')" class="mt-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">Create Lesson</Link>
+        <div v-if="lessons.length" ref="mapEl" class="stmap" :style="{ height: mapHeight + 'px' }">
+            <svg class="stmap__lines" :viewBox="`0 0 ${width} ${mapHeight}`" preserveAspectRatio="none">
+                <line
+                    v-for="(seg, i) in segments"
+                    :key="i"
+                    :x1="seg.x1" :y1="seg.y1" :x2="seg.x2" :y2="seg.y2"
+                    class="stmap__seg"
+                    :class="seg.done ? 'stmap__seg--done' : 'stmap__seg--todo'"
+                />
+            </svg>
+
+            <template v-for="node in nodes" :key="node.lesson.id">
+                <!-- Label card -->
+                <Link
+                    :href="route('lesson.show', node.lesson.id)"
+                    class="stmap__label"
+                    :class="`stmap__label--${node.side}`"
+                    :style="labelStyle(node)"
+                >
+                    <span class="stmap__label-title">{{ node.lesson.description || node.lesson.name }}</span>
+                    <span v-if="node.lesson.description" class="stmap__label-sub">{{ node.lesson.name }}</span>
+                </Link>
+
+                <!-- Node token -->
+                <Link
+                    :href="route('lesson.show', node.lesson.id)"
+                    class="stmap__node"
+                    :class="[`stmap__node--${node.status}`, { 'stmap__node--boss': node.isBoss }]"
+                    :style="nodeStyle(node)"
+                    :aria-label="node.lesson.description || node.lesson.name"
+                >
+                    <span v-if="node.status === 'current'" class="stmap__pin">Тук · Here</span>
+                    <span class="stmap__node-glyph">{{ glyph(node) }}</span>
+                    <span v-if="node.i === 0" class="stmap__tag">Старт</span>
+                    <span v-else-if="node.isBoss" class="stmap__tag stmap__tag--boss">Финал</span>
+                </Link>
+            </template>
+        </div>
+
+        <div v-else class="lp__empty">
+            No lessons on this path yet.
+        </div>
+
+        <div v-if="isAdmin" class="lp__create-wrap">
+            <Link :href="route('lesson.create')" class="lp__create">+ Create Lesson</Link>
+        </div>
     </div>
 </template>
-
-<style scoped>
-.timeline {
-    width: 100%;
-    max-width: 32rem;
-}
-
-.timeline-item {
-    display: flex;
-    gap: 1.25rem;
-    position: relative;
-    padding-bottom: 1.5rem;
-}
-
-/* Connector line from dot down to next item */
-.timeline-item:not(:last-child) .timeline-side::after {
-    content: '';
-    position: absolute;
-    left: 0.4375rem;
-    top: calc(0.5rem + 1rem);
-    bottom: 0;
-    width: 2px;
-    background: #d1d5db;
-    transition: background 0.3s ease;
-}
-
-.timeline-item.is-completed:not(:last-child) .timeline-side::after {
-    background: #6366f1;
-}
-
-.timeline-side {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-    padding-top: 0.5rem;
-}
-
-.timeline-dot {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    border: 2px solid #d1d5db;
-    background: #ffffff;
-    flex-shrink: 0;
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    z-index: 1;
-}
-
-.is-completed .timeline-dot {
-    background: #6366f1;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px #e0e7ff;
-}
-
-.lesson-card {
-    background: #ffffff;
-    border-radius: 0.75rem;
-    border: 1px solid #f3f4f6;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    padding: 1rem;
-    width: 100%;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-}
-
-.lesson-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.08);
-    border-color: #a5b4fc;
-}
-</style>
-
-<style>
-html.dark .timeline-dot {
-    background: #1f2937;
-    border-color: #4b5563;
-}
-
-html.dark .is-completed .timeline-dot {
-    background: #6366f1;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px #312e81;
-}
-
-html.dark .timeline-item:not(:last-child) .timeline-side::after {
-    background: #4b5563;
-}
-
-html.dark .timeline-item.is-completed:not(:last-child) .timeline-side::after {
-    background: #6366f1;
-}
-
-html.dark .lesson-card {
-    background: #1f2937;
-    border-color: #374151;
-}
-</style>

@@ -87,5 +87,25 @@ There are two `ExerciseController` classes:
 - `vue-data-ui` is used for charts on the Stats page.
 - Ziggy is included for named route helpers (`route('name', params)`) in Vue via `@inertiajs/vue3`.
 
+## Styles
+- Never use <style> blocks in Vue components
+- All styles go in assets/scss/components/_component-name.scss
+- Use BEM naming
+- Use the `useTheme` composable to manage dark/light mode
+- Use the `usePage` composable to access props
+
+### Vue Component
+When creating a Vue component always:
+- Create `ComponentName.vue` (no <style> block)
+- Create `assets/scss/components/_component-name.scss`
+- Import the scss file in the vue file
+- Use BEM naming
+- Use the `useTheme` composable to manage dark/light mode
+- Use the `usePage` composable to access props
+- If component in Admin panel (guarded by `EnsureIsAdmin` middleware),
+- If component in Admin panel save styles in `assets/scss/components/admin/_admin-component-name.scss`
+- Add playwright tests for the component. 100% coverage is required.
+- Do not use → symbol in UI at all.
+
 ### Infrastructure
 The Docker Compose setup (`compose.yaml`) uses Laravel Sail with **PostgreSQL 18** and **Redis**. The local dev default (without Docker) uses **SQLite** (`database/database.sqlite`). Queue driver defaults to `database`; jobs are dispatched for word count updates.

@@ -1,68 +1,94 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import '@/assets/scss/components/auth.scss'
+
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
+import { useTheme } from '@/composables/useTheme'
 
 defineProps({
     status: {
         type: String,
     },
-});
+})
+
+const page = usePage()
+const appName = computed(() => page.props.appName)
+const { theme, toggleTheme } = useTheme()
 
 const form = useForm({
     email: '',
-});
+})
 
 const submit = () => {
-    form.post(route('password.email'));
-};
+    form.post(route('password.email'))
+}
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Forgot Password" />
+    <div class="nb-auth" :class="theme">
+        <Head title="Forgot Password">
+            <link
+                href="https://fonts.bunny.net/css?family=unbounded:400,600,700,800,900|manrope:400,500,600,700,800&subset=cyrillic,latin&display=swap"
+                rel="stylesheet"
+            />
+        </Head>
 
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Forgot your password? No problem. Just let us know your email
-            address and we will email you a password reset link that will allow
-            you to choose a new one.
-        </div>
+        <header class="nb-auth__bar">
+            <nav class="nb-auth__nav">
+                <a href="/" class="nb-auth__logo">
+                    <span class="nb-auth__logo-mark" aria-hidden="true">Ъ</span>
+                    <span class="nb-auth__logo-text">{{ appName }}</span>
+                </a>
+                <div class="nb-auth__links">
+                    <a href="/login" class="nb-auth__navlink">Log in</a>
+                    <button class="nb-auth__toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
+                        {{ theme === 'dark' ? '☀' : '☾' }}
+                    </button>
+                </div>
+            </nav>
+        </header>
 
-        <div
-            v-if="status"
-            class="mb-4 text-sm font-medium text-green-600 dark:text-green-400"
-        >
-            {{ status }}
-        </div>
+        <main class="nb-auth__main">
+            <section class="nb-auth__card">
+                <span class="nb-auth__stamp" aria-hidden="true">Ъ</span>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+                <div class="nb-auth__head">
+                    <span class="nb-auth__badge"><span lang="bg">Възстановяване</span> · <span class="nb-auth__badge-en">reset</span></span>
+                    <h1 class="nb-auth__title">Forgot password?</h1>
+                    <p><span class="nb-auth__caption" lang="bg">Няма проблем</span></p>
+                    <p class="nb-auth__sub">Tell us your email and we'll send you a <span class="nb-auth__hl">reset link.</span></p>
+                </div>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+                <p v-if="status" class="nb-auth__status">{{ status }}</p>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+                <form class="nb-auth__form" @submit.prevent="submit">
+                    <div class="nb-auth__field">
+                        <label for="email" class="nb-auth__label">Email</label>
+                        <input
+                            id="email"
+                            v-model="form.email"
+                            type="email"
+                            name="email"
+                            class="nb-auth__input"
+                            required
+                            autofocus
+                            autocomplete="username"
+                        />
+                        <p v-if="form.errors.email" class="nb-auth__error">{{ form.errors.email }}</p>
+                    </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <PrimaryButton
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Email Password Reset Link
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+                    <button type="submit" class="nb-auth__submit" :disabled="form.processing">
+                        Email reset link
+                        <font-awesome-icon icon="arrow-right" />
+                    </button>
+                </form>
+
+                <div class="nb-auth__foot">
+                    <Link :href="route('login')" class="nb-auth__link nb-auth__link--accent">
+                        Back to log in
+                    </Link>
+                </div>
+            </section>
+        </main>
+    </div>
 </template>

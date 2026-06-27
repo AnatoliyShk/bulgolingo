@@ -1,10 +1,9 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import '@/assets/scss/components/auth.scss'
+
+import { Head, useForm, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
+import { useTheme } from '@/composables/useTheme'
 
 const props = defineProps({
     email: {
@@ -15,87 +14,111 @@ const props = defineProps({
         type: String,
         required: true,
     },
-});
+})
+
+const page = usePage()
+const appName = computed(() => page.props.appName)
+const { theme, toggleTheme } = useTheme()
 
 const form = useForm({
     token: props.token,
     email: props.email,
     password: '',
     password_confirmation: '',
-});
+})
 
 const submit = () => {
     form.post(route('password.store'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
+    })
+}
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Reset Password" />
+    <div class="nb-auth" :class="theme">
+        <Head title="Reset Password">
+            <link
+                href="https://fonts.bunny.net/css?family=unbounded:400,600,700,800,900|manrope:400,500,600,700,800&subset=cyrillic,latin&display=swap"
+                rel="stylesheet"
+            />
+        </Head>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <header class="nb-auth__bar">
+            <nav class="nb-auth__nav">
+                <a href="/" class="nb-auth__logo">
+                    <span class="nb-auth__logo-mark" aria-hidden="true">Ъ</span>
+                    <span class="nb-auth__logo-text">{{ appName }}</span>
+                </a>
+                <div class="nb-auth__links">
+                    <a href="/login" class="nb-auth__navlink">Log in</a>
+                    <button class="nb-auth__toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
+                        {{ theme === 'dark' ? '☀' : '☾' }}
+                    </button>
+                </div>
+            </nav>
+        </header>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+        <main class="nb-auth__main">
+            <section class="nb-auth__card">
+                <span class="nb-auth__stamp" aria-hidden="true">Ъ</span>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+                <div class="nb-auth__head">
+                    <span class="nb-auth__badge"><span lang="bg">Нова парола</span> · <span class="nb-auth__badge-en">new password</span></span>
+                    <h1 class="nb-auth__title">Reset password</h1>
+                    <p><span class="nb-auth__caption" lang="bg">Готови сме</span></p>
+                    <p class="nb-auth__sub">Choose a new password to <span class="nb-auth__hl">get back in.</span></p>
+                </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <form class="nb-auth__form" @submit.prevent="submit">
+                    <div class="nb-auth__field">
+                        <label for="email" class="nb-auth__label">Email</label>
+                        <input
+                            id="email"
+                            v-model="form.email"
+                            type="email"
+                            name="email"
+                            class="nb-auth__input"
+                            required
+                            autofocus
+                            autocomplete="username"
+                        />
+                        <p v-if="form.errors.email" class="nb-auth__error">{{ form.errors.email }}</p>
+                    </div>
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+                    <div class="nb-auth__field">
+                        <label for="password" class="nb-auth__label">Password</label>
+                        <input
+                            id="password"
+                            v-model="form.password"
+                            type="password"
+                            name="password"
+                            class="nb-auth__input"
+                            required
+                            autocomplete="new-password"
+                        />
+                        <p v-if="form.errors.password" class="nb-auth__error">{{ form.errors.password }}</p>
+                    </div>
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+                    <div class="nb-auth__field">
+                        <label for="password_confirmation" class="nb-auth__label">Confirm password</label>
+                        <input
+                            id="password_confirmation"
+                            v-model="form.password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            class="nb-auth__input"
+                            required
+                            autocomplete="new-password"
+                        />
+                        <p v-if="form.errors.password_confirmation" class="nb-auth__error">{{ form.errors.password_confirmation }}</p>
+                    </div>
 
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
-                <PrimaryButton
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Reset Password
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+                    <button type="submit" class="nb-auth__submit" :disabled="form.processing">
+                        Reset password
+                        <font-awesome-icon icon="arrow-right" />
+                    </button>
+                </form>
+            </section>
+        </main>
+    </div>
 </template>

@@ -28,6 +28,9 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 
+# Local tooling artifacts (not part of the project)
+/ventoy-*
+
 # Playwright
 node_modules/
 /test-results/

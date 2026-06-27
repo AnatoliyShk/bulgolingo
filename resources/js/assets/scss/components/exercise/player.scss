@@ -1,0 +1,290 @@
+/* ══════════════ Neo-Brutalist exercise player ══════════════ */
+/* Shared by Exercise/Show.vue and the per-type players                */
+/* (FillInTheBlank, ImageMatching, MultipleChoice, TrueFalse).         */
+/* Mirrors the token system used on the Welcome page (welcome.scss).   */
+
+.nb-ex {
+    --ink:    #14110b;
+    --bg:     #f1e9d6;
+    --paper:  #fffaf0;
+    --on-accent: #14110b; /* text on colored fills — stays dark in both themes */
+
+    --cyan:   #34d3da;
+    --pink:   #ff6ba3;
+    --blue:   #5b8def;
+    --green:  #46d39a;
+    --orange: #ff8a47;
+    --purple: #b388ff;
+    --red:    #ff5b5b;
+
+    --border: 3px solid var(--ink);
+    --shadow:    6px 6px 0 0 var(--ink);
+    --shadow-sm: 4px 4px 0 0 var(--ink);
+    --radius: 12px;
+
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Manrope', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    transition: background 0.3s ease, color 0.3s ease;
+    /* subtle brutalist dot grid */
+    background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+    background-position: -11px -11px;
+}
+.nb-ex * { box-sizing: border-box; }
+
+.nb-ex.dark {
+    --ink:   #f4ead6;
+    --bg:    #17140f;
+    --paper: #221d16;
+    background-image: radial-gradient(rgba(244, 234, 214, 0.10) 1.2px, transparent 1.2px);
+}
+
+.nb-ex ::selection { background: var(--pink); color: var(--ink); }
+
+/* ══════════════ Top bar ══════════════ */
+.nb-ex__bar {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 1rem;
+    max-width: 40rem; margin: 0 auto;
+    padding: 1.25rem 1.5rem 0;
+}
+
+.nb-ex__back,
+.nb-ex__toggle {
+    flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.6rem; height: 2.6rem;
+    cursor: pointer; color: var(--ink);
+    background: var(--paper);
+    border: var(--border); border-radius: 9px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.nb-ex__back:hover,
+.nb-ex__toggle:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.nb-ex__back svg { width: 1.2rem; height: 1.2rem; }
+.nb-ex__toggle { font-size: 1.05rem; line-height: 1; }
+
+.nb-ex__progress { flex: 1; display: flex; align-items: center; gap: 0.75rem; }
+.nb-ex__track {
+    flex: 1; height: 1.15rem;
+    background: var(--paper);
+    border: var(--border); border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+.nb-ex__fill {
+    height: 100%;
+    background: var(--green);
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nb-ex__count {
+    flex-shrink: 0;
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: 0.78rem; color: var(--ink);
+}
+
+/* ══════════════ Sheet ══════════════ */
+.nb-ex__sheet {
+    position: relative; z-index: 1;
+    max-width: 40rem; margin: 1.5rem auto 0;
+    padding: 0 1.5rem 4rem;
+}
+
+.nb-ex__eyebrow {
+    display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap;
+    margin: 0 0 1.5rem;
+}
+.nb-ex__badge {
+    font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--on-accent); background: var(--pink);
+    padding: 0.45em 0.9em;
+    border: var(--border); border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+}
+.nb-ex__meta {
+    font-weight: 800; font-size: 0.72rem; letter-spacing: 0.06em;
+    text-transform: uppercase; opacity: 0.65;
+}
+
+.nb-ex__card {
+    background: var(--paper);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.nb-ex__unsupported {
+    padding: 2rem; text-align: center; font-weight: 700;
+}
+
+/* Admin edit toggle */
+.nb-ex__edit { margin-top: 2rem; padding-top: 1.75rem; border-top: var(--border); }
+.nb-ex__edit-btn {
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.85rem;
+    color: var(--on-accent); background: var(--orange);
+    padding: 0.6rem 1.1rem;
+    border: var(--border); border-radius: 9px; box-shadow: var(--shadow-sm);
+    cursor: pointer; transition: transform 0.1s, box-shadow 0.1s;
+}
+.nb-ex__edit-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+
+/* ══════════════ Shared prompt ══════════════ */
+.nb-ex-prompt {
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: clamp(1.35rem, 4vw, 1.85rem); line-height: 1.2;
+    letter-spacing: -0.02em; color: var(--ink);
+    margin: 0 0 1.75rem;
+}
+
+/* ══════════════ Option / choice buttons ══════════════ */
+.nb-ex-opt {
+    width: 100%;
+    padding: 0.85rem 1.1rem;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.98rem;
+    text-align: center; color: var(--ink);
+    background: var(--paper);
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.12s, color 0.12s;
+}
+.nb-ex-opt:hover:not(:disabled)  { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.nb-ex-opt:active:not(:disabled) { transform: translate(4px, 4px); box-shadow: none; }
+.nb-ex-opt:disabled { cursor: default; }
+
+.nb-ex-opt--inline { width: auto; }
+
+.nb-ex-opt--selected { background: var(--cyan);  color: var(--on-accent); }
+.nb-ex-opt--correct  { background: var(--green); color: var(--on-accent); }
+.nb-ex-opt--matched  { background: var(--green); color: var(--on-accent); opacity: 0.65; box-shadow: none; transform: translate(2px, 2px); }
+.nb-ex-opt--reveal   { background: var(--green); color: var(--on-accent); opacity: 0.6; }
+.nb-ex-opt--wrong    { background: var(--red);   color: var(--on-accent); animation: nb-ex-shake 0.4s ease; }
+.nb-ex-opt--dim      { opacity: 0.4; box-shadow: none; transform: translate(2px, 2px); }
+.nb-ex-opt--used     { opacity: 0.4; box-shadow: none; }
+
+/* True / False — tall icon + label variant */
+.nb-ex-opt--tf {
+    flex-direction: column;
+    display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+    padding: 1.5rem 1rem;
+}
+.nb-ex-tf__icon  { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 2.2rem; line-height: 1; }
+.nb-ex-tf__label { font-weight: 800; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ══════════════ Layout helpers ══════════════ */
+.nb-ex-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+.nb-ex-col     { display: flex; flex-direction: column; gap: 0.7rem; }
+.nb-ex-grid    { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1.5rem; }
+.nb-ex-tf      { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.75rem; }
+.nb-ex-choices { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-bottom: 1.75rem; }
+
+.nb-ex-tally {
+    text-align: center; margin: 0;
+    font-family: 'Unbounded', sans-serif; font-weight: 700;
+    font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink); opacity: 0.65;
+}
+
+/* ══════════════ Fill-in-the-blank sentence ══════════════ */
+.nb-ex-sentence {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.55rem;
+    padding: 1.1rem 1.2rem; margin-bottom: 1.75rem;
+    background: var(--bg);
+    border: var(--border); border-radius: 11px;
+    box-shadow: var(--shadow-sm);
+    min-height: 3.5rem;
+}
+.nb-ex-sentence__word { font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 1.1rem; }
+
+.nb-ex-blank {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 6rem; height: 2.4rem; padding: 0 0.7rem;
+    background: var(--paper);
+    border: var(--border); border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer; transition: background 0.15s ease;
+}
+.nb-ex-blank--filled { background: var(--cyan); }
+.nb-ex-blank--wrong  { background: var(--red); }
+.nb-ex-blank__word   { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 1rem; color: var(--on-accent); }
+.nb-ex-blank__hint   { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.55; }
+
+/* ══════════════ Image matching ══════════════ */
+.nb-ex-image {
+    margin-bottom: 1.75rem;
+    background: var(--paper);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+.nb-ex-image__img { display: block; width: 100%; max-height: 18rem; object-fit: cover; }
+.nb-ex-image__placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.5rem; height: 11rem;
+    color: var(--ink); opacity: 0.45; font-weight: 800;
+    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.nb-ex-image__placeholder svg { width: 2.5rem; height: 2.5rem; }
+
+/* ══════════════ Feedback ══════════════ */
+.nb-ex-feedback {
+    margin-bottom: 1.25rem;
+    padding: 0.9rem 1.1rem;
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+}
+.nb-ex-feedback--correct { background: var(--green); color: var(--on-accent); }
+.nb-ex-feedback--wrong   { background: var(--red);   color: var(--on-accent); }
+.nb-ex-feedback__title   { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 0.95rem; margin: 0 0 0.25rem; }
+.nb-ex-feedback__body    { font-weight: 600; font-size: 0.88rem; margin: 0; }
+.nb-ex-feedback__body strong { font-weight: 800; }
+
+/* ══════════════ Primary action button ══════════════ */
+.nb-ex-action {
+    width: 100%; margin-top: 0.5rem;
+    padding: 1rem 1.5rem;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.05rem;
+    color: var(--on-accent); background: var(--orange);
+    border: var(--border); border-radius: 11px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+}
+.nb-ex-action:hover:not(:disabled)  { transform: translate(3px, 3px); box-shadow: 3px 3px 0 0 var(--ink); }
+.nb-ex-action:active:not(:disabled) { transform: translate(6px, 6px); box-shadow: none; }
+.nb-ex-action:disabled {
+    background: var(--paper); color: var(--ink); opacity: 0.45;
+    box-shadow: var(--shadow-sm); cursor: default;
+}
+
+/* ══════════════ Focus + motion ══════════════ */
+.nb-ex-opt:focus-visible,
+.nb-ex-action:focus-visible,
+.nb-ex-blank:focus-visible,
+.nb-ex__back:focus-visible,
+.nb-ex__toggle:focus-visible,
+.nb-ex__edit-btn:focus-visible {
+    outline: 3px dashed var(--ink); outline-offset: 3px;
+}
+
+@keyframes nb-ex-shake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-5px); }
+    60%      { transform: translateX(5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-ex__fill { transition: none; }
+    .nb-ex-opt--wrong { animation: none; }
+}
+
+@media (max-width: 560px) {
+    .nb-ex-grid,
+    .nb-ex-tf { grid-template-columns: 1fr; }
+}

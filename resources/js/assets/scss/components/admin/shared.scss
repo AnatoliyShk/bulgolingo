@@ -1,0 +1,54 @@
+// ── Page layout ──────────────────────────────────────────────────────────────
+.admin-page {
+    &__body             { @apply py-12; }
+    &__container        { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+    &__container--narrow { @apply mx-auto max-w-2xl px-4 sm:px-6 lg:px-8; }
+    &__container--medium { @apply mx-auto max-w-3xl space-y-8 px-4 sm:px-6 lg:px-8; }
+    &__header           { @apply flex items-center justify-between; }
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+.admin-table {
+    &__wrap          { @apply overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800; }
+    &__element       { @apply min-w-full divide-y divide-gray-200 dark:divide-gray-700; }
+    &__head          { @apply bg-gray-50 dark:bg-gray-700; }
+    &__body          { @apply divide-y divide-gray-200 dark:divide-gray-700; }
+    &__th            { @apply px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300; }
+    &__th--action    { @apply px-6 py-3; }
+    &__td            { @apply px-6 py-4 text-sm text-gray-500 dark:text-gray-400; }
+    &__td--strong    { @apply px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100; }
+    &__td--truncate  { @apply max-w-xs truncate px-6 py-4 text-sm text-gray-500 dark:text-gray-400; }
+    &__td--actions   { @apply px-6 py-4 text-right text-sm; }
+    &__empty         { @apply text-gray-500 dark:text-gray-400; }
+}
+
+// ── Card (form page container) ────────────────────────────────────────────────
+.admin-card {
+    @apply rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800;
+    &__title { @apply mb-4 text-base font-semibold text-gray-800 dark:text-gray-200; }
+}
+
+// ── Form ──────────────────────────────────────────────────────────────────────
+.admin-form {
+    &__body          { @apply space-y-5; }
+    &__label         { @apply mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300; }
+    &__label--spaced { @apply mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300; }
+    &__input         { @apply w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100; }
+    &__select        { @apply w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100; }
+    &__textarea      { @apply w-full resize-none rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100; }
+    &__error         { @apply mt-1 text-xs text-red-500; }
+    &__hint          { @apply mt-1.5 text-xs text-gray-400 dark:text-gray-500; }
+    &__actions       { @apply flex items-center justify-end gap-3 pt-1; }
+}
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+.admin-btn {
+    &--primary  { @apply rounded-lg bg-indigo-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 disabled:opacity-50; }
+    &--cancel   { @apply text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400; }
+    &--new      { @apply rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700; }
+    &--edit     { @apply mr-3 text-blue-600 hover:underline dark:text-blue-400; }
+    &--delete   { @apply text-red-600 hover:underline dark:text-red-400; }
+    &--link-sm  { @apply text-xs font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400; }
+    &--edit-sm  { @apply text-xs text-indigo-600 hover:underline dark:text-indigo-400; }
+    &--delete-sm { @apply text-xs text-red-500 hover:underline dark:text-red-400; }
+}

@@ -1,8 +1,5 @@
 <script setup>
-import '../../../css/home.css'
-import '../../../css/home-light.css'
-import '../../../css/home-dark.css'
-import '../../../css/auth.css'
+import '@/assets/scss/components/auth.scss'
 
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
@@ -35,87 +32,89 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="page" :class="theme">
-        <Head title="Log in" />
+    <div class="nb-auth" :class="theme">
+        <Head title="Log in">
+            <link
+                href="https://fonts.bunny.net/css?family=unbounded:400,600,700,800,900|manrope:400,500,600,700,800&subset=cyrillic,latin&display=swap"
+                rel="stylesheet"
+            />
+        </Head>
 
-        <header class="header">
-            <nav class="nav">
-                <a href="/" class="nav__logo">
-                    <span class="nav__mark" aria-hidden="true">Ъ</span>
-                    {{ appName }}
+        <header class="nb-auth__bar">
+            <nav class="nb-auth__nav">
+                <a href="/" class="nb-auth__logo">
+                    <span class="nb-auth__logo-mark" aria-hidden="true">Ъ</span>
+                    <span class="nb-auth__logo-text">{{ appName }}</span>
                 </a>
-                <div class="nav__links">
-                    <a href="/register" class="nav__link nav__link--cta">Create account</a>
-                    <button class="theme-toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
-                        {{ theme === 'dark' ? '☀️' : '🌙' }}
+                <div class="nb-auth__links">
+                    <a href="/register" class="nb-auth__navlink nb-auth__navlink--cta">Register</a>
+                    <button class="nb-auth__toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
+                        {{ theme === 'dark' ? '☀' : '☾' }}
                     </button>
                 </div>
             </nav>
         </header>
 
-        <main class="auth">
-            <span class="page__mark" aria-hidden="true">Ъ</span>
+        <main class="nb-auth__main">
+            <section class="nb-auth__card">
+                <span class="nb-auth__stamp" aria-hidden="true">Ъ</span>
 
-            <section class="auth-card">
-                <div class="auth-card__head">
-                    <p class="auth-card__eyebrow">
-                        <span lang="bg">Вход</span>
-                        <span class="auth-card__eyebrow-en">log in</span>
-                    </p>
-                    <h1 class="auth-card__title">Welcome back</h1>
-                    <p class="auth-card__caption" lang="bg">«Добре дошли отново»</p>
-                    <p class="auth-card__subtitle">Pick up right where you left off — your streak is waiting.</p>
-                    <div class="thread-divider" aria-hidden="true"></div>
+                <div class="nb-auth__head">
+                    <span class="nb-auth__badge"><span lang="bg">Вход</span> · <span class="nb-auth__badge-en">log in</span></span>
+                    <h1 class="nb-auth__title">Welcome back</h1>
+                    <p><span class="nb-auth__caption" lang="bg">Добре дошли отново</span></p>
+                    <p class="nb-auth__sub">Pick up right where you left off — <span class="nb-auth__hl">your streak is waiting.</span></p>
                 </div>
 
-                <p v-if="status" class="auth-card__status">{{ status }}</p>
+                <p v-if="status" class="nb-auth__status">{{ status }}</p>
 
-                <form class="auth-form" @submit.prevent="submit">
-                    <div class="field">
-                        <label for="email" class="field__label">Email</label>
+                <form class="nb-auth__form" @submit.prevent="submit">
+                    <div class="nb-auth__field">
+                        <label for="email" class="nb-auth__label">Email</label>
                         <input
                             id="email"
                             v-model="form.email"
                             type="email"
                             name="email"
-                            class="field__input"
+                            class="nb-auth__input"
                             required
                             autofocus
                             autocomplete="username"
                         />
-                        <p v-if="form.errors.email" class="field__error">{{ form.errors.email }}</p>
+                        <p v-if="form.errors.email" class="nb-auth__error">{{ form.errors.email }}</p>
                     </div>
 
-                    <div class="field">
-                        <label for="password" class="field__label">Password</label>
+                    <div class="nb-auth__field">
+                        <label for="password" class="nb-auth__label">Password</label>
                         <input
                             id="password"
                             v-model="form.password"
                             type="password"
                             name="password"
-                            class="field__input"
+                            class="nb-auth__input"
                             required
                             autocomplete="current-password"
                         />
-                        <p v-if="form.errors.password" class="field__error">{{ form.errors.password }}</p>
+                        <p v-if="form.errors.password" class="nb-auth__error">{{ form.errors.password }}</p>
                     </div>
 
-                    <label class="field--checkbox">
-                        <input v-model="form.remember" type="checkbox" name="remember" class="field__checkbox" />
+                    <label class="nb-auth__check">
+                        <input v-model="form.remember" type="checkbox" name="remember" class="nb-auth__checkbox" />
                         Remember me
                     </label>
 
-                    <button type="submit" class="btn btn--primary auth-form__submit" :disabled="form.processing">
+                    <button type="submit" class="nb-auth__submit" :disabled="form.processing">
                         Log in
+                        <font-awesome-icon icon="arrow-right" />
                     </button>
                 </form>
 
-                <div class="auth-card__footer auth-card__footer--split">
-                    <Link v-if="canResetPassword" :href="route('password.request')" class="auth-card__link">
-                        Forgot your password?
+                <div class="nb-auth__foot nb-auth__foot--split">
+                    <Link v-if="canResetPassword" :href="route('password.request')" class="nb-auth__link">
+                        Forgot password?
                     </Link>
-                    <Link :href="route('register')" class="auth-card__link auth-card__link--accent">
-                        Create an account
+                    <Link :href="route('register')" class="nb-auth__link nb-auth__link--accent">
+                        Create account
                     </Link>
                 </div>
             </section>

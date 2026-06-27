@@ -1,0 +1,260 @@
+/* ══════════════ Neo-Brutalist learning-path map ══════════════ */
+/* A winding node-map of lessons, inspired by Slay the Spire 2.       */
+/* Shares the token system used on the Welcome page (welcome.scss).   */
+
+.lp {
+    --ink:    #14110b;
+    --bg:     #f1e9d6;
+    --paper:  #fffaf0;
+    --on-accent: #14110b;
+
+    --cyan:   #34d3da;
+    --pink:   #ff6ba3;
+    --blue:   #5b8def;
+    --green:  #46d39a;
+    --orange: #ff8a47;
+    --purple: #b388ff;
+    --red:    #ff5b5b;
+
+    --border: 3px solid var(--ink);
+    --shadow:    6px 6px 0 0 var(--ink);
+    --shadow-sm: 4px 4px 0 0 var(--ink);
+    --radius: 12px;
+
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-bottom: 4rem;
+    font-family: 'Manrope', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    transition: background 0.3s ease, color 0.3s ease;
+    background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+    background-position: -11px -11px;
+}
+.lp * { box-sizing: border-box; }
+
+.lp.dark {
+    --ink:   #f4ead6;
+    --bg:    #17140f;
+    --paper: #221d16;
+    background-image: radial-gradient(rgba(244, 234, 214, 0.10) 1.2px, transparent 1.2px);
+}
+
+.lp ::selection { background: var(--pink); color: var(--ink); }
+
+/* ── Top bar ── */
+.lp__bar {
+    position: relative; z-index: 2;
+    display: flex; align-items: center;
+    max-width: 34rem; margin: 0 auto;
+    padding: 1.25rem 1.5rem 0;
+}
+.lp__bar-spacer { flex: 1; }
+.lp__btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.6rem; height: 2.6rem;
+    cursor: pointer; color: var(--ink);
+    background: var(--paper);
+    border: var(--border); border-radius: 9px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.lp__btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.lp__btn svg { width: 1.2rem; height: 1.2rem; }
+.lp__btn--toggle { font-size: 1.05rem; line-height: 1; }
+
+/* ── Heading ── */
+.lp__head {
+    position: relative; z-index: 2;
+    max-width: 34rem; margin: 1.5rem auto 0;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+.lp__kicker {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--on-accent); background: var(--pink);
+    padding: 0.4em 0.85em;
+    border: var(--border); border-radius: 999px; box-shadow: var(--shadow-sm);
+}
+.lp__title {
+    margin: 1rem 0 0.6rem;
+    font-family: 'Unbounded', sans-serif; font-weight: 900;
+    font-size: clamp(1.8rem, 6vw, 2.8rem); line-height: 1.04; letter-spacing: -0.02em;
+}
+.lp__lang {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--on-accent); background: var(--cyan);
+    padding: 0.35em 0.8em;
+    border: var(--border); border-radius: 8px; box-shadow: var(--shadow-sm);
+}
+
+.lp__legend {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.1rem;
+    margin-top: 1.5rem;
+}
+.lp__legend-item {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-weight: 800; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.lp__legend-dot {
+    width: 0.9rem; height: 0.9rem;
+    border: 2.5px solid var(--ink); border-radius: 50%;
+}
+.lp__legend-dot--done     { background: var(--green); }
+.lp__legend-dot--current  { background: var(--orange); }
+.lp__legend-dot--upcoming { background: var(--paper); }
+
+/* ══════════════ The map ══════════════ */
+.stmap {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 34rem;
+    margin: 2rem auto 0;
+}
+
+.stmap__lines {
+    position: absolute; left: 0; top: 0;
+    width: 100%; height: 100%;
+    z-index: 0; overflow: visible; pointer-events: none;
+}
+.stmap__seg { fill: none; stroke-linecap: round; }
+.stmap__seg--done { stroke: var(--green); stroke-width: 7; }
+.stmap__seg--todo { stroke: var(--ink); stroke-width: 5; opacity: 0.32; stroke-dasharray: 2 15; }
+
+/* ── Node ── */
+.stmap__node {
+    position: absolute;
+    transform: translate(-50%, -50%) scale(1);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--paper); color: var(--ink);
+    border: var(--border); border-radius: 50%;
+    box-shadow: var(--shadow);
+    text-decoration: none; cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+    z-index: 2;
+}
+a.stmap__node:hover  { transform: translate(-50%, -50%) scale(1.08); box-shadow: 8px 8px 0 0 var(--ink); }
+a.stmap__node:active { transform: translate(-50%, -50%) scale(0.94); box-shadow: var(--shadow-sm); }
+a.stmap__node:focus-visible { outline: 3px dashed var(--ink); outline-offset: 4px; }
+
+.stmap__node-glyph {
+    font-family: 'Unbounded', sans-serif; font-weight: 900;
+    font-size: 1.5rem; line-height: 1;
+}
+
+.stmap__node--done     { background: var(--green);  color: var(--on-accent); }
+.stmap__node--current  { background: var(--orange); color: var(--on-accent); }
+.stmap__node--upcoming { background: var(--paper); }
+
+/* Boss node — bigger, menacing, always prominent */
+.stmap__node--boss .stmap__node-glyph { font-size: 2rem; }
+.stmap__node--boss.stmap__node--upcoming {
+    background: var(--purple); color: var(--on-accent);
+}
+
+/* Pulsing "you are here" ring on the current node */
+.stmap__node--current::after {
+    content: ''; position: absolute; inset: -9px;
+    border: 3px solid var(--orange); border-radius: 50%;
+    pointer-events: none;
+    animation: stmap-pulse 1.5s ease-out infinite;
+}
+
+/* Floating pin above the current node */
+.stmap__pin {
+    position: absolute; left: 50%; top: 0;
+    transform: translate(-50%, -160%);
+    background: var(--ink); color: var(--bg);
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+    padding: 0.25rem 0.5rem; border-radius: 6px;
+    animation: stmap-bob 1.3s ease-in-out infinite;
+}
+.stmap__pin::after {
+    content: ''; position: absolute; left: 50%; bottom: -5px;
+    transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: var(--ink);
+}
+
+/* Start / Final tags under the first & boss nodes */
+.stmap__tag {
+    position: absolute; left: 50%; top: 100%;
+    transform: translate(-50%, 8px);
+    font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+    color: #14110b; background: #fff;
+    border: 2px solid var(--ink); border-radius: 5px;
+    padding: 0.2em 0.5em; box-shadow: 2px 2px 0 0 var(--ink);
+}
+.stmap__tag--boss { background: var(--purple); }
+
+/* ── Label card beside each node ── */
+.stmap__label {
+    position: absolute;
+    transform: translateY(-50%);
+    z-index: 1; max-width: 13rem;
+    background: var(--paper); color: var(--ink);
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    padding: 0.55rem 0.8rem; text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+a.stmap__label:hover { transform: translateY(-50%) translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.stmap__label--right { text-align: left; }
+.stmap__label--left  { text-align: right; }
+.stmap__label-title {
+    display: block;
+    font-family: 'Unbounded', sans-serif; font-weight: 700;
+    font-size: 0.88rem; line-height: 1.18; color: var(--ink);
+}
+.stmap__label-sub {
+    display: block; margin-top: 0.2rem;
+    font-weight: 800; font-size: 0.64rem; letter-spacing: 0.05em; text-transform: uppercase;
+    opacity: 0.6;
+}
+
+/* ── Admin: create lesson ── */
+.lp__create-wrap {
+    position: relative; z-index: 2;
+    max-width: 34rem; margin: 2.5rem auto 0;
+    padding: 0 1.5rem; text-align: center;
+}
+.lp__create {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.92rem;
+    color: var(--on-accent); background: var(--orange);
+    padding: 0.8rem 1.5rem;
+    border: var(--border); border-radius: 11px; box-shadow: var(--shadow);
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.lp__create:hover  { transform: translate(3px, 3px); box-shadow: 3px 3px 0 0 var(--ink); }
+.lp__create:active { transform: translate(6px, 6px); box-shadow: none; }
+
+/* ── Empty state ── */
+.lp__empty {
+    max-width: 30rem; margin: 3rem auto 0;
+    padding: 2rem; text-align: center; font-weight: 700;
+    background: var(--paper);
+    border: var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+
+/* ══════════════ Motion ══════════════ */
+@keyframes stmap-pulse {
+    0%   { transform: scale(0.92); opacity: 0.85; }
+    100% { transform: scale(1.55); opacity: 0; }
+}
+@keyframes stmap-bob {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stmap__node--current::after { animation: none; }
+    .stmap__pin { animation: none; }
+}

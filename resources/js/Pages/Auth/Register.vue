@@ -1,8 +1,5 @@
 <script setup>
-import '../../../css/home.css'
-import '../../../css/home-light.css'
-import '../../../css/home-dark.css'
-import '../../../css/auth.css'
+import '@/assets/scss/components/auth.scss'
 
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
@@ -27,100 +24,106 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="page" :class="theme">
-        <Head title="Register" />
+    <div class="nb-auth" :class="theme">
+        <Head title="Register">
+            <link
+                href="https://fonts.bunny.net/css?family=unbounded:400,600,700,800,900|manrope:400,500,600,700,800&subset=cyrillic,latin&display=swap"
+                rel="stylesheet"
+            />
+        </Head>
 
-        <header class="header">
-            <nav class="nav">
-                <a href="/" class="nav__logo">
-                    <span class="nav__mark" aria-hidden="true">Ъ</span>
-                    {{ appName }}
+        <header class="nb-auth__bar">
+            <nav class="nb-auth__nav">
+                <a href="/" class="nb-auth__logo">
+                    <span class="nb-auth__logo-mark" aria-hidden="true">Ъ</span>
+                    <span class="nb-auth__logo-text">{{ appName }}</span>
                 </a>
-                <div class="nav__links">
-                    <a href="/login" class="nav__link">Log in</a>
-                    <button class="theme-toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
-                        {{ theme === 'dark' ? '☀️' : '🌙' }}
+                <div class="nb-auth__links">
+                    <a href="/login" class="nb-auth__navlink">Log in</a>
+                    <button class="nb-auth__toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
+                        {{ theme === 'dark' ? '☀' : '☾' }}
                     </button>
                 </div>
             </nav>
         </header>
 
-        <main class="auth">
-            <span class="page__mark" aria-hidden="true">Ъ</span>
+        <main class="nb-auth__main">
+            <section class="nb-auth__card">
+                <span class="nb-auth__stamp" aria-hidden="true">Ъ</span>
 
-            <section class="auth-card">
-                <div class="auth-card__head">
-                    <p class="auth-card__eyebrow">
-                        <span lang="bg">Регистрация</span>
-                        <span class="auth-card__eyebrow-en">sign up</span>
-                    </p>
-                    <h1 class="auth-card__title">Start your journey</h1>
-                    <p class="auth-card__caption" lang="bg">«Да започваме»</p>
-                    <p class="auth-card__subtitle">Create an account to save your progress and keep your streak.</p>
-                    <div class="thread-divider" aria-hidden="true"></div>
+                <div class="nb-auth__head">
+                    <span class="nb-auth__badge"><span lang="bg">Регистрация</span> · <span class="nb-auth__badge-en">sign up</span></span>
+                    <h1 class="nb-auth__title">Start learning</h1>
+                    <p><span class="nb-auth__caption" lang="bg">Да започваме!</span></p>
+                    <p class="nb-auth__sub">Create an account to <span class="nb-auth__hl">save your progress</span> and keep your streak.</p>
                 </div>
 
-                <form class="auth-form" @submit.prevent="submit">
-                    <div class="field">
-                        <label for="name" class="field__label">Name</label>
+                <form class="nb-auth__form" @submit.prevent="submit">
+                    <div class="nb-auth__field">
+                        <label for="name" class="nb-auth__label">Name</label>
                         <input
                             id="name"
                             v-model="form.name"
                             type="text"
-                            class="field__input"
+                            name="name"
+                            class="nb-auth__input"
                             required
                             autofocus
                             autocomplete="name"
                         />
-                        <p v-if="form.errors.name" class="field__error">{{ form.errors.name }}</p>
+                        <p v-if="form.errors.name" class="nb-auth__error">{{ form.errors.name }}</p>
                     </div>
 
-                    <div class="field">
-                        <label for="email" class="field__label">Email</label>
+                    <div class="nb-auth__field">
+                        <label for="email" class="nb-auth__label">Email</label>
                         <input
                             id="email"
                             v-model="form.email"
                             type="email"
-                            class="field__input"
+                            name="email"
+                            class="nb-auth__input"
                             required
                             autocomplete="username"
                         />
-                        <p v-if="form.errors.email" class="field__error">{{ form.errors.email }}</p>
+                        <p v-if="form.errors.email" class="nb-auth__error">{{ form.errors.email }}</p>
                     </div>
 
-                    <div class="field">
-                        <label for="password" class="field__label">Password</label>
+                    <div class="nb-auth__field">
+                        <label for="password" class="nb-auth__label">Password</label>
                         <input
                             id="password"
                             v-model="form.password"
                             type="password"
-                            class="field__input"
+                            name="password"
+                            class="nb-auth__input"
                             required
                             autocomplete="new-password"
                         />
-                        <p v-if="form.errors.password" class="field__error">{{ form.errors.password }}</p>
+                        <p v-if="form.errors.password" class="nb-auth__error">{{ form.errors.password }}</p>
                     </div>
 
-                    <div class="field">
-                        <label for="password_confirmation" class="field__label">Confirm password</label>
+                    <div class="nb-auth__field">
+                        <label for="password_confirmation" class="nb-auth__label">Confirm password</label>
                         <input
                             id="password_confirmation"
                             v-model="form.password_confirmation"
                             type="password"
-                            class="field__input"
+                            name="password_confirmation"
+                            class="nb-auth__input"
                             required
                             autocomplete="new-password"
                         />
-                        <p v-if="form.errors.password_confirmation" class="field__error">{{ form.errors.password_confirmation }}</p>
+                        <p v-if="form.errors.password_confirmation" class="nb-auth__error">{{ form.errors.password_confirmation }}</p>
                     </div>
 
-                    <button type="submit" class="btn btn--primary auth-form__submit" :disabled="form.processing">
+                    <button type="submit" class="nb-auth__submit" :disabled="form.processing">
                         Create account
+                        <font-awesome-icon icon="arrow-right" />
                     </button>
                 </form>
 
-                <div class="auth-card__footer">
-                    <Link :href="route('login')" class="auth-card__link auth-card__link--accent">
+                <div class="nb-auth__foot">
+                    <Link :href="route('login')" class="nb-auth__link nb-auth__link--accent">
                         Already have an account? Log in
                     </Link>
                 </div>

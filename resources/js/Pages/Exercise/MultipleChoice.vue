@@ -15,7 +15,6 @@ const shuffle = arr => [...arr].sort(() => Math.random() - 0.5)
 
 function buildItems(clause) {
     const pairs = clause.pairs ?? []
-    console.log(pairs)
     return {
         left:  shuffle(pairs.map((pair, i) => ({ text: pair[0], idx: i }))),
         right: shuffle(pairs.map((pair, i) => ({ text: pair[1], idx: i }))),
@@ -89,33 +88,33 @@ function tryMatch() {
 
 <template>
     <div>
-        <p class="prompt">{{ prompt }}</p>
+        <p class="nb-ex-prompt">{{ prompt }}</p>
 
-        <div class="columns">
-            <div class="col">
+        <div class="nb-ex-columns">
+            <div class="nb-ex-col">
                 <button
                     v-for="item in items.left"
                     :key="item.idx"
-                    class="pair-btn"
+                    class="nb-ex-opt"
                     :class="{
-                        'pair-btn--selected': state.selectedLeft === item.idx && !isMatched(item.idx),
-                        'pair-btn--matched':  isMatched(item.idx),
-                        'pair-btn--wrong':    isWrongLeft(item.idx),
+                        'nb-ex-opt--selected': state.selectedLeft === item.idx && !isMatched(item.idx),
+                        'nb-ex-opt--matched':  isMatched(item.idx),
+                        'nb-ex-opt--wrong':    isWrongLeft(item.idx),
                     }"
                     :disabled="isMatched(item.idx)"
                     @click="selectLeft(item.idx)"
                 >{{ item.text }}</button>
             </div>
 
-            <div class="col">
+            <div class="nb-ex-col">
                 <button
                     v-for="item in items.right"
                     :key="item.idx"
-                    class="pair-btn"
+                    class="nb-ex-opt"
                     :class="{
-                        'pair-btn--selected': state.selectedRight === item.idx && !isMatched(item.idx),
-                        'pair-btn--matched':  isMatched(item.idx),
-                        'pair-btn--wrong':    isWrongRight(item.idx),
+                        'nb-ex-opt--selected': state.selectedRight === item.idx && !isMatched(item.idx),
+                        'nb-ex-opt--matched':  isMatched(item.idx),
+                        'nb-ex-opt--wrong':    isWrongRight(item.idx),
                     }"
                     :disabled="isMatched(item.idx)"
                     @click="selectRight(item.idx)"
@@ -123,94 +122,6 @@ function tryMatch() {
             </div>
         </div>
 
-        <p class="tally">{{ state.matched.length }} / {{ total }} matched</p>
+        <p class="nb-ex-tally">{{ state.matched.length }} / {{ total }} matched</p>
     </div>
 </template>
-
-<style scoped>
-.prompt {
-    font-family: 'PT Serif', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.35;
-    color: var(--ink);
-    margin: 0 0 2rem;
-}
-
-.columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .75rem;
-    margin-bottom: 1.5rem;
-}
-
-.col {
-    display: flex;
-    flex-direction: column;
-    gap: .65rem;
-}
-
-.pair-btn {
-    width: 100%;
-    padding: .75rem 1rem;
-    border-radius: .65rem;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--ink);
-    font-family: 'PT Sans', sans-serif;
-    font-size: .95rem;
-    font-weight: 600;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color .15s ease, background .15s ease, color .15s ease, transform .1s ease;
-}
-
-.pair-btn:hover:not(:disabled) {
-    border-color: var(--rose);
-    color: var(--rose);
-    transform: translateY(-2px);
-}
-
-.pair-btn--selected {
-    border-color: var(--gold);
-    background: color-mix(in srgb, var(--gold) 8%, transparent);
-    color: var(--gold);
-}
-
-.pair-btn--matched {
-    border-color: var(--forest);
-    background: var(--forest-bg);
-    color: var(--forest);
-    opacity: .7;
-    cursor: default;
-    transform: none;
-}
-
-.pair-btn--wrong {
-    border-color: var(--rose);
-    background: var(--rose-bg);
-    color: var(--rose);
-    animation: shake .35s ease;
-}
-
-.tally {
-    font-size: .8rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: center;
-    margin: 0;
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25%       { transform: translateX(-5px); }
-    75%       { transform: translateX(5px); }
-}
-
-.pair-btn:focus-visible {
-    outline: 2px solid var(--rose);
-    outline-offset: 2px;
-}
-</style>

@@ -1,0 +1,257 @@
+/* ══════════════ Neo-Brutalist auth pages ══════════════ */
+/* Login / Register / password reset / email verification.            */
+/* Mirrors the token system used on the Welcome page (welcome.scss).   */
+
+.nb-auth {
+    --ink:    #14110b;
+    --bg:     #f1e9d6;
+    --paper:  #fffaf0;
+    --on-accent: #14110b; /* text on colored fills — stays dark in both themes */
+
+    --cyan:   #34d3da;
+    --pink:   #ff6ba3;
+    --blue:   #5b8def;
+    --green:  #46d39a;
+    --orange: #ff8a47;
+    --purple: #b388ff;
+    --red:    #ff5b5b;
+
+    --border: 3px solid var(--ink);
+    --shadow:    6px 6px 0 0 var(--ink);
+    --shadow-sm: 4px 4px 0 0 var(--ink);
+    --radius: 12px;
+
+    display: flex; flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Manrope', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    transition: background 0.3s ease, color 0.3s ease;
+    /* subtle brutalist dot grid */
+    background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+    background-position: -11px -11px;
+}
+.nb-auth * { box-sizing: border-box; }
+
+.nb-auth.dark {
+    --ink:   #f4ead6;
+    --bg:    #17140f;
+    --paper: #221d16;
+    background-image: radial-gradient(rgba(244, 234, 214, 0.10) 1.2px, transparent 1.2px);
+}
+.nb-auth ::selection { background: var(--pink); color: var(--ink); }
+
+/* ══════════════ Nav ══════════════ */
+.nb-auth__bar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: var(--border);
+}
+.nb-auth__nav {
+    max-width: 1180px; margin: 0 auto;
+    padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap;
+}
+.nb-auth__logo { display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--ink); }
+.nb-auth__logo-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.1rem; height: 2.1rem;
+    font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 1.15rem; line-height: 1;
+    background: var(--pink); color: var(--on-accent);
+    border: var(--border); border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    transform: rotate(-4deg);
+}
+.nb-auth__logo-text { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
+
+.nb-auth__links { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.nb-auth__navlink {
+    display: inline-flex; align-items: center;
+    height: 2.4rem; padding: 0 0.95rem;
+    text-decoration: none; color: var(--on-accent);
+    font-weight: 800; font-size: 0.85rem;
+    background: var(--cyan);
+    border: var(--border); border-radius: 9px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.nb-auth__navlink:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.nb-auth__navlink--cta { background: var(--orange); }
+
+.nb-auth__toggle {
+    width: 2.4rem; height: 2.4rem; cursor: pointer;
+    font-size: 1.05rem; line-height: 1; color: var(--ink);
+    background: var(--paper); border: var(--border); border-radius: 9px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.nb-auth__toggle:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+
+/* ══════════════ Card ══════════════ */
+.nb-auth__main {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: clamp(2rem, 6vw, 4rem) 1.5rem clamp(3rem, 7vw, 5rem);
+}
+.nb-auth__card {
+    position: relative;
+    width: 100%; max-width: 27rem;
+    background: var(--paper); color: var(--ink);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: clamp(1.6rem, 4vw, 2.4rem);
+    animation: nb-auth-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.nb-auth__stamp {
+    position: absolute; top: -1.05rem; right: -1.05rem;
+    display: flex; align-items: center; justify-content: center;
+    width: 2.9rem; height: 2.9rem;
+    font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 1.35rem; line-height: 1;
+    color: var(--on-accent); background: var(--pink);
+    border: var(--border); border-radius: 9px;
+    box-shadow: var(--shadow-sm);
+    transform: rotate(8deg);
+}
+
+/* ── Card head ── */
+.nb-auth__head { margin-bottom: 1.6rem; }
+.nb-auth__badge {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--on-accent); background: var(--cyan);
+    padding: 0.45em 0.85em;
+    border: var(--border); border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+}
+.nb-auth__badge-en { font-weight: 700; opacity: 0.6; letter-spacing: 0.04em; }
+.nb-auth__title {
+    margin: 1.05rem 0 0;
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: clamp(1.7rem, 5.5vw, 2.3rem); line-height: 1.02; letter-spacing: -0.02em;
+}
+.nb-auth__caption {
+    display: inline-block; margin-top: 0.7rem;
+    font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 0.9rem;
+    color: var(--on-accent); background: var(--pink);
+    padding: 0.1em 0.5em;
+    border: 2.5px solid var(--ink); border-radius: 7px;
+    box-shadow: 2px 2px 0 0 var(--ink);
+    transform: rotate(-1.5deg);
+}
+.nb-auth__sub { margin-top: 0.9rem; font-weight: 500; font-size: 0.95rem; line-height: 1.6; }
+.nb-auth__hl { box-shadow: inset 0 -0.5em 0 0 var(--cyan); font-weight: 700; }
+
+/* ── Banners ── */
+.nb-auth__note {
+    margin-bottom: 1.5rem;
+    font-weight: 600; font-size: 0.9rem; line-height: 1.55;
+    color: var(--ink); background: var(--bg);
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    padding: 0.85rem 1rem;
+}
+.nb-auth__status {
+    margin-bottom: 1.5rem;
+    font-weight: 800; font-size: 0.88rem; line-height: 1.5;
+    color: var(--on-accent); background: var(--green);
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    padding: 0.8rem 1rem;
+}
+
+/* ══════════════ Form ══════════════ */
+.nb-auth__form { display: flex; flex-direction: column; gap: 1.15rem; }
+.nb-auth__field { display: flex; flex-direction: column; }
+.nb-auth__label {
+    margin-bottom: 0.45rem;
+    font-weight: 800; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink);
+}
+.nb-auth__input {
+    width: 100%;
+    font-family: 'Manrope', sans-serif; font-weight: 600; font-size: 0.98rem;
+    color: var(--ink); background: var(--bg);
+    padding: 0.8rem 0.9rem;
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-auth__input::placeholder { color: var(--ink); opacity: 0.45; }
+.nb-auth__input:focus {
+    outline: none;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 0 var(--cyan);
+}
+.nb-auth__error {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    font-weight: 800; font-size: 0.76rem;
+    color: var(--on-accent); background: var(--red);
+    border: 2.5px solid var(--ink); border-radius: 7px;
+    padding: 0.28rem 0.55rem;
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+.nb-auth__check {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-weight: 700; font-size: 0.9rem; color: var(--ink); cursor: pointer;
+}
+.nb-auth__checkbox { width: 1.15rem; height: 1.15rem; cursor: pointer; accent-color: var(--pink); }
+
+.nb-auth__submit {
+    width: 100%; margin-top: 0.4rem;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1rem;
+    text-align: center; cursor: pointer;
+    color: var(--on-accent); background: var(--orange);
+    padding: 0.9rem 1.6rem;
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-auth__submit:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 0 var(--ink); }
+.nb-auth__submit:active { transform: translate(6px, 6px); box-shadow: none; }
+.nb-auth__submit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: var(--shadow); }
+
+/* ── Card footer ── */
+.nb-auth__foot {
+    margin-top: 1.5rem; padding-top: 1.4rem;
+    border-top: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem 1.25rem; flex-wrap: wrap;
+    font-size: 0.88rem; font-weight: 600;
+}
+.nb-auth__foot--split { justify-content: space-between; }
+.nb-auth__link {
+    color: var(--ink); font-weight: 800; text-decoration: none;
+    background: none; border: 0; padding: 0; cursor: pointer;
+    font-family: 'Manrope', sans-serif; font-size: inherit;
+    box-shadow: inset 0 -0.4em 0 0 var(--cyan);
+    transition: box-shadow 0.15s ease;
+}
+.nb-auth__link:hover { box-shadow: inset 0 -0.75em 0 0 var(--cyan); }
+.nb-auth__link--accent { box-shadow: inset 0 -0.4em 0 0 var(--pink); }
+.nb-auth__link--accent:hover { box-shadow: inset 0 -0.75em 0 0 var(--pink); }
+
+/* ══════════════ Animation ══════════════ */
+@keyframes nb-auth-rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-auth__card { animation: none; }
+    .nb-auth__input,
+    .nb-auth__submit,
+    .nb-auth__navlink,
+    .nb-auth__toggle { transition: none; }
+}
+
+/* ══════════════ Responsive ══════════════ */
+@media (max-width: 560px) {
+    .nb-auth__nav { justify-content: center; }
+    .nb-auth__stamp { top: -0.9rem; right: -0.55rem; }
+}
