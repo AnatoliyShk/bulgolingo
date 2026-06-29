@@ -1,13 +1,19 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
+import PasswordInput from '@/Components/PasswordInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
+
+// Mirrors the Breeze TextInput styling so the field looks unchanged.
+const passwordInputClass =
+    'mt-1 block w-full rounded-md border-gray-300 shadow-sm ' +
+    'focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 ' +
+    'dark:text-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600';
 
 const form = useForm({
     current_password: '',
@@ -50,12 +56,11 @@ const updatePassword = () => {
             <div>
                 <InputLabel for="current_password" value="Current Password" />
 
-                <TextInput
+                <PasswordInput
                     id="current_password"
                     ref="currentPasswordInput"
                     v-model="form.current_password"
-                    type="password"
-                    class="mt-1 block w-full"
+                    :input-class="passwordInputClass"
                     autocomplete="current-password"
                 />
 
@@ -68,12 +73,11 @@ const updatePassword = () => {
             <div>
                 <InputLabel for="password" value="New Password" />
 
-                <TextInput
+                <PasswordInput
                     id="password"
                     ref="passwordInput"
                     v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
+                    :input-class="passwordInputClass"
                     autocomplete="new-password"
                 />
 
@@ -86,11 +90,10 @@ const updatePassword = () => {
                     value="Confirm Password"
                 />
 
-                <TextInput
+                <PasswordInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
+                    :input-class="passwordInputClass"
                     autocomplete="new-password"
                 />
 

@@ -3,13 +3,19 @@ import DangerButton from '@/Components/DangerButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
+import PasswordInput from '@/Components/PasswordInput.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);
+
+// Mirrors the Breeze TextInput styling so the field looks unchanged.
+const passwordInputClass =
+    'mt-1 block w-full rounded-md border-gray-300 shadow-sm ' +
+    'focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 ' +
+    'dark:text-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600';
 
 const form = useForm({
     password: '',
@@ -75,12 +81,11 @@ const closeModal = () => {
                         class="sr-only"
                     />
 
-                    <TextInput
+                    <PasswordInput
                         id="password"
                         ref="passwordInput"
                         v-model="form.password"
-                        type="password"
-                        class="mt-1 block w-3/4"
+                        :input-class="passwordInputClass"
                         placeholder="Password"
                         @keyup.enter="deleteUser"
                     />

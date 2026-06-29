@@ -45,7 +45,7 @@ function progressPercent(path) {
         <nav class="nb-prof__nav">
             <div class="nb-prof__nav-inner">
                 <Link href="/" class="nb-prof__logo" aria-label="Back to home">
-                    <span class="nb-prof__logo-mark">Б</span>
+                    <span class="nb-prof__logo-mark">BB</span>
                     <span class="nb-prof__logo-text">{{ appName }}</span>
                 </Link>
                 <div class="nb-prof__nav-actions">

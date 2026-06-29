@@ -4,6 +4,7 @@ import '@/assets/scss/components/auth.scss'
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { useTheme } from '@/composables/useTheme'
+import PasswordInput from '@/Components/PasswordInput.vue'
 
 const page = usePage()
 const appName = computed(() => page.props.appName)
@@ -35,7 +36,7 @@ const submit = () => {
         <header class="nb-auth__bar">
             <nav class="nb-auth__nav">
                 <a href="/" class="nb-auth__logo">
-                    <span class="nb-auth__logo-mark" aria-hidden="true">Ъ</span>
+                    <span class="nb-auth__logo-mark" aria-hidden="true">BB</span>
                     <span class="nb-auth__logo-text">{{ appName }}</span>
                 </a>
                 <div class="nb-auth__links">
@@ -49,10 +50,9 @@ const submit = () => {
 
         <main class="nb-auth__main">
             <section class="nb-auth__card">
-                <span class="nb-auth__stamp" aria-hidden="true">Ъ</span>
+                <span class="nb-auth__stamp" aria-hidden="true">BB</span>
 
                 <div class="nb-auth__head">
-                    <span class="nb-auth__badge"><span lang="bg">Регистрация</span> · <span class="nb-auth__badge-en">sign up</span></span>
                     <h1 class="nb-auth__title">Start learning</h1>
                     <p><span class="nb-auth__caption" lang="bg">Да започваме!</span></p>
                     <p class="nb-auth__sub">Create an account to <span class="nb-auth__hl">save your progress</span> and keep your streak.</p>
@@ -90,12 +90,11 @@ const submit = () => {
 
                     <div class="nb-auth__field">
                         <label for="password" class="nb-auth__label">Password</label>
-                        <input
+                        <PasswordInput
                             id="password"
                             v-model="form.password"
-                            type="password"
                             name="password"
-                            class="nb-auth__input"
+                            input-class="nb-auth__input"
                             required
                             autocomplete="new-password"
                         />
@@ -104,12 +103,11 @@ const submit = () => {
 
                     <div class="nb-auth__field">
                         <label for="password_confirmation" class="nb-auth__label">Confirm password</label>
-                        <input
+                        <PasswordInput
                             id="password_confirmation"
                             v-model="form.password_confirmation"
-                            type="password"
                             name="password_confirmation"
-                            class="nb-auth__input"
+                            input-class="nb-auth__input"
                             required
                             autocomplete="new-password"
                         />

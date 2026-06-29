@@ -36,7 +36,7 @@ const submit = () => {
         <header class="nb-auth__bar">
             <nav class="nb-auth__nav">
                 <a href="/" class="nb-auth__logo">
-                    <span class="nb-auth__logo-mark" aria-hidden="true">Ъ</span>
+                    <span class="nb-auth__logo-mark" aria-hidden="true">BB</span>
                     <span class="nb-auth__logo-text">{{ appName }}</span>
                 </a>
                 <div class="nb-auth__links">
@@ -50,7 +50,7 @@ const submit = () => {
 
         <main class="nb-auth__main">
             <section class="nb-auth__card">
-                <span class="nb-auth__stamp" aria-hidden="true">Ъ</span>
+                <span class="nb-auth__stamp" aria-hidden="true">BB</span>
 
                 <div class="nb-auth__head">
                     <span class="nb-auth__badge"><span lang="bg">Възстановяване</span> · <span class="nb-auth__badge-en">reset</span></span>

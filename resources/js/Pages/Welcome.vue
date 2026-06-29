@@ -50,18 +50,6 @@ const ticker = [
 
 // Cultural motifs — click a doodle to read about it (English info)
 const info = {
-    martenitsa: {
-        icon: '🧶',
-        accent: '#ff6ba3',
-        en: 'Martenitsa',
-        tag: 'Мартеница',
-        lead: 'A red-and-white token of health and spring.',
-        body: [
-            'Bulgarians exchange martenitsi every March 1st for Baba Marta — “Grandma March” — wishing one another health, luck, and happiness.',
-            'You pin it to your clothes or tie it to your wrist and wear it until you see the first sign of spring: a stork, a swallow, or a blossoming tree. Then you tie it to a branch.',
-            'The classic pair of yarn dolls is Pizho (white) and Penda (red) — white for purity and long life, red for vitality and the blood of life.',
-        ],
-    },
     banitsa: {
         icon: '🥧',
         accent: '#e0a043',
@@ -132,7 +120,7 @@ onBeforeUnmount(() => {
         <header class="nb-nav">
             <nav class="nb-nav__inner">
                 <a href="/" class="nb-logo">
-                    <span class="nb-logo__mark" aria-hidden="true">Ъ</span>
+                    <span class="nb-logo__mark" aria-hidden="true">BB</span>
                     <span class="nb-logo__text">{{ appName }}</span>
                 </a>
 
@@ -162,22 +150,12 @@ onBeforeUnmount(() => {
             <!-- ── Hero ── -->
             <section class="nb-hero">
                 <div class="nb-hero__text">
-                    <span class="nb-badge nb-badge--cyan">★ Учи български · Learn Bulgarian</span>
-
                     <h1 class="nb-display" aria-label="Learn Bulgarian">
                         <span class="nb-display__a" lang="bg">УЧИ</span>
                         <span class="nb-display__b" lang="bg">
                             <span class="nb-flag nb-flag--white">БЪЛ</span><span class="nb-flag nb-flag--green">ГАР</span><span class="nb-flag nb-flag--red">СКИ</span>
                         </span>
                     </h1>
-
-                    <p class="nb-lede">
-                        <strong lang="bg">Здравей</strong>
-                        <span class="nb-phon">zdra-VEY</span>
-                        — that's hello, and your first word. Bulgarian has its own
-                        alphabet, its own sounds, and its own logic.
-                        <span class="nb-hl">{{ appName }} teaches all three.</span>
-                    </p>
 
                     <div class="nb-actions">
                         <template v-if="isAuthenticated">
@@ -189,35 +167,6 @@ onBeforeUnmount(() => {
                             <a href="/login" class="nb-btn nb-btn--ghost">Log in</a>
                         </template>
                     </div>
-                </div>
-
-                <!-- Visual cluster -->
-                <div class="nb-hero__art">
-                    <!-- Martenitsa — Пижо (white) & Пенда (red), worn for Баба Марта -->
-                    <button type="button" class="nb-marten nb-motif" @click="openInfo('martenitsa')" aria-label="About the martenitsa">
-                        <span class="nb-marten__cord"></span>
-                        <div class="nb-marten__dolls">
-                            <span class="nb-marten__doll nb-marten__doll--white">
-                                <span class="nb-marten__head"></span>
-                                <span class="nb-marten__body"></span>
-                                <span class="nb-marten__legs"></span>
-                            </span>
-                            <span class="nb-marten__doll nb-marten__doll--red">
-                                <span class="nb-marten__head"></span>
-                                <span class="nb-marten__body"></span>
-                                <span class="nb-marten__legs"></span>
-                            </span>
-                        </div>
-                        <span class="nb-marten__tag">Баба Марта</span>
-                    </button>
-
-                    <div class="nb-tile" aria-hidden="true">
-                        <span class="nb-tile__glyph">Ъ</span>
-                        <span class="nb-tile__name">ER GOLYAM</span>
-                    </div>
-                    <div class="nb-chip nb-chip--pink" aria-hidden="true">Аз <font-awesome-icon icon="arrow-right" /> I</div>
-                    <div class="nb-chip nb-chip--cyan" aria-hidden="true">Ти <font-awesome-icon icon="arrow-right" /> you</div>
-                    <div class="nb-chip nb-chip--green" aria-hidden="true">Ние <font-awesome-icon icon="arrow-right" /> we</div>
                 </div>
             </section>
 
@@ -284,7 +233,7 @@ onBeforeUnmount(() => {
 
         <!-- ── Footer ── -->
         <footer class="nb-footer">
-            <span class="nb-logo__mark nb-reveal" aria-hidden="true">Ъ</span>
+            <span class="nb-logo__mark nb-reveal" aria-hidden="true">BB</span>
             <p class="nb-footer__text nb-reveal" style="--reveal-delay: 120ms">
                 <strong>{{ appName }}</strong>
                 <span lang="bg"> — учи български, дума по дума.</span>
