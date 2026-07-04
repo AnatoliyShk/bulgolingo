@@ -39,7 +39,6 @@ Route::get('/dashboard', [ProfileController::class, 'show'])
     ->name('dashboard');
 
 Route::get('/learning-paths', [LearningPathController::class, 'index'])
-    ->middleware(['auth', 'verified'])
     ->name('learning-paths.index');
 
 Route::post('/learning-paths/{learningPath}/start', [LearningPathController::class, 'start'])

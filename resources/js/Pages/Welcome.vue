@@ -125,6 +125,7 @@ onBeforeUnmount(() => {
                 </a>
 
                 <div class="nb-nav__links">
+                    <a href="/learning-paths" class="nb-navlink">Learning paths</a>
                     <a :href="isAuthenticated ? continueHref : '#path'" class="nb-navlink">Your path</a>
                     <template v-if="isAuthenticated">
                         <a href="/dashboard" class="nb-navlink">Profile</a>
@@ -163,7 +164,7 @@ onBeforeUnmount(() => {
                             <a href="/dashboard" class="nb-btn nb-btn--ghost">Dashboard</a>
                         </template>
                         <template v-else>
-                            <a href="/register" class="nb-btn nb-btn--primary">Start free <font-awesome-icon icon="arrow-right" /></a>
+                            <a href="/learning-paths" class="nb-btn nb-btn--primary">Start free <font-awesome-icon icon="arrow-right" /></a>
                             <a href="/login" class="nb-btn nb-btn--ghost">Log in</a>
                         </template>
                     </div>
