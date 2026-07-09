@@ -10,8 +10,22 @@ class LearningPathController extends Controller
 {
     public function index()
     {
+        $paths = LearningPath::with('lessons.exercises:id,lesson_id,decision_type')->get()
+            ->map(fn (LearningPath $path) => [
+                'id' => $path->id,
+                'name' => $path->name,
+                'language' => $path->language,
+                'exercise_types' => $path->lessons
+                    ->flatMap(fn ($lesson) => $lesson->exercises)
+                    ->pluck('decision_type')
+                    ->filter()
+                    ->unique()
+                    ->map(fn ($type) => $type->value)
+                    ->values(),
+            ]);
+
         return Inertia::render('LearningPath/Index', [
-            'paths' => LearningPath::all(),
+            'paths' => $paths,
         ]);
     }
 

@@ -14,6 +14,17 @@ const isAuthenticated = computed(() => !!page.props.auth.user)
 
 const { theme, toggleTheme } = useTheme()
 
+const EXERCISE_TYPE_META = {
+    multiple_choice: { icon: 'list-check', label: 'Multiple choice' },
+    true_false: { icon: 'check-double', label: 'True or false' },
+    fill_in_the_blank: { icon: 'pen-to-square', label: 'Fill in the blank' },
+    image_matching: { icon: 'image', label: 'Image matching' },
+}
+
+function typeMeta(type) {
+    return EXERCISE_TYPE_META[type]
+}
+
 function start(pathId) {
     router.post(route('learning-paths.start', pathId))
 }
@@ -70,6 +81,14 @@ function start(pathId) {
                 >
                     <span class="nb-paths__card-tag">{{ path.language }}</span>
                     <h2 class="nb-paths__card-name">{{ path.name }}</h2>
+
+                    <ul v-if="path.exercise_types?.length" class="nb-paths__card-types" aria-label="Exercise types in this path">
+                        <template v-for="type in path.exercise_types" :key="type">
+                            <li v-if="typeMeta(type)" class="nb-paths__card-type" :title="typeMeta(type).label">
+                                <font-awesome-icon :icon="typeMeta(type).icon" />
+                            </li>
+                        </template>
+                    </ul>
 
                     <button
                         v-if="isAuthenticated"

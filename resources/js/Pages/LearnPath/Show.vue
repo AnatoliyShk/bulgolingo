@@ -119,7 +119,7 @@ function labelStyle(node) {
 
     <div class="lp" :class="theme">
         <header class="lp__bar">
-            <Link :href="route('learning-paths.index')" class="lp__btn" aria-label="Back to paths">
+            <Link :href="route('dashboard')" class="lp__btn" aria-label="Back to dashboard">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
                 </svg>

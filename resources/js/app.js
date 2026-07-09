@@ -8,9 +8,17 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowRight, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowRight,
+    faEye,
+    faEyeSlash,
+    faListCheck,
+    faCheckDouble,
+    faPenToSquare,
+    faImage,
+} from '@fortawesome/free-solid-svg-icons';
 
-library.add(faArrowRight, faEye, faEyeSlash);
+library.add(faArrowRight, faEye, faEyeSlash, faListCheck, faCheckDouble, faPenToSquare, faImage);
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

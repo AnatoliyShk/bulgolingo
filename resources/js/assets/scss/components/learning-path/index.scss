@@ -136,6 +136,17 @@
     font-family: 'Unbounded', sans-serif; font-weight: 700;
     font-size: 1.3rem; line-height: 1.2;
 }
+.nb-paths__card-types {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    list-style: none; margin: 0; padding: 0;
+}
+.nb-paths__card-type {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.1rem; height: 2.1rem;
+    color: var(--on-accent); background: var(--green);
+    border: var(--border); border-radius: 8px; box-shadow: var(--shadow-sm);
+    font-size: 0.85rem;
+}
 .nb-paths__card-btn {
     align-self: stretch; margin-top: auto; text-align: center;
     font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.92rem;
