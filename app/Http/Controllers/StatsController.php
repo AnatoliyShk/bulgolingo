@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ExerciseType;
 use App\Models\Lesson;
 use App\Models\UserLearnedWord;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -33,31 +34,35 @@ class StatsController extends Controller
             ->get()
             ->groupBy('decision_type');
 
+        // Light-mode chart steps of the neo-brutalist accents; the Vue page
+        // swaps in dark-mode steps client-side based on the active theme.
         $typeColors = [
-            'fill_in_the_blank' => '#6366f1',
-            'multiple_choice'   => '#f59e0b',
-            'true_false'        => '#10b981',
-            'image_matching'    => '#ec4899',
+            'fill_in_the_blank' => '#3a6fe0',
+            'multiple_choice' => '#d95f12',
+            'true_false' => '#0f9d63',
+            'image_matching' => '#d6367f',
         ];
 
         $activityByType = collect(ExerciseType::cases())->map(function ($type) use ($days, $rawActivity, $typeColors) {
             $byDay = ($rawActivity->get($type->value) ?? collect())->keyBy('day');
+
             return [
-                'name'   => $type->getDescription(),
+                'name' => $type->getDescription(),
+                'type' => $type->value,
                 'values' => $days->map(fn ($d) => (int) ($byDay->get($d)?->cnt ?? 0))->values()->toArray(),
-                'color'  => $typeColors[$type->value] ?? '#94a3b8',
+                'color' => $typeColors[$type->value] ?? '#94a3b8',
             ];
         })->values()->toArray();
 
-        $activityDays = $days->map(fn ($d) => \Carbon\Carbon::parse($d)->format('M j'))->values()->toArray();
+        $activityDays = $days->map(fn ($d) => Carbon::parse($d)->format('M j'))->values()->toArray();
 
         return Inertia::render('Stats/Show', [
-            'completedLessons'       => $completedLessonStats['completed_lessons'],
-            'completedExercises'     => $completedLessonStats['total_exercises'],
+            'completedLessons' => $completedLessonStats['completed_lessons'],
+            'completedExercises' => $completedLessonStats['total_exercises'],
             'completedLearningPaths' => $completedLearningPaths,
-            'learnedWords'           => $learnedWords,
-            'activityByType'         => $activityByType,
-            'activityDays'           => $activityDays,
+            'learnedWords' => $learnedWords,
+            'activityByType' => $activityByType,
+            'activityDays' => $activityDays,
         ]);
     }
 }

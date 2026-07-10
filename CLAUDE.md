@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 composer dev
 ```
-Starts `php artisan serve`, queue worker, `pail` log viewer, and `npm run dev` concurrently.
+Starts `php artisan serve`, queue worker, `pail` log viewer, and `yarn dev` concurrently.
 
 ### First-time setup
 ```bash
@@ -18,8 +18,8 @@ Installs dependencies, copies `.env`, generates app key, runs migrations, and bu
 
 ### Frontend only
 ```bash
-npm run dev    # Vite HMR dev server
-npm run build  # Production build
+yarn dev    # Vite HMR dev server
+yarn build  # Production build
 ```
 
 ### Testing
