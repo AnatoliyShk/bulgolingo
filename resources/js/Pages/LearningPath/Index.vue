@@ -1,6 +1,6 @@
 <script setup>
 import '@/assets/scss/components/learning-path/index.scss'
-import { Head, router, usePage } from '@inertiajs/vue3'
+import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 
@@ -41,18 +41,18 @@ function start(pathId) {
     <div class="nb-paths" :class="theme">
         <header class="nb-paths__bar">
             <nav class="nb-paths__bar-inner">
-                <a href="/" class="nb-paths__logo">
+                <Link href="/" class="nb-paths__logo">
                     <span class="nb-paths__logo-mark" aria-hidden="true">BB</span>
                     <span class="nb-paths__logo-text">{{ appName }}</span>
-                </a>
+                </Link>
 
                 <div class="nb-paths__bar-links">
                     <template v-if="isAuthenticated">
-                        <a href="/dashboard" class="nb-paths__navlink">Dashboard</a>
+                        <Link href="/dashboard" class="nb-paths__navlink">Dashboard</Link>
                     </template>
                     <template v-else>
-                        <a href="/login" class="nb-paths__navlink">Login</a>
-                        <a href="/register" class="nb-paths__navlink nb-paths__navlink--cta">Register</a>
+                        <Link href="/login" class="nb-paths__navlink">Login</Link>
+                        <Link href="/register" class="nb-paths__navlink nb-paths__navlink--cta">Register</Link>
                     </template>
                     <button
                         class="nb-paths__toggle"
@@ -98,9 +98,9 @@ function start(pathId) {
                     >
                         Start
                     </button>
-                    <a v-else href="/register" class="nb-paths__card-btn">
+                    <Link v-else href="/register" class="nb-paths__card-btn">
                         Sign up to start
-                    </a>
+                    </Link>
                 </article>
             </div>
 

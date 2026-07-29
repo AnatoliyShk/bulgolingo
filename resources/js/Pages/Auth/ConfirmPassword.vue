@@ -1,7 +1,7 @@
 <script setup>
 import '@/assets/scss/components/auth.scss'
 
-import { Head, useForm, usePage } from '@inertiajs/vue3'
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import PasswordInput from '@/Components/PasswordInput.vue'
@@ -32,10 +32,10 @@ const submit = () => {
 
         <header class="nb-auth__bar">
             <nav class="nb-auth__nav">
-                <a href="/" class="nb-auth__logo">
+                <Link href="/" class="nb-auth__logo">
                     <span class="nb-auth__logo-mark" aria-hidden="true">BB</span>
                     <span class="nb-auth__logo-text">{{ appName }}</span>
-                </a>
+                </Link>
                 <div class="nb-auth__links">
                     <button class="nb-auth__toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
                         {{ theme === 'dark' ? '☀' : '☾' }}

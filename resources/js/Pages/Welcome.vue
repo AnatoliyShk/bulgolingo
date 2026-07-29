@@ -1,6 +1,6 @@
 <script setup>
 import '@/assets/scss/components/welcome.scss'
-import { Head, usePage } from '@inertiajs/vue3'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 
@@ -119,21 +119,22 @@ onBeforeUnmount(() => {
         <!-- ── Nav ── -->
         <header class="nb-nav">
             <nav class="nb-nav__inner">
-                <a href="/" class="nb-logo">
+                <Link href="/" class="nb-logo">
                     <span class="nb-logo__mark" aria-hidden="true">BB</span>
                     <span class="nb-logo__text">{{ appName }}</span>
-                </a>
+                </Link>
 
                 <div class="nb-nav__links">
-                    <a href="/learning-paths" class="nb-navlink">Learning paths</a>
-                    <a :href="isAuthenticated ? continueHref : '#path'" class="nb-navlink">Your path</a>
+                    <Link href="/learning-paths" class="nb-navlink">Learning paths</Link>
+                    <Link v-if="isAuthenticated" :href="continueHref" class="nb-navlink">Your path</Link>
+                    <a v-else href="#path" class="nb-navlink">Your path</a>
                     <template v-if="isAuthenticated">
-                        <a href="/dashboard" class="nb-navlink">Profile</a>
-                        <a v-if="isAdmin" href="/admin" class="nb-navlink">Admin</a>
+                        <Link href="/dashboard" class="nb-navlink">Profile</Link>
+                        <Link v-if="isAdmin" href="/admin" class="nb-navlink">Admin</Link>
                     </template>
                     <template v-else>
-                        <a href="/login" class="nb-navlink">Login</a>
-                        <a href="/register" class="nb-navlink nb-navlink--cta">Register</a>
+                        <Link href="/login" class="nb-navlink">Login</Link>
+                        <Link href="/register" class="nb-navlink nb-navlink--cta">Register</Link>
                     </template>
                     <button
                         class="nb-toggle"
@@ -160,12 +161,12 @@ onBeforeUnmount(() => {
 
                     <div class="nb-actions">
                         <template v-if="isAuthenticated">
-                            <a :href="continueHref" class="nb-btn nb-btn--primary">Continue learning <font-awesome-icon icon="arrow-right" /></a>
-                            <a href="/dashboard" class="nb-btn nb-btn--ghost">Dashboard</a>
+                            <Link :href="continueHref" class="nb-btn nb-btn--primary">Continue learning <font-awesome-icon icon="arrow-right" /></Link>
+                            <Link href="/dashboard" class="nb-btn nb-btn--ghost">Dashboard</Link>
                         </template>
                         <template v-else>
-                            <a href="/learning-paths" class="nb-btn nb-btn--primary">Start free <font-awesome-icon icon="arrow-right" /></a>
-                            <a href="/login" class="nb-btn nb-btn--ghost">Log in</a>
+                            <Link href="/learning-paths" class="nb-btn nb-btn--primary">Start free <font-awesome-icon icon="arrow-right" /></Link>
+                            <Link href="/login" class="nb-btn nb-btn--ghost">Log in</Link>
                         </template>
                     </div>
                 </div>
@@ -221,12 +222,12 @@ onBeforeUnmount(() => {
                         <span class="nb-deco-tag">Ракия</span>
                     </button>
                     <p class="nb-cta-band__text" lang="bg">Готов ли си? <span>Ready?</span></p>
-                    <a
+                    <Link
                         :href="isAuthenticated ? continueHref : '/register'"
                         class="nb-btn nb-btn--primary nb-btn--lg"
                     >
                         {{ isAuthenticated ? 'Keep going' : 'Start learning' }} <font-awesome-icon icon="arrow-right" />
-                    </a>
+                    </Link>
                 </div>
             </section>
 
