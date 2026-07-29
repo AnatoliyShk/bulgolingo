@@ -11,7 +11,7 @@ Backend API: [bulgolingo-api](https://github.com/AnatoliyShk/bulgolingo-api)
 - User progress tracking
 
 ## Stack
-PHP 8 · Laravel · MySQL · Blade · Docker
+PHP 8 · Laravel · Vue.js · MySQL · Vite · Docker
 
 ## Running locally
 ```bash
