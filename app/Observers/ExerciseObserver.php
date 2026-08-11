@@ -65,4 +65,8 @@ class ExerciseObserver
             $prefixed
         )->validate();
     }
+
+    public function saved(Exercise $exercise) {
+        \Cache::increment('v:exercise:{$exercise->id}');
+    }
 }
