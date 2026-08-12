@@ -26,7 +26,8 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-#            - rabbitmq
+            rabbitmq:
+                condition: service_healthy
     pgsql:
         image: 'postgres:18-alpine'
         ports:
@@ -67,6 +68,25 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    rabbitmq:
+        image: 'rabbitmq:3-management-alpine'
+        ports:
+            - '${FORWARD_RABBITMQ_PORT:-5672}:5672'
+            - '${FORWARD_RABBITMQ_MANAGEMENT_PORT:-15672}:15672'
+        environment:
+            RABBITMQ_DEFAULT_USER: '${RABBITMQ_USER:-sail}'
+            RABBITMQ_DEFAULT_PASS: '${RABBITMQ_PASSWORD:-password}'
+        volumes:
+            - 'sail-rabbitmq:/var/lib/rabbitmq'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - rabbitmq-diagnostics
+                - check_port_connectivity
+            retries: 3
+            timeout: 5s
 networks:
     sail:
         driver: bridge
@@ -77,4 +97,6 @@ volumes:
     sail-pgsql:
         driver: local
     sail-redis:
+        driver: local
+    sail-rabbitmq:
         driver: local

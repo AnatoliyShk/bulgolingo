@@ -1,6 +1,6 @@
 <script setup>
 import '@/assets/scss/components/stats/show.scss'
-import { computed } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { Head, Link, usePage } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import { VueUiWordCloud, VueUiDonutEvolution } from 'vue-data-ui'
@@ -40,26 +40,32 @@ const props = defineProps({
 
 const isDark = computed(() => theme.value === 'dark')
 
-// Chart-mark steps of the brand accents, one step per exercise type.
-// Both sets are CVD- and contrast-validated against their paper surface
-// (#fffaf0 light, #221d16 dark) — the raw UI accents are too light to
-// hold 3:1 on cream, so marks use these darker/lighter siblings.
-const SERIES_COLORS = {
-    light: {
-        multiple_choice: '#d95f12',
-        true_false: '#0f9d63',
-        fill_in_the_blank: '#3a6fe0',
-        image_matching: '#d6367f',
-    },
-    dark: {
-        multiple_choice: '#e06414',
-        true_false: '#0e7a4e',
-        fill_in_the_blank: '#5b8def',
-        image_matching: '#e8548c',
-    },
+const rootEl = ref(null)
+
+// Exercise-type colors live only in show.scss (--activity-* custom
+// properties, one per App\Enums\ExerciseType value), not in the backend
+// payload. The browser already resolves the light/dark value via the
+// .nb-stats.dark cascade, so we just read whatever is currently computed.
+const seriesColors = ref({})
+
+function readSeriesColors() {
+    if (!rootEl.value) return
+
+    const style = getComputedStyle(rootEl.value)
+
+    seriesColors.value = Object.fromEntries(
+        props.activityByType.map((series) => {
+            const varName = `--activity-${series.type.replaceAll('_', '-')}`
+            return [series.type, style.getPropertyValue(varName).trim() || '#94a3b8']
+        })
+    )
 }
 
-const seriesColors = computed(() => SERIES_COLORS[isDark.value ? 'dark' : 'light'])
+onMounted(readSeriesColors)
+watch(theme, async () => {
+    await nextTick()
+    readSeriesColors()
+})
 
 const ink = computed(() => (isDark.value ? '#f4ead6' : '#14110b'))
 const paper = computed(() => (isDark.value ? '#221d16' : '#fffaf0'))
@@ -68,7 +74,7 @@ const inkSoft = computed(() => (isDark.value ? 'rgba(244, 234, 214, 0.16)' : 'rg
 const activityDataset = computed(() =>
     props.activityByType.map((series) => ({
         ...series,
-        color: seriesColors.value[series.type] ?? series.color,
+        color: seriesColors.value[series.type] ?? '#94a3b8',
     }))
 )
 
@@ -178,7 +184,7 @@ const kpis = computed(() => [
         />
     </Head>
 
-    <div class="nb-stats" :class="theme">
+    <div class="nb-stats" :class="theme" ref="rootEl">
         <header class="nb-stats__bar">
             <nav class="nb-stats__bar-inner">
                 <Link :href="route('dashboard')" class="nb-stats__logo">

@@ -15,6 +15,15 @@
     --orange: #ff8a47;
     --purple: #b388ff;
 
+    /* Chart-mark colors, one per App\Enums\ExerciseType value. CVD- and
+       contrast-validated against the paper surface (#fffaf0 light, #221d16
+       dark below) — the raw UI accents above are too light to hold 3:1 on
+       cream, so marks use these darker siblings instead. */
+    --activity-multiple-choice:   #d95f12;
+    --activity-true-false:        #0f9d63;
+    --activity-fill-in-the-blank: #3a6fe0;
+    --activity-image-matching:    #d6367f;
+
     --border: 3px solid var(--ink);
     --shadow:    6px 6px 0 0 var(--ink);
     --shadow-sm: 4px 4px 0 0 var(--ink);
@@ -37,6 +46,11 @@
     --bg:    #17140f;
     --paper: #221d16;
     background-image: radial-gradient(rgba(244, 234, 214, 0.10) 1.2px, transparent 1.2px);
+
+    --activity-multiple-choice:   #e06414;
+    --activity-true-false:        #0e7a4e;
+    --activity-fill-in-the-blank: #5b8def;
+    --activity-image-matching:    #e8548c;
 }
 .nb-stats ::selection { background: var(--pink); color: var(--ink); }
 
