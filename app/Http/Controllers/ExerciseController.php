@@ -97,7 +97,7 @@ class ExerciseController extends Controller
         $user     = auth()->user();
         $lessonId = $exercise->lesson_id;
 
-        LearnedWordCountUpdate::dispatch($user, $exercise);
+        LearnedWordCountUpdate::dispatch($user, $exercise)->onQueue('learning_path');
 
         // Record this exercise as completed for this user (ignore if already recorded)
         $user->completedExercises()->syncWithoutDetaching($exercise->id);
