@@ -1,21 +1,31 @@
 <?php
 
-use App\Http\Controllers\ExerciseController;
-use App\Http\Controllers\LessonController;
-use App\Http\Controllers\Admin\LessonController as AdminLessonController;
+use App\Http\Controllers\Admin\BotController as AdminBotController;
 use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
 use App\Http\Controllers\Admin\LearningPathController as AdminLearningPathController;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\BotController as AdminBotController;
+use App\Http\Controllers\Admin\LessonController as AdminLessonController;
+use App\Http\Controllers\Admin\MetricsController as AdminMetricsController;
 use App\Http\Controllers\Admin\ScriptedDialogueController as AdminScriptedDialogueController;
 use App\Http\Controllers\Admin\ScriptedLineController as AdminScriptedLineController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\VitalsController as AdminVitalsController;
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\LearningPathController;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Prometheus\CollectorRegistry;
+use Prometheus\RenderTextFormat;
+
+Route::get('/metrics', function (CollectorRegistry $registry) {
+    $renderer = new RenderTextFormat;
+
+    return response($renderer->render($registry->getMetricFamilySamples()))
+        ->header('Content-Type', RenderTextFormat::MIME_TYPE);
+});
 
 Route::get('/', function (Request $request) {
     $continueLessonId = null;
@@ -28,8 +38,9 @@ Route::get('/', function (Request $request) {
             $continueLessonId = $firstUncompleted?->id;
         }
     }
+
     return Inertia::render('Welcome', [
-        'appName'          => config('app.name'),
+        'appName' => config('app.name'),
         'continueLessonId' => $continueLessonId,
     ]);
 });
@@ -62,6 +73,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => Inertia::render('Admin/Index'))->name('index');
     Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('metrics/admin', [AdminMetricsController::class, 'adminRequests'])->name('metrics.admin');
+    Route::get('metrics/user', [AdminMetricsController::class, 'userRequests'])->name('metrics.user');
+    Route::get('vitals', [AdminVitalsController::class, 'index'])->name('vitals.index');
     Route::resource('lessons', AdminLessonController::class);
     Route::resource('learning-paths', AdminLearningPathController::class);
     Route::get('exercises', [AdminExerciseController::class, 'index'])->name('exercises.index');

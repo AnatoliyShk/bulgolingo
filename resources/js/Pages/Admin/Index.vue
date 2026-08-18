@@ -60,6 +60,32 @@ import Breadcrumb from '@/Components/Breadcrumb.vue';
                     </div>
                 </section>
 
+                <section>
+                    <h2 class="admin-panel__section-label">Monitoring</h2>
+                    <div class="admin-panel__grid">
+                        <Link :href="route('admin.metrics.admin')" class="admin-panel__card">
+                            <h3 class="admin-panel__card-title">Admin Request Metrics</h3>
+                            <p class="admin-panel__card-desc">HTTP request duration and slow requests for the admin panel.</p>
+                        </Link>
+                        <Link :href="route('admin.metrics.user')" class="admin-panel__card">
+                            <h3 class="admin-panel__card-title">User Request Metrics</h3>
+                            <p class="admin-panel__card-desc">HTTP request duration and slow requests for everything else.</p>
+                        </Link>
+                        <Link :href="route('admin.vitals.index')" class="admin-panel__card">
+                            <h3 class="admin-panel__card-title">Web Vitals</h3>
+                            <p class="admin-panel__card-desc">View LCP, INP, CLS, and TTFB field data from real visits.</p>
+                        </Link>
+                        <a href="/admin/logs" class="admin-panel__card">
+                            <h3 class="admin-panel__card-title">Logs</h3>
+                            <p class="admin-panel__card-desc">Browse application logs, filterable by level.</p>
+                        </a>
+                        <a href="/telescope" class="admin-panel__card">
+                            <h3 class="admin-panel__card-title">Telescope</h3>
+                            <p class="admin-panel__card-desc">Inspect requests, queries, jobs, and exceptions in detail.</p>
+                        </a>
+                    </div>
+                </section>
+
             </div>
         </div>
     </AuthenticatedLayout>

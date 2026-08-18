@@ -1,0 +1,68 @@
+@import './shared';
+
+.admin-metrics {
+    &__body      { @apply py-12; }
+    &__container { @apply mx-auto max-w-7xl space-y-10 px-4 sm:px-6 lg:px-8; }
+    &__kpis      { @apply grid grid-cols-1 gap-6 sm:grid-cols-3; }
+    &__kpi       { @apply rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800; }
+    &__kpi-value { @apply text-3xl font-semibold text-gray-800 dark:text-gray-200; }
+    &__kpi-label { @apply mt-1 text-sm text-gray-500 dark:text-gray-400; }
+    &__kpi-sub   { @apply mt-2 text-xs text-gray-400 dark:text-gray-500; }
+    &__panel     { @apply rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800; }
+    &__panel-title { @apply mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200; }
+    &__empty     { @apply text-sm text-gray-500 dark:text-gray-400; }
+
+    &__queue-table {
+        @apply w-full text-left text-sm;
+
+        th { @apply pb-2 font-semibold text-gray-500 dark:text-gray-400; }
+        td { @apply border-t border-gray-200 py-2 text-gray-800 dark:border-gray-700 dark:text-gray-200; }
+    }
+
+    &__slow-filter {
+        @apply mb-4 flex items-center gap-3;
+    }
+
+    &__slow-filter-label {
+        @apply text-sm font-medium text-gray-500 dark:text-gray-400;
+    }
+
+    &__slow-filter-input {
+        @apply rounded border border-gray-300 bg-white px-2 py-1 text-sm text-gray-800 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200;
+    }
+
+    &__slow-filter-clear {
+        @apply text-sm text-blue-600 hover:underline dark:text-blue-400;
+    }
+
+    &__slow-table {
+        @apply w-full text-left text-sm;
+
+        th { @apply pb-2 font-semibold text-gray-500 dark:text-gray-400; }
+        td { @apply border-t border-gray-200 py-2 text-gray-800 dark:border-gray-700 dark:text-gray-200; }
+    }
+
+    &__slow-group-row {
+        @apply cursor-pointer select-none;
+
+        &:hover { @apply bg-gray-50 dark:bg-gray-700/50; }
+        &:focus-visible { @apply outline outline-2 -outline-offset-2 outline-blue-500; }
+    }
+
+    &__slow-chevron {
+        @apply h-4 w-4 text-gray-400 transition-transform duration-150 dark:text-gray-500;
+
+        &--open { @apply rotate-90; }
+    }
+
+    &__slow-detail-row td {
+        @apply border-t-0 bg-gray-50 py-3 pl-8 dark:bg-gray-900/40;
+    }
+
+    &__slow-detail-table {
+        @apply w-full text-left text-sm;
+
+        th { @apply pb-1 font-semibold text-gray-500 dark:text-gray-400; }
+        td { @apply border-t border-gray-200 py-1.5 text-gray-800 dark:border-gray-700 dark:text-gray-200; }
+    }
+}

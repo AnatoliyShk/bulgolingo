@@ -11,13 +11,17 @@
         "laravel/framework": "^13.8",
         "laravel/horizon": "^5.47",
         "laravel/sanctum": "^4.0",
+        "laravel/telescope": "^5.22",
         "laravel/tinker": "^3.0",
         "nativephp/mobile": "^3.3",
+        "opcodesio/log-viewer": "^3.24",
+        "promphp/prometheus_client_php": "^2.15",
         "tightenco/ziggy": "^2.0",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^15.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",
+        "beyondcode/laravel-query-detector": "^2.3",
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.4",
         "laravel/pail": "^1.2.5",

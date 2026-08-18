@@ -29,6 +29,7 @@
     "apexcharts": "^5.16.0",
     "axios": "^1.16.1",
     "vue-data-ui": "^3.21.4",
-    "vue3-apexcharts": "^1.11.1"
+    "vue3-apexcharts": "^1.11.1",
+    "web-vitals": "^6.1.1"
   }
 }
