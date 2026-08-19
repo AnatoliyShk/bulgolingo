@@ -80,8 +80,9 @@ function submit() {
             <p v-if="form.errors.decision_type" class="mt-1 text-xs text-red-500">{{ form.errors.decision_type }}</p>
         </div>
 
-        <!-- Image (all types) -->
+        <!-- Image (image matching only) -->
         <ImageUpload
+            v-if="form.decision_type === 'image_matching'"
             :key="form.decision_type"
             :existing-url="existingImageUrl"
             :error="form.errors.image"

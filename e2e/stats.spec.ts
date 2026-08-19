@@ -85,5 +85,33 @@ test.describe('Stats page', () => {
             await expect(page.locator('.nb-stats__logo')).toHaveAttribute('href', '/dashboard');
             await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
         });
+
+        test('mobile viewport collapses nav behind a hamburger toggle', async ({ page }) => {
+            await page.setViewportSize({ width: 375, height: 800 });
+            await page.reload();
+
+            const hamburger = page.locator('.nb-stats__hamburger');
+            const toggle = page.locator('.nb-stats__toggle');
+            const links = page.locator('.nb-stats__bar-links');
+
+            await expect(hamburger).toBeVisible();
+            await expect(toggle).toBeVisible();
+            await expect(links).not.toBeVisible();
+
+            await hamburger.click();
+            await expect(links).toBeVisible();
+            await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
+
+            await hamburger.click();
+            await expect(links).not.toBeVisible();
+        });
+
+        test('desktop viewport shows nav links inline without a hamburger', async ({ page }) => {
+            await page.setViewportSize({ width: 1280, height: 800 });
+            await page.reload();
+
+            await expect(page.locator('.nb-stats__hamburger')).not.toBeVisible();
+            await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
+        });
     });
 });

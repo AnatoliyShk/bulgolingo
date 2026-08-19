@@ -1,12 +1,13 @@
 <!-- resources/js/Pages/Profile/Show.vue -->
 <script setup>
 import '@/assets/scss/components/profile/show.scss'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import { useForm } from '@inertiajs/vue3'
 
 const logoutForm = useForm({})
+const mobileNavOpen = ref(false)
 
 const props = defineProps({
     user: Object,
@@ -48,16 +49,34 @@ function progressPercent(path) {
                     <span class="nb-prof__logo-mark">BB</span>
                     <span class="nb-prof__logo-text">{{ appName }}</span>
                 </Link>
-                <div class="nb-prof__nav-actions">
-                    <button
-                        class="nb-prof__theme-btn"
-                        @click="toggleTheme"
-                        :aria-label="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-                    >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
-                    <button
-                        class="nb-prof__logout-btn"
-                        @click="logoutForm.post(route('logout'))"
-                    >Log out</button>
+                <div class="nb-prof__nav-group">
+                    <div class="nb-prof__nav-actions" :class="{ 'nb-prof__nav-actions--open': mobileNavOpen }">
+                        <button
+                            class="nb-prof__logout-btn"
+                            @click="logoutForm.post(route('logout'))"
+                        >Log out</button>
+                    </div>
+
+                    <div class="nb-prof__nav-quick">
+                        <button
+                            class="nb-prof__theme-btn"
+                            @click="toggleTheme"
+                            :aria-label="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+                        >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+
+                        <button
+                            class="nb-prof__hamburger"
+                            type="button"
+                            :aria-expanded="mobileNavOpen"
+                            aria-label="Toggle navigation menu"
+                            @click="mobileNavOpen = !mobileNavOpen"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path v-if="!mobileNavOpen" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+                                <path v-else stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>

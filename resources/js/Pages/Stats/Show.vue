@@ -7,6 +7,7 @@ import { VueUiWordCloud, VueUiDonutEvolution } from 'vue-data-ui'
 import 'vue-data-ui/style.css'
 
 const { theme, toggleTheme } = useTheme()
+const mobileNavOpen = ref(false)
 
 const page = usePage()
 const appName = computed(() => page.props.appName ?? 'Bulgolingo')
@@ -192,15 +193,33 @@ const kpis = computed(() => [
                     <span class="nb-stats__logo-text">{{ appName }}</span>
                 </Link>
 
-                <div class="nb-stats__bar-links">
-                    <Link :href="route('dashboard')" class="nb-stats__navlink">Dashboard</Link>
-                    <button
-                        class="nb-stats__toggle"
-                        @click="toggleTheme"
-                        :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-                    >
-                        {{ theme === 'dark' ? '☀' : '☾' }}
-                    </button>
+                <div class="nb-stats__bar-group">
+                    <div class="nb-stats__bar-links" :class="{ 'nb-stats__bar-links--open': mobileNavOpen }">
+                        <Link :href="route('dashboard')" class="nb-stats__navlink" @click="mobileNavOpen = false">Dashboard</Link>
+                    </div>
+
+                    <div class="nb-stats__bar-actions">
+                        <button
+                            class="nb-stats__toggle"
+                            @click="toggleTheme"
+                            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
+                        >
+                            {{ theme === 'dark' ? '☀' : '☾' }}
+                        </button>
+
+                        <button
+                            class="nb-stats__hamburger"
+                            type="button"
+                            :aria-expanded="mobileNavOpen"
+                            aria-label="Toggle navigation menu"
+                            @click="mobileNavOpen = !mobileNavOpen"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path v-if="!mobileNavOpen" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+                                <path v-else stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </nav>
         </header>

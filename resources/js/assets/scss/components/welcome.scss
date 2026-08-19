@@ -68,7 +68,9 @@
 .nb-nav .nb-logo__mark { width: 4.2rem; }
 .nb-logo__text { font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
 
+.nb-nav__group { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 .nb-nav__links { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.nb-nav__actions { display: flex; align-items: center; gap: 0.6rem; }
 .nb-navlink {
     display: inline-flex; align-items: center;
     height: 2.4rem; padding: 0 0.95rem;
@@ -91,6 +93,17 @@
     transition: transform 0.1s, box-shadow 0.1s;
 }
 .nb-toggle:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+
+.nb-hamburger {
+    display: none;
+    width: 2.4rem; height: 2.4rem; cursor: pointer;
+    align-items: center; justify-content: center;
+    background: var(--paper); border: var(--border); border-radius: 9px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.nb-hamburger:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.nb-hamburger svg { width: 1.3rem; height: 1.3rem; }
 
 /* ══════════════ Hero ══════════════ */
 .nb-hero {
@@ -492,8 +505,23 @@
 @media (max-width: 900px) {
     .nb-steps { grid-template-columns: 1fr; }
 }
+@media (max-width: 640px) {
+    .nb-nav__inner { position: relative; }
+    .nb-hamburger { display: inline-flex; }
+    .nb-nav__links {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: stretch;
+        gap: 0.6rem;
+        padding: 0.85rem 1.5rem 1.1rem;
+        background: var(--bg);
+        border-bottom: var(--border);
+    }
+    .nb-nav__links--open { display: flex; }
+    .nb-navlink { width: 100%; justify-content: center; }
+}
 @media (max-width: 560px) {
-    .nb-nav__inner { justify-content: center; }
     .nb-actions { flex-direction: column; align-items: stretch; width: 100%; }
     .nb-actions .nb-btn { flex: none; width: 100%; text-align: center; }
     .nb-cta-band { flex-direction: column; align-items: stretch; text-align: center; }

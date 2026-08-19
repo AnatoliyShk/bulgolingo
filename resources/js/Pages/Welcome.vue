@@ -14,6 +14,7 @@ const continueHref = computed(() =>
 )
 
 const { theme, toggleTheme } = useTheme()
+const mobileNavOpen = ref(false)
 
 const steps = [
     {
@@ -124,25 +125,43 @@ onBeforeUnmount(() => {
                     <span class="nb-logo__text">{{ appName }}</span>
                 </Link>
 
-                <div class="nb-nav__links">
-                    <Link href="/learning-paths" class="nb-navlink">Learning paths</Link>
-                    <Link v-if="isAuthenticated" :href="continueHref" class="nb-navlink">Your path</Link>
-                    <a v-else href="#path" class="nb-navlink">Your path</a>
-                    <template v-if="isAuthenticated">
-                        <Link href="/dashboard" class="nb-navlink">Profile</Link>
-                        <Link v-if="isAdmin" href="/admin" class="nb-navlink">Admin</Link>
-                    </template>
-                    <template v-else>
-                        <Link href="/login" class="nb-navlink">Login</Link>
-                        <Link href="/register" class="nb-navlink nb-navlink--cta">Register</Link>
-                    </template>
-                    <button
-                        class="nb-toggle"
-                        @click="toggleTheme"
-                        :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-                    >
-                        {{ theme === 'dark' ? '☀' : '☾' }}
-                    </button>
+                <div class="nb-nav__group">
+                    <div class="nb-nav__links" :class="{ 'nb-nav__links--open': mobileNavOpen }">
+                        <Link href="/learning-paths" class="nb-navlink" @click="mobileNavOpen = false">Learning paths</Link>
+                        <Link v-if="isAuthenticated" :href="continueHref" class="nb-navlink" @click="mobileNavOpen = false">Your path</Link>
+                        <a v-else href="#path" class="nb-navlink" @click="mobileNavOpen = false">Your path</a>
+                        <template v-if="isAuthenticated">
+                            <Link href="/dashboard" class="nb-navlink" @click="mobileNavOpen = false">Profile</Link>
+                            <Link v-if="isAdmin" href="/admin" class="nb-navlink" @click="mobileNavOpen = false">Admin</Link>
+                        </template>
+                        <template v-else>
+                            <Link href="/login" class="nb-navlink" @click="mobileNavOpen = false">Login</Link>
+                            <Link href="/register" class="nb-navlink nb-navlink--cta" @click="mobileNavOpen = false">Register</Link>
+                        </template>
+                    </div>
+
+                    <div class="nb-nav__actions">
+                        <button
+                            class="nb-toggle"
+                            @click="toggleTheme"
+                            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
+                        >
+                            {{ theme === 'dark' ? '☀' : '☾' }}
+                        </button>
+
+                        <button
+                            class="nb-hamburger"
+                            type="button"
+                            :aria-expanded="mobileNavOpen"
+                            aria-label="Toggle navigation menu"
+                            @click="mobileNavOpen = !mobileNavOpen"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path v-if="!mobileNavOpen" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+                                <path v-else stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </nav>
         </header>
