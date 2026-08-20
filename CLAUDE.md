@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 composer dev
 ```
-Starts `php artisan serve`, queue worker, `pail` log viewer, and `yarn dev` concurrently.
+Starts `php artisan serve`, queue worker, `pail` log viewer, the scheduler (`schedule:work`), and `yarn dev` concurrently.
 
 ### First-time setup
 ```bash
