@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends Model
 {
     protected $table = 'lessons';
+
     protected $casts = ['is_completed' => 'boolean'];
+
     protected $hidden = [];
 
     public function exercises()
@@ -27,13 +29,20 @@ class Lesson extends Model
         //
     }
 
+    /**
+     * Aggregate per-user completion, derived entirely from `user_exercise_completions`.
+     *
+     * A lesson counts as completed when the user has completed every one of its
+     * exercises; a path counts as completed when every one of its lessons is.
+     * Lessons shared by several enrolled paths are counted once.
+     *
+     * @return array{completed_lessons: int, total_exercises: int, completed_paths: int}
+     */
     public static function getCompletedLessonStats(int $userId): array
     {
-        $lessons = static::whereHas('learningPath', fn ($q) =>
-            $q->whereHas('users', fn ($q2) => $q2->where('users.id', $userId))
-        )
-        ->with('exercises:id,lesson_id')
-        ->get();
+        $paths = LearningPath::whereHas('users', fn ($q) => $q->where('users.id', $userId))
+            ->with(['lessons' => fn ($q) => $q->with('exercises:id,lesson_id')])
+            ->get();
 
         $completedSet = User::find($userId)
             ->completedExercises()
@@ -41,19 +50,43 @@ class Lesson extends Model
             ->flip();
 
         $completedLessons = 0;
-        $totalExercises   = 0;
+        $totalExercises = 0;
+        $completedPaths = 0;
+        $countedLessons = [];
 
-        foreach ($lessons as $lesson) {
-            $ids = $lesson->exercises->pluck('id');
-            if ($ids->isNotEmpty() && $ids->every(fn ($id) => $completedSet->has($id))) {
-                $completedLessons++;
-                $totalExercises += $ids->count();
+        foreach ($paths as $path) {
+            $pathComplete = $path->lessons->isNotEmpty();
+
+            foreach ($path->lessons as $lesson) {
+                $ids = $lesson->exercises->pluck('id');
+                $lessonComplete = $ids->isNotEmpty() && $ids->every(fn ($id) => $completedSet->has($id));
+
+                if (! $lessonComplete) {
+                    $pathComplete = false;
+                }
+
+                // A lesson can belong to more than one enrolled path; only tally it once.
+                if (isset($countedLessons[$lesson->id])) {
+                    continue;
+                }
+
+                $countedLessons[$lesson->id] = true;
+
+                if ($lessonComplete) {
+                    $completedLessons++;
+                    $totalExercises += $ids->count();
+                }
+            }
+
+            if ($pathComplete) {
+                $completedPaths++;
             }
         }
 
         return [
             'completed_lessons' => $completedLessons,
-            'total_exercises'   => $totalExercises,
+            'total_exercises' => $totalExercises,
+            'completed_paths' => $completedPaths,
         ];
     }
 }

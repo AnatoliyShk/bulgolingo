@@ -8,6 +8,8 @@ class CompletedLessonStatsCache
 {
     private const TTL_DAYS = 15;
 
+    private const SHAPE = ['completed_lessons', 'total_exercises', 'completed_paths'];
+
     public static function key(int $userId): string
     {
         return "user:{$userId}:completed_lesson_stats";
@@ -19,15 +21,31 @@ class CompletedLessonStatsCache
     }
 
     /**
-     * @return array{completed_lessons: int, total_exercises: int}|null
+     * Entries written before a key was added to the aggregate are reported as a
+     * miss, so the next read recomputes the full shape instead of tripping over
+     * a missing key.
+     *
+     * @return array{completed_lessons: int, total_exercises: int, completed_paths: int}|null
      */
     public static function get(int $userId): ?array
     {
-        return static::store()->get(static::key($userId));
+        $stats = static::store()->get(static::key($userId));
+
+        if (! is_array($stats)) {
+            return null;
+        }
+
+        foreach (self::SHAPE as $key) {
+            if (! array_key_exists($key, $stats)) {
+                return null;
+            }
+        }
+
+        return $stats;
     }
 
     /**
-     * @param  array{completed_lessons: int, total_exercises: int}  $stats
+     * @param  array{completed_lessons: int, total_exercises: int, completed_paths: int}  $stats
      */
     public static function warm(int $userId, array $stats): void
     {

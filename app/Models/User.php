@@ -38,7 +38,7 @@ class User extends Authenticatable
 
     public function learningPaths()
     {
-        return $this->belongsToMany(LearningPath::class, 'learning_path_user')->using(LearningPathUser::class)->withPivot('is_completed');
+        return $this->belongsToMany(LearningPath::class, 'learning_path_user')->using(LearningPathUser::class);
     }
 
     public function completedExercises()

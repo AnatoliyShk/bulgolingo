@@ -16,17 +16,13 @@ class StatsService
     {
         $completedLessonStats = $this->completedLessonStats($user->id);
 
-        $completedLearningPaths = $user->learningPaths()
-            ->wherePivot('is_completed', true)
-            ->count();
-
         $days = $this->activityDayRange();
         $countsByTypeAndDay = $this->exerciseActivityCounts($user->id, $days);
 
         return [
             'completedLessons' => $completedLessonStats['completed_lessons'],
             'completedExercises' => $completedLessonStats['total_exercises'],
-            'completedLearningPaths' => $completedLearningPaths,
+            'completedLearningPaths' => $completedLessonStats['completed_paths'],
             'learnedWords' => UserLearnedWord::learnedWords($user),
             'activityByType' => $this->activityByType($countsByTypeAndDay),
             'activityDays' => $days->map(fn ($d) => Carbon::parse($d)->format('M j'))->values()->toArray(),
@@ -34,7 +30,7 @@ class StatsService
     }
 
     /**
-     * @return array{completed_lessons: int, total_exercises: int}
+     * @return array{completed_lessons: int, total_exercises: int, completed_paths: int}
      */
     private function completedLessonStats(int $userId): array
     {

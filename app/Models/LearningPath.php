@@ -15,7 +15,7 @@ class LearningPath extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'learning_path_user')->using(LearningPathUser::class)->withPivot('is_completed');
+        return $this->belongsToMany(User::class, 'learning_path_user')->using(LearningPathUser::class);
     }
 
     public function lessons(): BelongsToMany

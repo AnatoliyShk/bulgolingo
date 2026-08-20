@@ -73,7 +73,7 @@ class CompletedLessonStatsCacheTest extends TestCase
         );
 
         $this->assertSame(
-            ['completed_lessons' => 1, 'total_exercises' => 1],
+            ['completed_lessons' => 1, 'total_exercises' => 1, 'completed_paths' => 1],
             CompletedLessonStatsCache::get($user->id)
         );
     }
@@ -83,7 +83,7 @@ class CompletedLessonStatsCacheTest extends TestCase
         $user = User::factory()->create();
 
         // Real DB truth: nothing completed.
-        CompletedLessonStatsCache::warm($user->id, ['completed_lessons' => 5, 'total_exercises' => 9]);
+        CompletedLessonStatsCache::warm($user->id, ['completed_lessons' => 5, 'total_exercises' => 9, 'completed_paths' => 3]);
 
         $response = $this->actingAs($user)->get(route('stats.show'));
 
@@ -91,6 +91,35 @@ class CompletedLessonStatsCacheTest extends TestCase
             ->component('Stats/Show')
             ->where('completedLessons', 5)
             ->where('completedExercises', 9)
+            ->where('completedLearningPaths', 3)
+        );
+    }
+
+    public function test_cache_entry_written_before_completed_paths_existed_is_treated_as_a_miss(): void
+    {
+        $user = User::factory()->create();
+        $lesson = $this->enrolledLesson($user);
+        $exercise = $this->exercise($lesson);
+
+        $user->completedExercises()->syncWithoutDetaching($exercise->id);
+
+        // Shape predating the `completed_paths` key.
+        Cache::store('redis')->put(
+            CompletedLessonStatsCache::key($user->id),
+            ['completed_lessons' => 5, 'total_exercises' => 9],
+            now()->addDay()
+        );
+
+        $this->assertNull(CompletedLessonStatsCache::get($user->id));
+
+        $response = $this->actingAs($user)->get(route('stats.show'));
+
+        // Recomputed from the database rather than served from the stale entry.
+        $response->assertOk()->assertInertia(fn (Assert $page) => $page
+            ->component('Stats/Show')
+            ->where('completedLessons', 1)
+            ->where('completedExercises', 1)
+            ->where('completedLearningPaths', 1)
         );
     }
 
@@ -100,7 +129,7 @@ class CompletedLessonStatsCacheTest extends TestCase
         $lesson = $this->enrolledLesson($user);
         $exercise = $this->exercise($lesson);
 
-        CompletedLessonStatsCache::warm($user->id, ['completed_lessons' => 0, 'total_exercises' => 0]);
+        CompletedLessonStatsCache::warm($user->id, ['completed_lessons' => 0, 'total_exercises' => 0, 'completed_paths' => 0]);
 
         $this->actingAs($user)->post(route('exercise.complete', $exercise));
 
