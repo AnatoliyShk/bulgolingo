@@ -105,6 +105,8 @@ const wordCloudConfig = computed(() => ({
                 bold: true,
                 usePalette: true,
                 selectedStroke: ink.value,
+                maxFontSize: 46,
+                minFontSize: 9,
             },
             title: {
                 show: false,
