@@ -25,16 +25,14 @@ class ProfileController extends Controller
             ->withCount('lessons')
             ->get();
 
-        // Collect every exercise ID across all enrolled paths in one pass
         $allExerciseIds = $paths->flatMap(
             fn ($path) => $path->lessons->flatMap(fn ($l) => $l->exercises->pluck('id'))
         )->unique()->values();
 
-        // Single query to fetch this user's completions
         $completedSet = $user->completedExercises()
             ->whereIn('exercise_id', $allExerciseIds)
             ->pluck('exercise_id')
-            ->flip(); // O(1) lookup via ->has()
+            ->flip();
 
         $paths = $paths->map(function ($path) use ($completedSet) {
             $completedLessons = 0;

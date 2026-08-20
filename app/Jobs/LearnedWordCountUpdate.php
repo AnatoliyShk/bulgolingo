@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class LearnedWordCountUpdate implements ShouldQueue
 {
@@ -33,7 +32,6 @@ class LearnedWordCountUpdate implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::info('Updating learned word count for user: ' . $this->user->id);
         foreach ($this->exercise->getExerciseWords() as $word) {
             $learnedWord = LearnedWords::firstOrCreate(['word' => $word]);
 
