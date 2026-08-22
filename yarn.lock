@@ -1391,6 +1391,11 @@ proxy-from-env@^2.1.0:
   resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-2.1.0.tgz#a7487568adad577cfaaa7e88c49cab3ab3081aba"
   integrity sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==
 
+qs-esm@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/qs-esm/-/qs-esm-7.0.3.tgz#0d5c0f3a719090ece3ee426b766706e294e67bc3"
+  integrity sha512-8jbjCR0PPbqoQcv83C2K/zvVeytRPwPpt3WPDbq51qyLAxcWGtXVRjSe6GHtLCoVbg9+NEFkv7GyUxqjcDIJzw==
+
 qs@^6.15.0:
   version "6.15.3"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.15.3.tgz#76852132a58ed5c7c0ef67e4441b9bb5d6061b3b"
@@ -1768,3 +1773,10 @@ yargs@17.7.2:
     string-width "^4.2.3"
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
+
+ziggy-js@^2.6.2:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/ziggy-js/-/ziggy-js-2.6.4.tgz#aad76eacb46f12688a835b6a8d854b3348de40c9"
+  integrity sha512-JIOpCCo0kA2f6cQa5F8cMBKsuFTc3MNrLtaf0RyYywQ30hRR6mq6F51h71woCs3O6MukzpeEpBVRfnlbmwfBNQ==
+  dependencies:
+    qs-esm "^7.0.3"
