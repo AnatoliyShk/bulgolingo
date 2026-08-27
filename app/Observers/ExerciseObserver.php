@@ -50,23 +50,38 @@ class ExerciseObserver
 
     public function creating(Exercise $exercise)
     {
-        if (!$exercise->decision_type instanceof ExerciseType) {
+        $this->validateClause($exercise);
+    }
+
+    public function updating(Exercise $exercise)
+    {
+        $this->validateClause($exercise);
+    }
+
+    /**
+     * Clause shape is per decision_type, so it is validated here on every write
+     * rather than in a form request — otherwise an edit could reintroduce a
+     * shape the create path rejects.
+     */
+    private function validateClause(Exercise $exercise): void
+    {
+        if (! $exercise->decision_type instanceof ExerciseType) {
             return;
         }
 
-        $rules = $exercise->decision_type->dataRules();
-
-        $prefixed = collect($rules)
-            ->mapWithKeys(fn ($rule, $key) => ["clause.$key" => $rule])
+        $prefix = fn (array $items) => collect($items)
+            ->mapWithKeys(fn ($value, $key) => ["clause.$key" => $value])
             ->all();
 
         Validator::make(
             ['clause' => $exercise->clause ?? []],
-            $prefixed
+            $prefix($exercise->decision_type->dataRules()),
+            $prefix($exercise->decision_type->dataMessages())
         )->validate();
     }
 
-    public function saved(Exercise $exercise) {
+    public function saved(Exercise $exercise)
+    {
         \Cache::increment('v:exercise:{$exercise->id}');
     }
 }

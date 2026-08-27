@@ -23,7 +23,7 @@ class ExerciseSeeder extends Seeder
                     'name' => 'Match the letters',
                     'decision_type' => ExerciseType::MULTIPLE_CHOICE,
                     'clause' => [
-                        'pairs' => [['A', 'А'], ['B', 'Б'], ['V', 'В'], ['G', 'Г']],
+                        'pairs' => [['A', 'А'], ['B', 'Б'], ['V', 'В'], ['G', 'Г'], ['D', 'Д']],
                         'explanation' => 'Match the Latin sound to its Cyrillic letter.',
                     ],
                 ],
@@ -54,7 +54,7 @@ class ExerciseSeeder extends Seeder
                     'name' => 'Match the numbers',
                     'decision_type' => ExerciseType::MULTIPLE_CHOICE,
                     'clause' => [
-                        'pairs' => [['One', 'Едно'], ['Two', 'Две'], ['Three', 'Три'], ['Four', 'Четири']],
+                        'pairs' => [['One', 'Едно'], ['Two', 'Две'], ['Three', 'Три'], ['Four', 'Четири'], ['Five', 'Пет']],
                         'explanation' => 'Match the number to its Bulgarian translation.',
                     ],
                 ],
@@ -74,7 +74,7 @@ class ExerciseSeeder extends Seeder
                     'name' => 'Match family members',
                     'decision_type' => ExerciseType::MULTIPLE_CHOICE,
                     'clause' => [
-                        'pairs' => [['Mother', 'Майка'], ['Father', 'Баща'], ['Sister', 'Сестра'], ['Brother', 'Брат']],
+                        'pairs' => [['Mother', 'Майка'], ['Father', 'Баща'], ['Sister', 'Сестра'], ['Brother', 'Брат'], ['Grandmother', 'Баба']],
                         'explanation' => 'Match the family member to its Bulgarian translation.',
                     ],
                 ],
@@ -93,7 +93,7 @@ class ExerciseSeeder extends Seeder
                     'name' => 'Match food and drink',
                     'decision_type' => ExerciseType::MULTIPLE_CHOICE,
                     'clause' => [
-                        'pairs' => [['Bread', 'Хляб'], ['Water', 'Вода'], ['Cheese', 'Сирене'], ['Wine', 'Вино']],
+                        'pairs' => [['Bread', 'Хляб'], ['Water', 'Вода'], ['Cheese', 'Сирене'], ['Wine', 'Вино'], ['Milk', 'Мляко']],
                         'explanation' => 'Match the food or drink to its Bulgarian translation.',
                     ],
                 ],
@@ -134,7 +134,7 @@ class ExerciseSeeder extends Seeder
                     'name' => 'Match the colors',
                     'decision_type' => ExerciseType::MULTIPLE_CHOICE,
                     'clause' => [
-                        'pairs' => [['Red', 'Червено'], ['Blue', 'Синьо'], ['Green', 'Зелено'], ['Yellow', 'Жълто']],
+                        'pairs' => [['Red', 'Червено'], ['Blue', 'Синьо'], ['Green', 'Зелено'], ['Yellow', 'Жълто'], ['Black', 'Черно']],
                         'explanation' => 'Match the color to its Bulgarian translation.',
                     ],
                 ],

@@ -12,12 +12,45 @@ const props = defineProps({
 
 const selectedLesson = ref('');
 const filterLesson   = ref('');
+const filterType     = ref('');
+const filterFrom     = ref('');
+const filterTo       = ref('');
+
+// Local YYYY-MM-DD key so range comparisons line up with the dates the table
+// prints via toLocaleDateString(), and so plain string compares stay correct.
+function dateKey(value) {
+    const date = new Date(value);
+    if (!value || Number.isNaN(date.getTime())) return null;
+    const pad = n => String(n).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
 
 const filteredExercises = computed(() =>
-    filterLesson.value
-        ? props.exercises.filter(e => e.lesson?.id === filterLesson.value)
-        : props.exercises
+    props.exercises.filter(exercise => {
+        if (filterLesson.value && exercise.lesson?.id !== filterLesson.value) return false;
+        if (filterType.value && exercise.decision_type !== filterType.value) return false;
+
+        if (filterFrom.value || filterTo.value) {
+            const created = dateKey(exercise.created_at);
+            if (!created) return false;
+            if (filterFrom.value && created < filterFrom.value) return false;
+            if (filterTo.value && created > filterTo.value) return false;
+        }
+
+        return true;
+    })
 );
+
+const hasFilters = computed(() =>
+    Boolean(filterLesson.value || filterType.value || filterFrom.value || filterTo.value)
+);
+
+function clearFilters() {
+    filterLesson.value = '';
+    filterType.value   = '';
+    filterFrom.value   = '';
+    filterTo.value     = '';
+}
 
 function typeLabel(value) {
     return props.exerciseTypes.find(t => t.value === value)?.label ?? value;
@@ -61,27 +94,57 @@ function deleteExercise(id) {
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
 
                 <!-- Filter bar -->
-                <div class="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Filter by lesson</span>
-                    <select
-                        v-model="filterLesson"
-                        class="w-64 rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
-                    >
-                        <option value="">All lessons</option>
-                        <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">{{ lesson.name }}</option>
-                    </select>
+                <div class="flex flex-wrap items-end gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                    <label class="flex flex-col gap-1">
+                        <span class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Lesson</span>
+                        <select
+                            v-model="filterLesson"
+                            class="w-56 rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
+                        >
+                            <option value="">All lessons</option>
+                            <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">{{ lesson.name }}</option>
+                        </select>
+                    </label>
+                    <label class="flex flex-col gap-1">
+                        <span class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Type</span>
+                        <select
+                            v-model="filterType"
+                            class="w-56 rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
+                        >
+                            <option value="">All types</option>
+                            <option v-for="type in exerciseTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
+                        </select>
+                    </label>
+                    <label class="flex flex-col gap-1">
+                        <span class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Created from</span>
+                        <input
+                            v-model="filterFrom"
+                            type="date"
+                            :max="filterTo || null"
+                            class="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
+                        >
+                    </label>
+                    <label class="flex flex-col gap-1">
+                        <span class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Created to</span>
+                        <input
+                            v-model="filterTo"
+                            type="date"
+                            :min="filterFrom || null"
+                            class="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
+                        >
+                    </label>
                     <button
-                        v-if="filterLesson"
-                        @click="filterLesson = ''"
-                        class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                        v-if="hasFilters"
+                        @click="clearFilters"
+                        class="pb-2 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                     >Clear</button>
-                    <span class="ml-auto text-xs text-gray-400 dark:text-gray-500">
+                    <span class="ml-auto pb-2 text-xs text-gray-400 dark:text-gray-500">
                         {{ filteredExercises.length }} / {{ exercises.length }} exercises
                     </span>
                 </div>
 
                 <div v-if="filteredExercises.length === 0" class="text-gray-500 dark:text-gray-400">
-                    {{ exercises.length === 0 ? 'No exercises yet.' : 'No exercises match the selected lesson.' }}
+                    {{ exercises.length === 0 ? 'No exercises yet.' : 'No exercises match the selected filters.' }}
                 </div>
 
                 <div v-else class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">

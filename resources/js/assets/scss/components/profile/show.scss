@@ -119,6 +119,7 @@
     animation: nb-prof-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .nb-prof__avatar {
+    position: relative;
     flex-shrink: 0;
     width: 7rem; height: 7rem;
     background: var(--pink); color: var(--on-accent);
@@ -132,6 +133,19 @@
     font-family: 'Unbounded', sans-serif; font-weight: 900;
     font-size: 3.5rem; line-height: 1;
 }
+.nb-prof__avatar-badge {
+    position: absolute;
+    right: -0.6rem; bottom: -0.6rem;
+    width: 2.1rem; height: 2.1rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--on-accent);
+    border: var(--border); border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    transform: rotate(3deg);
+}
+.nb-prof__avatar-badge svg { width: 1.15rem; height: 1.15rem; }
+.nb-prof__avatar-badge--verified { background: var(--green); }
+.nb-prof__avatar-badge--unverified { background: var(--orange); }
 .nb-prof__info { flex: 1; min-width: 0; padding-top: 0.25rem; }
 .nb-prof__eyebrow {
     display: inline-flex; align-items: center; gap: 0.5em;
@@ -344,4 +358,9 @@
     .nb-prof__hero { gap: 1.25rem; }
     .nb-prof__avatar { width: 5.5rem; height: 5.5rem; }
     .nb-prof__avatar-letter { font-size: 2.8rem; }
+    .nb-prof__avatar-badge {
+        right: -0.5rem; bottom: -0.5rem;
+        width: 1.75rem; height: 1.75rem;
+    }
+    .nb-prof__avatar-badge svg { width: 0.95rem; height: 0.95rem; }
 }

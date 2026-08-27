@@ -40,7 +40,13 @@ class ExerciseActivityCacheTest extends TestCase
     {
         $clause = match ($type) {
             ExerciseType::MULTIPLE_CHOICE => [
-                'pairs' => [['Здравей', 'Hello']],
+                'pairs' => [
+                    ['Здравей', 'Hello'],
+                    ['Благодаря', 'Thank you'],
+                    ['Вода', 'Water'],
+                    ['Хляб', 'Bread'],
+                    ['Приятел', 'Friend'],
+                ],
                 'explanation' => 'Здравей means hello.',
             ],
             default => [

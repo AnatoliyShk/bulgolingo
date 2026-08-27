@@ -28,6 +28,10 @@ const initial = computed(() => {
     return name ? Array.from(name)[0].toUpperCase() : '?'
 })
 
+const isVerified = computed(() => Boolean(props.user?.email_verified_at))
+
+const verificationLabel = computed(() => (isVerified.value ? 'Email verified' : 'Email not verified'))
+
 const memberSince = computed(() => {
     if (!props.user?.created_at) return null
     return new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric' }).format(new Date(props.user.created_at))
@@ -87,6 +91,21 @@ function progressPercent(path) {
             <section class="nb-prof__hero">
                 <div class="nb-prof__avatar">
                     <span class="nb-prof__avatar-letter">{{ initial }}</span>
+                    <span
+                        class="nb-prof__avatar-badge"
+                        :class="isVerified ? 'nb-prof__avatar-badge--verified' : 'nb-prof__avatar-badge--unverified'"
+                        role="img"
+                        :aria-label="verificationLabel"
+                        :title="verificationLabel"
+                    >
+                        <svg v-if="isVerified" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4.5 4.5L19 7" />
+                        </svg>
+                        <svg v-else fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5">
+                            <path stroke-linecap="round" d="M12 6v8" />
+                            <path stroke-linecap="round" d="M12 18.2v.1" />
+                        </svg>
+                    </span>
                 </div>
                 <div class="nb-prof__info">
                     <div class="nb-prof__eyebrow">

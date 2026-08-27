@@ -24,6 +24,23 @@ class ExerciseTest extends TestCase
         ]);
     }
 
+    /**
+     * @return array<int, array{0: string, 1: string}>
+     */
+    private function wordPairs(int $count = ExerciseType::MIN_WORD_PAIRS): array
+    {
+        $words = [
+            ['hello', 'здравей'],
+            ['thank you', 'благодаря'],
+            ['water', 'вода'],
+            ['bread', 'хляб'],
+            ['friend', 'приятел'],
+            ['morning', 'утро'],
+        ];
+
+        return array_slice($words, 0, $count);
+    }
+
     public function test_admin_can_create_exercise(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
@@ -202,5 +219,141 @@ class ExerciseTest extends TestCase
         $exercise->refresh();
         $this->assertCount(1, $exercise->images);
         Storage::disk('public')->assertExists($exercise->images->first()->filepath);
+    }
+
+    public function test_admin_can_create_word_pair_exercise_with_the_minimum_pairs(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $response = $this
+            ->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Everyday words',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+                'clause' => [
+                    'pairs' => $this->wordPairs(),
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('admin.lessons.edit', $lesson));
+
+        $exercise = Exercise::where('name', 'Everyday words')->firstOrFail();
+
+        $this->assertCount(ExerciseType::MIN_WORD_PAIRS, $exercise->clause['pairs']);
+    }
+
+    public function test_word_pair_exercise_rejects_fewer_than_the_minimum_pairs(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $response = $this
+            ->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Too few words',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+                'clause' => [
+                    'pairs' => $this->wordPairs(ExerciseType::MIN_WORD_PAIRS - 1),
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ]);
+
+        $response->assertSessionHasErrors(['clause.pairs']);
+        $this->assertDatabaseCount('exercises', 0);
+    }
+
+    public function test_word_pair_exercise_rejects_a_repeated_word(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $pairs = $this->wordPairs();
+        $pairs[4][0] = $pairs[0][0];
+
+        $response = $this
+            ->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Repeated word',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+                'clause' => [
+                    'pairs' => $pairs,
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ]);
+
+        $response->assertSessionHasErrors(['clause.pairs.0.0', 'clause.pairs.4.0']);
+        $this->assertDatabaseCount('exercises', 0);
+    }
+
+    public function test_word_pair_exercise_cannot_drop_below_the_minimum_on_update(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $exercise = Exercise::create([
+            'name' => 'Everyday words',
+            'lesson_id' => $lesson->id,
+            'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+            'clause' => [
+                'pairs' => $this->wordPairs(),
+                'explanation' => 'Match each word to its translation.',
+            ],
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => $exercise->name,
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => [
+                    'pairs' => $this->wordPairs(ExerciseType::MIN_WORD_PAIRS - 1),
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ]);
+
+        $response->assertSessionHasErrors(['clause.pairs']);
+
+        $exercise->refresh();
+        $this->assertCount(ExerciseType::MIN_WORD_PAIRS, $exercise->clause['pairs']);
+    }
+
+    public function test_word_pair_exercise_can_be_updated_with_enough_pairs(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $exercise = Exercise::create([
+            'name' => 'Everyday words',
+            'lesson_id' => $lesson->id,
+            'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+            'clause' => [
+                'pairs' => $this->wordPairs(),
+                'explanation' => 'Match each word to its translation.',
+            ],
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => 'Everyday words, extended',
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => [
+                    'pairs' => $this->wordPairs(ExerciseType::MIN_WORD_PAIRS + 1),
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $exercise->refresh();
+        $this->assertSame('Everyday words, extended', $exercise->name);
+        $this->assertCount(ExerciseType::MIN_WORD_PAIRS + 1, $exercise->clause['pairs']);
     }
 }
