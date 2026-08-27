@@ -1,5 +1,9 @@
 import { onINP, onLCP, onCLS, onTTFB } from 'web-vitals/attribution';
+import { analyticsAllowed } from './cookieConsent';
 
+// Beacons are the only measurement this app sends, so they ride on the
+// analytics consent category. Consent is read at send time rather than at
+// startup, so granting or withdrawing it takes hold without a reload.
 export function initVitals(router) {
     let currentRoute = 'initial';
 
@@ -8,6 +12,8 @@ export function initVitals(router) {
     });
 
     const send = (payload) => {
+        if (!analyticsAllowed()) return;
+
         navigator.sendBeacon('/api/vitals', JSON.stringify({
             ...payload,
             route: currentRoute,

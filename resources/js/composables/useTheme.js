@@ -6,6 +6,8 @@ const theme = ref(
         : 'dark'
 )
 
+// cc--darkmode is how vanilla-cookieconsent picks its palette, so the consent
+// modals follow the toggle instead of sitting light against a dark page.
 function applyTheme(value) {
     const html = document.documentElement
     if (value === 'dark') {
@@ -15,6 +17,7 @@ function applyTheme(value) {
         html.classList.remove('dark')
         html.classList.add('light')
     }
+    html.classList.toggle('cc--darkmode', value === 'dark')
 }
 
 export function useTheme() {

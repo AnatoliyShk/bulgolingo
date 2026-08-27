@@ -1,0 +1,115 @@
+/* ══════════════ Cookie consent ══════════════
+   vanilla-cookieconsent ships its own stylesheet and its own class names, so
+   this file only retunes the variables it exposes to the tokens the rest of
+   the app uses (mirrors .nb-page — see profile/show.scss). Light values sit on
+   #cc-main; dark values need the extra .cc--darkmode ancestor to outweigh them. */
+
+#cc-main {
+    --cc-font-family: 'Manrope', system-ui, sans-serif;
+
+    --cc-bg: #fffaf0;
+    --cc-primary-color: #14110b;
+    --cc-secondary-color: #55503f;
+
+    --cc-btn-primary-bg: #ff8a47;
+    --cc-btn-primary-color: #14110b;
+    --cc-btn-primary-border-color: #14110b;
+    --cc-btn-primary-hover-bg: #ff8a47;
+    --cc-btn-primary-hover-color: #14110b;
+    --cc-btn-primary-hover-border-color: #14110b;
+
+    --cc-btn-secondary-bg: #f1e9d6;
+    --cc-btn-secondary-color: #14110b;
+    --cc-btn-secondary-border-color: #14110b;
+    --cc-btn-secondary-hover-bg: #ffd9a0;
+    --cc-btn-secondary-hover-color: #14110b;
+    --cc-btn-secondary-hover-border-color: #14110b;
+
+    --cc-separator-border-color: #14110b;
+    --cc-cookie-category-block-bg: #f1e9d6;
+    --cc-cookie-category-block-border: #14110b;
+    --cc-cookie-category-block-hover-bg: #ffe9c7;
+    --cc-cookie-category-block-hover-border: #14110b;
+    --cc-cookie-category-expanded-block-bg: transparent;
+    --cc-cookie-category-expanded-block-hover-bg: #f1e9d6;
+    --cc-section-category-border: #14110b;
+
+    --cc-toggle-on-bg: #46d39a;
+    --cc-toggle-off-bg: #a39c85;
+    --cc-toggle-on-knob-bg: #fffaf0;
+    --cc-toggle-off-knob-bg: #fffaf0;
+    --cc-toggle-enabled-icon-color: #14110b;
+    --cc-toggle-disabled-icon-color: #14110b;
+
+    --cc-link-color: #14110b;
+    --cc-footer-bg: #f1e9d6;
+    --cc-footer-color: #55503f;
+    --cc-footer-border-color: #14110b;
+    --cc-overlay-bg: rgb(20 17 11 / 65%);
+
+    --cc-btn-border-radius: 10px;
+    --cc-modal-border-radius: 12px;
+}
+
+.cc--darkmode #cc-main {
+    --cc-bg: #221d16;
+    --cc-primary-color: #f4ead6;
+    --cc-secondary-color: #bfb49c;
+
+    --cc-btn-primary-bg: #ff8a47;
+    --cc-btn-primary-color: #14110b;
+    --cc-btn-primary-border-color: #f4ead6;
+    --cc-btn-primary-hover-bg: #ff8a47;
+    --cc-btn-primary-hover-border-color: #f4ead6;
+
+    --cc-btn-secondary-bg: #17140f;
+    --cc-btn-secondary-color: #f4ead6;
+    --cc-btn-secondary-border-color: #f4ead6;
+    --cc-btn-secondary-hover-bg: #2e271d;
+    --cc-btn-secondary-hover-color: #f4ead6;
+    --cc-btn-secondary-hover-border-color: #f4ead6;
+
+    --cc-separator-border-color: #f4ead6;
+    --cc-cookie-category-block-bg: #17140f;
+    --cc-cookie-category-block-border: #f4ead6;
+    --cc-cookie-category-block-hover-bg: #2e271d;
+    --cc-cookie-category-block-hover-border: #f4ead6;
+    --cc-cookie-category-expanded-block-bg: transparent;
+    --cc-cookie-category-expanded-block-hover-bg: #17140f;
+    --cc-section-category-border: #f4ead6;
+
+    --cc-toggle-off-bg: #5a5344;
+    --cc-toggle-on-knob-bg: #17140f;
+    --cc-toggle-off-knob-bg: #f4ead6;
+    --cc-toggle-enabled-icon-color: #17140f;
+    --cc-toggle-disabled-icon-color: #f4ead6;
+
+    --cc-link-color: #f4ead6;
+    --cc-footer-bg: #17140f;
+    --cc-footer-color: #bfb49c;
+    --cc-footer-border-color: #f4ead6;
+    --cc-overlay-bg: rgb(0 0 0 / 70%);
+}
+
+/* The hard border and offset shadow are not exposed as variables, so the two
+   modals and the buttons get them here to match the rest of the pages. */
+#cc-main .cm,
+#cc-main .pm {
+    border: 3px solid var(--cc-primary-color);
+    box-shadow: 6px 6px 0 0 var(--cc-primary-color);
+}
+
+#cc-main .cm__btn,
+#cc-main .pm__btn {
+    border-width: 3px;
+    border-style: solid;
+    font-weight: 700;
+    box-shadow: 3px 3px 0 0 var(--cc-primary-color);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+#cc-main .cm__btn:hover,
+#cc-main .pm__btn:hover {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+}

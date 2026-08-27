@@ -44,4 +44,8 @@ createInertiaApp({
     },
 });
 
+import { initCookieConsent } from './cookieConsent';
+
+initCookieConsent();
+
 import('./vitals').then(({ initVitals }) => initVitals(router));
