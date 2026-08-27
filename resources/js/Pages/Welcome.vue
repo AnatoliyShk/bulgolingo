@@ -136,7 +136,7 @@ onBeforeUnmount(() => {
                         </template>
                         <template v-else>
                             <Link href="/login" class="nb-navlink" @click="mobileNavOpen = false">Login</Link>
-                            <Link href="/register" class="nb-navlink nb-navlink--cta" @click="mobileNavOpen = false">Register</Link>
+                            <Link href="/register" class="nb-navlink" @click="mobileNavOpen = false">Register</Link>
                         </template>
                     </div>
 
