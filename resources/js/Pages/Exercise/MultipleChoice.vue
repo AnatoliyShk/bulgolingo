@@ -2,7 +2,7 @@
 import { ref, reactive, computed, watch } from 'vue'
 
 // clause.pairs = [[english, bulgarian], ...], clause.explanation = prompt
-// Left column shows pair[0] (English), right column shows pair[1] (Bulgarian), both shuffled.
+// Left column shows pair[0] (English), right column shows pair[1] (Bulgarian).
 // User taps one from each side; the pair indices must match to be correct.
 
 const props = defineProps({
@@ -13,11 +13,25 @@ const emit = defineEmits(['complete'])
 
 const shuffle = arr => [...arr].sort(() => Math.random() - 0.5)
 
+// Lays out one column in the order an admin arranged with Shuffle, falling
+// back to a fresh random order when the clause carries none or the stored one
+// no longer covers every pair.
+function buildColumn(pairs, side) {
+    const items = pairs.map((pair, i) => ({ text: pair[side === 'left' ? 0 : 1], idx: i }))
+    const stored = props.clause.order?.[side]
+
+    if (!Array.isArray(stored)) return shuffle(items)
+
+    const arranged = stored.map(i => items[i]).filter(Boolean)
+
+    return arranged.length === items.length ? arranged : shuffle(items)
+}
+
 function buildItems(clause) {
     const pairs = clause.pairs ?? []
     return {
-        left:  shuffle(pairs.map((pair, i) => ({ text: pair[0], idx: i }))),
-        right: shuffle(pairs.map((pair, i) => ({ text: pair[1], idx: i }))),
+        left:  buildColumn(pairs, 'left'),
+        right: buildColumn(pairs, 'right'),
     }
 }
 

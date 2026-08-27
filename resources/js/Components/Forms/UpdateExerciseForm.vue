@@ -2,6 +2,7 @@
 import { computed, watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import ImageUpload from '@/Components/Forms/ImageUpload.vue';
+import { MIN_PAIRS, padPairs, useWordPairs } from '@/composables/useWordPairs';
 
 const props = defineProps({
     exercise:     { type: Object, required: true },
@@ -11,17 +12,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['success', 'cancel']);
-
-// Mirrors ExerciseType::MIN_WORD_PAIRS — 5 pairs is 10 words, 5 per language.
-const MIN_PAIRS = 5;
-
-// Normalises stored pairs and tops them up so an exercise saved before the
-// minimum existed still opens with enough rows to fill in.
-function padPairs(pairs) {
-    const next = (pairs ?? []).map(pair => [pair?.[0] ?? '', pair?.[1] ?? '']);
-    while (next.length < MIN_PAIRS) next.push(['', '']);
-    return next;
-}
 
 function defaultClause(type, source = {}) {
     if (type === 'true_false') {
@@ -51,27 +41,14 @@ watch(() => form.decision_type, (newType, oldType) => {
     form.image = null;
 });
 
-function addPair() { form.clause.pairs.push(['', '']); }
-function removePair(index) {
-    if (form.clause.pairs.length <= MIN_PAIRS) return;
-    form.clause.pairs.splice(index, 1);
-}
-
-const pairCount = computed(() => form.clause.pairs?.length ?? 0);
-
-// The clause rules report per-cell keys too (clause.pairs.3.0), so collect
-// everything under clause.pairs rather than only the top-level message.
-const pairErrors = computed(() => [
-    ...new Set(
-        Object.entries(form.errors)
-            .filter(([key]) => key === 'clause.pairs' || key.startsWith('clause.pairs.'))
-            .map(([, message]) => message)
-    ),
-]);
-const canRemovePair = computed(() => pairCount.value > MIN_PAIRS);
-const tooFewPairs = computed(
-    () => form.decision_type === 'multiple_choice' && pairCount.value < MIN_PAIRS
-);
+const {
+    pairCount,
+    canRemovePair,
+    tooFewPairs,
+    pairErrors,
+    addPair,
+    removePair,
+} = useWordPairs(form);
 
 function submit() {
     if (tooFewPairs.value) return;
@@ -162,6 +139,9 @@ function submit() {
                         {{ pairCount }} pairs · {{ pairCount * 2 }} words
                     </span>
                 </div>
+                <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
+                    Saving deals a new order for both columns.
+                </p>
                 <p v-if="tooFewPairs" class="mt-1 text-xs text-red-500">
                     Add at least {{ MIN_PAIRS }} pairs before saving.
                 </p>

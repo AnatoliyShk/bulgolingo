@@ -41,6 +41,25 @@ class ExerciseTest extends TestCase
         return array_slice($words, 0, $count);
     }
 
+    private function wordPairExercise(bool $withOrder = true): Exercise
+    {
+        $clause = [
+            'pairs' => $this->wordPairs(),
+            'explanation' => 'Match each word to its translation.',
+        ];
+
+        if ($withOrder) {
+            $clause['order'] = ['left' => [4, 3, 2, 1, 0], 'right' => [0, 1, 2, 3, 4]];
+        }
+
+        return Exercise::create([
+            'name' => 'Everyday words',
+            'lesson_id' => $this->lesson()->id,
+            'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+            'clause' => $clause,
+        ]);
+    }
+
     public function test_admin_can_create_exercise(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
@@ -355,5 +374,190 @@ class ExerciseTest extends TestCase
         $exercise->refresh();
         $this->assertSame('Everyday words, extended', $exercise->name);
         $this->assertCount(ExerciseType::MIN_WORD_PAIRS + 1, $exercise->clause['pairs']);
+    }
+
+    public function test_shuffled_column_order_is_stored_on_the_clause(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $response = $this
+            ->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Shuffled words',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+                'clause' => [
+                    'pairs' => $this->wordPairs(),
+                    'order' => ['left' => [3, 1, 4, 0, 2], 'right' => [2, 4, 0, 3, 1]],
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $clause = Exercise::where('name', 'Shuffled words')->firstOrFail()->clause;
+
+        $this->assertSame([3, 1, 4, 0, 2], $clause['order']['left']);
+        $this->assertSame([2, 4, 0, 3, 1], $clause['order']['right']);
+    }
+
+    /**
+     * A clause that never carried an order keeps none, which is what leaves the
+     * player free to shuffle the board itself on every visit.
+     */
+    public function test_clause_without_an_order_stays_without_one(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $this
+            ->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Unshuffled words',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+                'clause' => [
+                    'pairs' => $this->wordPairs(),
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertArrayNotHasKey('order', Exercise::where('name', 'Unshuffled words')->firstOrFail()->clause);
+    }
+
+    /**
+     * Every admin save deals the board again, so the stored order is expected to
+     * change rather than survive. Ten saves are enough to prove it moves: five
+     * pairs have 120 arrangements, so ten identical deals in a row cannot happen
+     * by chance.
+     */
+    public function test_every_update_deals_the_columns_again(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $exercise = $this->wordPairExercise();
+
+        $before = $exercise->clause['order'];
+        $seenDifferent = false;
+
+        for ($attempt = 0; $attempt < 10 && ! $seenDifferent; $attempt++) {
+            $this
+                ->actingAs($admin)
+                ->put(route('admin.exercises.update', $exercise), [
+                    'name' => $exercise->name,
+                    'decision_type' => $exercise->decision_type->value,
+                    'clause' => [
+                        'pairs' => $this->wordPairs(),
+                        'order' => $before,
+                        'explanation' => 'Match each word to its translation.',
+                    ],
+                ])
+                ->assertSessionHasNoErrors();
+
+            $seenDifferent = $exercise->fresh()->clause['order'] !== $before;
+        }
+
+        $this->assertTrue($seenDifferent, 'the stored order never changed across ten updates');
+    }
+
+    public function test_update_deals_an_order_to_a_clause_that_had_none(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $exercise = $this->wordPairExercise(withOrder: false);
+
+        $this->assertArrayNotHasKey('order', $exercise->clause);
+
+        $this
+            ->actingAs($admin)
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => 'Everyday words, renamed',
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => [
+                    'pairs' => $this->wordPairs(),
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ])
+            ->assertSessionHasNoErrors();
+
+        $order = $exercise->fresh()->clause['order'];
+
+        $this->assertEqualsCanonicalizing(range(0, ExerciseType::MIN_WORD_PAIRS - 1), $order['left']);
+        $this->assertEqualsCanonicalizing(range(0, ExerciseType::MIN_WORD_PAIRS - 1), $order['right']);
+    }
+
+    /**
+     * Eloquent treats a save with no changed attribute as no update at all, so
+     * it never reaches the hook that deals the board. Requests from the admin
+     * form do not land here — a submitted clause always differs from the stored
+     * one in at least its value types — but a save straight on the model does.
+     */
+    public function test_a_model_save_that_changes_nothing_leaves_the_order_alone(): void
+    {
+        $exercise = $this->wordPairExercise();
+        $before = $exercise->clause['order'];
+
+        $exercise->save();
+
+        $this->assertSame($before, $exercise->fresh()->clause['order']);
+    }
+
+    public function test_a_dealt_order_covers_a_pair_added_in_the_same_update(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $exercise = $this->wordPairExercise();
+
+        $this
+            ->actingAs($admin)
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => $exercise->name,
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => [
+                    'pairs' => $this->wordPairs(ExerciseType::MIN_WORD_PAIRS + 1),
+                    'order' => $exercise->clause['order'],
+                    'explanation' => 'Match each word to its translation.',
+                ],
+            ])
+            ->assertSessionHasNoErrors();
+
+        $order = $exercise->fresh()->clause['order'];
+
+        $this->assertEqualsCanonicalizing(range(0, ExerciseType::MIN_WORD_PAIRS), $order['left']);
+        $this->assertEqualsCanonicalizing(range(0, ExerciseType::MIN_WORD_PAIRS), $order['right']);
+    }
+
+    /**
+     * Both columns showing the same arrangement would sit every word opposite
+     * its own translation, so a deal never leaves them equal.
+     */
+    public function test_a_dealt_order_never_lines_the_columns_up(): void
+    {
+        for ($attempt = 0; $attempt < 50; $attempt++) {
+            $order = ExerciseType::shuffledOrder(ExerciseType::MIN_WORD_PAIRS);
+
+            $this->assertNotSame($order['left'], $order['right']);
+        }
+    }
+
+    public function test_stored_order_drops_indices_no_pair_answers_to(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $exercise = Exercise::create([
+            'name' => 'Everyday words',
+            'lesson_id' => $lesson->id,
+            'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+            'clause' => [
+                'pairs' => $this->wordPairs(),
+                'order' => ['left' => [2, 2, 9, 0], 'right' => [-1, 4]],
+                'explanation' => 'Match each word to its translation.',
+            ],
+        ]);
+
+        $clause = $exercise->fresh()->clause;
+
+        $this->assertSame([2, 0, 1, 3, 4], $clause['order']['left']);
+        $this->assertSame([4, 0, 1, 2, 3], $clause['order']['right']);
     }
 }

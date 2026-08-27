@@ -34,6 +34,11 @@ enum ExerciseType: string
                 'pairs.*' => ['required', 'array', 'size:2'],
                 'pairs.*.0' => ['required', 'string', 'distinct:ignore_case'],
                 'pairs.*.1' => ['required', 'string', 'distinct:ignore_case'],
+                'order' => ['sometimes', 'array:left,right'],
+                'order.left' => ['sometimes', 'array'],
+                'order.left.*' => ['integer', 'min:0', 'distinct'],
+                'order.right' => ['sometimes', 'array'],
+                'order.right.*' => ['integer', 'min:0', 'distinct'],
                 'explanation' => ['required', 'string'],
             ],
             self::TRUE_FALSE => [
@@ -71,5 +76,73 @@ enum ExerciseType: string
             ],
             default => [],
         };
+    }
+
+    /**
+     * Deals both columns again. The two sides are shuffled independently, and
+     * an identical pair of permutations is rejected because that lays every
+     * word opposite its own translation and gives the drill away.
+     */
+    public static function shuffledOrder(int $count): array
+    {
+        $left = self::shuffledIndices($count);
+        $right = self::shuffledIndices($count);
+
+        while ($count > 1 && $right === $left) {
+            $right = self::shuffledIndices($count);
+        }
+
+        return ['left' => $left, 'right' => $right];
+    }
+
+    private static function shuffledIndices(int $count): array
+    {
+        $indices = $count > 0 ? range(0, $count - 1) : [];
+        shuffle($indices);
+
+        return $indices;
+    }
+
+    /**
+     * Repairs the column order stored on a word-pair clause so it always
+     * describes the pairs actually present: entries outside the pair range or
+     * repeated are dropped, and any pair the order forgot is appended. That
+     * keeps an admin's shuffle usable after pairs are added or removed. A
+     * clause with no order at all is left alone, which leaves the player free
+     * to shuffle for itself.
+     */
+    public function normalizeClause(array $clause): array
+    {
+        if ($this !== self::MULTIPLE_CHOICE || ! isset($clause['order'])) {
+            return $clause;
+        }
+
+        $order = is_array($clause['order']) ? $clause['order'] : [];
+        $count = is_array($clause['pairs'] ?? null) ? count($clause['pairs']) : 0;
+
+        $clause['order'] = [
+            'left' => self::normalizeColumnOrder($order['left'] ?? [], $count),
+            'right' => self::normalizeColumnOrder($order['right'] ?? [], $count),
+        ];
+
+        return $clause;
+    }
+
+    /**
+     * Turns one stored column order into a permutation of 0..$count-1, keeping
+     * the positions it already gets right and appending whatever is missing.
+     */
+    private static function normalizeColumnOrder(mixed $order, int $count): array
+    {
+        $all = $count > 0 ? range(0, $count - 1) : [];
+
+        $kept = collect(is_array($order) ? $order : [])
+            ->filter(fn ($index) => is_int($index) || (is_string($index) && ctype_digit($index)))
+            ->map(fn ($index) => (int) $index)
+            ->filter(fn ($index) => $index >= 0 && $index < $count)
+            ->unique()
+            ->values();
+
+        return $kept->merge(collect($all)->diff($kept))->values()->all();
     }
 }

@@ -30,6 +30,9 @@ const removeButtons = (page: Page) => page.getByRole('button', { name: 'Remove' 
 const addPair = (page: Page) => page.getByRole('button', { name: '+ Add pair' });
 const submit = (page: Page) => page.getByRole('button', { name: /Create Exercise/ });
 const counter = (page: Page) => page.getByText(/\d+ pairs · \d+ words/);
+const shuffle = (page: Page) => page.getByRole('button', { name: 'Shuffle' });
+const preview = (page: Page) => page.locator('div').filter({ hasText: /^Order the student sees/ }).last();
+const previewColumns = (page: Page) => preview(page).locator('ol');
 
 // Fills every visible pair row with a distinct English/Bulgarian word.
 async function fillPairs(page: Page): Promise<void> {
@@ -103,6 +106,48 @@ test.describe('Admin word pair exercise form', () => {
         await page.getByPlaceholder('Explain the correct answer').fill('Match each word to its translation.');
 
         await expect(submit(page)).toBeEnabled();
+    });
+
+    test('no student order is shown until the columns are shuffled', async ({ page }) => {
+        await expect(shuffle(page)).toBeVisible();
+        await expect(page.getByText('Order the student sees')).toHaveCount(0);
+    });
+
+    // Shuffling stores a permutation of the pairs, so the preview must hold
+    // every word exactly once no matter which order it lands in.
+    test('shuffling reveals the order the student will see', async ({ page }) => {
+        await fillPairs(page);
+        await shuffle(page).click();
+
+        await expect(page.getByText('Order the student sees')).toBeVisible();
+        await expect(previewColumns(page)).toHaveCount(2);
+
+        const words = await wordInputs(page).evaluateAll((inputs) =>
+            (inputs as HTMLInputElement[]).map((input) => input.value).sort(),
+        );
+        const previewed = await previewColumns(page).first().locator('li').allInnerTexts();
+
+        expect(previewed).toHaveLength(MIN_PAIRS);
+        expect(previewed.map((word) => word.trim()).sort()).toEqual(words);
+    });
+
+    test('a pair added after shuffling joins the stored order', async ({ page }) => {
+        await fillPairs(page);
+        await shuffle(page).click();
+        await addPair(page).click();
+
+        await expect(previewColumns(page).first().locator('li')).toHaveCount(MIN_PAIRS + 1);
+        await expect(previewColumns(page).last().locator('li')).toHaveCount(MIN_PAIRS + 1);
+    });
+
+    test('a pair removed after shuffling leaves the stored order', async ({ page }) => {
+        await fillPairs(page);
+        await shuffle(page).click();
+        await addPair(page).click();
+        await removeButtons(page).last().click();
+
+        await expect(previewColumns(page).first().locator('li')).toHaveCount(MIN_PAIRS);
+        await expect(previewColumns(page).last().locator('li')).toHaveCount(MIN_PAIRS);
     });
 
     test('the server rejects a duplicated word', async ({ page }) => {
