@@ -94,18 +94,20 @@ class ExerciseActivityCacheTest extends TestCase
         $this->assertSame('1', Cache::store('redis')->get($key));
     }
 
+    /**
+     * Nothing is completed in the database, and the cache is pre-warmed with
+     * values that disagree with it, so a correct implementation must read them
+     * from Redis rather than recompute.
+     */
     public function test_stats_page_reads_from_redis_cache_when_present(): void
     {
         $user = User::factory()->create();
         $lesson = $this->lesson();
         $exercise = $this->exercise($lesson);
 
-        // Real DB truth: nothing completed.
         $days = $this->days();
         $today = $days->last();
 
-        // Pre-warm the cache with values that disagree with the DB, so a
-        // correct implementation must read them from Redis, not recompute.
         $countsByTypeAndDay = collect(ExerciseType::cases())->mapWithKeys(
             fn ($type) => [$type->value => $days->mapWithKeys(fn ($d) => [$d => 0])]
         );

@@ -55,10 +55,11 @@ test.describe('Admin exercises index filters', () => {
     });
 
     test.describe('when authenticated as an admin', () => {
+        // Inertia renders client-side, so the filter bar has to appear before
+        // anything counts rows.
         test.beforeEach(async ({ page }) => {
             test.skip(!(await loginAsAdmin(page)), 'seeded admin test user is unavailable in this environment');
             await page.goto(`${BASE}/admin/exercises`);
-            // Inertia renders client-side, so wait for the filter bar before counting.
             await expect(counter(page)).toBeVisible();
             test.skip(await rows(page).count() === 0, 'no exercises exist in this environment to filter');
         });

@@ -44,12 +44,13 @@ async function fillPairs(page: Page): Promise<void> {
 }
 
 test.describe('Admin word pair exercise form', () => {
+    // The Type label is not associated with its select, so the type is chosen
+    // by anchoring on the placeholder option instead.
     test.beforeEach(async ({ page }) => {
         test.skip(!(await login(page, ADMIN_EMAIL, ADMIN_PASSWORD)), 'seeded admin test user is unavailable in this environment');
         test.skip(!LESSON_ID, 'set E2E_LESSON_ID to a lesson that accepts new exercises');
 
         await page.goto(`${BASE}/admin/lessons/${LESSON_ID}/exercises/create`);
-        // The Type label is not associated with its select, so anchor on the placeholder option.
         await page
             .locator('select')
             .filter({ has: page.getByRole('option', { name: 'Select a type' }) })
@@ -81,6 +82,8 @@ test.describe('Admin word pair exercise form', () => {
         await expect(removeButtons(page).first()).toBeEnabled();
     });
 
+    // The floor holds by disabling the remaining buttons rather than by
+    // refusing the click, so the last assertions check for disabled ones.
     test('removing never drops below the minimum', async ({ page }) => {
         await addPair(page).click();
         await addPair(page).click();
@@ -90,7 +93,6 @@ test.describe('Admin word pair exercise form', () => {
         await removeButtons(page).last().click();
         await expect(wordInputs(page)).toHaveCount(MIN_PAIRS);
 
-        // The remaining buttons are disabled, so the floor holds.
         await expect(removeButtons(page).last()).toBeDisabled();
         await expect(wordInputs(page)).toHaveCount(MIN_PAIRS);
     });
