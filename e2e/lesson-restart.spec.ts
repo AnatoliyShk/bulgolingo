@@ -44,29 +44,28 @@ test.describe('Lesson restart prompt', () => {
         );
     });
 
-    test('renders the neo-brutalist shell with heading and badge', async ({ page }) => {
+    test('renders the neo-brutalist shell with the question as its heading', async ({ page }) => {
         await expect(page.locator('.nb-lesson')).toBeVisible();
         await expect(page.locator('.nb-lesson__card')).toBeVisible();
-        await expect(page.locator('.nb-lesson__icon svg')).toBeVisible();
-        await expect(page.getByRole('heading', { name: 'Restart lesson?' })).toBeVisible();
-        await expect(page.locator('.nb-lesson__badge')).toHaveText('Урок');
-        await expect(page.locator('.nb-lesson__meta')).toHaveText('Completed');
+        await expect(
+            page.getByRole('heading', { name: /Do you want to go through it again\?/ }),
+        ).toBeVisible();
     });
 
-    test('names the finished lesson in the highlighted chip', async ({ page }) => {
-        const name = page.locator('.nb-lesson__name');
+    test('highlights the finished lesson name inside the heading', async ({ page }) => {
+        const name = page.locator('.nb-lesson__title .nb-lesson__name');
 
         await expect(name).toBeVisible();
         await expect(name).not.toBeEmpty();
-        await expect(page.locator('.nb-lesson__body')).toContainText("You've already completed");
+        await expect(page.locator('.nb-lesson__title')).toContainText("You've already completed");
     });
 
     test('offers a restart and a go-back action', async ({ page }) => {
         const actions = page.locator('.nb-lesson__action');
 
         await expect(actions).toHaveCount(2);
-        await expect(page.getByRole('button', { name: 'Yes, restart' })).toBeVisible();
-        await expect(page.getByRole('button', { name: 'No, go back' })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Yes', exact: true })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'No', exact: true })).toBeVisible();
         await expect(actions.first()).toHaveClass(/nb-lesson__action--primary/);
     });
 
@@ -83,18 +82,18 @@ test.describe('Lesson restart prompt', () => {
         await expect(shell).toHaveClass(startedDark ? /dark/ : /light/);
     });
 
-    test('"No, go back" returns to the previous page', async ({ page }) => {
+    test('"No" returns to the previous page', async ({ page }) => {
         await page.goto(`${BASE}/learning-paths`);
         await page.goto(`${BASE}/lesson/${LESSON_ID}`);
 
-        await page.getByRole('button', { name: 'No, go back' }).click();
+        await page.getByRole('button', { name: 'No', exact: true }).click();
 
         await expect(page).toHaveURL(`${BASE}/learning-paths`);
     });
 
     // Runs last: this clears the completions that put the prompt on screen.
-    test('"Yes, restart" clears progress and reopens the first exercise', async ({ page }) => {
-        await page.getByRole('button', { name: 'Yes, restart' }).click();
+    test('"Yes" clears progress and reopens the first exercise', async ({ page }) => {
+        await page.getByRole('button', { name: 'Yes', exact: true }).click();
 
         await page.waitForURL((url) => url.pathname.startsWith('/exercise/'), { timeout: 15000 });
         await expect(page.locator('.nb-ex__count')).toHaveText(/^0 \/ \d+$/);
