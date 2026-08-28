@@ -108,7 +108,6 @@
 /* ══════════════ Hero / identity ══════════════ */
 .nb-prof__hero {
     display: flex; align-items: flex-start; gap: 2rem; flex-wrap: wrap;
-    animation: nb-prof-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .nb-prof__avatar {
     position: relative;
@@ -139,6 +138,12 @@
 .nb-prof__avatar-badge--verified { background: var(--green); }
 .nb-prof__avatar-badge--unverified { background: var(--orange); }
 .nb-prof__info { flex: 1; min-width: 0; padding-top: 0.25rem; }
+.nb-prof__info--card {
+    background: var(--paper);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.25rem clamp(1.1rem, 3vw, 1.6rem);
+}
 .nb-prof__eyebrow {
     display: inline-flex; align-items: center; gap: 0.5em;
     font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
@@ -315,17 +320,41 @@
 .nb-prof__stats:hover .nb-prof__stats-arrow { transform: translate(4px, 0); }
 
 /* ══════════════ Animations ══════════════ */
-@keyframes nb-prof-rise {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
 @keyframes nb-prof-pop {
     from { opacity: 0; scale: 0.65; }
     to   { opacity: 1; scale: 1; }
 }
 
+/*
+ * Every block enters on the spring the avatar uses, staggered down the page so
+ * the sheet assembles in reading order rather than landing all at once. The
+ * keyframes drive `scale` rather than a transform, which leaves the rotation a
+ * tilted block carries alone instead of overwriting it.
+ */
+.nb-prof__info--card,
+.nb-prof__section-head,
+.nb-prof__path,
+.nb-prof__empty,
+.nb-prof__stats {
+    animation: nb-prof-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.nb-prof__info--card { animation-delay: 0.18s; }
+.nb-prof__section-head { animation-delay: 0.26s; }
+.nb-prof__path,
+.nb-prof__empty { animation-delay: 0.34s; }
+.nb-prof__path:nth-child(2) { animation-delay: 0.4s; }
+.nb-prof__path:nth-child(3) { animation-delay: 0.46s; }
+.nb-prof__path:nth-child(4) { animation-delay: 0.52s; }
+.nb-prof__path:nth-child(n + 5) { animation-delay: 0.58s; }
+.nb-prof__stats { animation-delay: 0.58s; }
+
 @media (prefers-reduced-motion: reduce) {
-    .nb-prof__hero, .nb-prof__avatar { animation: none; }
+    .nb-prof__avatar,
+    .nb-prof__info--card,
+    .nb-prof__section-head,
+    .nb-prof__path,
+    .nb-prof__empty,
+    .nb-prof__stats { animation: none; }
     .nb-prof__path-fill { transition: none; }
 }
 

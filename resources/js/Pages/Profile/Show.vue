@@ -104,7 +104,7 @@ function progressPercent(path) {
                         </svg>
                     </span>
                 </div>
-                <div class="nb-prof__info">
+                <div class="nb-prof__info nb-prof__info--card">
                     <div class="nb-prof__eyebrow">
                         Профил <span class="nb-prof__eyebrow-en">· profile</span>
                     </div>
@@ -119,8 +119,6 @@ function progressPercent(path) {
                     </svg>
                 </Link>
             </section>
-
-            <div class="nb-prof__seam" aria-hidden="true"></div>
 
             <!-- Learning paths -->
             <section class="nb-prof__section">
@@ -168,8 +166,6 @@ function progressPercent(path) {
                     <Link :href="route('learning-paths.index')" class="nb-prof__empty-btn">Choose a path <font-awesome-icon icon="arrow-right" /></Link>
                 </div>
             </section>
-
-            <div class="nb-prof__seam" aria-hidden="true"></div>
 
             <!-- Stats link -->
             <Link :href="route('stats.show')" class="nb-prof__stats">
