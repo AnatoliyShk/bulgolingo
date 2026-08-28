@@ -150,7 +150,7 @@ class ExerciseTest extends TestCase
 
     public function test_admin_can_create_image_matching_exercise_with_image(): void
     {
-        Storage::fake('public');
+        Storage::fake(Images::DISK);
 
         $admin = User::factory()->create(['is_admin' => true]);
         $lesson = $this->lesson();
@@ -176,7 +176,7 @@ class ExerciseTest extends TestCase
         $exercise = Exercise::where('name', 'Match the picture')->firstOrFail();
 
         $this->assertCount(1, $exercise->images);
-        Storage::disk('public')->assertExists($exercise->images->first()->filepath);
+        Storage::disk(Images::DISK)->assertExists($exercise->images->first()->filepath);
     }
 
     public function test_image_matching_exercise_requires_image(): void
@@ -203,7 +203,7 @@ class ExerciseTest extends TestCase
 
     public function test_admin_can_replace_image_on_image_matching_exercise(): void
     {
-        Storage::fake('public');
+        Storage::fake(Images::DISK);
 
         $admin = User::factory()->create(['is_admin' => true]);
         $lesson = $this->lesson();
@@ -219,7 +219,7 @@ class ExerciseTest extends TestCase
             ],
         ]);
 
-        $oldPath = UploadedFile::fake()->image('dog.jpg')->store('exercise-images', 'public');
+        $oldPath = UploadedFile::fake()->image('dog.jpg')->store('exercise-images', Images::DISK);
         $exercise->images()->attach(Images::create(['filepath' => $oldPath]));
 
         $response = $this
@@ -233,11 +233,11 @@ class ExerciseTest extends TestCase
 
         $response->assertSessionHasNoErrors();
 
-        Storage::disk('public')->assertMissing($oldPath);
+        Storage::disk(Images::DISK)->assertMissing($oldPath);
 
         $exercise->refresh();
         $this->assertCount(1, $exercise->images);
-        Storage::disk('public')->assertExists($exercise->images->first()->filepath);
+        Storage::disk(Images::DISK)->assertExists($exercise->images->first()->filepath);
     }
 
     public function test_admin_can_create_word_pair_exercise_with_the_minimum_pairs(): void

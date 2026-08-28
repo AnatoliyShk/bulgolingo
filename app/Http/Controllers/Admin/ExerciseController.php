@@ -61,7 +61,7 @@ class ExerciseController extends Controller
     public function destroy(Exercise $exercise)
     {
         foreach ($exercise->images as $image) {
-            Storage::disk('public')->delete($image->filepath);
+            Storage::disk(Images::DISK)->delete($image->filepath);
             $image->delete();
         }
 
@@ -77,12 +77,12 @@ class ExerciseController extends Controller
         }
 
         foreach ($exercise->images as $image) {
-            Storage::disk('public')->delete($image->filepath);
+            Storage::disk(Images::DISK)->delete($image->filepath);
             $exercise->images()->detach($image);
             $image->delete();
         }
 
-        $path = $request->file('image')->store('exercise-images', 'public');
+        $path = $request->file('image')->store('exercise-images', Images::DISK);
 
         $exercise->images()->attach(Images::create(['filepath' => $path]));
     }
