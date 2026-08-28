@@ -104,15 +104,19 @@ enum ExerciseType: string
     }
 
     /**
-     * Repairs the column order stored on a word-pair clause so it always
-     * describes the pairs actually present: entries outside the pair range or
-     * repeated are dropped, and any pair the order forgot is appended. That
-     * keeps an admin's shuffle usable after pairs are added or removed. A
-     * clause with no order at all is left alone, which leaves the player free
-     * to shuffle for itself.
+     * Settles a clause into the types the players expect before it is stored.
+     *
+     * The answer is always typed. On a word-pair clause the stored column
+     * order is also repaired so it describes the pairs actually present:
+     * entries outside the pair range or repeated are dropped, and any pair the
+     * order forgot is appended. That keeps an admin's shuffle usable after
+     * pairs are added or removed. A clause with no order at all is left alone,
+     * which leaves the player free to shuffle for itself.
      */
     public function normalizeClause(array $clause): array
     {
+        $clause = $this->normalizeCorrectOption($clause);
+
         if ($this !== self::MULTIPLE_CHOICE || ! isset($clause['order'])) {
             return $clause;
         }
@@ -124,6 +128,32 @@ enum ExerciseType: string
             'left' => self::normalizeColumnOrder($order['left'] ?? [], $count),
             'right' => self::normalizeColumnOrder($order['right'] ?? [], $count),
         ];
+
+        return $clause;
+    }
+
+    /**
+     * Types the stored answer, which the players compare with === and so lose
+     * to a numeric string. An admin edit that carries an image goes out as
+     * multipart, where every field arrives as a string, and both the integer
+     * and boolean rules accept those strings as they stand — so an exercise
+     * saved alongside a picture would otherwise store "2" where the seeder
+     * stored 2 and refuse its own correct answer. A value that is not a number
+     * at all is left untouched for validation to reject.
+     */
+    private function normalizeCorrectOption(array $clause): array
+    {
+        if (! array_key_exists('correct_option', $clause)) {
+            return $clause;
+        }
+
+        $value = $clause['correct_option'];
+
+        $clause['correct_option'] = match ($this) {
+            self::TRUE_FALSE => filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $value,
+            self::FILL_IN_THE_BLANK, self::IMAGE_MATCHING => is_numeric($value) ? (int) $value : $value,
+            default => $value,
+        };
 
         return $clause;
     }

@@ -240,6 +240,77 @@ class ExerciseTest extends TestCase
         Storage::disk(Images::DISK)->assertExists($exercise->images->first()->filepath);
     }
 
+    public function test_image_matching_answer_survives_a_multipart_edit(): void
+    {
+        Storage::fake(Images::DISK);
+
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $exercise = Exercise::create([
+            'name' => 'Match the picture',
+            'lesson_id' => $lesson->id,
+            'decision_type' => ExerciseType::IMAGE_MATCHING->value,
+            'clause' => [
+                'options' => ['Куче', 'Котка', 'Птица'],
+                'correct_option' => 0,
+                'explanation' => 'Куче means dog.',
+            ],
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => $exercise->name,
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => [
+                    'options' => ['Куче', 'Котка', 'Птица'],
+                    'correct_option' => '2',
+                    'explanation' => 'Птица means bird.',
+                ],
+                'image' => UploadedFile::fake()->image('bird.jpg'),
+            ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $this->assertSame(2, $exercise->fresh()->clause['correct_option']);
+    }
+
+    public function test_true_false_answer_survives_a_multipart_edit(): void
+    {
+        Storage::fake(Images::DISK);
+
+        $admin = User::factory()->create(['is_admin' => true]);
+        $lesson = $this->lesson();
+
+        $exercise = Exercise::create([
+            'name' => 'Kotka is a cat',
+            'lesson_id' => $lesson->id,
+            'decision_type' => ExerciseType::TRUE_FALSE->value,
+            'clause' => [
+                'sentence' => '"Котка" means "dog".',
+                'correct_option' => true,
+                'explanation' => 'Котка means cat.',
+            ],
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => $exercise->name,
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => [
+                    'sentence' => '"Котка" means "dog".',
+                    'correct_option' => '0',
+                    'explanation' => 'Котка means cat, so the sentence is false.',
+                ],
+            ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $this->assertSame(false, $exercise->fresh()->clause['correct_option']);
+    }
+
     public function test_admin_can_create_word_pair_exercise_with_the_minimum_pairs(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
