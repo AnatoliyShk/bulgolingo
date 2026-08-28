@@ -1,0 +1,39 @@
+/*
+ * Next exercise control: a countdown line stacked above the action button.
+ * The line drains while the player waits out the pause that follows a correct
+ * answer, and the button below skips whatever is left of it. Both sit in
+ * normal flow, so the button keeps the press motion every other action button
+ * on the player has.
+ */
+.nb-next {
+    display: block;
+}
+
+.nb-next__timer {
+    height: 14px;
+    margin-top: 0.75rem;
+    background: var(--bg);
+    border: var(--border);
+    border-radius: 6px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.nb-next__timer-fill {
+    height: 100%;
+    width: 100%;
+    background: var(--cyan);
+    border-right: 3px solid var(--ink);
+    animation: nb-next-drain linear forwards;
+}
+
+/*
+ * Driven from the element's inline animation-duration so one prop sets both
+ * the wait and the line, and left alone under reduced motion: the line is the
+ * only sign of how much of the pause is left, so it carries meaning rather
+ * than decoration.
+ */
+@keyframes nb-next-drain {
+    from { width: 100%; }
+    to   { width: 0; }
+}

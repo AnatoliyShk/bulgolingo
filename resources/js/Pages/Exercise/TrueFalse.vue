@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
+import NextExerciseButton from '@/Components/NextExerciseButton.vue'
 
 const props = defineProps({
     clause: { type: Object, required: true },
@@ -25,7 +26,6 @@ function select(value) {
     if (checked.value) return
     chosen.value  = value
     checked.value = true
-    if (chosen.value === answer.value) emit('complete')
 }
 
 function retry() {
@@ -84,10 +84,6 @@ function retry() {
             @click="retry"
         >Try Again</button>
 
-        <button
-            v-if="checked && isCorrect"
-            class="nb-ex-action"
-            @click="emit('complete')"
-        >Next Exercise</button>
+        <NextExerciseButton v-if="checked && isCorrect" @advance="emit('complete')" />
     </div>
 </template>

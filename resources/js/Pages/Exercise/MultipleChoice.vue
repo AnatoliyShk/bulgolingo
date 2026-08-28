@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
+import NextExerciseButton from '@/Components/NextExerciseButton.vue'
 
 // clause.pairs = [[english, bulgarian], ...], clause.explanation = prompt
 // Left column shows pair[0] (English), right column shows pair[1] (Bulgarian).
@@ -85,7 +86,6 @@ function tryMatch() {
         state.matched.push(state.selectedLeft)
         state.selectedLeft  = null
         state.selectedRight = null
-        if (state.matched.length === total.value) emit('complete')
     } else {
         // Wrong pair — flash and reset
         state.wrongLeft  = state.selectedLeft
@@ -137,5 +137,7 @@ function tryMatch() {
         </div>
 
         <p class="nb-ex-tally">{{ state.matched.length }} / {{ total }} matched</p>
+
+        <NextExerciseButton v-if="state.matched.length === total" @advance="emit('complete')" />
     </div>
 </template>

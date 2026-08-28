@@ -20,11 +20,9 @@ class LearnedWordCountUpdate implements ShouldQueue
     public function __construct(
         protected User $user,
         protected Exercise $exercise,
-        protected $dateLimit = null
+        protected mixed $dateLimit = null,
     ) {
-        $this->user = $user;
-        $this->exercise = $exercise;
-        $this->dateLimit = $dateLimit ?? Carbon::now()->subDays(30);
+        $this->dateLimit ??= Carbon::now()->subDays(30);
     }
 
     /**
