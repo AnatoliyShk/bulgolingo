@@ -52,7 +52,7 @@ function retry() {
             </div>
         </div>
 
-        <p class="nb-ex-prompt">Which word matches the image?</p>
+        <p class="nb-ex-prompt">Which sentence matches the image?</p>
 
         <div class="nb-ex-grid">
             <button
