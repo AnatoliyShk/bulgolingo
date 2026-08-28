@@ -3,13 +3,14 @@ import '@/assets/scss/components/learn-path/show.scss'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Head, Link, usePage } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 const props = defineProps({
     learningPath: Object,
     lessons: Array,
 })
 
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 const page    = usePage()
 const isAdmin = computed(() => page.props.auth.isAdmin)
 
@@ -125,11 +126,7 @@ function labelStyle(node) {
                 </svg>
             </Link>
             <span class="lp__bar-spacer" />
-            <button
-                class="lp__btn lp__btn--toggle"
-                @click="toggleTheme"
-                :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-            >{{ theme === 'dark' ? '☀' : '☾' }}</button>
+            <ThemeToggle />
         </header>
 
         <div class="lp__head">

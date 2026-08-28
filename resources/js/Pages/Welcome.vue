@@ -3,6 +3,7 @@ import '@/assets/scss/components/welcome.scss'
 import { Head, Link, usePage } from '@inertiajs/vue3'
 import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useTheme } from '@/composables/useTheme'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 const page = usePage()
 const isAuthenticated = computed(() => !!page.props.auth.user)
@@ -13,7 +14,7 @@ const continueHref = computed(() =>
     continueLessonId.value ? `/lesson/${continueLessonId.value}` : '/learning-paths'
 )
 
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 const mobileNavOpen = ref(false)
 
 const steps = [
@@ -141,13 +142,7 @@ onBeforeUnmount(() => {
                     </div>
 
                     <div class="nb-nav__actions">
-                        <button
-                            class="nb-toggle"
-                            @click="toggleTheme"
-                            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-                        >
-                            {{ theme === 'dark' ? '☀' : '☾' }}
-                        </button>
+                        <ThemeToggle />
 
                         <button
                             class="nb-hamburger"

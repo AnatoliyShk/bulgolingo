@@ -77,14 +77,6 @@
 .nb-prof__nav-group { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 .nb-prof__nav-actions { display: flex; align-items: center; gap: 0.6rem; }
 .nb-prof__nav-quick { display: flex; align-items: center; gap: 0.6rem; }
-.nb-prof__theme-btn {
-    width: 2.4rem; height: 2.4rem; cursor: pointer;
-    font-size: 1.05rem; line-height: 1; color: var(--ink);
-    background: var(--paper); border: var(--border); border-radius: 9px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-.nb-prof__theme-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
 .nb-prof__logout-btn {
     display: inline-flex; align-items: center;
     height: 2.4rem; padding: 0 1rem;

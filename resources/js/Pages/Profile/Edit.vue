@@ -7,15 +7,16 @@ import { computed } from 'vue'
 import DeleteUserForm from './Partials/DeleteUserForm.vue'
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue'
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 defineProps({
     mustVerifyEmail: { type: Boolean },
     status: { type: String },
 })
 
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 const page = usePage()
-const appName = computed(() => page.props.appName ?? 'Bulgolingo')
+const appName = computed(() => page.props.appName ?? 'BalkanBuddy')
 </script>
 
 <template>
@@ -29,9 +30,7 @@ const appName = computed(() => page.props.appName ?? 'Bulgolingo')
                 </svg>
             </Link>
             <span class="bar__mark">{{ appName }}</span>
-            <button class="bar__theme" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
-                {{ theme === 'dark' ? '☀️' : '🌙' }}
-            </button>
+            <ThemeToggle />
         </header>
 
         <main class="sheet">

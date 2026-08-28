@@ -2,8 +2,9 @@
 import '@/assets/scss/components/lesson/show.scss'
 import { Head, router } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 
 const props = defineProps({ lesson: Object })
 
@@ -25,13 +26,7 @@ function goBack() {
     </Head>
 
     <div class="nb-lesson" :class="theme">
-        <button
-            class="nb-lesson__toggle"
-            @click="toggleTheme"
-            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-        >
-            {{ theme === 'dark' ? '☀' : '☾' }}
-        </button>
+        <ThemeToggle class="nb-lesson__toggle" />
 
         <main class="nb-lesson__sheet">
             <div class="nb-lesson__card">

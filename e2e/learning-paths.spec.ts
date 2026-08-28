@@ -33,7 +33,7 @@ test.describe('Learning paths catalog', () => {
         await page.goto(`${BASE}/learning-paths`);
 
         const hamburger = page.locator('.nb-paths__hamburger');
-        const toggle = page.locator('.nb-paths__toggle');
+        const toggle = page.locator('.nb-toggle');
         const links = page.locator('.nb-paths__bar-links');
 
         await expect(hamburger).toBeVisible();

@@ -81,15 +81,6 @@
 .nb-auth__navlink:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
 .nb-auth__navlink--cta { background: var(--orange); }
 
-.nb-auth__toggle {
-    width: 2.4rem; height: 2.4rem; cursor: pointer;
-    font-size: 1.05rem; line-height: 1; color: var(--ink);
-    background: var(--paper); border: var(--border); border-radius: 9px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-.nb-auth__toggle:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
-
 /* ══════════════ Card ══════════════ */
 .nb-auth__main {
     flex: 1;
@@ -246,8 +237,7 @@
     .nb-auth__card { animation: none; }
     .nb-auth__input,
     .nb-auth__submit,
-    .nb-auth__navlink,
-    .nb-auth__toggle { transition: none; }
+    .nb-auth__navlink { transition: none; }
 }
 
 /* ══════════════ Responsive ══════════════ */

@@ -1,9 +1,8 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
-import { useTheme } from '@/composables/useTheme';
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
-const { theme, toggleTheme } = useTheme();
 </script>
 
 <template>
@@ -14,11 +13,7 @@ const { theme, toggleTheme } = useTheme();
             <Link href="/">
                 <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
             </Link>
-            <button
-                @click="toggleTheme"
-                class="rounded-md border border-gray-200 px-2 py-1 text-sm text-gray-500 transition hover:border-gray-400 dark:border-gray-700 dark:text-gray-400 dark:hover:border-gray-500"
-                :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-            >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+            <ThemeToggle />
         </div>
 
         <div

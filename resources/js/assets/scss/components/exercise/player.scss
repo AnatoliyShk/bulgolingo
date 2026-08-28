@@ -53,8 +53,7 @@
     padding: 1.25rem 1.5rem 0;
 }
 
-.nb-ex__back,
-.nb-ex__toggle {
+.nb-ex__back {
     flex-shrink: 0;
     display: inline-flex; align-items: center; justify-content: center;
     width: 2.6rem; height: 2.6rem;
@@ -64,10 +63,8 @@
     box-shadow: var(--shadow-sm);
     transition: transform 0.1s, box-shadow 0.1s;
 }
-.nb-ex__back:hover,
-.nb-ex__toggle:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.nb-ex__back:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
 .nb-ex__back svg { width: 1.2rem; height: 1.2rem; }
-.nb-ex__toggle { font-size: 1.05rem; line-height: 1; }
 
 .nb-ex__progress { flex: 1; display: flex; align-items: center; gap: 0.75rem; }
 .nb-ex__track {
@@ -268,7 +265,6 @@
 .nb-ex-action:focus-visible,
 .nb-ex-blank:focus-visible,
 .nb-ex__back:focus-visible,
-.nb-ex__toggle:focus-visible,
 .nb-ex__edit-btn:focus-visible {
     outline: 3px dashed var(--ink); outline-offset: 3px;
 }

@@ -3,16 +3,17 @@ import '@/assets/scss/components/learning-path/index.scss'
 import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import { useTheme } from '@/composables/useTheme'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 defineProps({
     paths: Array,
 })
 
 const page = usePage()
-const appName = computed(() => page.props.appName ?? 'Bulgolingo')
+const appName = computed(() => page.props.appName ?? 'BalkanBuddy')
 const isAuthenticated = computed(() => !!page.props.auth.user)
 
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 const mobileNavOpen = ref(false)
 
 const EXERCISE_TYPE_META = {
@@ -59,13 +60,7 @@ function start(pathId) {
                     </div>
 
                     <div class="nb-paths__bar-actions">
-                        <button
-                            class="nb-paths__toggle"
-                            @click="toggleTheme"
-                            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-                        >
-                            {{ theme === 'dark' ? '☀' : '☾' }}
-                        </button>
+                        <ThemeToggle />
 
                         <button
                             class="nb-paths__hamburger"

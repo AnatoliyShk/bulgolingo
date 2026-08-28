@@ -83,15 +83,6 @@
 }
 .nb-navlink:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
 
-.nb-toggle {
-    width: 2.4rem; height: 2.4rem; cursor: pointer;
-    font-size: 1.05rem; line-height: 1; color: var(--on-accent);
-    background: var(--orange); border: var(--border); border-radius: 9px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-.nb-toggle:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
-
 .nb-hamburger {
     display: none;
     width: 2.4rem; height: 2.4rem; cursor: pointer;

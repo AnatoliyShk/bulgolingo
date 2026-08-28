@@ -57,8 +57,7 @@
     padding: 1.5rem 1.5rem 0;
 }
 
-.bar__back,
-.bar__theme {
+.bar__back {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,15 +78,6 @@
     text-transform: uppercase;
     color: var(--muted);
 }
-
-.bar__theme {
-    border: 1px solid var(--border);
-    background: var(--surface);
-    font-size: 1rem;
-    line-height: 1;
-    cursor: pointer;
-}
-.bar__theme:hover { color: var(--rose); border-color: var(--rose); }
 
 .sheet {
     position: relative;
@@ -136,8 +126,7 @@
     border-color: var(--danger-border);
 }
 
-.bar__back:focus-visible,
-.bar__theme:focus-visible {
+.bar__back:focus-visible {
     outline: 2px solid var(--rose);
     outline-offset: 2px;
 }

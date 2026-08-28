@@ -5,12 +5,13 @@ import { Head, Link, usePage } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import { VueUiWordCloud, VueUiDonutEvolution } from 'vue-data-ui'
 import 'vue-data-ui/style.css'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 const mobileNavOpen = ref(false)
 
 const page = usePage()
-const appName = computed(() => page.props.appName ?? 'Bulgolingo')
+const appName = computed(() => page.props.appName ?? 'BalkanBuddy')
 
 const props = defineProps({
     completedExercises: {
@@ -201,13 +202,7 @@ const kpis = computed(() => [
                     </div>
 
                     <div class="nb-stats__bar-actions">
-                        <button
-                            class="nb-stats__toggle"
-                            @click="toggleTheme"
-                            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-                        >
-                            {{ theme === 'dark' ? '☀' : '☾' }}
-                        </button>
+                        <ThemeToggle />
 
                         <button
                             class="nb-stats__hamburger"

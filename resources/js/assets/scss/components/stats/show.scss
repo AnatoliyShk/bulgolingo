@@ -93,15 +93,6 @@
 }
 .nb-stats__navlink:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
 
-.nb-stats__toggle {
-    width: 2.4rem; height: 2.4rem; cursor: pointer;
-    font-size: 1.05rem; line-height: 1; color: var(--ink);
-    background: var(--paper); border: var(--border); border-radius: 9px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-.nb-stats__toggle:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
-
 .nb-stats__hamburger {
     display: none;
     width: 2.4rem; height: 2.4rem; cursor: pointer;
@@ -114,7 +105,6 @@
 .nb-stats__hamburger svg { width: 1.3rem; height: 1.3rem; }
 
 .nb-stats__navlink:focus-visible,
-.nb-stats__toggle:focus-visible,
 .nb-stats__logo:focus-visible {
     outline: 3px solid var(--ink);
     outline-offset: 3px;
@@ -234,7 +224,6 @@
     .nb-stats__rise,
     .nb-stats__kpi { animation: none; }
     .nb-stats__navlink,
-    .nb-stats__toggle,
     .nb-stats__kpi { transition: none; }
 }
 

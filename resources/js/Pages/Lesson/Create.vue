@@ -1,9 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useForm } from '@inertiajs/vue3'
-import { useTheme } from '@/composables/useTheme'
-
-const { theme, toggleTheme } = useTheme()
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 const props = defineProps({
     exerciseTypes: Array,
@@ -88,11 +86,7 @@ function submit() {
 
 <template>
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-6">
-        <button
-            @click="toggleTheme"
-            class="fixed top-4 right-4 z-50 rounded-md border border-gray-200 bg-white px-2 py-1 text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-            :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'"
-        >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+        <ThemeToggle class="fixed top-4 right-4 z-50" />
 
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 w-full max-w-2xl p-8">
             <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100 text-center mb-6">Create Lesson</h1>

@@ -46,19 +46,8 @@
 
 .nb-lesson ::selection { background: var(--pink); color: var(--ink); }
 
-/* ── Theme toggle ── */
-.nb-lesson__toggle {
-    position: fixed; top: 1.25rem; right: 1.25rem; z-index: 2;
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 2.6rem; height: 2.6rem;
-    font-size: 1.05rem; line-height: 1;
-    cursor: pointer; color: var(--ink);
-    background: var(--paper);
-    border: var(--border); border-radius: 9px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-.nb-lesson__toggle:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+/* ── Theme toggle — the button itself is the shared ThemeToggle ── */
+.nb-lesson__toggle { position: fixed; top: 1.25rem; right: 1.25rem; z-index: 2; }
 
 /* ── Sheet + card ── */
 .nb-lesson__sheet {
@@ -109,13 +98,11 @@
 .nb-lesson__action--primary { color: var(--on-accent); background: var(--orange); }
 
 /* ── Focus + motion ── */
-.nb-lesson__toggle:focus-visible,
 .nb-lesson__action:focus-visible {
     outline: 3px dashed var(--ink); outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
     .nb-lesson,
-    .nb-lesson__toggle,
     .nb-lesson__action { transition: none; }
 }

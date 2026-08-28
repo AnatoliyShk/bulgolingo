@@ -4,6 +4,7 @@ import '@/assets/scss/components/auth.scss'
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { useTheme } from '@/composables/useTheme'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 const props = defineProps({
     status: {
@@ -13,7 +14,7 @@ const props = defineProps({
 
 const page = usePage()
 const appName = computed(() => page.props.appName)
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 
 const form = useForm({})
 
@@ -42,9 +43,7 @@ const verificationLinkSent = computed(
                     <span class="nb-auth__logo-text">{{ appName }}</span>
                 </Link>
                 <div class="nb-auth__links">
-                    <button class="nb-auth__toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
-                        {{ theme === 'dark' ? '☀' : '☾' }}
-                    </button>
+                    <ThemeToggle />
                 </div>
             </nav>
         </header>

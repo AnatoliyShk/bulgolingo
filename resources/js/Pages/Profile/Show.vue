@@ -5,6 +5,7 @@ import { computed, ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import { useForm } from '@inertiajs/vue3'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 const logoutForm = useForm({})
 const mobileNavOpen = ref(false)
@@ -17,11 +18,11 @@ const props = defineProps({
     },
     appName: {
         type: String,
-        default: 'Bulgolingo',
+        default: 'BalkanBuddy',
     },
 })
 
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 
 const initial = computed(() => {
     const name = props.user?.name?.trim() ?? ''
@@ -62,11 +63,7 @@ function progressPercent(path) {
                     </div>
 
                     <div class="nb-prof__nav-quick">
-                        <button
-                            class="nb-prof__theme-btn"
-                            @click="toggleTheme"
-                            :aria-label="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-                        >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+                        <ThemeToggle />
 
                         <button
                             class="nb-prof__hamburger"

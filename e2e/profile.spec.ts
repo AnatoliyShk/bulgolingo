@@ -35,7 +35,7 @@ test.describe('Profile / dashboard page', () => {
             await page.goto(`${BASE}/dashboard`);
 
             const hamburger = page.locator('.nb-prof__hamburger');
-            const toggle = page.locator('.nb-prof__theme-btn');
+            const toggle = page.locator('.nb-toggle');
             const actions = page.locator('.nb-prof__nav-actions');
 
             await expect(hamburger).toBeVisible();
@@ -77,7 +77,7 @@ test.describe('Profile / dashboard page', () => {
             const badge = page.locator('.nb-prof__avatar-badge');
             await expect(badge).toBeVisible();
 
-            await page.locator('.nb-prof__theme-btn').click();
+            await page.locator('.nb-toggle').click();
             await expect(badge).toBeVisible();
             await expect(badge).toHaveClass(/nb-prof__avatar-badge--verified/);
         });

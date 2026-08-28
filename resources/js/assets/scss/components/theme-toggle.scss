@@ -1,0 +1,31 @@
+/* ══════════════ Theme toggle ══════════════
+   One button shared by every page shell, styled after the welcome header.
+   Only the neo-brutalist pages define the palette, so each colour is read with
+   a fallback; --border and --shadow-sm are deliberately not used because the
+   profile editor defines --border as a plain colour, which would drop the
+   frame if it were pasted into the shorthand. */
+.nb-toggle {
+    --tt-ink: var(--ink, #14110b);
+
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    width: 2.4rem; height: 2.4rem; cursor: pointer;
+    font-size: 1.05rem; line-height: 1;
+    color: var(--on-accent, #14110b);
+    background: var(--orange, #ff8a47);
+    border: 3px solid var(--tt-ink); border-radius: 9px;
+    box-shadow: 4px 4px 0 0 var(--tt-ink);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+/* The dark palettes flip --ink, and the pages that define no palette at all
+   need the flip spelled out here. */
+:root.dark .nb-toggle { --tt-ink: var(--ink, #f4ead6); }
+
+.nb-toggle:hover  { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--tt-ink); }
+.nb-toggle:active { transform: translate(4px, 4px); box-shadow: none; }
+.nb-toggle:focus-visible { outline: 3px dashed var(--tt-ink); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-toggle { transition: none; }
+}

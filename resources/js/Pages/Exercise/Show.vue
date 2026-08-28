@@ -8,8 +8,9 @@ import FillInTheBlank from './FillInTheBlank.vue'
 import ImageMatching from './ImageMatching.vue'
 import MultipleChoice from './MultipleChoice.vue'
 import TrueFalse from './TrueFalse.vue'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 
 const props = defineProps({
     exercise:       { type: Object, required: true },
@@ -74,9 +75,7 @@ function onComplete() {
                 <span class="nb-ex__count">{{ completedCount }} / {{ totalExercises }}</span>
             </div>
 
-            <button class="nb-ex__toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
-                {{ theme === 'dark' ? '☀' : '☾' }}
-            </button>
+            <ThemeToggle />
         </header>
 
         <main class="nb-ex__sheet">

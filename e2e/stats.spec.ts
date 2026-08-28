@@ -70,7 +70,7 @@ test.describe('Stats page', () => {
 
         test('theme toggle switches between dark and light', async ({ page }) => {
             const shell = page.locator('.nb-stats');
-            const toggle = page.locator('.nb-stats__toggle');
+            const toggle = page.locator('.nb-toggle');
 
             const startedDark = await shell.evaluate((el) => el.classList.contains('dark'));
 
@@ -91,7 +91,7 @@ test.describe('Stats page', () => {
             await page.reload();
 
             const hamburger = page.locator('.nb-stats__hamburger');
-            const toggle = page.locator('.nb-stats__toggle');
+            const toggle = page.locator('.nb-toggle');
             const links = page.locator('.nb-stats__bar-links');
 
             await expect(hamburger).toBeVisible();

@@ -5,6 +5,7 @@ import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import PasswordInput from '@/Components/PasswordInput.vue'
+import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 defineProps({
     canResetPassword: {
@@ -17,7 +18,7 @@ defineProps({
 
 const page = usePage()
 const appName = computed(() => page.props.appName)
-const { theme, toggleTheme } = useTheme()
+const { theme } = useTheme()
 
 const form = useForm({
     email: '',
@@ -49,9 +50,7 @@ const submit = () => {
                 </Link>
                 <div class="nb-auth__links">
                     <Link href="/register" class="nb-auth__navlink nb-auth__navlink--cta">Register</Link>
-                    <button class="nb-auth__toggle" @click="toggleTheme" :title="theme === 'dark' ? 'Switch to light' : 'Switch to dark'">
-                        {{ theme === 'dark' ? '☀' : '☾' }}
-                    </button>
+                    <ThemeToggle />
                 </div>
             </nav>
         </header>
