@@ -13,7 +13,7 @@ class LearningPathSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * Seeds one complete beginner path: 3 lessons, 5 exercises each.
+     * Seeds one complete beginner path: 3 lessons, 7 exercises each.
      * Lessons and exercises are consumed in ascending id order by the
      * exercise player, so the insertion order below is the study order.
      */
@@ -108,6 +108,25 @@ class LearningPathSeeder extends Seeder
                             'explanation' => 'Match each polite English phrase to its Bulgarian equivalent.',
                         ],
                     ],
+                    [
+                        'name' => 'Ask how someone is',
+                        'decision_type' => ExerciseType::FILL_IN_THE_BLANK,
+                        'clause' => [
+                            'sentence' => 'Здравей, как __?',
+                            'options' => ['си', 'съм', 'сме'],
+                            'correct_option' => 0,
+                            'explanation' => '"Здравей, как си?" means "Hello, how are you?" Си is the second person singular of "съм".',
+                        ],
+                    ],
+                    [
+                        'name' => 'True or false: Dovizhdane',
+                        'decision_type' => ExerciseType::TRUE_FALSE,
+                        'clause' => [
+                            'sentence' => '"Довиждане" is what you say when you arrive somewhere.',
+                            'correct_option' => false,
+                            'explanation' => '"Довиждане" means "goodbye", so it is what you say on the way out. On the way in say "Здравей".',
+                        ],
+                    ],
                 ],
             ],
             [
@@ -171,6 +190,25 @@ class LearningPathSeeder extends Seeder
                             'explanation' => 'Match each English place to its Bulgarian equivalent.',
                         ],
                     ],
+                    [
+                        'name' => 'True or false: Momiche',
+                        'decision_type' => ExerciseType::TRUE_FALSE,
+                        'clause' => [
+                            'sentence' => '"Момиче" means "boy" in Bulgarian.',
+                            'correct_option' => false,
+                            'explanation' => '"Момиче" means "girl". The word for "boy" is "момче", so watch the ending.',
+                        ],
+                    ],
+                    [
+                        'name' => 'Where the children play',
+                        'decision_type' => ExerciseType::FILL_IN_THE_BLANK,
+                        'clause' => [
+                            'sentence' => 'Децата играят пред голямата __.',
+                            'options' => ['къща', 'вода', 'книга'],
+                            'correct_option' => 0,
+                            'explanation' => '"Децата играят пред голямата къща." means "The children play in front of the big house."',
+                        ],
+                    ],
                 ],
             ],
             [
@@ -227,6 +265,30 @@ class LearningPathSeeder extends Seeder
                             'sentence' => '"Не разбирам" means "I understand".',
                             'correct_option' => false,
                             'explanation' => '"Не разбирам" means "I do not understand". Drop the "не" and "разбирам" means "I understand".',
+                        ],
+                    ],
+                    [
+                        'name' => 'He is a teacher',
+                        'decision_type' => ExerciseType::FILL_IN_THE_BLANK,
+                        'clause' => [
+                            'sentence' => 'Той __ учител в училището.',
+                            'options' => ['е', 'са', 'сте'],
+                            'correct_option' => 0,
+                            'explanation' => '"Той е учител в училището." means "He is a teacher at the school." Е is the third person singular of "съм".',
+                        ],
+                    ],
+                    [
+                        'name' => 'Match the short sentences',
+                        'decision_type' => ExerciseType::MULTIPLE_CHOICE,
+                        'clause' => [
+                            'pairs' => [
+                                ['I am a student', 'Аз съм студент'],
+                                ['You are here', 'Ти си тук'],
+                                ['She is at home', 'Тя е вкъщи'],
+                                ['We are friends', 'Ние сме приятели'],
+                                ['They are Bulgarian', 'Те са българи'],
+                            ],
+                            'explanation' => 'Match each English sentence to its Bulgarian equivalent.',
                         ],
                     ],
                 ],
