@@ -6,3 +6,20 @@ html.dark body {
     background-color: #111827;
     color: #f3f4f6;
 }
+
+/* Inertia page-visit progress bar — a flat, thick line instead of the default
+   thin bar with a blurred glow at its tip, to match the neo-brutalist hard
+   edges used elsewhere. Styled here rather than per-page because Inertia
+   mounts #nprogress on the document body, outside any page component. */
+#nprogress {
+    pointer-events: none;
+}
+#nprogress .bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1031;
+    width: 100%;
+    height: 5px;
+    background: #ff8a47;
+}
