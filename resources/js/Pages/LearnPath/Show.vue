@@ -81,7 +81,7 @@ const mapHeight = computed(() =>
 )
 
 function glyph(node) {
-    if (node.isBoss)            return '👑'
+    if (node.isBoss)            return 'Final'
     if (node.status === 'done') return '✓'
     return String(node.num)
 }

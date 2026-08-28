@@ -152,7 +152,9 @@ a.stmap__node:focus-visible { outline: 3px dashed var(--ink); outline-offset: 4p
 .stmap__node--upcoming { background: var(--paper); }
 
 /* Boss node — bigger, menacing, always prominent */
-.stmap__node--boss .stmap__node-glyph { font-size: 2rem; }
+.stmap__node--boss .stmap__node-glyph {
+    font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase;
+}
 .stmap__node--boss.stmap__node--upcoming {
     background: var(--purple); color: var(--on-accent);
 }
