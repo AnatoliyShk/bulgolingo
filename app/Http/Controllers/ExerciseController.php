@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ExerciseType;
 use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
+use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LearnedWordCountUpdate;
 use App\Models\Exercise;
 use Inertia\Inertia;
@@ -98,6 +99,7 @@ class ExerciseController extends Controller
         $lessonId = $exercise->lesson_id;
 
         LearnedWordCountUpdate::dispatch($user, $exercise)->onQueue('learning_path');
+        ExperienceCountUpdate::dispatch($user, $exercise)->onQueue('learning_path');
 
         // Record this exercise as completed for this user (ignore if already recorded)
         $user->completedExercises()->syncWithoutDetaching($exercise->id);
