@@ -132,7 +132,6 @@
     box-shadow: var(--shadow);
     display: flex; align-items: center; justify-content: center;
     transform: rotate(-3deg);
-    animation: nb-prof-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
 }
 .nb-prof__avatar-letter {
     font-family: 'Unbounded', sans-serif; font-weight: 900;
@@ -340,19 +339,18 @@
 }
 
 /*
- * Every block enters on the spring the avatar uses, staggered down the page so
- * the sheet assembles in reading order rather than landing all at once. The
- * keyframes drive `scale` rather than a transform, which leaves the rotation a
- * tilted block carries alone instead of overwriting it.
+ * The blocks below the identity header enter on a spring, staggered down the
+ * page so the sheet assembles in reading order rather than landing all at once.
+ * The keyframes drive `scale` rather than a transform, which leaves the rotation
+ * a tilted block carries alone instead of overwriting it. The avatar and the
+ * name card are deliberately excluded — they are present from the first frame.
  */
-.nb-prof__info--card,
 .nb-prof__section-head,
 .nb-prof__path,
 .nb-prof__empty,
 .nb-prof__stats {
     animation: nb-prof-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
-.nb-prof__info--card { animation-delay: 0.18s; }
 .nb-prof__section-head { animation-delay: 0.26s; }
 .nb-prof__path,
 .nb-prof__empty { animation-delay: 0.34s; }
@@ -363,9 +361,7 @@
 .nb-prof__stats { animation-delay: 0.58s; }
 
 @media (prefers-reduced-motion: reduce) {
-    .nb-prof__avatar,
     .nb-prof__xp,
-    .nb-prof__info--card,
     .nb-prof__section-head,
     .nb-prof__path,
     .nb-prof__empty,

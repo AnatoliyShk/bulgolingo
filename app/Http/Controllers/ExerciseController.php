@@ -146,7 +146,6 @@ class ExerciseController extends Controller
         // All exercises in the lesson are done — mark the lesson complete
         $learningPath = $user->learningPaths()
             ->whereHas('lessons', fn ($q) => $q->where('lessons.id', $lessonId))
-            ->with(['lessons' => fn ($q) => $q->orderBy('lessons.id')->with('exercises')])
             ->first();
 
         if (! $learningPath) {
@@ -161,14 +160,13 @@ class ExerciseController extends Controller
             ->where('lesson_id', $lessonId)
             ->update(['is_completed' => true]);
 
-        $lessons = $learningPath->lessons;
-        $lessonIds = $lessons->pluck('id')->toArray();
-        $nextLessonId = $lessonIds[array_search($lessonId, $lessonIds) + 1] ?? null;
+        $nextLessonId = $lesson->nextLessonId($learningPath);
 
         if ($nextLessonId) {
-            $firstExercise = $lessons->firstWhere('id', $nextLessonId)?->exercises->first();
-            if ($firstExercise) {
-                return redirect()->route('exercise.show', $firstExercise->id);
+            $firstExerciseId = Lesson::firstExerciseIdIn($nextLessonId);
+
+            if ($firstExerciseId) {
+                return redirect()->route('exercise.show', $firstExerciseId);
             }
         }
 

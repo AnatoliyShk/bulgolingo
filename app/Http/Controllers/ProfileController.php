@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ExerciseType;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -13,53 +14,32 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    /**
+     * The page needs three numbers per path and nothing else, so the lessons
+     * and exercises behind them are aggregated in SQL rather than hydrated.
+     * Loading them cost a model per exercise and, because Inertia serializes
+     * loaded relations, shipped the whole tree to a page that never reads it.
+     */
     public function show(Request $request)
     {
         $user = auth()->user();
 
-        $paths = $user->learningPaths()
-            ->with([
-                'lessons' => fn ($q) => $q->orderBy('lessons.id'),
-                'lessons.exercises' => fn ($q) => $q->select('exercises.id', 'exercises.decision_type'),
-            ])
-            ->withCount('lessons')
-            ->get();
+        $paths = $user->learningPaths()->withCount('lessons')->get();
 
-        $allExerciseIds = $paths->flatMap(
-            fn ($path) => $path->lessons->flatMap(fn ($l) => $l->exercises->pluck('id'))
-        )->unique()->values();
+        if ($paths->isNotEmpty()) {
+            $progress = $user->lessonProgress($paths->modelKeys());
 
-        $completedSet = $user->completedExercises()
-            ->whereIn('exercise_id', $allExerciseIds)
-            ->pluck('exercise_id')
-            ->flip();
+            $paths->each(function ($path) use ($progress) {
+                $row = $progress->get($path->id);
+                $lessons = $row?->lessons ?? collect();
 
-        $paths = $paths->map(function ($path) use ($completedSet) {
-            $completedLessons = 0;
-            $continueLesson = null;
-
-            foreach ($path->lessons as $lesson) {
-                $ids = $lesson->exercises->pluck('id');
-                $allDone = $ids->isNotEmpty() && $ids->every(fn ($id) => $completedSet->has($id));
-
-                if ($allDone) {
-                    $completedLessons++;
-                } elseif ($continueLesson === null) {
-                    $continueLesson = $lesson;
-                }
-            }
-
-            $path->completed_lessons_count = $completedLessons;
-            $path->continue_lesson_id = $continueLesson?->id;
-            $path->exercise_types = $path->lessons
-                ->flatMap(fn ($l) => $l->exercises->pluck('decision_type'))
-                ->unique()
-                ->map(fn ($type) => $type->getDescription())
-                ->values()
-                ->toArray();
-
-            return $path;
-        });
+                $path->completed_lessons_count = $lessons->where('is_complete', true)->count();
+                $path->continue_lesson_id = $lessons->firstWhere('is_complete', false)?->lesson_id;
+                $path->exercise_types = ($row?->exercise_types ?? collect())
+                    ->map(fn (ExerciseType $type) => $type->getDescription())
+                    ->all();
+            });
+        }
 
         return Inertia::render('Profile/Show', [
             'appName' => config('app.name'),

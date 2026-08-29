@@ -68,6 +68,38 @@ class Lesson extends Model
         return $exerciseId === null ? null : (int) $exerciseId;
     }
 
+    /**
+     * The id of the lesson following this one inside the given path, or null
+     * when this is the last. Lessons in a path run in lesson-id order, and the
+     * pivot already stores that id, so the answer comes off the pivot without
+     * loading a single lesson row.
+     */
+    public function nextLessonId(LearningPath $learningPath): ?int
+    {
+        $lessonId = DB::table('learning_path_lesson')
+            ->where('learning_path_id', $learningPath->getKey())
+            ->where('lesson_id', '>', $this->getKey())
+            ->orderBy('lesson_id')
+            ->value('lesson_id');
+
+        return $lessonId === null ? null : (int) $lessonId;
+    }
+
+    /**
+     * The first exercise in a lesson's completion order. Takes an id rather
+     * than an instance so a caller holding only the next lesson's id — as
+     * nextLessonId() hands back — does not have to load the lesson to ask.
+     */
+    public static function firstExerciseIdIn(int $lessonId): ?int
+    {
+        $exerciseId = DB::table('exercise_lesson')
+            ->where('lesson_id', $lessonId)
+            ->orderBy('order')
+            ->value('exercise_id');
+
+        return $exerciseId === null ? null : (int) $exerciseId;
+    }
+
     public function learningPath()
     {
         return $this->belongsToMany(LearningPath::class, 'learning_path_lesson');

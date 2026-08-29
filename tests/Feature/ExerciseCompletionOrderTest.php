@@ -121,6 +121,61 @@ class ExerciseCompletionOrderTest extends TestCase
         ]);
     }
 
+    public function test_finishing_a_lesson_advances_to_the_next_lessons_first_exercise(): void
+    {
+        $user = User::factory()->create();
+        $path = LearningPath::create(['name' => 'Bulgarian Basics', 'language' => 'bg']);
+        $path->users()->attach($user->id);
+
+        $first = Lesson::create(['name' => 'L1', 'description' => 'D']);
+        $second = Lesson::create(['name' => 'L2', 'description' => 'D']);
+        $path->lessons()->attach([$first->id, $second->id]);
+
+        [$a, $b] = $this->exercises($first, 2);
+        [$next] = $this->exercises($second, 2);
+
+        $user->completedExercises()->syncWithoutDetaching($a->id);
+
+        $response = $this->actingAs($user)->post(route('exercise.complete', $b));
+
+        $response->assertRedirect(route('exercise.show', $next->id));
+    }
+
+    public function test_finishing_the_last_lesson_falls_back_to_the_path(): void
+    {
+        $user = User::factory()->create();
+        $path = LearningPath::create(['name' => 'Bulgarian Basics', 'language' => 'bg']);
+        $path->users()->attach($user->id);
+
+        $only = Lesson::create(['name' => 'L1', 'description' => 'D']);
+        $path->lessons()->attach($only->id);
+
+        [$a, $b] = $this->exercises($only, 2);
+        $user->completedExercises()->syncWithoutDetaching($a->id);
+
+        $response = $this->actingAs($user)->post(route('exercise.complete', $b));
+
+        $response->assertRedirect(route('learning-paths.show', $path->id));
+    }
+
+    public function test_next_lesson_with_no_exercises_falls_back_to_the_path(): void
+    {
+        $user = User::factory()->create();
+        $path = LearningPath::create(['name' => 'Bulgarian Basics', 'language' => 'bg']);
+        $path->users()->attach($user->id);
+
+        $first = Lesson::create(['name' => 'L1', 'description' => 'D']);
+        $empty = Lesson::create(['name' => 'L2', 'description' => 'D']);
+        $path->lessons()->attach([$first->id, $empty->id]);
+
+        [$a, $b] = $this->exercises($first, 2);
+        $user->completedExercises()->syncWithoutDetaching($a->id);
+
+        $response = $this->actingAs($user)->post(route('exercise.complete', $b));
+
+        $response->assertRedirect(route('learning-paths.show', $path->id));
+    }
+
     public function test_lesson_stays_incomplete_while_a_gap_remains(): void
     {
         $user = User::factory()->create();
