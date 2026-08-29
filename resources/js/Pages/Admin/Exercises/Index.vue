@@ -27,7 +27,7 @@ function dateKey(value) {
 
 const filteredExercises = computed(() =>
     props.exercises.filter(exercise => {
-        if (filterLesson.value && exercise.lesson?.id !== filterLesson.value) return false;
+        if (filterLesson.value && !exercise.lessons?.some(l => l.id === filterLesson.value)) return false;
         if (filterType.value && exercise.decision_type !== filterType.value) return false;
 
         if (filterFrom.value || filterTo.value) {
@@ -163,11 +163,13 @@ function deleteExercise(id) {
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ exercise.name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ typeLabel(exercise.decision_type) }}</td>
                                 <td v-if="!filterLesson" class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                    <Link
-                                        v-if="exercise.lesson"
-                                        :href="route('admin.lessons.edit', exercise.lesson.id)"
-                                        class="text-blue-600 hover:underline dark:text-blue-400"
-                                    >{{ exercise.lesson.name }}</Link>
+                                    <span v-for="(lesson, i) in exercise.lessons" :key="lesson.id">
+                                        <span v-if="i > 0">, </span>
+                                        <Link
+                                            :href="route('admin.lessons.edit', lesson.id)"
+                                            class="text-blue-600 hover:underline dark:text-blue-400"
+                                        >{{ lesson.name }}</Link>
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ new Date(exercise.created_at).toLocaleDateString() }}</td>
                                 <td class="px-6 py-4 text-right">

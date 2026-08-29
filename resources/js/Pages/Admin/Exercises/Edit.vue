@@ -3,10 +3,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 import UpdateExerciseForm from '@/Components/Forms/UpdateExerciseForm.vue';
 
+import { computed } from 'vue';
+
 const props = defineProps({
     exercise: Object,
     exerciseTypes: Array,
 });
+
+const lesson = computed(() => props.exercise.lessons?.[0] ?? null);
 </script>
 
 <template>
@@ -15,7 +19,7 @@ const props = defineProps({
             <Breadcrumb :items="[
                 { label: 'Admin', href: route('admin.index') },
                 { label: 'Lessons', href: route('admin.lessons.index') },
-                { label: exercise.lesson?.name, href: route('admin.lessons.edit', exercise.lesson_id) },
+                { label: lesson?.name, href: lesson ? route('admin.lessons.edit', lesson.id) : '#' },
                 { label: 'Edit Exercise' },
             ]" />
         </template>
@@ -27,7 +31,7 @@ const props = defineProps({
                         :exercise="exercise"
                         :exercise-types="exerciseTypes"
                         :submit-route="route('admin.exercises.update', exercise.id)"
-                        :cancel-href="route('admin.lessons.edit', exercise.lesson_id)"
+                        :cancel-href="lesson ? route('admin.lessons.edit', lesson.id) : route('admin.exercises.index')"
                     />
                 </section>
             </div>

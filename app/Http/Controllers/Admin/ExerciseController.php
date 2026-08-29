@@ -18,7 +18,7 @@ class ExerciseController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Exercises/Index', [
-            'exercises' => Exercise::with('lesson')->latest()->get(),
+            'exercises' => Exercise::with('lessons')->latest()->get(),
             'exerciseTypes' => $this->exerciseTypes(),
             'lessons' => Lesson::orderBy('name')->get(['id', 'name']),
         ]);
@@ -34,7 +34,9 @@ class ExerciseController extends Controller
 
     public function store(StoreExerciseRequest $request, Lesson $lesson)
     {
-        $exercise = Exercise::create($request->safe()->except('image'));
+        $exercise = Exercise::create($request->safe()->except('image', 'lesson_id'));
+
+        $lesson->attachExerciseAtEnd($exercise);
 
         $this->syncImage($request, $exercise);
 
@@ -44,18 +46,18 @@ class ExerciseController extends Controller
     public function edit(Exercise $exercise)
     {
         return Inertia::render('Admin/Exercises/Edit', [
-            'exercise' => $exercise->load('lesson', 'images'),
+            'exercise' => $exercise->load('lessons', 'images'),
             'exerciseTypes' => $this->exerciseTypes(),
         ]);
     }
 
     public function update(UpdateExerciseRequest $request, Exercise $exercise)
     {
-        $exercise->update($request->safe()->except('image'));
+        $exercise->update($request->safe()->except('image', 'lesson_id'));
 
         $this->syncImage($request, $exercise);
 
-        return redirect()->route('admin.lessons.edit', $exercise->lesson_id)->with('success', 'Exercise updated.');
+        return redirect()->route('admin.lessons.edit', $exercise->lessons()->first())->with('success', 'Exercise updated.');
     }
 
     public function destroy(Exercise $exercise)

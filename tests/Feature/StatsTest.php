@@ -50,9 +50,8 @@ class StatsTest extends TestCase
             $path->lessons()->attach($lesson->id);
 
             for ($n = 0; $n < $count; $n++) {
-                $exercises[] = Exercise::create([
+                $exercise = Exercise::create([
                     'name' => "Ex {$i}-{$n}",
-                    'lesson_id' => $lesson->id,
                     'decision_type' => ExerciseType::TRUE_FALSE->value,
                     'clause' => [
                         'sentence' => 'Здравей means hello.',
@@ -60,6 +59,10 @@ class StatsTest extends TestCase
                         'explanation' => 'Здравей is a common Bulgarian greeting.',
                     ],
                 ]);
+
+                $lesson->attachExerciseAtEnd($exercise);
+
+                $exercises[] = $exercise;
             }
         }
 

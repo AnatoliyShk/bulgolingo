@@ -9,7 +9,6 @@ use App\Models\LearnedWords;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -21,9 +20,8 @@ class LearnedWordCountUpdateTest extends TestCase
     {
         $lesson = Lesson::create(['name' => 'Test', 'description' => 'Test']);
 
-        return Exercise::create([
+        $exercise = Exercise::create([
             'name' => 'Test Exercise',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::FILL_IN_THE_BLANK->value,
             'clause' => [
                 'sentence' => 'The ___ is an animal.',
@@ -32,6 +30,10 @@ class LearnedWordCountUpdateTest extends TestCase
                 'explanation' => 'Test.',
             ],
         ]);
+
+        $lesson->attachExerciseAtEnd($exercise);
+
+        return $exercise;
     }
 
     public function test_creates_learned_words_and_links_to_user(): void
@@ -98,7 +100,6 @@ class LearnedWordCountUpdateTest extends TestCase
         $lesson = Lesson::create(['name' => 'Test', 'description' => 'Test']);
         $exercise = Exercise::create([
             'name' => 'Test',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::TRUE_FALSE->value,
             'clause' => [
                 'sentence' => 'Здравей means hello.',
@@ -106,6 +107,8 @@ class LearnedWordCountUpdateTest extends TestCase
                 'explanation' => 'Test.',
             ],
         ]);
+
+        $lesson->attachExerciseAtEnd($exercise);
 
         (new LearnedWordCountUpdate($user, $exercise))->handle();
 

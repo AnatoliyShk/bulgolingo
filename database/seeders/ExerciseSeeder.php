@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
 use App\Models\Lesson;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ExerciseSeeder extends Seeder
@@ -179,12 +178,11 @@ class ExerciseSeeder extends Seeder
             }
 
             foreach ($exercises as $exercise) {
-                Exercise::create([
+                $lesson->attachExerciseAtEnd(Exercise::create([
                     'name' => $exercise['name'],
-                    'lesson_id' => $lesson->id,
                     'decision_type' => $exercise['decision_type'],
                     'clause' => $exercise['clause'],
-                ]);
+                ]));
             }
         }
     }

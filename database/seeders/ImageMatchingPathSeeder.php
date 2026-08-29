@@ -43,10 +43,14 @@ class ImageMatchingPathSeeder extends Seeder
         $path->lessons()->syncWithoutDetaching([$lesson->id]);
 
         foreach ($this->exercises() as $data) {
-            $exercise = Exercise::firstOrCreate(
-                ['name' => $data['name'], 'lesson_id' => $lesson->id],
-                ['decision_type' => ExerciseType::IMAGE_MATCHING, 'clause' => $data['clause']],
-            );
+            $exercise = $lesson->exercises()->where('name', $data['name'])->first()
+                ?? Exercise::create([
+                    'name' => $data['name'],
+                    'decision_type' => ExerciseType::IMAGE_MATCHING,
+                    'clause' => $data['clause'],
+                ]);
+
+            $lesson->attachExerciseAtEnd($exercise);
 
             $image = $this->storeImage($data['image']);
 

@@ -25,6 +25,18 @@ class ExerciseTest extends TestCase
     }
 
     /**
+     * @param  array<string, mixed>  $attributes
+     */
+    private function exerciseFor(Lesson $lesson, array $attributes): Exercise
+    {
+        $exercise = Exercise::create($attributes);
+
+        $lesson->attachExerciseAtEnd($exercise);
+
+        return $exercise;
+    }
+
+    /**
      * @return array<int, array{0: string, 1: string}>
      */
     private function wordPairs(int $count = ExerciseType::MIN_WORD_PAIRS): array
@@ -52,9 +64,8 @@ class ExerciseTest extends TestCase
             $clause['order'] = ['left' => [4, 3, 2, 1, 0], 'right' => [0, 1, 2, 3, 4]];
         }
 
-        return Exercise::create([
+        return $this->exerciseFor($this->lesson(), [
             'name' => 'Everyday words',
-            'lesson_id' => $this->lesson()->id,
             'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
             'clause' => $clause,
         ]);
@@ -84,8 +95,13 @@ class ExerciseTest extends TestCase
 
         $this->assertDatabaseHas('exercises', [
             'name' => 'Greeting basics',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::TRUE_FALSE->value,
+        ]);
+
+        $this->assertDatabaseHas('exercise_lesson', [
+            'lesson_id' => $lesson->id,
+            'exercise_id' => Exercise::where('name', 'Greeting basics')->value('id'),
+            'order' => 0,
         ]);
     }
 
@@ -208,9 +224,8 @@ class ExerciseTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $lesson = $this->lesson();
 
-        $exercise = Exercise::create([
+        $exercise = $this->exerciseFor($lesson, [
             'name' => 'Match the picture',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::IMAGE_MATCHING->value,
             'clause' => [
                 'options' => ['Куче', 'Котка', 'Птица'],
@@ -247,9 +262,8 @@ class ExerciseTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $lesson = $this->lesson();
 
-        $exercise = Exercise::create([
+        $exercise = $this->exerciseFor($lesson, [
             'name' => 'Match the picture',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::IMAGE_MATCHING->value,
             'clause' => [
                 'options' => ['Куче', 'Котка', 'Птица'],
@@ -283,9 +297,8 @@ class ExerciseTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $lesson = $this->lesson();
 
-        $exercise = Exercise::create([
+        $exercise = $this->exerciseFor($lesson, [
             'name' => 'Kotka is a cat',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::TRUE_FALSE->value,
             'clause' => [
                 'sentence' => '"Котка" means "dog".',
@@ -387,9 +400,8 @@ class ExerciseTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $lesson = $this->lesson();
 
-        $exercise = Exercise::create([
+        $exercise = $this->exerciseFor($lesson, [
             'name' => 'Everyday words',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
             'clause' => [
                 'pairs' => $this->wordPairs(),
@@ -419,9 +431,8 @@ class ExerciseTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $lesson = $this->lesson();
 
-        $exercise = Exercise::create([
+        $exercise = $this->exerciseFor($lesson, [
             'name' => 'Everyday words',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
             'clause' => [
                 'pairs' => $this->wordPairs(),
@@ -615,9 +626,8 @@ class ExerciseTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $lesson = $this->lesson();
 
-        $exercise = Exercise::create([
+        $exercise = $this->exerciseFor($lesson, [
             'name' => 'Everyday words',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
             'clause' => [
                 'pairs' => $this->wordPairs(),

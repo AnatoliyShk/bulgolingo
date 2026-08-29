@@ -33,10 +33,14 @@ class LearningPathSeeder extends Seeder
             $path->lessons()->syncWithoutDetaching([$lesson->id]);
 
             foreach ($lessonData['exercises'] as $exercise) {
-                Exercise::firstOrCreate(
-                    ['name' => $exercise['name'], 'lesson_id' => $lesson->id],
-                    ['decision_type' => $exercise['decision_type'], 'clause' => $exercise['clause']],
-                );
+                $model = $lesson->exercises()->where('name', $exercise['name'])->first()
+                    ?? Exercise::create([
+                        'name' => $exercise['name'],
+                        'decision_type' => $exercise['decision_type'],
+                        'clause' => $exercise['clause'],
+                    ]);
+
+                $lesson->attachExerciseAtEnd($model);
             }
         }
     }

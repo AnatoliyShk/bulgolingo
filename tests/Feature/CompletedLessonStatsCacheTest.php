@@ -44,9 +44,8 @@ class CompletedLessonStatsCacheTest extends TestCase
 
     private function exercise(Lesson $lesson): Exercise
     {
-        return Exercise::create([
+        $exercise = Exercise::create([
             'name' => 'Ex',
-            'lesson_id' => $lesson->id,
             'decision_type' => ExerciseType::TRUE_FALSE->value,
             'clause' => [
                 'sentence' => 'Здравей means hello.',
@@ -54,6 +53,10 @@ class CompletedLessonStatsCacheTest extends TestCase
                 'explanation' => 'Здравей is a common Bulgarian greeting.',
             ],
         ]);
+
+        $lesson->attachExerciseAtEnd($exercise);
+
+        return $exercise;
     }
 
     public function test_stats_page_falls_back_to_database_and_warms_lesson_stats_cache(): void

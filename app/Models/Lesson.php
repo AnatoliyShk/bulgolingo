@@ -4,19 +4,68 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 
-#[Fillable(['name', 'description', 'is_completed'])]
+#[Fillable(['name', 'description'])]
 class Lesson extends Model
 {
     protected $table = 'lessons';
 
-    protected $casts = ['is_completed' => 'boolean'];
-
     protected $hidden = [];
 
-    public function exercises()
+    /**
+     * The pivot's `order` is the sequence a student completes the lesson in,
+     * so the relation is always read in that order rather than by exercise id.
+     */
+    public function exercises(): BelongsToMany
     {
-        return $this->hasMany(Exercise::class);
+        return $this->belongsToMany(Exercise::class, 'exercise_lesson')
+            ->using(ExerciseLesson::class)
+            ->withPivot('order')
+            ->orderBy('exercise_lesson.order');
+    }
+
+    /**
+     * Puts an exercise at the end of this lesson's completion order. Re-running
+     * it for an already-attached exercise leaves its position untouched.
+     */
+    public function attachExerciseAtEnd(Exercise $exercise): void
+    {
+        if ($this->exercises()->whereKey($exercise->getKey())->exists()) {
+            return;
+        }
+
+        $lastOrder = DB::table('exercise_lesson')->where('lesson_id', $this->getKey())->max('order');
+
+        $this->exercises()->attach($exercise->getKey(), [
+            'order' => $lastOrder === null ? 0 : $lastOrder + 1,
+        ]);
+    }
+
+    /**
+     * The earliest-ordered exercise in this lesson the user has not completed,
+     * or null when there is none. Passing $afterOrder limits the search to the
+     * exercises that come after that position in the lesson's order.
+     *
+     * The ids are read straight off the pivot, which already carries both the
+     * order and the exercise id, so the exercises table is never touched; the
+     * finished ones are ruled out by a subquery on the completions table.
+     */
+    public function firstIncompleteExerciseId(User $user, ?int $afterOrder = null): ?int
+    {
+        $exerciseId = DB::table('exercise_lesson')
+            ->where('lesson_id', $this->getKey())
+            ->when($afterOrder !== null, fn ($q) => $q->where('order', '>', $afterOrder))
+            ->whereNotIn('exercise_id', fn ($q) => $q
+                ->select('exercise_id')
+                ->from('user_exercise_completions')
+                ->where('user_id', $user->getKey())
+            )
+            ->orderBy('order')
+            ->value('exercise_id');
+
+        return $exerciseId === null ? null : (int) $exerciseId;
     }
 
     public function learningPath()
@@ -41,7 +90,7 @@ class Lesson extends Model
     public static function getCompletedLessonStats(int $userId): array
     {
         $paths = LearningPath::whereHas('users', fn ($q) => $q->where('users.id', $userId))
-            ->with(['lessons' => fn ($q) => $q->with('exercises:id,lesson_id')])
+            ->with(['lessons' => fn ($q) => $q->with('exercises:id')])
             ->get();
 
         $completedSet = User::find($userId)

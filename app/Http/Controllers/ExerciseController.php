@@ -8,6 +8,9 @@ use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LearnedWordCountUpdate;
 use App\Models\Exercise;
+use App\Models\Lesson;
+use App\Services\CompletionCacheSync;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ExerciseController extends Controller
@@ -33,9 +36,12 @@ class ExerciseController extends Controller
      */
     public function store(StoreExerciseRequest $request)
     {
-        $exercise = Exercise::create($request->validated());
+        $lesson = Lesson::findOrFail($request->validated('lesson_id'));
+        $exercise = Exercise::create($request->safe()->except('lesson_id'));
 
-        return redirect()->route('lesson.show', $exercise->lesson_id)
+        $lesson->attachExerciseAtEnd($exercise);
+
+        return redirect()->route('lesson.show', $lesson)
             ->with('success', 'Exercise added successfully');
     }
 
@@ -47,20 +53,20 @@ class ExerciseController extends Controller
         $user = auth()->user();
 
         $exerciseTypes = array_map(
-            fn(ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
+            fn (ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
             ExerciseType::cases()
         );
 
-        $lessonId    = $exercise->lesson_id;
-        $exerciseIds = Exercise::where('lesson_id', $lessonId)->orderBy('id')->pluck('id');
-        $total       = $exerciseIds->count();
-        $done        = $user->completedExercises()
+        $lesson = $exercise->lessons()->first();
+        $exerciseIds = $lesson ? $lesson->exercises()->pluck('exercises.id') : collect();
+        $total = $exerciseIds->count();
+        $done = $exerciseIds->isEmpty() ? 0 : $user->completedExercises()
             ->whereIn('exercise_id', $exerciseIds)
             ->count();
 
         return Inertia::render('Exercise/Show', [
-            'exercise'       => $exercise->load('images'),
-            'exerciseTypes'  => $exerciseTypes,
+            'exercise' => $exercise->load('images'),
+            'exerciseTypes' => $exerciseTypes,
             'totalExercises' => $total,
             'completedCount' => $done,
         ]);
@@ -92,27 +98,46 @@ class ExerciseController extends Controller
 
     /**
      * Mark the exercise as completed and refresh the parent lesson's status.
+     *
+     * The student is moved forward through the lesson's `order` first, so a
+     * correct answer never sends them back to a question they skipped. Once
+     * nothing is left ahead of them, the scan restarts from the top of the
+     * lesson to pick up those gaps — only when that also comes back empty is
+     * the lesson actually finished.
      */
     public function complete(Exercise $exercise)
     {
-        $user     = auth()->user();
-        $lessonId = $exercise->lesson_id;
+        $user = auth()->user();
+        $lesson = $exercise->lessons()->first();
 
         LearnedWordCountUpdate::dispatch($user, $exercise)->onQueue('learning_path');
         ExperienceCountUpdate::dispatch($user, $exercise)->onQueue('learning_path');
 
-        // Record this exercise as completed for this user (ignore if already recorded)
-        $user->completedExercises()->syncWithoutDetaching($exercise->id);
+        $completedAt = now();
 
-        // Find all exercises in this lesson ordered by ID
-        $allIds = Exercise::where('lesson_id', $lessonId)->orderBy('id')->pluck('id');
+        $recorded = DB::table('user_exercise_completions')->insertOrIgnore([
+            'user_id' => $user->id,
+            'exercise_id' => $exercise->id,
+            'created_at' => $completedAt,
+        ]);
 
-        // Find which ones this user has not yet completed
-        $completedIds = $user->completedExercises()
-            ->whereIn('exercise_id', $allIds)
-            ->pluck('exercise_id');
+        if ($recorded) {
+            CompletionCacheSync::recorded(
+                $user->id,
+                $exercise->id,
+                $completedAt->toDateString(),
+                $exercise->decision_type?->value,
+            );
+        }
 
-        $incompleteId = $allIds->diff($completedIds)->first();
+        if (! $lesson) {
+            return redirect()->route('dashboard');
+        }
+
+        $lessonId = $lesson->id;
+
+        $incompleteId = $lesson->firstIncompleteExerciseId($user, (int) $lesson->pivot->order)
+            ?? $lesson->firstIncompleteExerciseId($user);
 
         if ($incompleteId) {
             return redirect()->route('exercise.show', $incompleteId);
@@ -121,19 +146,27 @@ class ExerciseController extends Controller
         // All exercises in the lesson are done — mark the lesson complete
         $learningPath = $user->learningPaths()
             ->whereHas('lessons', fn ($q) => $q->where('lessons.id', $lessonId))
+            ->with(['lessons' => fn ($q) => $q->orderBy('lessons.id')->with('exercises')])
             ->first();
 
         if (! $learningPath) {
             return redirect()->route('dashboard');
         }
 
-        $learningPath->lessons()->updateExistingPivot($lessonId, ['is_completed' => true]);
+        // A direct update, not updateExistingPivot: the custom LearningPathLesson
+        // pivot makes Eloquent read the row back before writing it, and nothing
+        // observes that pivot for the extra read to be worth anything.
+        DB::table('learning_path_lesson')
+            ->where('learning_path_id', $learningPath->id)
+            ->where('lesson_id', $lessonId)
+            ->update(['is_completed' => true]);
 
-        $lessonIds    = $learningPath->lessons()->orderBy('lessons.id')->pluck('lessons.id')->toArray();
+        $lessons = $learningPath->lessons;
+        $lessonIds = $lessons->pluck('id')->toArray();
         $nextLessonId = $lessonIds[array_search($lessonId, $lessonIds) + 1] ?? null;
 
         if ($nextLessonId) {
-            $firstExercise = Exercise::where('lesson_id', $nextLessonId)->orderBy('id')->first();
+            $firstExercise = $lessons->firstWhere('id', $nextLessonId)?->exercises->first();
             if ($firstExercise) {
                 return redirect()->route('exercise.show', $firstExercise->id);
             }

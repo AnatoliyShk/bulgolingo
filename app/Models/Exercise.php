@@ -6,8 +6,6 @@ use App\Enums\ExerciseType;
 use App\Observers\ExerciseObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[ObservedBy(ExerciseObserver::class)]
@@ -15,10 +13,10 @@ class Exercise extends Model
 {
     protected $fillable = [
         'name',
-        'lesson_id',
         'clause',
         'decision_type',
     ];
+
     protected function casts(): array
     {
         return [
@@ -32,9 +30,11 @@ class Exercise extends Model
         parent::__construct();
     }
 
-    public function lesson(): BelongsTo
+    public function lessons(): BelongsToMany
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsToMany(Lesson::class, 'exercise_lesson')
+            ->using(ExerciseLesson::class)
+            ->withPivot('order');
     }
 
     public function images(): BelongsToMany
@@ -55,11 +55,13 @@ class Exercise extends Model
     public function getExerciseWords(): array
     {
         if ($this->decision_type === ExerciseType::FILL_IN_THE_BLANK) {
-            $options      = $this->clause['options'] ?? [];
+            $options = $this->clause['options'] ?? [];
             $correctIndex = $this->clause['correct_option'] ?? 0;
-            $word         = $options[$correctIndex] ?? null;
+            $word = $options[$correctIndex] ?? null;
+
             return $word ? [$word] : [];
         }
+
         return [];
     }
 }

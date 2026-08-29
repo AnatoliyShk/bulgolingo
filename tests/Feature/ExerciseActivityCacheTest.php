@@ -56,12 +56,15 @@ class ExerciseActivityCacheTest extends TestCase
             ],
         };
 
-        return Exercise::create([
+        $exercise = Exercise::create([
             'name' => 'Ex',
-            'lesson_id' => $lesson->id,
             'decision_type' => $type->value,
             'clause' => $clause,
         ]);
+
+        $lesson->attachExerciseAtEnd($exercise);
+
+        return $exercise;
     }
 
     private function days(): Collection

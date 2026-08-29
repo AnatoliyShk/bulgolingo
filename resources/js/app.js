@@ -22,7 +22,7 @@ import {
 
 library.add(faArrowRight, faEye, faEyeSlash, faListCheck, faCheckDouble, faPenToSquare, faImage);
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = 'BalkanBuddy';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

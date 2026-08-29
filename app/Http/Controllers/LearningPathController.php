@@ -10,7 +10,7 @@ class LearningPathController extends Controller
 {
     public function index()
     {
-        $paths = LearningPath::with('lessons.exercises:id,lesson_id,decision_type')->get()
+        $paths = LearningPath::with('lessons.exercises:id,decision_type')->get()
             ->map(fn (LearningPath $path) => [
                 'id' => $path->id,
                 'name' => $path->name,
@@ -40,7 +40,7 @@ class LearningPathController extends Controller
     {
         return Inertia::render('LearnPath/Show', [
             'learningPath' => $learningPath,
-            'lessons'      => $learningPath->lessons,
+            'lessons' => $learningPath->lessons,
         ]);
     }
 }

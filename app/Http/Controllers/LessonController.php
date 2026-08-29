@@ -29,7 +29,7 @@ class LessonController extends Controller
     {
         return Inertia::render('Lesson/Create', [
             'exerciseTypes' => array_map(
-                fn(ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
+                fn (ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
                 ExerciseType::cases()
             ),
         ]);
@@ -52,7 +52,7 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        $exerciseIds = $lesson->exercises()->orderBy('id')->pluck('id');
+        $exerciseIds = $lesson->exercises()->pluck('exercises.id');
 
         if ($exerciseIds->isEmpty()) {
             return redirect()->back();
@@ -74,7 +74,7 @@ class LessonController extends Controller
 
     public function restart(Lesson $lesson)
     {
-        $exerciseIds = $lesson->exercises()->pluck('id');
+        $exerciseIds = $lesson->exercises()->pluck('exercises.id');
 
         DB::table('user_exercise_completions')
             ->where('user_id', auth()->id())
@@ -89,7 +89,7 @@ class LessonController extends Controller
             $learningPath->lessons()->updateExistingPivot($lesson->id, ['is_completed' => false]);
         }
 
-        $firstExercise = $lesson->exercises()->orderBy('id')->first();
+        $firstExercise = $lesson->exercises()->first();
 
         return redirect()->route('exercise.show', $firstExercise->id);
     }

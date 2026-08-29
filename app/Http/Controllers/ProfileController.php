@@ -19,8 +19,8 @@ class ProfileController extends Controller
 
         $paths = $user->learningPaths()
             ->with([
-                'lessons'           => fn ($q) => $q->orderBy('lessons.id'),
-                'lessons.exercises' => fn ($q) => $q->select('id', 'lesson_id', 'decision_type'),
+                'lessons' => fn ($q) => $q->orderBy('lessons.id'),
+                'lessons.exercises' => fn ($q) => $q->select('exercises.id', 'exercises.decision_type'),
             ])
             ->withCount('lessons')
             ->get();
@@ -36,10 +36,10 @@ class ProfileController extends Controller
 
         $paths = $paths->map(function ($path) use ($completedSet) {
             $completedLessons = 0;
-            $continueLesson   = null;
+            $continueLesson = null;
 
             foreach ($path->lessons as $lesson) {
-                $ids    = $lesson->exercises->pluck('id');
+                $ids = $lesson->exercises->pluck('id');
                 $allDone = $ids->isNotEmpty() && $ids->every(fn ($id) => $completedSet->has($id));
 
                 if ($allDone) {
@@ -50,8 +50,8 @@ class ProfileController extends Controller
             }
 
             $path->completed_lessons_count = $completedLessons;
-            $path->continue_lesson_id      = $continueLesson?->id;
-            $path->exercise_types          = $path->lessons
+            $path->continue_lesson_id = $continueLesson?->id;
+            $path->exercise_types = $path->lessons
                 ->flatMap(fn ($l) => $l->exercises->pluck('decision_type'))
                 ->unique()
                 ->map(fn ($type) => $type->getDescription())
@@ -62,11 +62,12 @@ class ProfileController extends Controller
         });
 
         return Inertia::render('Profile/Show', [
-            'appName'       => config('app.name'),
-            'user'          => $user,
+            'appName' => config('app.name'),
+            'user' => $user,
             'learningPaths' => $paths,
         ]);
     }
+
     /**
      * Display the user's profile form.
      */
