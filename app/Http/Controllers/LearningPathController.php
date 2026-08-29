@@ -4,25 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningPath;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class LearningPathController extends Controller
 {
+    /**
+     * The card only needs each path's distinct exercise types, so those are
+     * aggregated in SQL rather than hydrating every lesson and exercise a
+     * path contains just to collect their decision_type values in PHP.
+     */
     public function index()
     {
-        $paths = LearningPath::with('lessons.exercises:id,decision_type')->get()
-            ->map(fn (LearningPath $path) => [
-                'id' => $path->id,
-                'name' => $path->name,
-                'language' => $path->language,
-                'exercise_types' => $path->lessons
-                    ->flatMap(fn ($lesson) => $lesson->exercises)
-                    ->pluck('decision_type')
-                    ->filter()
-                    ->unique()
-                    ->map(fn ($type) => $type->value)
-                    ->values(),
-            ]);
+        $paths = LearningPath::get(['id', 'name', 'language']);
+
+        $types = DB::table('learning_path_lesson as lpl')
+            ->join('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
+            ->join('exercises as e', 'e.id', '=', 'el.exercise_id')
+            ->select('lpl.learning_path_id', 'e.decision_type')
+            ->distinct()
+            ->get()
+            ->groupBy(fn ($row) => (int) $row->learning_path_id)
+            ->map(fn ($rows) => $rows->pluck('decision_type')->values());
+
+        $paths = $paths->map(fn (LearningPath $path) => [
+            'id' => $path->id,
+            'name' => $path->name,
+            'language' => $path->language,
+            'exercise_types' => $types->get($path->id) ?? collect(),
+        ]);
 
         return Inertia::render('LearningPath/Index', [
             'paths' => $paths,

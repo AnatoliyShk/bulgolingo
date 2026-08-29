@@ -115,59 +115,54 @@ class Lesson extends Model
      *
      * A lesson counts as completed when the user has completed every one of its
      * exercises; a path counts as completed when every one of its lessons is.
-     * Lessons shared by several enrolled paths are counted once.
+     * Lessons shared by several enrolled paths are counted once, which keying
+     * the tally by lesson id takes care of. A path with no lessons produces no
+     * rows at all, so it is never counted as finished.
+     *
+     * One grouped query answers all three numbers; the user is passed in rather
+     * than looked up, and nothing is hydrated, so the cost does not grow with
+     * how much the user has enrolled in.
      *
      * @return array{completed_lessons: int, total_exercises: int, completed_paths: int}
      */
-    public static function getCompletedLessonStats(int $userId): array
+    public static function getCompletedLessonStats(User $user): array
     {
-        $paths = LearningPath::whereHas('users', fn ($q) => $q->where('users.id', $userId))
-            ->with(['lessons' => fn ($q) => $q->with('exercises:id')])
+        $rows = DB::table('learning_path_user as lpu')
+            ->join('learning_path_lesson as lpl', 'lpl.learning_path_id', '=', 'lpu.learning_path_id')
+            ->leftJoin('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
+            ->leftJoin('user_exercise_completions as uec', function ($join) use ($user) {
+                $join->on('uec.exercise_id', '=', 'el.exercise_id')
+                    ->where('uec.user_id', $user->getKey());
+            })
+            ->where('lpu.user_id', $user->getKey())
+            ->groupBy('lpu.learning_path_id', 'lpl.lesson_id')
+            ->select([
+                'lpu.learning_path_id',
+                'lpl.lesson_id',
+                DB::raw('count(el.exercise_id) as total'),
+                DB::raw('count(uec.exercise_id) as completed'),
+            ])
             ->get();
 
-        $completedSet = User::find($userId)
-            ->completedExercises()
-            ->pluck('exercise_id')
-            ->flip();
+        $exercisesInCompletedLesson = [];
+        $pathIsComplete = [];
 
-        $completedLessons = 0;
-        $totalExercises = 0;
-        $completedPaths = 0;
-        $countedLessons = [];
+        foreach ($rows as $row) {
+            $total = (int) $row->total;
+            $lessonIsComplete = $total > 0 && $total === (int) $row->completed;
+            $pathId = (int) $row->learning_path_id;
 
-        foreach ($paths as $path) {
-            $pathComplete = $path->lessons->isNotEmpty();
+            $pathIsComplete[$pathId] = ($pathIsComplete[$pathId] ?? true) && $lessonIsComplete;
 
-            foreach ($path->lessons as $lesson) {
-                $ids = $lesson->exercises->pluck('id');
-                $lessonComplete = $ids->isNotEmpty() && $ids->every(fn ($id) => $completedSet->has($id));
-
-                if (! $lessonComplete) {
-                    $pathComplete = false;
-                }
-
-                // A lesson can belong to more than one enrolled path; only tally it once.
-                if (isset($countedLessons[$lesson->id])) {
-                    continue;
-                }
-
-                $countedLessons[$lesson->id] = true;
-
-                if ($lessonComplete) {
-                    $completedLessons++;
-                    $totalExercises += $ids->count();
-                }
-            }
-
-            if ($pathComplete) {
-                $completedPaths++;
+            if ($lessonIsComplete) {
+                $exercisesInCompletedLesson[(int) $row->lesson_id] = $total;
             }
         }
 
         return [
-            'completed_lessons' => $completedLessons,
-            'total_exercises' => $totalExercises,
-            'completed_paths' => $completedPaths,
+            'completed_lessons' => count($exercisesInCompletedLesson),
+            'total_exercises' => array_sum($exercisesInCompletedLesson),
+            'completed_paths' => count(array_filter($pathIsComplete)),
         ];
     }
 }

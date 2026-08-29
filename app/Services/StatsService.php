@@ -14,7 +14,7 @@ class StatsService
 {
     public function build(User $user): array
     {
-        $completedLessonStats = $this->completedLessonStats($user->id);
+        $completedLessonStats = $this->completedLessonStats($user);
 
         $days = $this->activityDayRange();
         $countsByTypeAndDay = $this->exerciseActivityCounts($user->id, $days);
@@ -32,14 +32,14 @@ class StatsService
     /**
      * @return array{completed_lessons: int, total_exercises: int, completed_paths: int}
      */
-    private function completedLessonStats(int $userId): array
+    private function completedLessonStats(User $user): array
     {
-        $stats = CompletedLessonStatsCache::get($userId);
+        $stats = CompletedLessonStatsCache::get($user->id);
 
         if ($stats === null) {
-            $stats = Lesson::getCompletedLessonStats($userId);
+            $stats = Lesson::getCompletedLessonStats($user);
 
-            CompletedLessonStatsCache::warm($userId, $stats);
+            CompletedLessonStatsCache::warm($user->id, $stats);
         }
 
         return $stats;

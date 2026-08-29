@@ -83,6 +83,98 @@ class StatsTest extends TestCase
         return $value;
     }
 
+    /**
+     * @return array{completedLessons: int, completedExercises: int, completedLearningPaths: int}
+     */
+    private function lessonStats(User $user): array
+    {
+        $props = null;
+
+        $this->actingAs($user)
+            ->get(route('stats.show'))
+            ->assertOk()
+            ->assertInertia(function (Assert $page) use (&$props) {
+                $all = $page->toArray()['props'];
+                $props = [
+                    'completedLessons' => $all['completedLessons'],
+                    'completedExercises' => $all['completedExercises'],
+                    'completedLearningPaths' => $all['completedLearningPaths'],
+                ];
+            });
+
+        return $props;
+    }
+
+    public function test_only_fully_finished_lessons_are_counted(): void
+    {
+        $user = User::factory()->create();
+        $exercises = $this->enrolledPath($user, [2, 2]);
+
+        // Finish the first lesson and half of the second.
+        $user->completedExercises()->syncWithoutDetaching([
+            $exercises[0]->id, $exercises[1]->id, $exercises[2]->id,
+        ]);
+
+        $stats = $this->lessonStats($user);
+
+        $this->assertSame(1, $stats['completedLessons']);
+    }
+
+    public function test_completed_exercises_counts_only_those_in_finished_lessons(): void
+    {
+        $user = User::factory()->create();
+        $exercises = $this->enrolledPath($user, [2, 3]);
+
+        // Two exercises finish lesson one; one more leaves lesson two unfinished.
+        $user->completedExercises()->syncWithoutDetaching([
+            $exercises[0]->id, $exercises[1]->id, $exercises[2]->id,
+        ]);
+
+        $stats = $this->lessonStats($user);
+
+        $this->assertSame(1, $stats['completedLessons']);
+        $this->assertSame(2, $stats['completedExercises'], 'the third completion sits in an unfinished lesson');
+    }
+
+    public function test_an_empty_lesson_is_never_counted_as_finished(): void
+    {
+        $user = User::factory()->create();
+        $exercises = $this->enrolledPath($user, [1, 0]);
+
+        $user->completedExercises()->syncWithoutDetaching($exercises[0]->id);
+
+        $stats = $this->lessonStats($user);
+
+        $this->assertSame(1, $stats['completedLessons']);
+        $this->assertSame(1, $stats['completedExercises']);
+    }
+
+    /**
+     * A lesson shared by two enrolled paths is one lesson the user finished,
+     * not two, and its exercises must not be tallied twice either.
+     */
+    public function test_a_lesson_in_two_enrolled_paths_is_counted_once(): void
+    {
+        $user = User::factory()->create();
+        $exercises = $this->enrolledPath($user, [2]);
+
+        $shared = Lesson::query()->latest('id')->first();
+
+        $second = LearningPath::create(['name' => 'Second path', 'language' => 'bg']);
+        $second->users()->attach($user->id);
+        $second->lessons()->attach($shared->id);
+
+        foreach ($exercises as $exercise) {
+            $user->completedExercises()->syncWithoutDetaching($exercise->id);
+        }
+
+        $stats = $this->lessonStats($user);
+
+        $this->assertSame(1, $stats['completedLessons'], 'the shared lesson is one lesson');
+        $this->assertSame(2, $stats['completedExercises'], 'its exercises are not double counted');
+        $this->assertSame(2, $stats['completedLearningPaths'], 'both paths are finished by it');
+    }
+
     public function test_path_counts_as_completed_once_every_exercise_in_it_is_done(): void
     {
         $user = User::factory()->create();
