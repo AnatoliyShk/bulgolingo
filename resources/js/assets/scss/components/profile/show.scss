@@ -41,63 +41,6 @@
 }
 .nb-prof ::selection { background: var(--pink); color: var(--ink); }
 
-/* ══════════════ Nav ══════════════ */
-.nb-prof__nav {
-    position: sticky; top: 0; z-index: 100;
-    background: var(--bg);
-    border-bottom: var(--border);
-}
-.nb-prof__nav-inner {
-    max-width: 860px; margin: 0 auto;
-    padding: 0.85rem 1.5rem;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 1rem;
-}
-.nb-prof__logo {
-    display: inline-flex; align-items: center; gap: 0.65rem;
-    text-decoration: none; color: var(--ink);
-}
-.nb-prof__logo-mark {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 4.2rem; height: 2.1rem;
-    font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 0.9rem; letter-spacing: -0.04em; line-height: 1;
-    background: var(--pink); color: var(--on-accent);
-    border: var(--border); border-radius: 8px;
-    box-shadow: var(--shadow-sm);
-    transform: rotate(-4deg);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-.nb-prof__logo:hover .nb-prof__logo-mark {
-    transform: rotate(-4deg) translate(2px, 2px);
-    box-shadow: 2px 2px 0 0 var(--ink);
-}
-.nb-prof__logo-text {
-    font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em;
-}
-.nb-prof__nav-group { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-.nb-prof__nav-actions { display: flex; align-items: center; gap: 0.6rem; }
-.nb-prof__nav-quick { display: flex; align-items: center; gap: 0.6rem; }
-.nb-prof__logout-btn {
-    display: inline-flex; align-items: center;
-    height: 2.4rem; padding: 0 1rem;
-    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.85rem; color: var(--on-accent);
-    background: var(--orange); border: var(--border); border-radius: 9px;
-    box-shadow: var(--shadow-sm); cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-.nb-prof__logout-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
-
-.nb-prof__hamburger {
-    display: none;
-    width: 2.4rem; height: 2.4rem; cursor: pointer;
-    align-items: center; justify-content: center;
-    background: var(--paper); border: var(--border); border-radius: 9px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-.nb-prof__hamburger:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
-.nb-prof__hamburger svg { width: 1.3rem; height: 1.3rem; }
-
 /* ══════════════ Main sheet ══════════════ */
 .nb-prof__main {
     max-width: 860px; margin: 0 auto;
@@ -370,22 +313,6 @@
 }
 
 /* ══════════════ Responsive ══════════════ */
-@media (max-width: 640px) {
-    .nb-prof__nav-inner { position: relative; }
-    .nb-prof__hamburger { display: inline-flex; }
-    .nb-prof__nav-actions {
-        display: none;
-        position: absolute;
-        top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: stretch;
-        gap: 0.6rem;
-        padding: 0.85rem 1.5rem 1.1rem;
-        background: var(--bg);
-        border-bottom: var(--border);
-    }
-    .nb-prof__nav-actions--open { display: flex; }
-    .nb-prof__logout-btn { width: 100%; justify-content: center; }
-}
 @media (max-width: 560px) {
     /* Avatar and the edit button share a narrow left column so the info
        card's column can claim the rest of the row's width for its text. */

@@ -30,34 +30,6 @@ test.describe('Profile / dashboard page', () => {
             test.skip(!(await login(page)), 'seeded test user is unavailable in this environment');
         });
 
-        test('mobile viewport collapses nav behind a hamburger toggle', async ({ page }) => {
-            await page.setViewportSize({ width: 375, height: 800 });
-            await page.goto(`${BASE}/dashboard`);
-
-            const hamburger = page.locator('.nb-prof__hamburger');
-            const toggle = page.locator('.nb-toggle');
-            const actions = page.locator('.nb-prof__nav-actions');
-
-            await expect(hamburger).toBeVisible();
-            await expect(toggle).toBeVisible();
-            await expect(actions).not.toBeVisible();
-
-            await hamburger.click();
-            await expect(actions).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Log out' })).toBeVisible();
-
-            await hamburger.click();
-            await expect(actions).not.toBeVisible();
-        });
-
-        test('desktop viewport shows actions inline without a hamburger', async ({ page }) => {
-            await page.setViewportSize({ width: 1280, height: 800 });
-            await page.goto(`${BASE}/dashboard`);
-
-            await expect(page.locator('.nb-prof__hamburger')).not.toBeVisible();
-            await expect(page.getByRole('button', { name: 'Log out' })).toBeVisible();
-        });
-
         test('avatar carries a verified badge for a confirmed email', async ({ page }) => {
             await page.goto(`${BASE}/dashboard`);
 

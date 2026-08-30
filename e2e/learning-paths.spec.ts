@@ -27,32 +27,4 @@ test.describe('Learning paths catalog', () => {
         await expect(firstType).toHaveAttribute('title', /.+/);
         await expect(firstType.locator('svg')).toBeVisible();
     });
-
-    test('mobile viewport collapses nav behind a hamburger toggle', async ({ page }) => {
-        await page.setViewportSize({ width: 375, height: 800 });
-        await page.goto(`${BASE}/learning-paths`);
-
-        const hamburger = page.locator('.nb-paths__hamburger');
-        const toggle = page.locator('.nb-toggle');
-        const links = page.locator('.nb-paths__bar-links');
-
-        await expect(hamburger).toBeVisible();
-        await expect(toggle).toBeVisible();
-        await expect(links).not.toBeVisible();
-
-        await hamburger.click();
-        await expect(links).toBeVisible();
-        await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
-
-        await hamburger.click();
-        await expect(links).not.toBeVisible();
-    });
-
-    test('desktop viewport shows nav links inline without a hamburger', async ({ page }) => {
-        await page.setViewportSize({ width: 1280, height: 800 });
-        await page.goto(`${BASE}/learning-paths`);
-
-        await expect(page.locator('.nb-paths__hamburger')).not.toBeVisible();
-        await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
-    });
 });

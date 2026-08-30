@@ -1,17 +1,13 @@
 <script setup>
 import '@/assets/scss/components/stats/show.scss'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { Head, Link, usePage } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import { VueUiWordCloud, VueUiDonutEvolution } from 'vue-data-ui'
 import 'vue-data-ui/style.css'
-import ThemeToggle from '@/Components/ThemeToggle.vue'
+import TopBar from '@/Components/TopBar.vue'
 
 const { theme } = useTheme()
-const mobileNavOpen = ref(false)
-
-const page = usePage()
-const appName = computed(() => page.props.appName ?? 'BalkanBuddy')
 
 const props = defineProps({
     completedExercises: {
@@ -189,37 +185,7 @@ const kpis = computed(() => [
     </Head>
 
     <div class="nb-stats" :class="theme" ref="rootEl">
-        <header class="nb-stats__bar">
-            <nav class="nb-stats__bar-inner">
-                <Link :href="route('dashboard')" class="nb-stats__logo">
-                    <span class="nb-stats__logo-mark" aria-hidden="true">BB</span>
-                    <span class="nb-stats__logo-text">{{ appName }}</span>
-                </Link>
-
-                <div class="nb-stats__bar-group">
-                    <div class="nb-stats__bar-links" :class="{ 'nb-stats__bar-links--open': mobileNavOpen }">
-                        <Link :href="route('dashboard')" class="nb-stats__navlink" @click="mobileNavOpen = false">Dashboard</Link>
-                    </div>
-
-                    <div class="nb-stats__bar-actions">
-                        <ThemeToggle />
-
-                        <button
-                            class="nb-stats__hamburger"
-                            type="button"
-                            :aria-expanded="mobileNavOpen"
-                            aria-label="Toggle navigation menu"
-                            @click="mobileNavOpen = !mobileNavOpen"
-                        >
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path v-if="!mobileNavOpen" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
-                                <path v-else stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </nav>
-        </header>
+        <TopBar />
 
         <main class="nb-stats__main">
             <div class="nb-stats__head nb-stats__rise">

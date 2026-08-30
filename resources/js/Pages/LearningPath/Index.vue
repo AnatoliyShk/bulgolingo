@@ -1,20 +1,18 @@
 <script setup>
 import '@/assets/scss/components/learning-path/index.scss'
 import { Head, Link, router, usePage } from '@inertiajs/vue3'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useTheme } from '@/composables/useTheme'
-import ThemeToggle from '@/Components/ThemeToggle.vue'
+import TopBar from '@/Components/TopBar.vue'
 
 defineProps({
     paths: Array,
 })
 
 const page = usePage()
-const appName = computed(() => page.props.appName ?? 'BalkanBuddy')
 const isAuthenticated = computed(() => !!page.props.auth.user)
 
 const { theme } = useTheme()
-const mobileNavOpen = ref(false)
 
 const EXERCISE_TYPE_META = {
     multiple_choice: { icon: 'list-check', label: 'Multiple choice' },
@@ -41,43 +39,7 @@ function start(pathId) {
     </Head>
 
     <div class="nb-paths" :class="theme">
-        <header class="nb-paths__bar">
-            <nav class="nb-paths__bar-inner">
-                <Link href="/" class="nb-paths__logo">
-                    <span class="nb-paths__logo-mark" aria-hidden="true">BB</span>
-                    <span class="nb-paths__logo-text">{{ appName }}</span>
-                </Link>
-
-                <div class="nb-paths__bar-group">
-                    <div class="nb-paths__bar-links" :class="{ 'nb-paths__bar-links--open': mobileNavOpen }">
-                        <template v-if="isAuthenticated">
-                            <Link href="/dashboard" class="nb-paths__navlink" @click="mobileNavOpen = false">Dashboard</Link>
-                        </template>
-                        <template v-else>
-                            <Link href="/login" class="nb-paths__navlink" @click="mobileNavOpen = false">Login</Link>
-                            <Link href="/register" class="nb-paths__navlink nb-paths__navlink--cta" @click="mobileNavOpen = false">Register</Link>
-                        </template>
-                    </div>
-
-                    <div class="nb-paths__bar-actions">
-                        <ThemeToggle />
-
-                        <button
-                            class="nb-paths__hamburger"
-                            type="button"
-                            :aria-expanded="mobileNavOpen"
-                            aria-label="Toggle navigation menu"
-                            @click="mobileNavOpen = !mobileNavOpen"
-                        >
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path v-if="!mobileNavOpen" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
-                                <path v-else stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </nav>
-        </header>
+        <TopBar />
 
         <main class="nb-paths__main">
             <div class="nb-paths__head">

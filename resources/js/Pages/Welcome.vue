@@ -3,19 +3,17 @@ import '@/assets/scss/components/welcome.scss'
 import { Head, Link, usePage } from '@inertiajs/vue3'
 import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useTheme } from '@/composables/useTheme'
-import ThemeToggle from '@/Components/ThemeToggle.vue'
+import TopBar from '@/Components/TopBar.vue'
 
 const page = usePage()
 const isAuthenticated = computed(() => !!page.props.auth.user)
 const appName = computed(() => page.props.appName)
-const isAdmin = computed(() => page.props.auth.isAdmin)
 const continueLessonId = computed(() => page.props.continueLessonId ?? null)
 const continueHref = computed(() =>
     continueLessonId.value ? `/lesson/${continueLessonId.value}` : '/learning-paths'
 )
 
 const { theme } = useTheme()
-const mobileNavOpen = ref(false)
 
 const steps = [
     {
@@ -118,48 +116,7 @@ onBeforeUnmount(() => {
 
     <div class="nb-page" :class="theme">
 
-        <!-- ── Nav ── -->
-        <header class="nb-nav">
-            <nav class="nb-nav__inner">
-                <Link href="/" class="nb-logo">
-                    <span class="nb-logo__mark" aria-hidden="true">BB</span>
-                    <span class="nb-logo__text">{{ appName }}</span>
-                </Link>
-
-                <div class="nb-nav__group">
-                    <div class="nb-nav__links" :class="{ 'nb-nav__links--open': mobileNavOpen }">
-                        <Link href="/learning-paths" class="nb-navlink" @click="mobileNavOpen = false">Learning paths</Link>
-                        <Link v-if="isAuthenticated" :href="continueHref" class="nb-navlink" @click="mobileNavOpen = false">Your path</Link>
-                        <a v-else href="#path" class="nb-navlink" @click="mobileNavOpen = false">Your path</a>
-                        <template v-if="isAuthenticated">
-                            <Link href="/dashboard" class="nb-navlink" @click="mobileNavOpen = false">Profile</Link>
-                            <Link v-if="isAdmin" href="/admin" class="nb-navlink" @click="mobileNavOpen = false">Admin</Link>
-                        </template>
-                        <template v-else>
-                            <Link href="/login" class="nb-navlink" @click="mobileNavOpen = false">Login</Link>
-                            <Link href="/register" class="nb-navlink" @click="mobileNavOpen = false">Register</Link>
-                        </template>
-                    </div>
-
-                    <div class="nb-nav__actions">
-                        <ThemeToggle />
-
-                        <button
-                            class="nb-hamburger"
-                            type="button"
-                            :aria-expanded="mobileNavOpen"
-                            aria-label="Toggle navigation menu"
-                            @click="mobileNavOpen = !mobileNavOpen"
-                        >
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path v-if="!mobileNavOpen" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
-                                <path v-else stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </nav>
-        </header>
+        <TopBar />
 
         <main>
 

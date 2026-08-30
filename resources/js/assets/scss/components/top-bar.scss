@@ -1,0 +1,104 @@
+/* ══════════════ Shared top bar ══════════════ */
+/* One bar for every page that carries the neo-brutalist palette. It reads the
+   design tokens from whichever page root it sits inside (.nb-page, .nb-paths,
+   .nb-stats, .nb-prof), so the bar picks up that page's light/dark ink without
+   redeclaring anything. The fallbacks keep it legible if it is ever dropped on
+   a page that does not define the tokens.                                    */
+
+.nb-topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg, #f1e9d6);
+    border-bottom: var(--border, 3px solid #14110b);
+}
+
+.nb-topbar__inner {
+    max-width: var(--nb-topbar-max, 1180px); margin: 0 auto;
+    padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap;
+}
+
+.nb-topbar__logo {
+    display: inline-flex; align-items: center; gap: 0.65rem;
+    text-decoration: none; color: var(--ink, #14110b);
+}
+.nb-topbar__logo-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 4.2rem; height: 2.1rem;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800; font-size: 0.9rem; letter-spacing: -0.04em; line-height: 1;
+    background: var(--pink, #ff6ba3); color: var(--on-accent, #14110b);
+    border: var(--border, 3px solid #14110b); border-radius: 8px;
+    box-shadow: var(--shadow-sm, 4px 4px 0 0 #14110b);
+    transform: rotate(-4deg);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-topbar__logo:hover .nb-topbar__logo-mark {
+    transform: rotate(-4deg) translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--ink, #14110b);
+}
+.nb-topbar__logo-text {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em;
+}
+
+.nb-topbar__group { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.nb-topbar__links { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.nb-topbar__actions { display: flex; align-items: center; gap: 0.6rem; }
+
+.nb-topbar__link {
+    display: inline-flex; align-items: center;
+    height: 2.4rem; padding: 0 0.95rem;
+    text-decoration: none; color: var(--on-accent, #14110b);
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 800; font-size: 0.85rem;
+    background: var(--orange, #ff8a47);
+    border: var(--border, 3px solid #14110b); border-radius: 9px;
+    box-shadow: var(--shadow-sm, 4px 4px 0 0 #14110b);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.nb-topbar__link:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink, #14110b); }
+.nb-topbar__link--button { cursor: pointer; }
+
+/* The page you are already on sits pressed into the bar rather than raised. */
+.nb-topbar__link[aria-current='page'] {
+    background: var(--cyan, #34d3da);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--ink, #14110b);
+}
+
+.nb-topbar__hamburger {
+    display: none;
+    width: 2.4rem; height: 2.4rem; cursor: pointer;
+    align-items: center; justify-content: center;
+    color: var(--on-accent, #14110b);
+    background: var(--orange, #ff8a47);
+    border: var(--border, 3px solid #14110b); border-radius: 9px;
+    box-shadow: var(--shadow-sm, 4px 4px 0 0 #14110b);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.nb-topbar__hamburger:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink, #14110b); }
+.nb-topbar__hamburger svg { width: 1.3rem; height: 1.3rem; }
+
+@media (max-width: 640px) {
+    .nb-topbar__inner { position: relative; }
+    .nb-topbar__hamburger { display: inline-flex; }
+    .nb-topbar__links {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: stretch;
+        gap: 0.6rem;
+        padding: 0.85rem 1.5rem 1.1rem;
+        background: var(--bg, #f1e9d6);
+        border-bottom: var(--border, 3px solid #14110b);
+    }
+    .nb-topbar__links--open { display: flex; }
+    .nb-topbar__link { width: 100%; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-topbar__logo-mark,
+    .nb-topbar__link,
+    .nb-topbar__hamburger { transition: none; }
+}
