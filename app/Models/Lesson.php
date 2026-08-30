@@ -100,6 +100,38 @@ class Lesson extends Model
         return $exerciseId === null ? null : (int) $exerciseId;
     }
 
+    /**
+     * How many exercises share this exercise's lesson, and how many of them
+     * this user has completed. Both counts come from one grouped aggregate
+     * over the same rows rather than resolving the lesson, then its exercise
+     * ids, then counting completions among them separately.
+     *
+     * The lesson is resolved by its lowest id, matching the current
+     * one-lesson-per-exercise reality without hydrating a Lesson to ask.
+     *
+     * @return array{total: int, completed: int}
+     */
+    public static function progressFor(Exercise $exercise, User $user): array
+    {
+        $row = DB::table('exercise_lesson as el')
+            ->leftJoin('user_exercise_completions as uec', function ($join) use ($user) {
+                $join->on('uec.exercise_id', '=', 'el.exercise_id')
+                    ->where('uec.user_id', $user->getKey());
+            })
+            ->where('el.lesson_id', function ($q) use ($exercise) {
+                $q->selectRaw('min(lesson_id)')
+                    ->from('exercise_lesson')
+                    ->where('exercise_id', $exercise->getKey());
+            })
+            ->selectRaw('count(el.exercise_id) as total, count(uec.exercise_id) as completed')
+            ->first();
+
+        return [
+            'total' => (int) $row->total,
+            'completed' => (int) $row->completed,
+        ];
+    }
+
     public function learningPath()
     {
         return $this->belongsToMany(LearningPath::class, 'learning_path_lesson');

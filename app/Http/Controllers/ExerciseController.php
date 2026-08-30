@@ -57,18 +57,13 @@ class ExerciseController extends Controller
             ExerciseType::cases()
         );
 
-        $lesson = $exercise->lessons()->first();
-        $exerciseIds = $lesson ? $lesson->exercises()->pluck('exercises.id') : collect();
-        $total = $exerciseIds->count();
-        $done = $exerciseIds->isEmpty() ? 0 : $user->completedExercises()
-            ->whereIn('exercise_id', $exerciseIds)
-            ->count();
+        $progress = Lesson::progressFor($exercise, $user);
 
         return Inertia::render('Exercise/Show', [
             'exercise' => $exercise->load('images'),
             'exerciseTypes' => $exerciseTypes,
-            'totalExercises' => $total,
-            'completedCount' => $done,
+            'totalExercises' => $progress['total'],
+            'completedCount' => $progress['completed'],
         ]);
     }
 
