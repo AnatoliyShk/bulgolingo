@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Enums\ExerciseType;
 use App\Models\Lesson;
 use App\Models\User;
-use App\Models\UserLearnedWord;
+use App\Models\UserLexema;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +23,7 @@ class StatsService
             'completedLessons' => $completedLessonStats['completed_lessons'],
             'completedExercises' => $completedLessonStats['total_exercises'],
             'completedLearningPaths' => $completedLessonStats['completed_paths'],
-            'learnedWords' => UserLearnedWord::learnedWords($user),
+            'lexemas' => UserLexema::lexemas($user),
             'activityByType' => $this->activityByType($countsByTypeAndDay),
             'activityDays' => $days->map(fn ($d) => Carbon::parse($d)->format('M j'))->values()->toArray(),
         ];

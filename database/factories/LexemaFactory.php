@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\LearnedWords;
+use App\Models\Lexema;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<LearnedWords>
+ * @extends Factory<Lexema>
  */
-class LearnedWordsFactory extends Factory
+class LexemaFactory extends Factory
 {
     /**
      * Define the model's default state.

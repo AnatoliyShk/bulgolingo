@@ -22,7 +22,7 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
-    learnedWords: {
+    lexemas: {
         type: Array,
         default: () => [],
     },
@@ -77,7 +77,7 @@ const activityDataset = computed(() =>
 )
 
 const wordCloudDataset = computed(() =>
-    props.learnedWords.map((item) => ({
+    props.lexemas.map((item) => ({
         name: item.word,
         value: item.count,
     }))
@@ -212,7 +212,7 @@ const kpis = computed(() => [
                 <div class="nb-stats__section-head">
                     <span class="nb-stats__badge nb-stats__badge--pink">Думи</span>
                     <h2 class="nb-stats__section-title">Words you've learned</h2>
-                    <span class="nb-stats__section-count">{{ learnedWords.length }} unique</span>
+                    <span class="nb-stats__section-count">{{ lexemas.length }} unique</span>
                 </div>
 
                 <div class="nb-stats__panel nb-stats__panel--cloud">

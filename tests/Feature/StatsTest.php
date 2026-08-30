@@ -4,9 +4,9 @@ namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
-use App\Models\LearnedWords;
 use App\Models\LearningPath;
 use App\Models\Lesson;
+use App\Models\Lexema;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
@@ -243,16 +243,16 @@ class StatsTest extends TestCase
         $this->assertSame(0, $this->completedLearningPaths($user));
     }
 
-    public function test_stats_page_shows_word_cloud_for_learned_words(): void
+    public function test_stats_page_shows_word_cloud_for_lexemas(): void
     {
         $user = User::factory()->create();
 
-        $apple = LearnedWords::factory()->create(['word' => 'apple']);
-        $bread = LearnedWords::factory()->create(['word' => 'bread']);
+        $apple = Lexema::factory()->create(['word' => 'apple']);
+        $bread = Lexema::factory()->create(['word' => 'bread']);
 
-        $user->learnedWords()->attach($apple->id);
-        $user->learnedWords()->attach($apple->id);
-        $user->learnedWords()->attach($bread->id);
+        $user->lexemas()->attach($apple->id);
+        $user->lexemas()->attach($apple->id);
+        $user->lexemas()->attach($bread->id);
 
         $response = $this
             ->actingAs($user)
@@ -262,14 +262,14 @@ class StatsTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Stats/Show')
-                ->where('learnedWords', [
+                ->where('lexemas', [
                     ['word' => 'apple', 'count' => 2],
                     ['word' => 'bread', 'count' => 1],
                 ])
             );
     }
 
-    public function test_stats_page_shows_empty_word_cloud_when_user_has_no_learned_words(): void
+    public function test_stats_page_shows_empty_word_cloud_when_user_has_no_lexemas(): void
     {
         $user = User::factory()->create();
 
@@ -281,7 +281,7 @@ class StatsTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Stats/Show')
-                ->where('learnedWords', [])
+                ->where('lexemas', [])
             );
     }
 

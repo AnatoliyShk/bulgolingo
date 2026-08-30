@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\LearnedWords;
+use App\Models\Lexema;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class LearnedWordsPolicy
+class LexemaPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class LearnedWordsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, LearnedWords $learnedWords): bool
+    public function view(User $user, Lexema $lexema): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class LearnedWordsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, LearnedWords $learnedWords): bool
+    public function update(User $user, Lexema $lexema): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class LearnedWordsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, LearnedWords $learnedWords): bool
+    public function delete(User $user, Lexema $lexema): bool
     {
         return false;
     }
@@ -51,7 +51,7 @@ class LearnedWordsPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, LearnedWords $learnedWords): bool
+    public function restore(User $user, Lexema $lexema): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class LearnedWordsPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, LearnedWords $learnedWords): bool
+    public function forceDelete(User $user, Lexema $lexema): bool
     {
         return false;
     }

@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\ExerciseType;
 use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
-use App\Jobs\ExperienceCountUpdate;
-use App\Jobs\LearnedWordCountUpdate;
 use App\Models\Exercise;
 use App\Models\Lesson;
-use App\Services\CompletionCacheSync;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -105,34 +102,13 @@ class ExerciseController extends Controller
         $user = auth()->user();
         $lesson = $exercise->lessons()->first();
 
-        LearnedWordCountUpdate::dispatch($user, $exercise)->onQueue('learning_path');
-        ExperienceCountUpdate::dispatch($user, $exercise)->onQueue('learning_path');
-
-        $completedAt = now();
-
-        $recorded = DB::table('user_exercise_completions')->insertOrIgnore([
-            'user_id' => $user->id,
-            'exercise_id' => $exercise->id,
-            'created_at' => $completedAt,
-        ]);
-
-        if ($recorded) {
-            CompletionCacheSync::recorded(
-                $user->id,
-                $exercise->id,
-                $completedAt->toDateString(),
-                $exercise->decision_type?->value,
-            );
-        }
+        $incompleteId = $exercise->completeFor($user, $lesson);
 
         if (! $lesson) {
             return redirect()->route('dashboard');
         }
 
         $lessonId = $lesson->id;
-
-        $incompleteId = $lesson->firstIncompleteExerciseId($user, (int) $lesson->pivot->order)
-            ?? $lesson->firstIncompleteExerciseId($user);
 
         if ($incompleteId) {
             return redirect()->route('exercise.show', $incompleteId);

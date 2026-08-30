@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreLearnedWordsRequest;
-use App\Http\Requests\UpdateLearnedWordsRequest;
-use App\Models\LearnedWords;
+use App\Http\Requests\StoreLexemaRequest;
+use App\Http\Requests\UpdateLexemaRequest;
+use App\Models\Lexema;
 
-class LearnedWordsController extends Controller
+class LexemaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class LearnedWordsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLearnedWordsRequest $request)
+    public function store(StoreLexemaRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class LearnedWordsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LearnedWords $learnedWords)
+    public function show(Lexema $lexema)
     {
         //
     }
@@ -43,7 +43,7 @@ class LearnedWordsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(LearnedWords $learnedWords)
+    public function edit(Lexema $lexema)
     {
         //
     }
@@ -51,7 +51,7 @@ class LearnedWordsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLearnedWordsRequest $request, LearnedWords $learnedWords)
+    public function update(UpdateLexemaRequest $request, Lexema $lexema)
     {
         //
     }
@@ -59,7 +59,7 @@ class LearnedWordsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LearnedWords $learnedWords)
+    public function destroy(Lexema $lexema)
     {
         //
     }

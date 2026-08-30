@@ -3,14 +3,14 @@
 namespace App\Jobs;
 
 use App\Models\Exercise;
-use App\Models\LearnedWords;
+use App\Models\Lexema;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class LearnedWordCountUpdate implements ShouldQueue
+class LexemaCountUpdate implements ShouldQueue
 {
     use Queueable;
 
@@ -31,14 +31,14 @@ class LearnedWordCountUpdate implements ShouldQueue
     public function handle(): void
     {
         foreach ($this->exercise->getExerciseWords() as $word) {
-            $learnedWord = LearnedWords::firstOrCreate(['word' => $word]);
+            $lexema = Lexema::firstOrCreate(['word' => $word]);
 
-            if ($this->user->learnedWords()->where('learned_word_id', $learnedWord->id)->exists()) {
-                $this->user->learnedWords()->updateExistingPivot($learnedWord->id, [
+            if ($this->user->lexemas()->where('lexema_id', $lexema->id)->exists()) {
+                $this->user->lexemas()->updateExistingPivot($lexema->id, [
                     'encounter_count' => DB::raw('encounter_count + 1'),
                 ]);
             } else {
-                $this->user->learnedWords()->attach($learnedWord->id, ['encounter_count' => 1]);
+                $this->user->lexemas()->attach($lexema->id, ['encounter_count' => 1]);
             }
         }
     }

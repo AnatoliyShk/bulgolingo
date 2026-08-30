@@ -50,9 +50,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Exercise::class, 'user_exercise_completions')->using(UserExerciseCompletion::class)->withPivot('created_at', 'updated_at');
     }
 
-    public function learnedWords()
+    public function lexemas()
     {
-        return $this->belongsToMany(LearnedWords::class, 'user_learned_word', 'user_id', 'learned_word_id')->using(UserLearnedWord::class);
+        return $this->belongsToMany(Lexema::class, 'user_lexema', 'user_id', 'lexema_id')->using(UserLexema::class);
     }
 
     /**
