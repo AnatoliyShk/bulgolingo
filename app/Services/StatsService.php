@@ -26,7 +26,27 @@ class StatsService
             'lexemas' => UserLexema::lexemas($user),
             'activityByType' => $this->activityByType($countsByTypeAndDay),
             'activityDays' => $days->map(fn ($d) => Carbon::parse($d)->format('M j'))->values()->toArray(),
+            'topUsers' => $this->topUsersByExperience($user),
         ];
+    }
+
+    /**
+     * @return array<int, array{id: int, name: string, experience: int, isCurrentUser: bool}>
+     */
+    private function topUsersByExperience(User $user): array
+    {
+        return User::query()
+            ->orderByDesc('experience')
+            ->orderBy('id')
+            ->limit(5)
+            ->get(['id', 'name', 'experience'])
+            ->map(fn (User $topUser) => [
+                'id' => $topUser->id,
+                'name' => $topUser->name,
+                'experience' => $topUser->experience,
+                'isCurrentUser' => $topUser->id === $user->id,
+            ])
+            ->toArray();
     }
 
     /**

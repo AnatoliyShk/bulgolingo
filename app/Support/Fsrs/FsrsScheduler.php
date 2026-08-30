@@ -6,6 +6,8 @@ use App\Enums\Rating;
 
 final class FsrsScheduler
 {
+    private const S_MIN = 0.001;
+
     public function __construct(protected readonly FsrsParameters $params = new FsrsParameters)
     {
     }
@@ -23,6 +25,25 @@ final class FsrsScheduler
     public function intervalDays(float $stability, float $desiredRetention = 0.9): float
     {
         return ($stability / $this->params->factor) * ($desiredRetention ** (1.0 / $this->params->decay) - 1.0);
+    }
+
+    public function applyFuzz(int $interval, int $maxInterval = 36500): int
+    {
+        if ($interval < 2.5) {
+            return max(1, $interval);
+        }
+
+        $pct = match (true) {
+            $interval < 7  => 0.15,
+            $interval < 20 => 0.10,
+            default        => 0.05,
+        };
+
+        $delta = max(1.0, $interval * $pct);
+        $min   = max(2, (int) round($interval - $delta));
+        $max   = min($maxInterval, (int) round($interval + $delta));
+
+        return random_int($min, max($min, $max));
     }
 
     private function initialDifficulty(Rating $g): float
@@ -88,5 +109,29 @@ final class FsrsScheduler
         }
 
         return $s * $sInc;
+    }
+
+    public function review(?MemoryState $state, Rating $g, float $elapsedDays): MemoryState
+    {
+        if ($state === null) {
+            return new MemoryState(
+                stability:  max(self::S_MIN, $this->params->w[$g->value - 1]),
+                difficulty: $this->initialDifficulty($g),
+            );
+        }
+
+        // Difficulty updates from the OLD value; stability also uses the OLD difficulty.
+        $difficulty = $this->nextDifficulty($state->difficulty, $g);
+
+        if ($elapsedDays < 1.0) {
+            $stability = $this->stabilityShortTerm($state->stability, $g);
+        } else {
+            $r = $this->retrievability($state->stability, $elapsedDays);
+            $stability = $g === Rating::Again
+                ? $this->stabilityOnLapse($state->difficulty, $state->stability, $r)
+                : $this->stabilityOnRecall($state->difficulty, $state->stability, $r, $g);
+        }
+
+        return new MemoryState(max(self::S_MIN, $stability), $difficulty);
     }
 }

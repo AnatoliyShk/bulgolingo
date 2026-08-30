@@ -15,15 +15,15 @@ function buildQuestion(clause) {
     const blank   = parts.findIndex(w => w === '__')
     const options = clause.options ?? []
     return {
-        template:    blank === -1 ? [...parts, '__'] : parts,
-        blank:       blank === -1 ? parts.length : blank,
-        answer:      options[clause.correct_option ?? 0] ?? '',
-        choices:     options,
-        translation: clause.explanation ?? '',
+        template: blank === -1 ? [...parts, '__'] : parts,
+        blank:    blank === -1 ? parts.length : blank,
+        answer:   options[clause.correct_option ?? 0] ?? '',
+        choices:  options,
     }
 }
 
 const question        = computed(() => buildQuestion(props.clause))
+const explanation     = computed(() => props.clause.explanation ?? '')
 const shuffledChoices = ref(shuffle(question.value.choices))
 
 watch(() => props.clause, () => {
@@ -62,7 +62,7 @@ function retry() {
 
 <template>
     <div>
-        <p class="nb-ex-prompt">{{ question.translation }}</p>
+        <p class="nb-ex-prompt">Fill in the blank</p>
 
         <div class="nb-ex-sentence">
             <template v-for="(word, i) in question.template" :key="i">
@@ -94,6 +94,12 @@ function retry() {
         <div v-if="state.checked && !isCorrect" class="nb-ex-feedback nb-ex-feedback--wrong">
             <p class="nb-ex-feedback__title">✗ Incorrect — try again</p>
             <p class="nb-ex-feedback__body">Correct answer: <strong>{{ question.answer }}</strong></p>
+            <p v-if="explanation" class="nb-ex-feedback__body">{{ explanation }}</p>
+        </div>
+
+        <div v-if="state.checked && isCorrect" class="nb-ex-feedback nb-ex-feedback--correct">
+            <p class="nb-ex-feedback__title">✓ Correct!</p>
+            <p v-if="explanation" class="nb-ex-feedback__body">{{ explanation }}</p>
         </div>
 
         <NextExerciseButton v-if="state.checked && isCorrect" @advance="emit('complete')" />

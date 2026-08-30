@@ -13,7 +13,7 @@ class ExerciseObserver
      */
     public function created(Exercise $exercise): void
     {
-        //
+        $exercise->syncLexemasFromOptions();
     }
 
     /**

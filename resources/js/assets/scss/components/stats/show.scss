@@ -68,6 +68,7 @@
 }
 .nb-stats__badge--pink { background: var(--pink); }
 .nb-stats__badge--blue { background: var(--blue); }
+.nb-stats__badge--orange { background: var(--orange); }
 .nb-stats__title {
     margin: 1rem 0 0.6rem;
     font-family: 'Unbounded', sans-serif; font-weight: 900;
@@ -138,6 +139,42 @@
     padding: 0.4em 0.8em;
     border: var(--border); border-radius: 999px;
     box-shadow: var(--shadow-sm);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ══════════════ Leaderboard ══════════════ */
+.nb-stats__leaderboard {
+    display: flex; flex-direction: column; gap: 0.75rem;
+    margin: 0; padding: 0; list-style: none;
+}
+.nb-stats__leaderboard-row {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--paper);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 0.9rem 1.25rem;
+}
+.nb-stats__leaderboard-row--me {
+    background: var(--cyan);
+    color: var(--on-accent);
+}
+.nb-stats__leaderboard-rank {
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    width: 2rem; height: 2rem;
+    font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 0.85rem;
+    background: var(--ink); color: var(--paper);
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+}
+.nb-stats__leaderboard-name {
+    flex: 1;
+    font-weight: 700; font-size: 1rem;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.nb-stats__leaderboard-xp {
+    flex-shrink: 0;
+    font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 0.9rem;
     font-variant-numeric: tabular-nums;
 }
 

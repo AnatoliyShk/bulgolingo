@@ -34,6 +34,10 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    topUsers: {
+        type: Array,
+        default: () => [],
+    },
 })
 
 const isDark = computed(() => theme.value === 'dark')
@@ -188,6 +192,27 @@ const kpis = computed(() => [
         <TopBar />
 
         <main class="nb-stats__main">
+            <section class="nb-stats__section nb-stats__rise" style="animation-delay: 40ms">
+                <div class="nb-stats__section-head">
+                    <span class="nb-stats__badge nb-stats__badge--orange">Класация</span>
+                    <h2 class="nb-stats__section-title">Top 5 by experience</h2>
+                </div>
+
+                <ol v-if="topUsers.length" class="nb-stats__leaderboard">
+                    <li
+                        v-for="(entry, i) in topUsers"
+                        :key="entry.id"
+                        class="nb-stats__leaderboard-row"
+                        :class="{ 'nb-stats__leaderboard-row--me': entry.isCurrentUser }"
+                    >
+                        <span class="nb-stats__leaderboard-rank">{{ i + 1 }}</span>
+                        <span class="nb-stats__leaderboard-name">{{ entry.name }}</span>
+                        <span class="nb-stats__leaderboard-xp">{{ entry.experience }} XP</span>
+                    </li>
+                </ol>
+                <p v-else class="nb-stats__empty">No experience earned yet.</p>
+            </section>
+
             <div class="nb-stats__head nb-stats__rise">
                 <span class="nb-stats__badge">Статистика</span>
                 <h1 class="nb-stats__title">Your stats</h1>

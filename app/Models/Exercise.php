@@ -116,4 +116,38 @@ class Exercise extends Model
 
         return [];
     }
+
+    /**
+     * Every Cyrillic word found in the clause's "options" (fill-in-the-blank,
+     * image-matching), split on whitespace so a multi-word option still
+     * yields one lexema per word rather than one row for the whole phrase.
+     * Each word is lowercased and trimmed so the same word never ends up as
+     * two lexema rows over a case or whitespace difference.
+     *
+     * @return array<int, string>
+     */
+    public function cyrillicOptionWords(): array
+    {
+        $options = $this->clause['options'] ?? [];
+
+        return collect($options)
+            ->filter(fn ($option) => is_string($option))
+            ->flatMap(fn ($option) => preg_split('/\s+/u', trim($option)))
+            ->map(fn ($word) => trim(mb_strtolower(str_replace('.', '', $word))))
+            ->filter(fn ($word) => $word !== '' && preg_match('/\p{Cyrillic}/u', $word))
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Creates a lexema row for every Cyrillic word among this exercise's
+     * clause options that isn't already one.
+     */
+    public function syncLexemasFromOptions(): void
+    {
+        foreach ($this->cyrillicOptionWords() as $word) {
+            Lexema::firstOrCreate(['word' => $word]);
+        }
+    }
 }

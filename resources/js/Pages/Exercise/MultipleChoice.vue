@@ -138,6 +138,11 @@ function tryMatch() {
 
         <p class="nb-ex-tally">{{ state.matched.length }} / {{ total }} matched</p>
 
+        <div v-if="state.matched.length === total" class="nb-ex-feedback nb-ex-feedback--correct">
+            <p class="nb-ex-feedback__title">✓ Correct!</p>
+            <p v-if="prompt" class="nb-ex-feedback__body">{{ prompt }}</p>
+        </div>
+
         <NextExerciseButton v-if="state.matched.length === total" @advance="emit('complete')" />
     </div>
 </template>

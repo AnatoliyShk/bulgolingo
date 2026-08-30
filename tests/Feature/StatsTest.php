@@ -285,6 +285,47 @@ class StatsTest extends TestCase
             );
     }
 
+    public function test_stats_page_shows_top_five_users_by_experience(): void
+    {
+        $user = User::factory()->create(['name' => 'Middle', 'experience' => 50]);
+        User::factory()->create(['name' => 'First', 'experience' => 300]);
+        User::factory()->create(['name' => 'Second', 'experience' => 200]);
+        User::factory()->create(['name' => 'Third', 'experience' => 100]);
+        User::factory()->create(['name' => 'Fifth', 'experience' => 10]);
+        User::factory()->create(['name' => 'Excluded', 'experience' => 0]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('stats.show'));
+
+        $response
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Stats/Show')
+                ->has('topUsers', 5)
+                ->where('topUsers.0.name', 'First')
+                ->where('topUsers.0.experience', 300)
+                ->where('topUsers.1.name', 'Second')
+                ->where('topUsers.2.experience', 100)
+            );
+    }
+
+    public function test_current_user_is_flagged_in_top_users(): void
+    {
+        $user = User::factory()->create(['name' => 'Leader', 'experience' => 999]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('stats.show'));
+
+        $response
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Stats/Show')
+                ->where('topUsers.0.isCurrentUser', true)
+            );
+    }
+
     public function test_guest_cannot_view_stats(): void
     {
         $response = $this->get(route('stats.show'));
