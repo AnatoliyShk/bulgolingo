@@ -35,10 +35,10 @@ class LexemaCountUpdate implements ShouldQueue
 
             if ($this->user->lexemas()->where('lexema_id', $lexema->id)->exists()) {
                 $this->user->lexemas()->updateExistingPivot($lexema->id, [
-                    'encounter_count' => DB::raw('encounter_count + 1'),
+                    'reps_total' => DB::raw('reps_total + 1'),
                 ]);
             } else {
-                $this->user->lexemas()->attach($lexema->id, ['encounter_count' => 1]);
+                $this->user->lexemas()->attach($lexema->id, ['reps_total' => 1]);
             }
         }
     }

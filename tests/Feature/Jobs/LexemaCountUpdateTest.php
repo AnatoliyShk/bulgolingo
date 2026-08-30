@@ -48,7 +48,7 @@ class LexemaCountUpdateTest extends TestCase
         $this->assertCount(2, $user->fresh()->lexemas);
     }
 
-    public function test_sets_initial_encounter_count_to_one(): void
+    public function test_sets_initial_reps_total_to_one(): void
     {
         $user = User::factory()->create();
         $exercise = $this->makeFillInBlankExercise(['Куче']);
@@ -59,12 +59,12 @@ class LexemaCountUpdateTest extends TestCase
         $count = DB::table('user_lexema')
             ->where('user_id', $user->id)
             ->where('lexema_id', $wordId)
-            ->value('encounter_count');
+            ->value('reps_total');
 
         $this->assertEquals(1, $count);
     }
 
-    public function test_increments_encounter_count_on_repeated_handle(): void
+    public function test_increments_reps_total_on_repeated_handle(): void
     {
         $user = User::factory()->create();
         $exercise = $this->makeFillInBlankExercise(['Куче']);
@@ -76,7 +76,7 @@ class LexemaCountUpdateTest extends TestCase
         $count = DB::table('user_lexema')
             ->where('user_id', $user->id)
             ->where('lexema_id', $wordId)
-            ->value('encounter_count');
+            ->value('reps_total');
 
         $this->assertEquals(2, $count);
     }
