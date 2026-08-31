@@ -33,11 +33,12 @@ class LexemaCountUpdate implements ShouldQueue
         foreach ($this->exercise->getExerciseWords() as $word) {
             $lexema = Lexema::firstOrCreate(['word' => $word]);
 
-            if ($this->user->lexemas()->where('lexema_id', $lexema->id)->exists()) {
-                $this->user->lexemas()->updateExistingPivot($lexema->id, [
-                    'reps_total' => DB::raw('reps_total + 1'),
-                ]);
-            } else {
+            $updated = DB::table('user_lexema')
+                ->where('user_id', $this->user->id)
+                ->where('lexema_id', $lexema->id)
+                ->update(['reps_total' => DB::raw('reps_total + 1')]);
+
+            if (! $updated) {
                 $this->user->lexemas()->attach($lexema->id, ['reps_total' => 1]);
             }
         }

@@ -127,6 +127,11 @@
     display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap;
     margin-bottom: 1.25rem;
 }
+.nb-stats__section-head--center {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
 .nb-stats__section-title {
     margin: 0;
     font-family: 'Unbounded', sans-serif; font-weight: 700;

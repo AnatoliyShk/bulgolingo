@@ -193,7 +193,7 @@ const kpis = computed(() => [
 
         <main class="nb-stats__main">
             <section class="nb-stats__section nb-stats__rise" style="animation-delay: 40ms">
-                <div class="nb-stats__section-head">
+                <div class="nb-stats__section-head nb-stats__section-head--center">
                     <span class="nb-stats__badge nb-stats__badge--orange">Класация</span>
                     <h2 class="nb-stats__section-title">Top 5 by experience</h2>
                 </div>

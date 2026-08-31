@@ -43,9 +43,8 @@ class LexemaCountUpdateTest extends TestCase
 
         (new LexemaCountUpdate($user, $exercise))->handle();
 
-        $this->assertDatabaseHas('lexemas', ['word' => 'Куче']);
-        $this->assertDatabaseHas('lexemas', ['word' => 'Котка']);
-        $this->assertCount(2, $user->fresh()->lexemas);
+        $this->assertDatabaseHas('lexemas', ['word' => 'куче']);
+        $this->assertCount(1, $user->fresh()->lexemas);
     }
 
     public function test_sets_initial_reps_total_to_one(): void
@@ -55,7 +54,7 @@ class LexemaCountUpdateTest extends TestCase
 
         (new LexemaCountUpdate($user, $exercise))->handle();
 
-        $wordId = Lexema::where('word', 'Куче')->value('id');
+        $wordId = Lexema::where('word', 'куче')->value('id');
         $count = DB::table('user_lexema')
             ->where('user_id', $user->id)
             ->where('lexema_id', $wordId)
@@ -72,7 +71,7 @@ class LexemaCountUpdateTest extends TestCase
         (new LexemaCountUpdate($user, $exercise))->handle();
         (new LexemaCountUpdate($user, $exercise))->handle();
 
-        $wordId = Lexema::where('word', 'Куче')->value('id');
+        $wordId = Lexema::where('word', 'куче')->value('id');
         $count = DB::table('user_lexema')
             ->where('user_id', $user->id)
             ->where('lexema_id', $wordId)

@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Enums\ExerciseType;
 use App\Jobs\ExperienceCountUpdate;
-use App\Jobs\LexemaCountUpdate;
 use App\Observers\ExerciseObserver;
 use App\Services\CompletionCacheSync;
+use App\Services\GradeLexemeReview;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 #[ObservedBy(ExerciseObserver::class)]
@@ -46,6 +47,11 @@ class Exercise extends Model
         return $this->belongsToMany(Images::class, 'exercise_image', 'exercise_id', 'image_id');
     }
 
+    public function lexemas(): HasMany
+    {
+        return $this->hasMany(Lexema::class);
+    }
+
     public function getClauseAttribute($value)
     {
         return json_decode($value, true);
@@ -73,11 +79,25 @@ class Exercise extends Model
      * relation, so the observer that would normally sync the stats caches never
      * fires; CompletionCacheSync is called directly here to do that job instead,
      * and only when the row was newly inserted, not on a repeat completion.
+     *
+     * Completing an exercise is always a correct answer, so every one of its
+     * lexemas is graded as a spaced-repetition review each time, not just on
+     * the first completion — a repeat completion is itself a real review.
+     * That grading fully replaces LexemaCountUpdate's old per-word reps_total
+     * bookkeeping (it would otherwise double-count the correct-answer word),
+     * so it is not dispatched here.
      */
     public function completeFor(User $user, ?Lesson $lesson): ?int
     {
-        LexemaCountUpdate::dispatch($user, $this)->onQueue('learning_path');
         ExperienceCountUpdate::dispatch($user, $this)->onQueue('learning_path');
+
+        $grader = app(GradeLexemeReview::class);
+
+        // Response time and hint usage aren't tracked by the player yet, so
+        // every completion grades as a fast, hint-free correct answer.
+        foreach ($this->lexemas as $lexema) {
+            $grader->grade($user, $lexema, isCorrect: true, hintUsed: false, responseMs: 0);
+        }
 
         $completedAt = now();
 
@@ -111,18 +131,26 @@ class Exercise extends Model
             $correctIndex = $this->clause['correct_option'] ?? 0;
             $word = $options[$correctIndex] ?? null;
 
-            return $word ? [$word] : [];
+            return $word ? [self::normalizeWord($word)] : [];
         }
 
         return [];
     }
 
     /**
+     * Lowercased, trimmed, and dot-stripped so the same word is never split
+     * across two lexema rows over a case, whitespace, or punctuation
+     * difference between where it's read from.
+     */
+    private static function normalizeWord(string $word): string
+    {
+        return trim(mb_strtolower(str_replace('.', '', $word)));
+    }
+
+    /**
      * Every Cyrillic word found in the clause's "options" (fill-in-the-blank,
      * image-matching), split on whitespace so a multi-word option still
      * yields one lexema per word rather than one row for the whole phrase.
-     * Each word is lowercased and trimmed so the same word never ends up as
-     * two lexema rows over a case or whitespace difference.
      *
      * @return array<int, string>
      */
@@ -133,7 +161,7 @@ class Exercise extends Model
         return collect($options)
             ->filter(fn ($option) => is_string($option))
             ->flatMap(fn ($option) => preg_split('/\s+/u', trim($option)))
-            ->map(fn ($word) => trim(mb_strtolower(str_replace('.', '', $word))))
+            ->map(fn ($word) => self::normalizeWord($word))
             ->filter(fn ($word) => $word !== '' && preg_match('/\p{Cyrillic}/u', $word))
             ->unique()
             ->values()
@@ -142,12 +170,14 @@ class Exercise extends Model
 
     /**
      * Creates a lexema row for every Cyrillic word among this exercise's
-     * clause options that isn't already one.
+     * clause options that isn't already one. A word already owned by another
+     * exercise is left untouched — exercise_id records only which exercise
+     * first introduced the word.
      */
     public function syncLexemasFromOptions(): void
     {
         foreach ($this->cyrillicOptionWords() as $word) {
-            Lexema::firstOrCreate(['word' => $word]);
+            Lexema::firstOrCreate(['word' => $word], ['exercise_id' => $this->id]);
         }
     }
 }

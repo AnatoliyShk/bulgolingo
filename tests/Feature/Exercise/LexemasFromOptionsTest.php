@@ -81,6 +81,27 @@ class LexemasFromOptionsTest extends TestCase
         $this->assertSame(2, Lexema::count());
     }
 
+    public function test_a_created_lexema_belongs_to_the_exercise_that_introduced_it(): void
+    {
+        $exercise = $this->fillInBlankExercise(['Куче']);
+
+        $lexema = Lexema::where('word', 'куче')->first();
+
+        $this->assertSame($exercise->id, $lexema->exercise_id);
+        $this->assertTrue($exercise->lexemas->contains($lexema));
+    }
+
+    public function test_an_existing_lexemas_exercise_ownership_is_not_reassigned(): void
+    {
+        $first = $this->fillInBlankExercise(['Куче']);
+        $second = $this->fillInBlankExercise(['Куче', 'Котка']);
+
+        $lexema = Lexema::where('word', 'куче')->first();
+
+        $this->assertSame($first->id, $lexema->exercise_id);
+        $this->assertFalse($second->lexemas->contains($lexema));
+    }
+
     public function test_backfill_command_creates_lexemas_for_existing_exercises(): void
     {
         $exercise = $this->fillInBlankExercise(['Куче']);
