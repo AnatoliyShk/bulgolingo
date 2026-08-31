@@ -9,6 +9,7 @@
         "php": "^8.3",
         "aws/aws-sdk-php": "^3.394",
         "inertiajs/inertia-laravel": "^2.0",
+        "laravel/ai": "^0.11.0",
         "laravel/framework": "^13.19",
         "laravel/horizon": "^5.47",
         "laravel/sanctum": "^4.0",
