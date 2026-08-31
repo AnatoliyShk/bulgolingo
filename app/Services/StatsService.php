@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\ExerciseType;
+use App\Enums\UserType;
 use App\Models\Lesson;
 use App\Models\User;
 use App\Models\UserLexema;
@@ -36,6 +37,7 @@ class StatsService
     private function topUsersByExperience(User $user): array
     {
         return User::query()
+            ->where('type', '!=', UserType::Playwright->value)
             ->orderByDesc('experience')
             ->orderBy('id')
             ->limit(5)

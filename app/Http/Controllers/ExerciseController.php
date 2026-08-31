@@ -119,28 +119,19 @@ class ExerciseController extends Controller
             ->whereHas('lessons', fn ($q) => $q->where('lessons.id', $lessonId))
             ->first();
 
-        if (! $learningPath) {
-            return redirect()->route('dashboard');
+        if ($learningPath) {
+            // A direct update, not updateExistingPivot: the custom LearningPathLesson
+            // pivot makes Eloquent read the row back before writing it, and nothing
+            // observes that pivot for the extra read to be worth anything.
+            DB::table('learning_path_lesson')
+                ->where('learning_path_id', $learningPath->id)
+                ->where('lesson_id', $lessonId)
+                ->update(['is_completed' => true]);
         }
 
-        // A direct update, not updateExistingPivot: the custom LearningPathLesson
-        // pivot makes Eloquent read the row back before writing it, and nothing
-        // observes that pivot for the extra read to be worth anything.
-        DB::table('learning_path_lesson')
-            ->where('learning_path_id', $learningPath->id)
-            ->where('lesson_id', $lessonId)
-            ->update(['is_completed' => true]);
-
-        $nextLessonId = $lesson->nextLessonId($learningPath);
-
-        if ($nextLessonId) {
-            $firstExerciseId = Lesson::firstExerciseIdIn($nextLessonId);
-
-            if ($firstExerciseId) {
-                return redirect()->route('exercise.show', $firstExerciseId);
-            }
-        }
-
-        return redirect()->route('learning-paths.show', $learningPath->id);
+        return redirect()->route('lesson.complete', array_filter([
+            'lesson' => $lessonId,
+            'learningPath' => $learningPath?->id,
+        ]));
     }
 }

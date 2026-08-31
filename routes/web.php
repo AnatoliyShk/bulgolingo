@@ -56,6 +56,14 @@ Route::post('/learning-paths/{learningPath}/start', [LearningPathController::cla
     ->middleware(['auth', 'verified'])
     ->name('learning-paths.start');
 
+Route::get('/learning-paths/enrolled', [LearningPathController::class, 'enrolled'])
+    ->middleware(['auth', 'verified'])
+    ->name('learning-paths.enrolled');
+
+Route::get('/learning-paths/finished', [LearningPathController::class, 'finished'])
+    ->middleware(['auth', 'verified'])
+    ->name('learning-paths.finished');
+
 Route::get('/learning-paths/{learningPath}', [LearningPathController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('learning-paths.show');
@@ -94,6 +102,7 @@ Route::post('exercise/{exercise}/complete', [ExerciseController::class, 'complet
     ->middleware(['auth'])
     ->name('exercise.complete');
 Route::post('lesson/{lesson}/restart', [LessonController::class, 'restart'])->middleware('auth')->name('lesson.restart');
+Route::get('lesson/{lesson}/complete', [LessonController::class, 'complete'])->middleware('auth')->name('lesson.complete');
 Route::resource('lesson', LessonController::class);
 
 require __DIR__.'/auth.php';

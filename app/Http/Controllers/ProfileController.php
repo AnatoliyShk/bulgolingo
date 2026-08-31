@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ExerciseType;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -19,32 +18,24 @@ class ProfileController extends Controller
      * and exercises behind them are aggregated in SQL rather than hydrated.
      * Loading them cost a model per exercise and, because Inertia serializes
      * loaded relations, shipped the whole tree to a page that never reads it.
+     *
+     * The dashboard only ever shows one path — the most recently enrolled one
+     * that isn't finished yet, so there's always something to continue. Once
+     * every enrolled path is finished it falls back to the latest of those,
+     * rather than showing nothing.
      */
     public function show(Request $request)
     {
         $user = auth()->user();
 
-        $paths = $user->learningPaths()->withCount('lessons')->get();
-
-        if ($paths->isNotEmpty()) {
-            $progress = $user->lessonProgress($paths->modelKeys());
-
-            $paths->each(function ($path) use ($progress) {
-                $row = $progress->get($path->id);
-                $lessons = $row?->lessons ?? collect();
-
-                $path->completed_lessons_count = $lessons->where('is_complete', true)->count();
-                $path->continue_lesson_id = $lessons->firstWhere('is_complete', false)?->lesson_id;
-                $path->exercise_types = ($row?->exercise_types ?? collect())
-                    ->map(fn (ExerciseType $type) => $type->getDescription())
-                    ->all();
-            });
-        }
+        $paths = $user->enrolledPathsWithProgress();
 
         return Inertia::render('Profile/Show', [
             'appName' => config('app.name'),
             'user' => $user,
-            'learningPaths' => $paths,
+            'activeLearningPath' => $paths->firstWhere('is_finished', false) ?? $paths->first(),
+            'enrolledCount' => $paths->count(),
+            'finishedCount' => $paths->where('is_finished', true)->count(),
         ]);
     }
 

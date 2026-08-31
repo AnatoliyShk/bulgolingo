@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\ExerciseType;
+use App\Enums\UserType;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -13,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-#[Fillable(['name', 'email', 'password', 'is_admin', 'experience'])]
+#[Fillable(['name', 'email', 'password', 'is_admin', 'experience', 'type'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -32,6 +33,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean',
             'experience' => 'integer',
+            'type' => UserType::class,
         ];
     }
 
@@ -42,7 +44,7 @@ class User extends Authenticatable
 
     public function learningPaths()
     {
-        return $this->belongsToMany(LearningPath::class, 'learning_path_user')->using(LearningPathUser::class);
+        return $this->belongsToMany(LearningPath::class, 'learning_path_user')->using(LearningPathUser::class)->withTimestamps();
     }
 
     public function completedExercises()
@@ -111,5 +113,55 @@ class User extends Authenticatable
                     ->filter()
                     ->values(),
             ]);
+    }
+
+    /**
+     * Decorates each path with this user's progress on it: lessons finished,
+     * which lesson to continue with next, the exercise types it covers, and
+     * whether every lesson in it is done. $paths must already carry a lessons
+     * count (e.g. via withCount('lessons')) for the progress bar.
+     *
+     * @param  Collection<int, LearningPath>  $paths
+     * @return Collection<int, LearningPath>
+     */
+    public function decoratePathsWithProgress(Collection $paths): Collection
+    {
+        if ($paths->isEmpty()) {
+            return $paths;
+        }
+
+        $progress = $this->lessonProgress($paths->modelKeys());
+
+        return $paths->each(function (LearningPath $path) use ($progress) {
+            $row = $progress->get($path->id);
+            $lessons = $row?->lessons ?? collect();
+
+            $path->completed_lessons_count = $lessons->where('is_complete', true)->count();
+            $path->continue_lesson_id = $lessons->firstWhere('is_complete', false)?->lesson_id;
+            $path->exercise_types = ($row?->exercise_types ?? collect())
+                ->map(fn (ExerciseType $type) => $type->getDescription())
+                ->all();
+            $path->is_finished = $lessons->isNotEmpty() && $lessons->every(fn ($lesson) => $lesson->is_complete);
+        });
+    }
+
+    /**
+     * This user's enrolled paths, most recently enrolled first, decorated
+     * with progress. The one query the dashboard's active-path pick and the
+     * enrolled/finished list pages all build on. Rows enrolled before
+     * `learning_path_user` tracked timestamps sort last rather than first,
+     * which a bare DESC would otherwise do since Postgres orders nulls
+     * first on DESC.
+     *
+     * @return Collection<int, LearningPath>
+     */
+    public function enrolledPathsWithProgress(): Collection
+    {
+        return $this->decoratePathsWithProgress(
+            $this->learningPaths()
+                ->withCount('lessons')
+                ->orderByRaw("coalesce(learning_path_user.created_at, '1970-01-01') desc")
+                ->get()
+        );
     }
 }

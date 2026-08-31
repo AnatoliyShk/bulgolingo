@@ -2,15 +2,23 @@
 <script setup>
 import '@/assets/scss/components/profile/show.scss'
 import { computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import TopBar from '@/Components/TopBar.vue'
 
 const props = defineProps({
     user: Object,
-    learningPaths: {
-        type: Array,
-        default: () => [],
+    activeLearningPath: {
+        type: Object,
+        default: null,
+    },
+    enrolledCount: {
+        type: Number,
+        default: 0,
+    },
+    finishedCount: {
+        type: Number,
+        default: 0,
     },
     appName: {
         type: String,
@@ -36,6 +44,8 @@ const memberSince = computed(() => {
     return new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric' }).format(new Date(props.user.created_at))
 })
 
+const isPremium = computed(() => props.user?.type === 'premium')
+
 function progressPercent(path) {
     const total = path.lessons_count ?? 0
     if (!total) return 0
@@ -44,9 +54,16 @@ function progressPercent(path) {
 </script>
 
 <template>
+    <Head>
+        <link
+            href="https://fonts.bunny.net/css?family=unbounded:400,600,700,800,900|manrope:400,500,600,700,800&subset=cyrillic,latin&display=swap"
+            rel="stylesheet"
+        />
+    </Head>
+
     <div class="nb-prof" :class="theme">
 
-        <TopBar max-width="860px" />
+        <TopBar />
 
         <main class="nb-prof__main">
 
@@ -77,7 +94,10 @@ function progressPercent(path) {
                     <div class="nb-prof__eyebrow">
                         Профил <span class="nb-prof__eyebrow-en">· profile</span>
                     </div>
-                    <h1 class="nb-prof__name">{{ user.name }}</h1>
+                    <h1 class="nb-prof__name">
+                        {{ user.name }}
+                        <span v-if="isPremium" class="nb-prof__premium-star" aria-label="Premium member">★</span>
+                    </h1>
                     <p class="nb-prof__email">{{ user.email }}</p>
                     <p v-if="memberSince" class="nb-prof__member">Learning Bulgarian since {{ memberSince }}</p>
                 </div>
@@ -96,38 +116,45 @@ function progressPercent(path) {
                     <span class="nb-prof__section-badge">your path</span>
                 </div>
 
-                <div v-if="learningPaths.length" class="nb-prof__paths">
-                    <article
-                        v-for="path in learningPaths"
-                        :key="path.id"
-                        class="nb-prof__path"
-                    >
+                <template v-if="activeLearningPath">
+                    <article class="nb-prof__path">
                         <div class="nb-prof__path-head">
-                            <h3 class="nb-prof__path-name">{{ path.name }}</h3>
-                            <span class="nb-prof__path-lang">{{ path.language }}</span>
+                            <h3 class="nb-prof__path-name">{{ activeLearningPath.name }}</h3>
+                            <span class="nb-prof__path-lang">{{ activeLearningPath.language }}</span>
                         </div>
-                        <div v-if="path.exercise_types?.length" class="nb-prof__path-types">
-                            <span v-for="t in path.exercise_types" :key="t" class="nb-prof__path-type">{{ t }}</span>
+                        <div v-if="activeLearningPath.exercise_types?.length" class="nb-prof__path-types">
+                            <span v-for="t in activeLearningPath.exercise_types" :key="t" class="nb-prof__path-type">{{ t }}</span>
                         </div>
                         <div class="nb-prof__path-track">
-                            <div class="nb-prof__path-fill" :style="{ width: progressPercent(path) + '%' }"></div>
+                            <div class="nb-prof__path-fill" :style="{ width: progressPercent(activeLearningPath) + '%' }"></div>
                         </div>
                         <div class="nb-prof__path-foot">
-                            <span class="nb-prof__path-count">{{ path.completed_lessons_count ?? 0 }} / {{ path.lessons_count ?? 0 }} lessons</span>
+                            <span class="nb-prof__path-count">{{ activeLearningPath.completed_lessons_count ?? 0 }} / {{ activeLearningPath.lessons_count ?? 0 }} lessons</span>
                             <div class="nb-prof__path-actions">
                                 <Link
-                                    :href="route('learning-paths.show', path.id)"
+                                    :href="route('learning-paths.show', activeLearningPath.id)"
                                     class="nb-prof__path-btn"
                                 >Show path</Link>
                                 <Link
-                                    v-if="path.continue_lesson_id"
-                                    :href="route('lesson.show', path.continue_lesson_id)"
+                                    v-if="activeLearningPath.continue_lesson_id"
+                                    :href="route('lesson.show', activeLearningPath.continue_lesson_id)"
                                     class="nb-prof__path-cta"
                                 >Continue <font-awesome-icon icon="arrow-right" /></Link>
                             </div>
                         </div>
                     </article>
-                </div>
+
+                    <div class="nb-prof__path-links">
+                        <Link :href="route('learning-paths.enrolled')" class="nb-prof__path-link">
+                            All enrolled
+                            <span v-if="enrolledCount" class="nb-prof__path-link-count">{{ enrolledCount }}</span>
+                        </Link>
+                        <Link :href="route('learning-paths.finished')" class="nb-prof__path-link">
+                            All finished
+                            <span v-if="finishedCount" class="nb-prof__path-link-count">{{ finishedCount }}</span>
+                        </Link>
+                    </div>
+                </template>
 
                 <div v-else class="nb-prof__empty">
                     <p class="nb-prof__empty-title">Няма избран път</p>

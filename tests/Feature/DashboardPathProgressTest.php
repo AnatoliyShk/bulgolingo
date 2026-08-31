@@ -66,7 +66,7 @@ class DashboardPathProgressTest extends TestCase
 
         $this->actingAs($user)->get(route('dashboard'))->assertOk()->assertInertia(
             function (Assert $page) use (&$data) {
-                $data = $page->toArray()['props']['learningPaths'][0];
+                $data = $page->toArray()['props']['activeLearningPath'];
             }
         );
 
@@ -209,12 +209,54 @@ class DashboardPathProgressTest extends TestCase
         $this->assertSame(0, $prop['completed_lessons_count']);
     }
 
-    public function test_user_with_no_paths_gets_an_empty_list(): void
+    public function test_user_with_no_paths_gets_no_active_path(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user)->get(route('dashboard'))->assertOk()->assertInertia(
-            fn (Assert $page) => $page->where('learningPaths', [])
+            fn (Assert $page) => $page->where('activeLearningPath', null)
         );
+    }
+
+    public function test_the_most_recently_enrolled_unfinished_path_is_active(): void
+    {
+        $user = User::factory()->create();
+
+        $older = LearningPath::create(['name' => 'Older', 'language' => 'bg']);
+        $older->users()->attach($user->id, ['created_at' => now()->subDay(), 'updated_at' => now()->subDay()]);
+        $this->lessonWith($older, 'L1', 1);
+
+        $newer = LearningPath::create(['name' => 'Newer', 'language' => 'bg']);
+        $newer->users()->attach($user->id, ['created_at' => now(), 'updated_at' => now()]);
+        $this->lessonWith($newer, 'L1', 1);
+
+        $this->assertSame('Newer', $this->pathProp($user)['name']);
+    }
+
+    public function test_a_finished_path_is_skipped_in_favor_of_an_unfinished_older_one(): void
+    {
+        $user = User::factory()->create();
+
+        $older = LearningPath::create(['name' => 'Still going', 'language' => 'bg']);
+        $older->users()->attach($user->id, ['created_at' => now()->subDay(), 'updated_at' => now()->subDay()]);
+        $this->lessonWith($older, 'L1', 1);
+
+        $newer = LearningPath::create(['name' => 'All done', 'language' => 'bg']);
+        $newer->users()->attach($user->id, ['created_at' => now(), 'updated_at' => now()]);
+        [, $exercises] = $this->lessonWith($newer, 'L1', 1);
+        $user->completedExercises()->syncWithoutDetaching($exercises[0]->id);
+
+        $this->assertSame('Still going', $this->pathProp($user)['name']);
+    }
+
+    public function test_the_latest_path_is_shown_once_every_enrolled_path_is_finished(): void
+    {
+        $user = User::factory()->create();
+        $path = $this->enrolled($user);
+
+        [, $exercises] = $this->lessonWith($path, 'L1', 1);
+        $user->completedExercises()->syncWithoutDetaching($exercises[0]->id);
+
+        $this->assertSame($path->id, $this->pathProp($user)['id']);
     }
 }

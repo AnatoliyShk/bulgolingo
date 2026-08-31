@@ -1,0 +1,49 @@
+/* ══════════════ Lesson complete — congrats screen ══════════════ */
+/* Reuses the .nb-ex token system and .nb-ex-action button from       */
+/* the exercise player (player.scss), which must be imported first.  */
+
+.nb-lesson-complete__bar {
+    position: relative; z-index: 1;
+    display: flex; justify-content: flex-end;
+    max-width: 40rem; margin: 0 auto;
+    padding: 1.25rem 1.5rem 0;
+}
+
+.nb-lesson-complete {
+    position: relative; z-index: 1;
+    max-width: 32rem; margin: 0 auto;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 2rem 1.5rem 4rem;
+    text-align: center;
+}
+
+.nb-lesson-complete__badge {
+    font-size: 3.5rem; line-height: 1;
+    margin-bottom: 1.25rem;
+    animation: nb-lesson-complete-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.nb-lesson-complete__title {
+    font-family: 'Unbounded', sans-serif; font-weight: 900;
+    font-size: clamp(1.6rem, 5vw, 2.4rem); line-height: 1.1; letter-spacing: -0.02em;
+    margin: 0 0 0.6rem;
+}
+
+.nb-lesson-complete__lesson-name {
+    font-weight: 700; opacity: 0.75;
+    margin: 0 0 2rem;
+}
+
+.nb-lesson-complete__actions {
+    width: 100%;
+}
+
+@keyframes nb-lesson-complete-pop {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-lesson-complete__badge { animation: none; }
+}

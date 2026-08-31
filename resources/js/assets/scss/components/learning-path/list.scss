@@ -1,0 +1,172 @@
+/* ══════════════ Neo-Brutalist learning-paths list ══════════════ */
+/* Shared by the "enrolled" and "finished" pages — same card, same    */
+/* progress bar, fed a different slice of the user's paths.           */
+
+.nb-path-list {
+    --ink:       #14110b;
+    --bg:        #f1e9d6;
+    --paper:     #fffaf0;
+    --on-accent: #14110b;
+
+    --cyan:   #34d3da;
+    --pink:   #ff6ba3;
+    --blue:   #5b8def;
+    --green:  #46d39a;
+    --orange: #ff8a47;
+    --purple: #b388ff;
+
+    --border:    3px solid var(--ink);
+    --shadow:    6px 6px 0 0 var(--ink);
+    --shadow-sm: 4px 4px 0 0 var(--ink);
+    --radius:    12px;
+
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Manrope', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    transition: background 0.3s ease, color 0.3s ease;
+    background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+    background-position: -11px -11px;
+}
+.nb-path-list * { box-sizing: border-box; }
+
+.nb-path-list.dark {
+    --ink:   #f4ead6;
+    --bg:    #17140f;
+    --paper: #221d16;
+    background-image: radial-gradient(rgba(244, 234, 214, 0.10) 1.2px, transparent 1.2px);
+}
+.nb-path-list ::selection { background: var(--pink); color: var(--ink); }
+
+/* ══════════════ Head ══════════════ */
+.nb-path-list__main { max-width: 860px; margin: 0 auto; padding: clamp(2rem, 5vw, 3.5rem) 1.5rem 4rem; }
+.nb-path-list__head { text-align: center; margin-bottom: 2.5rem; }
+.nb-path-list__badge {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif; font-weight: 800;
+    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--on-accent); background: var(--cyan);
+    padding: 0.45em 0.85em;
+    border: var(--border); border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+}
+.nb-path-list__title {
+    margin: 1rem 0 0;
+    font-family: 'Unbounded', sans-serif; font-weight: 900;
+    font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.05; letter-spacing: -0.02em;
+}
+
+/* ══════════════ Path cards ══════════════ */
+.nb-path-list__paths { display: flex; flex-direction: column; gap: 1rem; }
+.nb-path-list__path {
+    position: relative;
+    display: flex; flex-direction: column; gap: 0.85rem;
+    padding: 1.4rem 1.4rem 1.2rem;
+    background: var(--paper); color: var(--ink);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    animation: nb-path-list-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-path-list__path:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 0 var(--ink); }
+
+.nb-path-list__path-done {
+    position: absolute; top: -0.7rem; right: 1.1rem;
+    font-weight: 800; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--on-accent); background: var(--green);
+    border: var(--border); border-radius: 999px;
+    padding: 0.25em 0.7em; box-shadow: var(--shadow-sm);
+}
+
+.nb-path-list__path-head {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem;
+}
+.nb-path-list__path-name {
+    font-family: 'Unbounded', sans-serif; font-weight: 700;
+    font-size: 1.05rem; line-height: 1.2; margin: 0;
+}
+.nb-path-list__path-lang {
+    flex-shrink: 0;
+    font-weight: 800; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--on-accent); background: var(--blue);
+    border: var(--border); border-radius: 999px;
+    padding: 0.25em 0.65em; box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+}
+.nb-path-list__path-types { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.nb-path-list__path-type {
+    font-size: 0.65rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--on-accent); background: var(--purple);
+    border: 2.5px solid var(--ink); border-radius: 999px;
+    padding: 0.2em 0.55em;
+}
+.nb-path-list__path-track {
+    height: 14px;
+    background: var(--bg); border: var(--border); border-radius: 4px;
+    overflow: hidden;
+}
+.nb-path-list__path-fill {
+    height: 100%;
+    background: var(--cyan);
+    border-right: 3px solid var(--ink);
+    transition: width 0.8s ease 0.3s;
+}
+.nb-path-list__path-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    flex-wrap: wrap;
+}
+.nb-path-list__path-count { font-weight: 700; font-size: 0.82rem; opacity: 0.6; }
+.nb-path-list__path-actions {
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;
+}
+.nb-path-list__path-btn,
+.nb-path-list__path-cta {
+    display: inline-flex; align-items: center; gap: 0.3em;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.85rem;
+    border: var(--border); border-radius: 8px;
+    padding: 0.4em 0.9em; box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.nb-path-list__path-btn { color: var(--ink); background: var(--paper); }
+.nb-path-list__path-cta { color: var(--on-accent); background: var(--orange); }
+.nb-path-list__path-btn:hover,
+.nb-path-list__path-cta:hover {
+    transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink);
+}
+
+/* ══════════════ Empty state ══════════════ */
+.nb-path-list__empty {
+    padding: 2.5rem 1.5rem;
+    background: var(--paper);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 0.9rem;
+}
+.nb-path-list__empty-title { font-weight: 700; font-size: 0.95rem; opacity: 0.75; margin: 0; }
+.nb-path-list__empty-btn {
+    display: inline-flex; align-items: center; gap: 0.4em;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.95rem;
+    text-decoration: none; color: var(--on-accent);
+    background: var(--orange);
+    padding: 0.7rem 1.6rem; border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-path-list__empty-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+
+/* ══════════════ Animation ══════════════ */
+@keyframes nb-path-list-rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-path-list__path { animation: none; }
+    .nb-path-list__path-fill { transition: none; }
+    .nb-path-list__path-btn,
+    .nb-path-list__path-cta { transition: none; }
+}

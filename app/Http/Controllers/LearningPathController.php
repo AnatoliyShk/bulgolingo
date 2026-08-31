@@ -46,6 +46,36 @@ class LearningPathController extends Controller
         return redirect()->route('learning-paths.show', $learningPath);
     }
 
+    /**
+     * Every path the user has ever started, most recently enrolled first.
+     * Shares the List page with finished() — same card, same progress bar —
+     * just fed a different slice of the same decorated collection.
+     */
+    public function enrolled(Request $request)
+    {
+        return Inertia::render('LearningPath/List', [
+            'title' => 'Enrolled learning paths',
+            'emptyMessage' => "You haven't enrolled in any learning path yet.",
+            'paths' => $request->user()->enrolledPathsWithProgress()->values(),
+        ]);
+    }
+
+    /**
+     * The subset of enrolled paths where every lesson is done.
+     */
+    public function finished(Request $request)
+    {
+        $paths = $request->user()->enrolledPathsWithProgress()
+            ->where('is_finished', true)
+            ->values();
+
+        return Inertia::render('LearningPath/List', [
+            'title' => 'Finished learning paths',
+            'emptyMessage' => "You haven't finished a learning path yet.",
+            'paths' => $paths,
+        ]);
+    }
+
     public function show(LearningPath $learningPath)
     {
         return Inertia::render('LearnPath/Show', [

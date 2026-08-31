@@ -138,10 +138,10 @@ class ExerciseCompletionOrderTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('exercise.complete', $b));
 
-        $response->assertRedirect(route('exercise.show', $next->id));
+        $response->assertRedirect(route('lesson.complete', ['lesson' => $first->id, 'learningPath' => $path->id]));
     }
 
-    public function test_finishing_the_last_lesson_falls_back_to_the_path(): void
+    public function test_finishing_the_last_lesson_redirects_to_the_congrats_page(): void
     {
         $user = User::factory()->create();
         $path = LearningPath::create(['name' => 'Bulgarian Basics', 'language' => 'bg']);
@@ -155,10 +155,10 @@ class ExerciseCompletionOrderTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('exercise.complete', $b));
 
-        $response->assertRedirect(route('learning-paths.show', $path->id));
+        $response->assertRedirect(route('lesson.complete', ['lesson' => $only->id, 'learningPath' => $path->id]));
     }
 
-    public function test_next_lesson_with_no_exercises_falls_back_to_the_path(): void
+    public function test_next_lesson_with_no_exercises_redirects_to_the_congrats_page(): void
     {
         $user = User::factory()->create();
         $path = LearningPath::create(['name' => 'Bulgarian Basics', 'language' => 'bg']);
@@ -173,7 +173,7 @@ class ExerciseCompletionOrderTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('exercise.complete', $b));
 
-        $response->assertRedirect(route('learning-paths.show', $path->id));
+        $response->assertRedirect(route('lesson.complete', ['lesson' => $first->id, 'learningPath' => $path->id]));
     }
 
     public function test_lesson_stays_incomplete_while_a_gap_remains(): void
