@@ -1,4 +1,4 @@
-# Balkanbuddy
+# BalkanBuddy
 
 **Live at [balkanbuddy.laravel.cloud](https://balkanbuddy.laravel.cloud/)**
 
