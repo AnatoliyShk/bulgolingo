@@ -11,8 +11,8 @@
     flex-shrink: 0;
     width: 2.4rem; height: 2.4rem; cursor: pointer;
     font-size: 1.05rem; line-height: 1;
-    color: var(--on-accent, #14110b);
-    background: var(--orange, #ff8a47);
+    color: #fff;
+    background: #000;
     border: 3px solid var(--tt-ink); border-radius: 9px;
     box-shadow: 4px 4px 0 0 var(--tt-ink);
     transition: transform 0.1s, box-shadow 0.1s;
@@ -20,7 +20,11 @@
 
 /* The dark palettes flip --ink, and the pages that define no palette at all
    need the flip spelled out here. */
-:root.dark .nb-toggle { --tt-ink: var(--ink, #f4ead6); }
+:root.dark .nb-toggle {
+    --tt-ink: var(--ink, #f4ead6);
+    color: #000;
+    background: #fff;
+}
 
 .nb-toggle:hover  { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--tt-ink); }
 .nb-toggle:active { transform: translate(4px, 4px); box-shadow: none; }

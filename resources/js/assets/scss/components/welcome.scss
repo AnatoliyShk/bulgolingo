@@ -10,7 +10,7 @@
     --blue:   #5b8def;
     --green:  #46d39a;
     --orange: #ff8a47;
-    --purple: #b388ff;
+    --gold:   #ffb84d;
 
     /* Bulgarian flag — fixed in both themes */
     --flag-green: #00966e;
@@ -331,7 +331,7 @@
 .nb-cta-band {
     position: relative;
     margin-top: 2.5rem;
-    background: var(--purple); color: var(--on-accent);
+    background: var(--gold); color: var(--on-accent);
     border: var(--border); border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: clamp(1.5rem, 4vw, 2.5rem);
