@@ -1,7 +1,7 @@
 <script setup>
 import '@/assets/scss/components/learn-path/show.scss'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { Head, Link, usePage } from '@inertiajs/vue3'
+import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import ThemeToggle from '@/Components/ThemeToggle.vue'
 
@@ -96,6 +96,11 @@ function nodeStyle(node) {
     }
 }
 
+function restartPath() {
+    if (!confirm(`Restart "${props.learningPath.name}"? Your progress on this path will be reset.`)) return
+    router.post(route('learning-paths.restart', props.learningPath.id))
+}
+
 function labelStyle(node) {
     const gap = node.r + 16
     const base = { top: node.y + 'px' }
@@ -184,8 +189,14 @@ function labelStyle(node) {
             No lessons on this path yet.
         </div>
 
-        <div v-if="isAdmin" class="lp__create-wrap">
-            <Link :href="route('lesson.create')" class="lp__create">+ Create Lesson</Link>
+        <div class="lp__create-wrap">
+            <button type="button" class="lp__create lp__create--restart" @click="restartPath">
+                <svg class="lp__create-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.5 12a7.5 7.5 0 0113-5M19.5 12a7.5 7.5 0 01-13 5M19.5 4v4.5H15M4.5 20v-4.5H9" />
+                </svg>
+                Restart Path
+            </button>
+            <Link v-if="isAdmin" :href="route('lesson.create')" class="lp__create">+ Create Lesson</Link>
         </div>
     </div>
 </template>

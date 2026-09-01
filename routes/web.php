@@ -68,6 +68,10 @@ Route::get('/learning-paths/{learningPath}', [LearningPathController::class, 'sh
     ->middleware(['auth', 'verified'])
     ->name('learning-paths.show');
 
+Route::post('/learning-paths/{learningPath}/restart', [LearningPathController::class, 'restart'])
+    ->middleware(['auth', 'verified'])
+    ->name('learning-paths.restart');
+
 Route::get('/stats', [StatsController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('stats.show');

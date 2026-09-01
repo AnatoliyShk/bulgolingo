@@ -88,4 +88,27 @@ class LearningPathController extends Controller
             'lessons' => $learningPath->lessons,
         ]);
     }
+
+    /**
+     * Wipes this user's progress on every lesson in the path: all of its
+     * exercises' completions and the lessons' completed pivots are reset,
+     * putting the map back to its starting state.
+     */
+    public function restart(Request $request, LearningPath $learningPath)
+    {
+        $lessonIds = $learningPath->lessons()->pluck('lessons.id');
+
+        $exerciseIds = DB::table('exercise_lesson')
+            ->whereIn('lesson_id', $lessonIds)
+            ->pluck('exercise_id');
+
+        DB::table('user_exercise_completions')
+            ->where('user_id', $request->user()->id)
+            ->whereIn('exercise_id', $exerciseIds)
+            ->delete();
+
+        $learningPath->lessons()->updateExistingPivot($lessonIds->all(), ['is_completed' => false]);
+
+        return redirect()->route('learning-paths.show', $learningPath);
+    }
 }
