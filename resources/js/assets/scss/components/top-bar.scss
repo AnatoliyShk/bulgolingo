@@ -63,7 +63,7 @@
 
 /* The page you are already on sits pressed into the bar rather than raised. */
 .nb-topbar__link[aria-current='page'] {
-    background: var(--cyan, #34d3da);
+    background: var(--cyan, #b388ff);
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 0 var(--ink, #14110b);
 }

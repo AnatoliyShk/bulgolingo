@@ -6,6 +6,7 @@ use App\Enums\ExerciseType;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -130,5 +131,60 @@ class LearningPathIndexTest extends TestCase
 
         $this->assertContains($a->id, $ids);
         $this->assertContains($b->id, $ids);
+    }
+
+    /**
+     * The user's own paths head the page, so the catalog below is what is
+     * left to pick up — listing an enrolled path there too would show it
+     * twice on one screen, the second time offering to start it again.
+     */
+    public function test_catalog_excludes_paths_the_user_already_started(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $mine = LearningPath::create(['name' => 'Mine', 'language' => 'bg']);
+        $mine->users()->attach($user->id);
+        $this->lessonWith($mine, 'L1', [ExerciseType::TRUE_FALSE]);
+
+        $other = LearningPath::create(['name' => 'Untouched', 'language' => 'bg']);
+
+        $ids = collect($this->pathsProp())->pluck('id')->all();
+
+        $this->assertNotContains($mine->id, $ids);
+        $this->assertContains($other->id, $ids);
+    }
+
+    public function test_a_started_path_moves_into_the_in_progress_section(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $path = LearningPath::create(['name' => 'Mine', 'language' => 'bg']);
+        $path->users()->attach($user->id);
+        $this->lessonWith($path, 'L1', [ExerciseType::TRUE_FALSE]);
+
+        $props = null;
+
+        $this->get(route('learning-paths.index'))->assertOk()->assertInertia(
+            function (Assert $page) use (&$props) {
+                $props = $page->toArray()['props'];
+            }
+        );
+
+        $this->assertSame([$path->id], collect($props['unfinishedPaths'])->pluck('id')->all());
+        $this->assertSame([], $props['finishedPaths']);
+    }
+
+    public function test_a_guest_still_sees_every_path_in_the_catalog(): void
+    {
+        $owner = User::factory()->create();
+
+        $enrolled = LearningPath::create(['name' => 'Someone elses', 'language' => 'bg']);
+        $enrolled->users()->attach($owner->id);
+
+        $ids = collect($this->pathsProp())->pluck('id')->all();
+
+        $this->assertContains($enrolled->id, $ids);
     }
 }

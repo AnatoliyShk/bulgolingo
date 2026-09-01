@@ -62,15 +62,20 @@ class DashboardPathProgressTest extends TestCase
 
     private function pathProp(User $user): array
     {
+        return (array) $this->dashboardProps($user)['activeLearningPath'];
+    }
+
+    private function dashboardProps(User $user): array
+    {
         $data = null;
 
         $this->actingAs($user)->get(route('dashboard'))->assertOk()->assertInertia(
             function (Assert $page) use (&$data) {
-                $data = $page->toArray()['props']['activeLearningPath'];
+                $data = $page->toArray()['props'];
             }
         );
 
-        return (array) $data;
+        return $data;
     }
 
     public function test_counts_only_fully_completed_lessons(): void
@@ -120,7 +125,11 @@ class DashboardPathProgressTest extends TestCase
         $this->assertSame($empty->id, $prop['continue_lesson_id']);
     }
 
-    public function test_continue_lesson_is_null_when_everything_is_done(): void
+    /**
+     * A finished path is never offered as the one to continue — the dashboard
+     * drops it and points the user at the catalog instead.
+     */
+    public function test_a_finished_path_is_not_offered_as_the_active_one(): void
     {
         $user = User::factory()->create();
         $path = $this->enrolled($user);
@@ -128,10 +137,11 @@ class DashboardPathProgressTest extends TestCase
         [, $only] = $this->lessonWith($path, 'L1', 2);
         $user->completedExercises()->syncWithoutDetaching([$only[0]->id, $only[1]->id]);
 
-        $prop = $this->pathProp($user);
+        $props = $this->dashboardProps($user);
 
-        $this->assertNull($prop['continue_lesson_id']);
-        $this->assertSame(1, $prop['completed_lessons_count']);
+        $this->assertNull($props['activeLearningPath']);
+        $this->assertSame(0, $props['enrolledCount']);
+        $this->assertSame(1, $props['finishedCount']);
     }
 
     public function test_exercise_types_are_the_distinct_types_across_the_path(): void
@@ -190,9 +200,9 @@ class DashboardPathProgressTest extends TestCase
 
         $user->completedExercises()->syncWithoutDetaching($fillIn->id);
 
-        $prop = $this->pathProp($user);
-        $this->assertSame(1, $prop['completed_lessons_count'], 'lesson is done once every type is');
-        $this->assertNull($prop['continue_lesson_id']);
+        $props = $this->dashboardProps($user);
+        $this->assertNull($props['activeLearningPath'], 'lesson is done once every type is');
+        $this->assertSame(1, $props['finishedCount']);
     }
 
     public function test_another_users_completions_do_not_count(): void
@@ -249,7 +259,7 @@ class DashboardPathProgressTest extends TestCase
         $this->assertSame('Still going', $this->pathProp($user)['name']);
     }
 
-    public function test_the_latest_path_is_shown_once_every_enrolled_path_is_finished(): void
+    public function test_no_active_path_is_shown_once_every_enrolled_path_is_finished(): void
     {
         $user = User::factory()->create();
         $path = $this->enrolled($user);
@@ -257,6 +267,9 @@ class DashboardPathProgressTest extends TestCase
         [, $exercises] = $this->lessonWith($path, 'L1', 1);
         $user->completedExercises()->syncWithoutDetaching($exercises[0]->id);
 
-        $this->assertSame($path->id, $this->pathProp($user)['id']);
+        $props = $this->dashboardProps($user);
+
+        $this->assertNull($props['activeLearningPath']);
+        $this->assertSame(1, $props['finishedCount']);
     }
 }

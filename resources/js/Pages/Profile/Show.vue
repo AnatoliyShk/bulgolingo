@@ -5,6 +5,7 @@ import { computed } from 'vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import TopBar from '@/Components/TopBar.vue'
+import LearningPathCard from '@/Components/LearningPathCard.vue'
 
 const props = defineProps({
     user: Object,
@@ -45,12 +46,6 @@ const memberSince = computed(() => {
 })
 
 const isPremium = computed(() => props.user?.type === 'premium')
-
-function progressPercent(path) {
-    const total = path.lessons_count ?? 0
-    if (!total) return 0
-    return Math.round(((path.completed_lessons_count ?? 0) / total) * 100)
-}
 </script>
 
 <template>
@@ -96,7 +91,7 @@ function progressPercent(path) {
                     </div>
                     <h1 class="nb-prof__name">
                         {{ user.name }}
-                        <span v-if="isPremium" class="nb-prof__premium-star" aria-label="Premium member">★</span>
+                        <span v-if="isPremium" class="nb-prof__premium-star" aria-label="Premium member">★ Premium</span>
                     </h1>
                     <p class="nb-prof__email">{{ user.email }}</p>
                     <p v-if="memberSince" class="nb-prof__member">Learning Bulgarian since {{ memberSince }}</p>
@@ -117,32 +112,7 @@ function progressPercent(path) {
                 </div>
 
                 <template v-if="activeLearningPath">
-                    <article class="nb-prof__path">
-                        <div class="nb-prof__path-head">
-                            <h3 class="nb-prof__path-name">{{ activeLearningPath.name }}</h3>
-                            <span class="nb-prof__path-lang">{{ activeLearningPath.language }}</span>
-                        </div>
-                        <div v-if="activeLearningPath.exercise_types?.length" class="nb-prof__path-types">
-                            <span v-for="t in activeLearningPath.exercise_types" :key="t" class="nb-prof__path-type">{{ t }}</span>
-                        </div>
-                        <div class="nb-prof__path-track">
-                            <div class="nb-prof__path-fill" :style="{ width: progressPercent(activeLearningPath) + '%' }"></div>
-                        </div>
-                        <div class="nb-prof__path-foot">
-                            <span class="nb-prof__path-count">{{ activeLearningPath.completed_lessons_count ?? 0 }} / {{ activeLearningPath.lessons_count ?? 0 }} lessons</span>
-                            <div class="nb-prof__path-actions">
-                                <Link
-                                    :href="route('learning-paths.show', activeLearningPath.id)"
-                                    class="nb-prof__path-btn"
-                                >Show path</Link>
-                                <Link
-                                    v-if="activeLearningPath.continue_lesson_id"
-                                    :href="route('lesson.show', activeLearningPath.continue_lesson_id)"
-                                    class="nb-prof__path-cta"
-                                >Continue <font-awesome-icon icon="arrow-right" /></Link>
-                            </div>
-                        </div>
-                    </article>
+                    <LearningPathCard :path="activeLearningPath" />
 
                     <div class="nb-prof__path-links">
                         <Link :href="route('learning-paths.enrolled')" class="nb-prof__path-link">
@@ -157,9 +127,12 @@ function progressPercent(path) {
                 </template>
 
                 <div v-else class="nb-prof__empty">
-                    <p class="nb-prof__empty-title">Няма избран път</p>
-                    <p class="nb-prof__empty-sub">You haven't picked a learning path yet.</p>
-                    <Link :href="route('learning-paths.index')" class="nb-prof__empty-btn">Choose a path <font-awesome-icon icon="arrow-right" /></Link>
+                    <p class="nb-prof__empty-title">{{ finishedCount > 0 ? 'Поздравления!' : 'Няма избран път' }}</p>
+                    <p class="nb-prof__empty-sub">{{ finishedCount > 0 ? 'You have finished all your paths. Browse new ones!' : "You haven't picked a learning path yet." }}</p>
+                    <div class="nb-prof__empty-actions">
+                        <Link :href="route('learning-paths.index')" class="nb-prof__empty-btn">{{ finishedCount > 0 ? 'Browse paths' : 'Choose a path' }} <font-awesome-icon icon="arrow-right-long" /></Link>
+                        <Link v-if="finishedCount > 0" :href="route('learning-paths.finished')" class="nb-prof__empty-btn nb-prof__empty-btn--secondary">All finished <font-awesome-icon icon="arrow-right-long" /></Link>
+                    </div>
                 </div>
             </section>
 
@@ -169,7 +142,7 @@ function progressPercent(path) {
                     <span class="nb-prof__stats-bg">Статистика</span>
                     <span class="nb-prof__stats-en">view your stats</span>
                 </div>
-                <span class="nb-prof__stats-arrow" aria-hidden="true"><font-awesome-icon icon="arrow-right" /></span>
+                <span class="nb-prof__stats-arrow" aria-hidden="true"><font-awesome-icon icon="eye" /></span>
             </Link>
 
         </main>

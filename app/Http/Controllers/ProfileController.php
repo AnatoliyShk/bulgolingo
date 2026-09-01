@@ -20,9 +20,9 @@ class ProfileController extends Controller
      * loaded relations, shipped the whole tree to a page that never reads it.
      *
      * The dashboard only ever shows one path — the most recently enrolled one
-     * that isn't finished yet, so there's always something to continue. Once
-     * every enrolled path is finished it falls back to the latest of those,
-     * rather than showing nothing.
+     * that isn't finished yet. Once every enrolled path is finished it shows
+     * none at all, so the page can invite the user to pick up a new one rather
+     * than re-offering something with nothing left to do.
      */
     public function show(Request $request)
     {
@@ -30,11 +30,13 @@ class ProfileController extends Controller
 
         $paths = $user->enrolledPathsWithProgress();
 
+        $unfinished = $paths->where('is_finished', false);
+
         return Inertia::render('Profile/Show', [
             'appName' => config('app.name'),
             'user' => $user,
-            'activeLearningPath' => $paths->firstWhere('is_finished', false) ?? $paths->first(),
-            'enrolledCount' => $paths->count(),
+            'activeLearningPath' => $unfinished->first(),
+            'enrolledCount' => $unfinished->count(),
             'finishedCount' => $paths->where('is_finished', true)->count(),
         ]);
     }

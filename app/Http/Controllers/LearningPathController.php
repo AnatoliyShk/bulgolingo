@@ -13,10 +13,18 @@ class LearningPathController extends Controller
      * The card only needs each path's distinct exercise types, so those are
      * aggregated in SQL rather than hydrating every lesson and exercise a
      * path contains just to collect their decision_type values in PHP.
+     *
+     * The user's own paths head the page under their own progress headings, so
+     * the catalog below drops them: a path already in progress would otherwise
+     * appear twice on one screen, the second time offering to start it again.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $paths = LearningPath::get(['id', 'name', 'language']);
+        $user = $request->user();
+        $userPaths = $user ? $user->enrolledPathsWithProgress() : collect();
+        $enrolledIds = $userPaths->pluck('id')->all();
+
+        $paths = LearningPath::whereNotIn('id', $enrolledIds)->get(['id', 'name', 'language']);
 
         $types = DB::table('learning_path_lesson as lpl')
             ->join('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
@@ -36,6 +44,8 @@ class LearningPathController extends Controller
 
         return Inertia::render('LearningPath/Index', [
             'paths' => $paths,
+            'unfinishedPaths' => $userPaths->where('is_finished', false)->values(),
+            'finishedPaths' => $userPaths->where('is_finished', true)->values(),
         ]);
     }
 
@@ -47,33 +57,28 @@ class LearningPathController extends Controller
     }
 
     /**
-     * Every path the user has ever started, most recently enrolled first.
-     * Shares the List page with finished() — same card, same progress bar —
-     * just fed a different slice of the same decorated collection.
+     * All enrolled paths split into unfinished and finished sections.
      */
     public function enrolled(Request $request)
     {
+        $allPaths = $request->user()->enrolledPathsWithProgress();
+        $unfinished = $allPaths->where('is_finished', false)->values();
+        $finished = $allPaths->where('is_finished', true)->values();
+
         return Inertia::render('LearningPath/List', [
-            'title' => 'Enrolled learning paths',
+            'title' => 'Learning paths',
+            'unfinishedPaths' => $unfinished,
+            'finishedPaths' => $finished,
             'emptyMessage' => "You haven't enrolled in any learning path yet.",
-            'paths' => $request->user()->enrolledPathsWithProgress()->values(),
         ]);
     }
 
     /**
-     * The subset of enrolled paths where every lesson is done.
+     * Alias to enrolled() for backwards compatibility.
      */
     public function finished(Request $request)
     {
-        $paths = $request->user()->enrolledPathsWithProgress()
-            ->where('is_finished', true)
-            ->values();
-
-        return Inertia::render('LearningPath/List', [
-            'title' => 'Finished learning paths',
-            'emptyMessage' => "You haven't finished a learning path yet.",
-            'paths' => $paths,
-        ]);
+        return $this->enrolled($request);
     }
 
     public function show(LearningPath $learningPath)

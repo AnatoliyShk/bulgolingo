@@ -1,33 +1,20 @@
 <script setup>
 import '@/assets/scss/components/learning-path/index.scss'
-import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
+import { Head } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import TopBar from '@/Components/TopBar.vue'
+import LearningPathCardMini from '@/Components/LearningPathCardMini.vue'
 
-defineProps({
+const props = defineProps({
     paths: Array,
+    unfinishedPaths: { type: Array, default: () => [] },
+    finishedPaths: { type: Array, default: () => [] },
 })
-
-const page = usePage()
-const isAuthenticated = computed(() => !!page.props.auth.user)
 
 const { theme } = useTheme()
 
-const EXERCISE_TYPE_META = {
-    multiple_choice: { icon: 'list-check', label: 'Multiple choice' },
-    true_false: { icon: 'check-double', label: 'True or false' },
-    fill_in_the_blank: { icon: 'pen-to-square', label: 'Fill in the blank' },
-    image_matching: { icon: 'image', label: 'Image matching' },
-}
-
-function typeMeta(type) {
-    return EXERCISE_TYPE_META[type]
-}
-
-function start(pathId) {
-    router.post(route('learning-paths.start', pathId))
-}
+const hasEnrolled = computed(() => props.unfinishedPaths.length > 0 || props.finishedPaths.length > 0)
 </script>
 
 <template>
@@ -48,39 +35,52 @@ function start(pathId) {
                 <p class="nb-paths__sub">Pick a language path and start training today.</p>
             </div>
 
-            <div v-if="paths && paths.length" class="nb-paths__grid">
-                <article
-                    v-for="(path, i) in paths"
-                    :key="path.id"
-                    class="nb-paths__card"
-                    :style="{ animationDelay: (i * 70) + 'ms' }"
-                >
-                    <span class="nb-paths__card-tag">{{ path.language }}</span>
-                    <h2 class="nb-paths__card-name">{{ path.name }}</h2>
-
-                    <ul v-if="path.exercise_types?.length" class="nb-paths__card-types" aria-label="Exercise types in this path">
-                        <template v-for="type in path.exercise_types" :key="type">
-                            <li v-if="typeMeta(type)" class="nb-paths__card-type" :title="typeMeta(type).label">
-                                <font-awesome-icon :icon="typeMeta(type).icon" />
-                            </li>
-                        </template>
-                    </ul>
-
-                    <button
-                        v-if="isAuthenticated"
-                        type="button"
-                        class="nb-paths__card-btn"
-                        @click="start(path.id)"
+            <section v-if="unfinishedPaths.length" class="nb-paths__section">
+                <h2 class="nb-paths__section-title">In progress</h2>
+                <div class="nb-paths__section-list">
+                    <div
+                        v-for="(path, i) in unfinishedPaths"
+                        :key="path.id"
+                        class="nb-paths__section-item"
+                        :style="{ animationDelay: (i * 60) + 'ms' }"
                     >
-                        Start
-                    </button>
-                    <Link v-else href="/register" class="nb-paths__card-btn">
-                        Sign up to start
-                    </Link>
-                </article>
-            </div>
+                        <LearningPathCardMini :path="path" />
+                    </div>
+                </div>
+            </section>
 
-            <p v-else class="nb-paths__empty">No learning paths available yet.</p>
+            <section class="nb-paths__section">
+                <h2 v-if="hasEnrolled" class="nb-paths__section-title">Not started yet</h2>
+
+                <div v-if="paths && paths.length" class="nb-paths__grid">
+                    <div
+                        v-for="(path, i) in paths"
+                        :key="path.id"
+                        class="nb-paths__grid-item"
+                        :style="{ animationDelay: (i * 70) + 'ms' }"
+                    >
+                        <LearningPathCardMini :path="path" />
+                    </div>
+                </div>
+
+                <p v-else class="nb-paths__empty">
+                    {{ hasEnrolled ? "You've started every path we have. More are on the way." : 'No learning paths available yet.' }}
+                </p>
+            </section>
+
+            <section v-if="finishedPaths.length" class="nb-paths__section">
+                <h2 class="nb-paths__section-title">Finished</h2>
+                <div class="nb-paths__section-list">
+                    <div
+                        v-for="(path, i) in finishedPaths"
+                        :key="path.id"
+                        class="nb-paths__section-item"
+                        :style="{ animationDelay: (i * 60) + 'ms' }"
+                    >
+                        <LearningPathCardMini :path="path" :show-finished-badge="true" />
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 </template>

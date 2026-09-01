@@ -42,14 +42,18 @@ class LearningPathListTest extends TestCase
         return $path;
     }
 
-    private function paths(string $route): array
+    /**
+     * The list page renders both slices at once, so a test names the one it
+     * cares about rather than relying on which route it happened to hit.
+     */
+    private function paths(string $route, string $prop = 'unfinishedPaths'): array
     {
         $props = null;
 
         $this->get(route($route))->assertOk()->assertInertia(
-            function (Assert $page) use (&$props) {
+            function (Assert $page) use (&$props, $prop) {
                 $page->component('LearningPath/List');
-                $props = $page->toArray()['props']['paths'];
+                $props = $page->toArray()['props'][$prop];
             }
         );
 
@@ -91,7 +95,7 @@ class LearningPathListTest extends TestCase
         $done = $this->pathWithLesson($user, 'Done', 1, completeAll: true);
         $this->pathWithLesson($user, 'In progress', 1, completeAll: false);
 
-        $props = $this->paths('learning-paths.finished');
+        $props = $this->paths('learning-paths.finished', 'finishedPaths');
 
         $this->assertCount(1, $props);
         $this->assertSame($done->id, $props[0]['id']);
@@ -105,7 +109,7 @@ class LearningPathListTest extends TestCase
 
         $this->pathWithLesson($user, 'In progress', 1, completeAll: false);
 
-        $this->assertSame([], $this->paths('learning-paths.finished'));
+        $this->assertSame([], $this->paths('learning-paths.finished', 'finishedPaths'));
     }
 
     public function test_a_path_with_no_lessons_is_never_finished(): void
@@ -116,7 +120,7 @@ class LearningPathListTest extends TestCase
         $path = LearningPath::create(['name' => 'Empty', 'language' => 'bg']);
         $path->users()->attach($user->id);
 
-        $this->assertSame([], $this->paths('learning-paths.finished'));
+        $this->assertSame([], $this->paths('learning-paths.finished', 'finishedPaths'));
 
         $ids = collect($this->paths('learning-paths.enrolled'))->pluck('id')->all();
         $this->assertContains($path->id, $ids);

@@ -8,7 +8,7 @@
     --paper:  #fffaf0;
     --on-accent: #14110b;
 
-    --cyan:   #34d3da;
+    --cyan:   #b388ff;
     --pink:   #ff6ba3;
     --blue:   #5b8def;
     --green:  #46d39a;
@@ -59,58 +59,40 @@
 }
 .nb-paths__sub { font-weight: 500; font-size: 1rem; opacity: 0.8; }
 
+/* ══════════════ Enrolled sections ══════════════ */
+/* The signed-in user's own paths sit above the catalog, split into what
+   is still in progress and what is already finished. */
+.nb-paths__section {
+    display: flex; flex-direction: column; gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+.nb-paths__section-title {
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: clamp(1.1rem, 3vw, 1.3rem); letter-spacing: -0.02em; margin: 0;
+}
+.nb-paths__section-item {
+    animation: nb-paths-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
 /* ══════════════ Grid ══════════════ */
-.nb-paths__grid {
+/* The enrolled sections and the catalog below them lay out identically, so
+   a user's own paths read as the same kind of card as the ones on offer. */
+.nb-paths__grid,
+.nb-paths__section-list {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
 }
-@media (max-width: 900px) { .nb-paths__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 620px) { .nb-paths__grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+    .nb-paths__grid,
+    .nb-paths__section-list { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+    .nb-paths__grid,
+    .nb-paths__section-list { grid-template-columns: 1fr; }
+}
 
-.nb-paths__card {
-    display: flex; flex-direction: column; align-items: flex-start; gap: 0.9rem;
-    background: var(--paper);
-    border: var(--border); border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 1.6rem 1.5rem 1.8rem;
+.nb-paths__grid-item {
     animation: nb-paths-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
-.nb-paths__card:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 0 var(--ink); }
-
-.nb-paths__card-tag {
-    display: inline-block;
-    font-family: 'Manrope', sans-serif; font-weight: 800;
-    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--on-accent); background: var(--blue);
-    padding: 0.35em 0.75em;
-    border: var(--border); border-radius: 8px; box-shadow: var(--shadow-sm);
-}
-.nb-paths__card-name {
-    font-family: 'Unbounded', sans-serif; font-weight: 700;
-    font-size: 1.3rem; line-height: 1.2;
-}
-.nb-paths__card-types {
-    display: flex; flex-wrap: wrap; gap: 0.5rem;
-    list-style: none; margin: 0; padding: 0;
-}
-.nb-paths__card-type {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 2.1rem; height: 2.1rem;
-    color: var(--on-accent); background: var(--green);
-    border: var(--border); border-radius: 8px; box-shadow: var(--shadow-sm);
-    font-size: 0.85rem;
-}
-.nb-paths__card-btn {
-    align-self: stretch; margin-top: auto; text-align: center;
-    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.92rem;
-    text-decoration: none; cursor: pointer;
-    color: var(--on-accent); background: var(--orange);
-    padding: 0.7rem 1.3rem; border: var(--border); border-radius: 10px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-.nb-paths__card-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
-.nb-paths__card-btn:active { transform: translate(4px, 4px); box-shadow: none; }
 
 /* ══════════════ Empty state ══════════════ */
 .nb-paths__empty {
@@ -127,8 +109,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .nb-paths__card { animation: none; }
-    .nb-paths__card-btn { transition: none; }
+    .nb-paths__grid-item,
+    .nb-paths__section-item { animation: none; }
 }
 
 /* ══════════════ Responsive ══════════════ */

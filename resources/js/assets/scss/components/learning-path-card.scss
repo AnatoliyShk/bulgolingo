@@ -1,0 +1,95 @@
+/* ══════════════ Learning path card ══════════════ */
+/* Shared by the profile dashboard, the enrolled/finished list, and the   */
+/* catalog. Each of those pages defines the neo-brutalist token set on    */
+/* its own root, so the card inherits whichever palette it lands in —     */
+/* the fallbacks only apply if it is ever rendered outside one of them.   */
+
+.nb-path-card {
+    position: relative;
+    display: flex; flex-direction: column; gap: 0.85rem;
+    padding: 1.4rem 1.4rem 1.2rem;
+    background: var(--paper, #fffaf0); color: var(--ink, #14110b);
+    border: 3px solid var(--ink, #14110b);
+    border-radius: var(--radius, 12px);
+    box-shadow: 6px 6px 0 0 var(--ink, #14110b);
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-path-card:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 0 var(--ink, #14110b); }
+
+.nb-path-card__done {
+    position: absolute; top: -0.7rem; right: 1.1rem;
+    font-weight: 800; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--on-accent, #14110b); background: var(--green, #46d39a);
+    border: 3px solid var(--ink, #14110b); border-radius: 999px;
+    padding: 0.25em 0.7em;
+}
+
+.nb-path-card__head {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem;
+}
+.nb-path-card__name {
+    font-family: 'Unbounded', sans-serif; font-weight: 700;
+    font-size: 1.05rem; line-height: 1.2; margin: 0;
+}
+.nb-path-card__lang {
+    flex-shrink: 0;
+    font-weight: 800; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #000; background: #fff;
+    border: 3px solid var(--ink, #14110b); border-radius: 999px;
+    padding: 0.25em 0.65em;
+    white-space: nowrap;
+}
+
+.nb-path-card__types { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.nb-path-card__type {
+    font-size: 0.65rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--on-accent, #14110b); background: var(--blue, #5b8def);
+    border: 2.5px solid var(--ink, #14110b); border-radius: 999px;
+    padding: 0.2em 0.55em;
+}
+
+.nb-path-card__track {
+    height: 14px;
+    background: var(--bg, #f1e9d6);
+    border: 3px solid var(--ink, #14110b); border-radius: 4px;
+    overflow: hidden;
+}
+.nb-path-card__fill {
+    height: 100%;
+    background: var(--cyan, #b388ff);
+    border-right: 3px solid var(--ink, #14110b);
+    transition: width 0.8s ease 0.3s;
+}
+
+.nb-path-card__foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    flex-wrap: wrap;
+}
+.nb-path-card__count { font-weight: 700; font-size: 0.82rem; opacity: 0.6; }
+.nb-path-card__actions {
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;
+}
+.nb-path-card__btn,
+.nb-path-card__cta {
+    display: inline-flex; align-items: center; gap: 0.3em;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.85rem;
+    border: 3px solid var(--ink, #14110b); border-radius: 8px;
+    padding: 0.4em 0.9em;
+    box-shadow: 4px 4px 0 0 var(--ink, #14110b);
+    text-decoration: none;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.nb-path-card__btn { color: var(--ink, #14110b); background: var(--paper, #fffaf0); }
+.nb-path-card__cta { color: var(--on-accent, #14110b); background: var(--orange, #ff8a47); }
+.nb-path-card__btn:hover,
+.nb-path-card__cta:hover {
+    transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink, #14110b);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-path-card,
+    .nb-path-card__btn,
+    .nb-path-card__cta { transition: none; }
+    .nb-path-card__fill { transition: none; }
+}

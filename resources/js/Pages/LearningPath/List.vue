@@ -1,22 +1,23 @@
 <script setup>
 import '@/assets/scss/components/learning-path/list.scss'
+import { computed } from 'vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import TopBar from '@/Components/TopBar.vue'
+import LearningPathCard from '@/Components/LearningPathCard.vue'
 
 const props = defineProps({
     title: { type: String, required: true },
     emptyMessage: { type: String, default: 'No learning paths here yet.' },
-    paths: { type: Array, default: () => [] },
+    unfinishedPaths: { type: Array, default: () => [] },
+    finishedPaths: { type: Array, default: () => [] },
 })
 
 const { theme } = useTheme()
 
-function progressPercent(path) {
-    const total = path.lessons_count ?? 0
-    if (!total) return 0
-    return Math.round(((path.completed_lessons_count ?? 0) / total) * 100)
-}
+const hasUnfinished = computed(() => props.unfinishedPaths.length > 0)
+const hasFinished = computed(() => props.finishedPaths.length > 0)
+const isEmpty = computed(() => !hasUnfinished.value && !hasFinished.value)
 </script>
 
 <template>
@@ -36,45 +37,39 @@ function progressPercent(path) {
                 <h1 class="nb-path-list__title">{{ title }}</h1>
             </div>
 
-            <div v-if="paths.length" class="nb-path-list__paths">
-                <article
-                    v-for="(path, i) in paths"
-                    :key="path.id"
-                    class="nb-path-list__path"
-                    :style="{ animationDelay: (i * 60) + 'ms' }"
-                >
-                    <span v-if="path.is_finished" class="nb-path-list__path-done">Finished</span>
-
-                    <div class="nb-path-list__path-head">
-                        <h3 class="nb-path-list__path-name">{{ path.name }}</h3>
-                        <span class="nb-path-list__path-lang">{{ path.language }}</span>
-                    </div>
-
-                    <div v-if="path.exercise_types?.length" class="nb-path-list__path-types">
-                        <span v-for="t in path.exercise_types" :key="t" class="nb-path-list__path-type">{{ t }}</span>
-                    </div>
-
-                    <div class="nb-path-list__path-track">
-                        <div class="nb-path-list__path-fill" :style="{ width: progressPercent(path) + '%' }"></div>
-                    </div>
-
-                    <div class="nb-path-list__path-foot">
-                        <span class="nb-path-list__path-count">{{ path.completed_lessons_count ?? 0 }} / {{ path.lessons_count ?? 0 }} lessons</span>
-                        <div class="nb-path-list__path-actions">
-                            <Link :href="route('learning-paths.show', path.id)" class="nb-path-list__path-btn">Show path</Link>
-                            <Link
-                                v-if="path.continue_lesson_id"
-                                :href="route('lesson.show', path.continue_lesson_id)"
-                                class="nb-path-list__path-cta"
-                            >Continue <font-awesome-icon icon="arrow-right" /></Link>
+            <template v-if="!isEmpty">
+                <section v-if="hasUnfinished" class="nb-path-list__section">
+                    <h2 class="nb-path-list__section-title">In Progress</h2>
+                    <div class="nb-path-list__paths">
+                        <div
+                            v-for="(path, i) in unfinishedPaths"
+                            :key="path.id"
+                            :style="{ animationDelay: (i * 60) + 'ms' }"
+                            class="nb-path-list__path-wrapper"
+                        >
+                            <LearningPathCard :path="path" />
                         </div>
                     </div>
-                </article>
-            </div>
+                </section>
+
+                <section v-if="hasFinished" class="nb-path-list__section">
+                    <h2 class="nb-path-list__section-title">Finished</h2>
+                    <div class="nb-path-list__paths">
+                        <div
+                            v-for="(path, i) in finishedPaths"
+                            :key="path.id"
+                            :style="{ animationDelay: (i * 60) + 'ms' }"
+                            class="nb-path-list__path-wrapper"
+                        >
+                            <LearningPathCard :path="path" :show-finished-badge="true" />
+                        </div>
+                    </div>
+                </section>
+            </template>
 
             <div v-else class="nb-path-list__empty">
                 <p class="nb-path-list__empty-title">{{ emptyMessage }}</p>
-                <Link :href="route('learning-paths.index')" class="nb-path-list__empty-btn">Browse learning paths <font-awesome-icon icon="arrow-right" /></Link>
+                <Link :href="route('learning-paths.index')" class="nb-path-list__empty-btn">Browse learning paths <font-awesome-icon icon="arrow-right-long" /></Link>
             </div>
         </main>
     </div>
