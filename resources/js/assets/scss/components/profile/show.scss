@@ -14,6 +14,7 @@
 
     --flag-green: #00966e;
     --flag-red:   #d62612;
+    --ash:        #b9b2a6;
 
     --border:    3px solid var(--ink);
     --shadow:    6px 6px 0 0 var(--ink);
@@ -35,6 +36,7 @@
     --ink:   #f4ead6;
     --bg:    #17140f;
     --paper: #221d16;
+    --ash:   #4a443b;
 }
 .nb-prof.dark {
     background-image: radial-gradient(rgba(244,234,214,0.10) 1.2px, transparent 1.2px);
@@ -66,6 +68,44 @@
     box-shadow: var(--shadow-sm);
     animation: nb-prof-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s both;
 }
+
+/*
+ * Streak flame, stacked under the XP chip in the avatar column so the two read
+ * as one pair belonging to the face above them.
+ *
+ * It carries no number — the whole state is the colour, which is meant to be
+ * caught at a glance rather than read. Ash means today's practice is still
+ * outstanding, red-and-glowing means it is already done. The glow rides on top
+ * of the brutalist offset shadow instead of replacing it, so the chip keeps the
+ * same silhouette as its neighbour in both states, and the aria-label carries
+ * the meaning for anyone the colour does not reach.
+ */
+.nb-prof__streak {
+    width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0.35rem 0.5rem;
+    border: var(--border); border-radius: 9px;
+    box-shadow: var(--shadow-sm);
+    animation: nb-prof-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.22s both;
+}
+.nb-prof__streak svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+.nb-prof__streak--cold {
+    background: var(--ash);
+    color: var(--ink);
+}
+.nb-prof__streak--lit {
+    background: var(--flag-red);
+    color: #fff;
+    animation:
+        nb-prof-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.22s both,
+        nb-prof-streak-glow 1.9s ease-in-out 0.8s infinite;
+}
+
+@keyframes nb-prof-streak-glow {
+    0%, 100% { box-shadow: var(--shadow-sm), 0 0 0.3rem 0 rgba(214, 38, 18, 0.5); }
+    50%      { box-shadow: var(--shadow-sm), 0 0 1.1rem 0.2rem rgba(214, 38, 18, 0.95); }
+}
+
 .nb-prof__avatar {
     position: relative;
     flex-shrink: 0;
@@ -274,6 +314,8 @@
 
 @media (prefers-reduced-motion: reduce) {
     .nb-prof__xp,
+    .nb-prof__streak,
+    .nb-prof__streak--lit,
     .nb-prof__section-head,
     .nb-prof .nb-path-card,
     .nb-prof__path-links,
@@ -306,6 +348,8 @@
         margin-top: 0;
     }
     .nb-prof__avatar { width: 5.5rem; height: 5.5rem; }
+    .nb-prof__streak { padding: 0.25rem 0.4rem; }
+    .nb-prof__streak svg { width: 1rem; height: 1rem; }
     .nb-prof__avatar-letter { font-size: 2.8rem; }
     .nb-prof__avatar-badge {
         right: -0.5rem; bottom: -0.5rem;

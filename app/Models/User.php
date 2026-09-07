@@ -33,6 +33,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean',
             'experience' => 'integer',
+            'latest_exercise_at' => 'datetime',
             'type' => UserType::class,
         ];
     }

@@ -23,6 +23,10 @@ class ProfileController extends Controller
      * that isn't finished yet. Once every enrolled path is finished it shows
      * none at all, so the page can invite the user to pick up a new one rather
      * than re-offering something with nothing left to do.
+     *
+     * Whether today's practice has happened is decided here rather than in the
+     * browser, so the day boundary is the application's own and not whatever
+     * clock the viewer's device happens to be set to.
      */
     public function show(Request $request)
     {
@@ -35,6 +39,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Show', [
             'appName' => config('app.name'),
             'user' => $user,
+            'practisedToday' => (bool) $user->latest_exercise_at?->isToday(),
             'activeLearningPath' => $unfinished->first(),
             'enrolledCount' => $unfinished->count(),
             'finishedCount' => $paths->where('is_finished', true)->count(),

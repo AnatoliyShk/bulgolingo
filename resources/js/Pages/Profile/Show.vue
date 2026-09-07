@@ -21,6 +21,10 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    practisedToday: {
+        type: Boolean,
+        default: false,
+    },
     appName: {
         type: String,
         default: 'BalkanBuddy',
@@ -39,6 +43,10 @@ const isVerified = computed(() => Boolean(props.user?.email_verified_at))
 const verificationLabel = computed(() => (isVerified.value ? 'Email verified' : 'Email not verified'))
 
 const experience = computed(() => props.user?.experience ?? 0)
+
+const streakLabel = computed(() => (props.practisedToday
+    ? 'Practised today'
+    : 'Not practised today'))
 
 const memberSince = computed(() => {
     if (!props.user?.created_at) return null
@@ -84,6 +92,18 @@ const isPremium = computed(() => props.user?.type === 'premium')
                         </span>
                     </div>
                     <div class="nb-prof__xp">XP: {{ experience }}</div>
+                    <div
+                        class="nb-prof__streak"
+                        :class="practisedToday ? 'nb-prof__streak--lit' : 'nb-prof__streak--cold'"
+                        role="img"
+                        :aria-label="streakLabel"
+                        :title="streakLabel"
+                        data-testid="profile-streak"
+                    >
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M13.2 2.1c.3 3-1 4.6-2.4 6-1.6 1.6-3.3 3.3-3.3 6.3a6.5 6.5 0 0 0 13 0c0-2.2-1-3.9-2-5.3-.3 1-1 1.9-2 2.2.4-2.8-.9-6.6-3.3-9.2Zm-.7 11c1 1 1.6 2 1.6 3.1a2.1 2.1 0 0 1-4.2 0c0-1.4 1-2.2 2.6-3.1Z" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="nb-prof__info nb-prof__info--card">
                     <div class="nb-prof__eyebrow">
