@@ -23,12 +23,42 @@ yarn build  # Production build
 ```
 
 ### Testing
+Run the suite against the **local Sail Postgres container**. `phpunit.xml` sets
+`DB_DATABASE=testing` but never `DB_CONNECTION`, so a bare `composer test` or
+`php artisan test` resolves to whatever `.env` points at — currently the hosted
+production database, not a test one. Always pass the overrides:
+
 ```bash
-composer test                          # run full test suite (clears config first)
-php artisan test --filter=TestName     # run a single test or class
-php artisan test tests/Feature/Foo.php # run a specific file
+docker compose exec -u sail \
+  -e DB_CONNECTION=pgsql -e DB_HOST=pgsql -e DB_DATABASE=testing -e DB_USERNAME=sail -e DB_PASSWORD=password \
+  -e QUEUE_CONNECTION=sync -e CACHE_STORE=array -e SESSION_DRIVER=array -e TELESCOPE_ENABLED=false \
+  laravel.test ./vendor/bin/phpunit --no-coverage
+
+# same prefix, narrowed to one file or one test:
+#   laravel.test ./vendor/bin/phpunit tests/Feature/Foo.php
+#   laravel.test ./vendor/bin/phpunit --filter=TestName
 ```
-Tests run against an in-memory SQLite database (`DB_DATABASE=testing`) with the queue set to `sync`.
+
+The local database is stock Sail — user `sail`, password `password`, database
+`testing` created by the image's init script. The `.env` credentials are the
+cloud ones and do not authenticate against it.
+
+**Do not use SQLite.** The migration history cannot be replayed on it: dropping
+`learning_paths.user_id` fails with "unknown column user_id in foreign key
+definition".
+
+Tests that touch no database — those extending `PHPUnit\Framework\TestCase`
+rather than `Tests\TestCase` — run on the host directly, because `phpunit.xml`
+bootstraps only the autoloader and no app boots:
+
+```bash
+./vendor/bin/phpunit tests/Unit/LoadTestGeneratorTest.php
+```
+
+Always run as the `sail` user (`-u sail`); a root-run container leaves files the
+host user cannot read. If `Admin\ExerciseTest` errors on
+`storage/framework/testing/disks`, that is the cause:
+`docker compose exec laravel.test chown -R sail:sail storage/framework/testing`.
 
 ### Code style
 ```bash
@@ -109,3 +139,10 @@ When creating a Vue component always:
 
 ### Infrastructure
 The Docker Compose setup (`compose.yaml`) uses Laravel Sail with **PostgreSQL 18** and **Redis**. The local dev default (without Docker) uses **SQLite** (`database/database.sqlite`). Queue driver defaults to `database`; jobs are dispatched for word count updates.
+
+## Comments
+- No explanatory comments inside function bodies
+- The reasoning goes above the function — a PHP docblock, or a `//` block above the `function` / arrow-function / Playwright `test(...)` line
+- Phrase it as a description of the whole function, not of one line
+- When editing a function that has body comments, merge them into the top comment rather than deleting them
+- Laravel's scaffolded empty `//` placeholders (observer stubs, unused controller actions) are not comments in this sense — leave them

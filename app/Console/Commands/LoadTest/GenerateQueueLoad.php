@@ -77,10 +77,13 @@ class GenerateQueueLoad extends Command
 
     /**
      * Pushes the same jobs Exercise::completeFor() does. Worth knowing when
-     * reading the throughput number: both use SerializesModels, so each job
-     * re-selects its User and its Exercise when the worker picks it up. A run of
-     * n jobs therefore costs 2n point lookups on top of the work itself, which
-     * is a property of the jobs rather than of the queue driver.
+     * reading the throughput number: LexemaCountUpdate still carries models, so
+     * SerializesModels re-selects its User and its Exercise — once as the
+     * RabbitMQ driver unserializes the payload to publish it, once more when
+     * the worker picks it up. A run of n such jobs therefore costs 4n point
+     * lookups on top of the work itself, which is a property of the job rather
+     * than of the queue driver. ExperienceCountUpdate takes ids and pays none
+     * of it.
      */
     private function dispatchFor(User $user, Exercise $exercise, string $connection): void
     {
@@ -88,7 +91,7 @@ class GenerateQueueLoad extends Command
         $job = $this->option('job');
 
         if ($job === 'both' || $job === 'experience') {
-            ExperienceCountUpdate::dispatch($user, $exercise)->onConnection($connection)->onQueue($queue);
+            ExperienceCountUpdate::dispatch($user->id, $exercise->id)->onConnection($connection)->onQueue($queue);
         }
 
         if ($job === 'both' || $job === 'lexema') {

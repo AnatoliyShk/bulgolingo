@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Enums\ExerciseType;
 use App\Jobs\ExperienceCountUpdate;
+use App\Jobs\LexemaReviewGrade;
 use App\Observers\ExerciseObserver;
 use App\Services\CompletionCacheSync;
-use App\Services\GradeLexemeReview;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -63,41 +63,27 @@ class Exercise extends Model
     }
 
     /**
-     * Records this exercise as completed for the user and dispatches the jobs
-     * that derive from it (XP, lexema tracking), then returns the id of
-     * the exercise the student should see next in $lesson: the earliest
-     * incomplete one forward from this exercise's position, wrapping to the
-     * top of the lesson once nothing is left ahead. Null means either this
-     * exercise has no lesson or the lesson is now fully complete.
+     * Records this exercise as completed for the user, queues the jobs that
+     * derive from it (XP, lexema review), and returns the id of the exercise
+     * the student should see next in $lesson: the earliest incomplete one
+     * ahead of this position, wrapping to the top of the lesson once nothing
+     * is left ahead. Null means no lesson, or the lesson is now complete.
      *
-     * $lesson is accepted rather than resolved here because the caller
-     * already has it and needs it again afterward either way — refetching it
-     * would be a wasted query on top of the one this method needs to place
-     * the student in it.
+     * $lesson is passed in because the caller already holds it and needs it
+     * afterwards; resolving it here would be a second wasted query.
      *
-     * The insert goes through a raw upsert rather than the completedExercises()
-     * relation, so the observer that would normally sync the stats caches never
-     * fires; CompletionCacheSync is called directly here to do that job instead,
-     * and only when the row was newly inserted, not on a repeat completion.
-     *
-     * Completing an exercise is always a correct answer, so every one of its
-     * lexemas is graded as a spaced-repetition review each time, not just on
-     * the first completion — a repeat completion is itself a real review.
-     * That grading fully replaces LexemaCountUpdate's old per-word reps_total
-     * bookkeeping (it would otherwise double-count the correct-answer word),
-     * so it is not dispatched here.
+     * The raw upsert bypasses the observer that syncs the stats caches, so
+     * CompletionCacheSync is called directly, and only for a newly inserted
+     * row. Grading is not conditional that way — a repeat completion is itself
+     * a real review — but it is queued: it costs a locked transaction per
+     * lexema and nothing in the student's response reads the schedule it
+     * produces. It also subsumes LexemaCountUpdate's per-word reps_total
+     * bookkeeping, so that job is not dispatched here either.
      */
     public function completeFor(User $user, ?Lesson $lesson): ?int
     {
-        ExperienceCountUpdate::dispatch($user, $this)->onQueue('learning_path');
-
-        $grader = app(GradeLexemeReview::class);
-
-        // Response time and hint usage aren't tracked by the player yet, so
-        // every completion grades as a fast, hint-free correct answer.
-        foreach ($this->lexemas as $lexema) {
-            $grader->grade($user, $lexema, isCorrect: true, hintUsed: false, responseMs: 0);
-        }
+        ExperienceCountUpdate::dispatch($user->id, $this->id)->onQueue('learning_path');
+        LexemaReviewGrade::dispatch($user->id, $this->id)->onQueue('learning_path');
 
         $completedAt = now();
 

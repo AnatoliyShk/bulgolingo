@@ -250,9 +250,8 @@ class StatsTest extends TestCase
         $apple = Lexema::factory()->create(['word' => 'apple']);
         $bread = Lexema::factory()->create(['word' => 'bread']);
 
-        $user->lexemas()->attach($apple->id);
-        $user->lexemas()->attach($apple->id);
-        $user->lexemas()->attach($bread->id);
+        $user->lexemas()->attach($apple->id, ['reps_total' => 2]);
+        $user->lexemas()->attach($bread->id, ['reps_total' => 1]);
 
         $response = $this
             ->actingAs($user)
