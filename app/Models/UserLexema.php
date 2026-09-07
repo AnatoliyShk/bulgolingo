@@ -37,18 +37,24 @@ class UserLexema extends Pivot
         ];
     }
 
+    /**
+     * Every word this user has met, heaviest first, for the stats word cloud.
+     *
+     * The weight is reps_total, not a row count: (user_id, lexema_id) is unique,
+     * so counting rows would report 1 for every word regardless of how often the
+     * user actually encountered it.
+     */
     public static function lexemas(User $user): Collection
     {
         return static::join('lexemas', 'lexemas.id', '=', 'user_lexema.lexema_id')
             ->where('user_lexema.user_id', $user->id)
-            ->select('lexemas.word')
-            ->selectRaw('count(*) as count')
-            ->groupBy('lexemas.id', 'lexemas.word')
-            ->orderByDesc('count')
+            ->select('lexemas.word', 'user_lexema.reps_total')
+            ->orderByDesc('user_lexema.reps_total')
+            ->orderBy('lexemas.word')
             ->get()
             ->map(fn ($row) => [
-                'word'  => $row->word,
-                'count' => (int) $row->count,
+                'word' => $row->word,
+                'count' => (int) $row->reps_total,
             ]);
     }
 }
