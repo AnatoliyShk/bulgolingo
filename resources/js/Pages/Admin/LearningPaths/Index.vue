@@ -2,9 +2,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import Pagination from '@/Components/Admin/Pagination.vue';
 
 defineProps({
-    learningPaths: Array,
+    learningPaths: Object,
 });
 
 function deletePath(id) {
@@ -33,7 +34,7 @@ function deletePath(id) {
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div v-if="learningPaths.length === 0" class="text-gray-500 dark:text-gray-400">No learning paths yet.</div>
+                <div v-if="learningPaths.total === 0" class="text-gray-500 dark:text-gray-400">No learning paths yet.</div>
 
                 <div v-else class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -47,7 +48,7 @@ function deletePath(id) {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                            <tr v-for="path in learningPaths" :key="path.id">
+                            <tr v-for="path in learningPaths.data" :key="path.id">
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ path.name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ path.language }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ path.lessons_count }}</td>
@@ -65,6 +66,8 @@ function deletePath(id) {
                             </tr>
                         </tbody>
                     </table>
+
+                    <Pagination :paginator="learningPaths" />
                 </div>
             </div>
         </div>

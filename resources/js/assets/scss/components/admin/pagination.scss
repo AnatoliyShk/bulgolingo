@@ -1,0 +1,12 @@
+// ── Pagination ────────────────────────────────────────────────────────────────
+// Sits inside .admin-table__wrap, below the table, so it shares the card's
+// border and reads as part of the same surface rather than a detached control.
+.admin-pagination {
+    @apply flex flex-col gap-3 border-t border-gray-200 px-6 py-3 dark:border-gray-700 sm:flex-row sm:items-center sm:justify-between;
+
+    &__summary        { @apply text-xs text-gray-500 dark:text-gray-400; }
+    &__pages          { @apply flex flex-wrap items-center gap-1; }
+    &__link           { @apply inline-flex min-w-[2rem] items-center justify-center rounded border border-gray-200 px-2.5 py-1 text-xs text-gray-600 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700; }
+    &__link--current  { @apply border-indigo-600 bg-indigo-600 text-white hover:bg-indigo-700 dark:border-indigo-500 dark:text-white; }
+    &__link--disabled { @apply cursor-default opacity-40 hover:bg-transparent dark:hover:bg-transparent; }
+}

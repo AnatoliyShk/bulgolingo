@@ -1,12 +1,14 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, useForm } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { Link, router, useForm } from '@inertiajs/vue3';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import Pagination from '@/Components/Admin/Pagination.vue';
 
 const props = defineProps({
     learningPath: Object,
-    lessons: Array,
+    lessons: Object,
+    lessonSearch: String,
 });
 
 const form = useForm({
@@ -17,12 +19,25 @@ const form = useForm({
 
 const attachedIds = computed(() => new Set(form.lesson_ids));
 
-const lessonSearch = ref('');
-const visibleLessons = computed(() => {
-    const q = lessonSearch.value.trim().toLowerCase();
-    if (q) return props.lessons.filter(l => l.name.toLowerCase().includes(q));
-    return props.lessons.slice(-5).reverse();
+const lessonSearch = ref(props.lessonSearch ?? '');
+
+// Only the lessons prop is re-requested, and the component is kept alive, so
+// searching or turning a page leaves selections the admin has not saved intact.
+let searchTimer = null;
+
+watch(lessonSearch, (value) => {
+    clearTimeout(searchTimer);
+
+    searchTimer = setTimeout(() => {
+        router.get(
+            route('admin.learning-paths.edit', props.learningPath.id),
+            { lesson_search: value, lesson_page: 1 },
+            { only: ['lessons'], preserveState: true, preserveScroll: true, replace: true },
+        );
+    }, 300);
 });
+
+onBeforeUnmount(() => clearTimeout(searchTimer));
 
 function toggleLesson(id) {
     if (attachedIds.value.has(id)) {
@@ -87,31 +102,35 @@ function submit() {
                                 placeholder="Search lessons…"
                                 class="w-full mb-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
                             />
-                            <div v-if="lessons.length === 0" class="text-sm text-gray-400">No lessons available.</div>
-                            <div v-else-if="visibleLessons.length === 0" class="text-sm text-gray-400 py-2">No lessons match your search.</div>
-                            <ul v-else class="divide-y divide-gray-100 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600">
-                                <li
-                                    v-for="lesson in visibleLessons"
-                                    :key="lesson.id"
-                                    class="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer"
-                                    @click="toggleLesson(lesson.id)"
-                                >
-                                    <div
-                                        class="w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors"
-                                        :class="attachedIds.has(lesson.id)
-                                            ? 'bg-indigo-600 border-indigo-600'
-                                            : 'border-gray-300 dark:border-gray-500'"
+                            <div v-if="lessons.total === 0 && lessonSearch.trim()" class="py-2 text-sm text-gray-400">No lessons match your search.</div>
+                            <div v-else-if="lessons.total === 0" class="text-sm text-gray-400">No lessons available.</div>
+                            <div v-else class="rounded-lg border border-gray-200 dark:border-gray-600">
+                                <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                                    <li
+                                        v-for="lesson in lessons.data"
+                                        :key="lesson.id"
+                                        class="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer"
+                                        @click="toggleLesson(lesson.id)"
                                     >
-                                        <svg v-if="attachedIds.has(lesson.id)" class="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ lesson.name }}</p>
-                                        <p v-if="lesson.description" class="text-xs text-gray-400">{{ lesson.description }}</p>
-                                    </div>
-                                </li>
-                            </ul>
+                                        <div
+                                            class="w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors"
+                                            :class="attachedIds.has(lesson.id)
+                                                ? 'bg-indigo-600 border-indigo-600'
+                                                : 'border-gray-300 dark:border-gray-500'"
+                                        >
+                                            <svg v-if="attachedIds.has(lesson.id)" class="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ lesson.name }}</p>
+                                            <p v-if="lesson.description" class="text-xs text-gray-400">{{ lesson.description }}</p>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <Pagination :paginator="lessons" :only="['lessons']" preserve-state />
+                            </div>
                             <p v-if="form.errors.lesson_ids" class="mt-1 text-xs text-red-500">{{ form.errors.lesson_ids }}</p>
                         </div>
 
