@@ -22,6 +22,18 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * The counter defaults to 0 in the database, but a model that was just
+     * inserted holds only the attributes it wrote, so without this a fresh user
+     * reads null until it is fetched back. Nothing should have to reload a row
+     * to find out that a counter starts at zero.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'streak_counter' => 0,
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -33,9 +45,50 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean',
             'experience' => 'integer',
+            'streak_counter' => 'integer',
             'latest_exercise_at' => 'datetime',
             'type' => UserType::class,
         ];
+    }
+
+    /**
+     * Records that this user has just practised. The stamp always moves
+     * forward; the counter only advances on the first completion of a day — it
+     * goes up by one when the previous completion was yesterday, and resets to
+     * one when the chain was broken or never started. Finishing a second
+     * exercise the same day leaves it alone, which is what makes it a count of
+     * days rather than of answers — alone but never below one, since a day with
+     * practice in it counts, and a row stamped today while the counter still
+     * read zero would otherwise stay stuck there until the date rolled over.
+     *
+     * All of it is one conditional UPDATE against the row rather than a read
+     * followed by a write, because two answers submitted at once would both see
+     * the same "not yet today" and both advance the streak. That also means the
+     * loaded model is stale afterwards; callers that need the new values should
+     * refresh. The day boundaries are computed here and passed as bindings so
+     * they come from the application's clock — the same one the profile uses to
+     * decide whether the flame is lit — rather than from the database's.
+     */
+    public function recordPractice(): void
+    {
+        $now = now();
+
+        DB::update(
+            'update '.$this->getTable().' set
+                streak_counter = case
+                    when latest_exercise_at >= ? then greatest(streak_counter, 1)
+                    when latest_exercise_at >= ? then streak_counter + 1
+                    else 1
+                end,
+                latest_exercise_at = ?
+             where id = ?',
+            [
+                $now->copy()->startOfDay(),
+                $now->copy()->subDay()->startOfDay(),
+                $now,
+                $this->getKey(),
+            ]
+        );
     }
 
     public function isAdmin(): bool

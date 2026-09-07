@@ -40,7 +40,7 @@ test.describe('Shared top bar', () => {
                 await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
 
                 // Signed-out visitors are never offered the member destinations.
-                await expect(page.locator('.nb-topbar').getByRole('link', { name: 'Dashboard' })).toHaveCount(0);
+                await expect(page.locator('.nb-topbar').getByRole('link', { name: 'Profile' })).toHaveCount(0);
                 await expect(page.locator('.nb-topbar').getByRole('button', { name: 'Log out' })).toHaveCount(0);
             });
         }
@@ -97,7 +97,7 @@ test.describe('Shared top bar', () => {
                 await expect(page.locator('.nb-toggle')).toBeVisible();
 
                 await expect(page.getByRole('link', { name: 'Learning paths' })).toBeVisible();
-                await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
+                await expect(page.locator('.nb-topbar').getByRole('link', { name: 'Profile' })).toBeVisible();
                 await expect(page.getByRole('link', { name: 'Stats' })).toBeVisible();
                 await expect(page.getByRole('button', { name: 'Log out' })).toBeVisible();
 
@@ -113,7 +113,7 @@ test.describe('Shared top bar', () => {
 
             await expect(page.getByRole('link', { name: 'Stats' }))
                 .toHaveAttribute('aria-current', 'page');
-            await expect(page.getByRole('link', { name: 'Dashboard' }))
+            await expect(page.getByRole('link', { name: 'Profile' }))
                 .not.toHaveAttribute('aria-current', 'page');
         });
 

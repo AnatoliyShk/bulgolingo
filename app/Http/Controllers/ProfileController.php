@@ -39,6 +39,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Show', [
             'appName' => config('app.name'),
             'user' => $user,
+            'streakCounter' => (int) $user->streak_counter,
             'practisedToday' => (bool) $user->latest_exercise_at?->isToday(),
             'activeLearningPath' => $unfinished->first(),
             'enrolledCount' => $unfinished->count(),

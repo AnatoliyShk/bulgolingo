@@ -7,7 +7,6 @@ use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\Lesson;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -110,7 +109,7 @@ class ExerciseController extends Controller
 
         $incompleteId = $exercise->completeFor($user, $lesson);
 
-        $this->recordPractice($user);
+        $user->recordPractice();
 
         if (! $lesson) {
             return redirect()->route('dashboard');
@@ -137,18 +136,5 @@ class ExerciseController extends Controller
             'lesson' => $lessonId,
             'learningPath' => $learningPath?->id,
         ]));
-    }
-
-    /**
-     * Stamps when the user last finished an exercise, which is all the profile's
-     * streak flame reads: lit when that moment is today, cold otherwise. Written
-     * straight to the row rather than through the loaded model, so answering two
-     * questions at once cannot have one stale instance overwrite the other.
-     */
-    private function recordPractice(User $user): void
-    {
-        User::query()
-            ->whereKey($user->id)
-            ->update(['latest_exercise_at' => now()]);
     }
 }

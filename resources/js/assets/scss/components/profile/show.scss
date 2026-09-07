@@ -52,7 +52,7 @@
 
 /* ══════════════ Hero / identity ══════════════ */
 .nb-prof__hero {
-    display: flex; align-items: flex-start; gap: 2rem; flex-wrap: wrap;
+    display: flex; align-items: stretch; gap: 2rem; flex-wrap: wrap;
 }
 .nb-prof__avatar-col {
     display: flex; flex-direction: column; align-items: center;
@@ -73,22 +73,24 @@
  * Streak flame, stacked under the XP chip in the avatar column so the two read
  * as one pair belonging to the face above them.
  *
- * It carries no number — the whole state is the colour, which is meant to be
- * caught at a glance rather than read. Ash means today's practice is still
- * outstanding, red-and-glowing means it is already done. The glow rides on top
- * of the brutalist offset shadow instead of replacing it, so the chip keeps the
- * same silhouette as its neighbour in both states, and the aria-label carries
- * the meaning for anyone the colour does not reach.
+ * The number is the run of consecutive days; the colour says whether today is
+ * already part of it, which is meant to be caught at a glance rather than read.
+ * Ash means today's practice is still outstanding, red-and-glowing means it is
+ * already done. The glow rides on top of the brutalist offset shadow instead of
+ * replacing it, so the chip keeps the same silhouette as its neighbour in both
+ * states, and the aria-label spells out what the colour means for anyone it
+ * does not reach.
  */
 .nb-prof__streak {
     width: 100%;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center; gap: 0.35rem;
+    font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 0.8rem;
     padding: 0.35rem 0.5rem;
     border: var(--border); border-radius: 9px;
     box-shadow: var(--shadow-sm);
     animation: nb-prof-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.22s both;
 }
-.nb-prof__streak svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+.nb-prof__streak svg { width: 1.05rem; height: 1.05rem; flex-shrink: 0; }
 .nb-prof__streak--cold {
     background: var(--ash);
     color: var(--ink);
@@ -141,27 +143,19 @@
     box-shadow: var(--shadow);
     padding: 1.25rem clamp(1.1rem, 3vw, 1.6rem);
 }
-.nb-prof__eyebrow {
-    display: inline-flex; align-items: center; gap: 0.5em;
-    font-weight: 800; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 0.35em 0.8em;
-    background: var(--cyan); color: var(--on-accent);
-    border: var(--border); border-radius: 999px;
-    box-shadow: var(--shadow-sm);
-    margin-bottom: 0.9rem;
-}
-.nb-prof__eyebrow-en { font-weight: 600; opacity: 0.65; }
 .nb-prof__name {
     font-family: 'Unbounded', sans-serif; font-weight: 900;
     font-size: clamp(1.8rem, 5vw, 2.8rem); line-height: 1.05; letter-spacing: -0.02em;
     margin: 0 0 0.4rem; word-break: break-word;
-    padding-right: 1.6rem;
 }
+/*
+ * Flows inline after the name rather than sitting absolutely, so it wraps
+ * onto its own line instead of overlapping the text when the name is long.
+ */
 .nb-prof__premium-star {
-    position: absolute;
-    top: 1.1rem; right: clamp(1.1rem, 3vw, 1.6rem);
     display: inline-flex; align-items: center; gap: 0.3em;
-    white-space: nowrap;
+    vertical-align: middle; white-space: nowrap;
+    margin-left: 0.5em;
     font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 0.78rem;
     letter-spacing: 0.02em;
     color: var(--on-accent); background: var(--orange);
@@ -325,17 +319,17 @@
 
 /* ══════════════ Responsive ══════════════ */
 @media (max-width: 560px) {
-    /* Avatar and the edit button share a narrow left column so the info
-       card's column can claim the rest of the row's width for its text. */
+    /* Avatar and info card share a row, stretched to equal height; the
+       edit button sits underneath the avatar alone, matching its width. */
     .nb-prof__hero {
         display: grid;
         grid-template-columns: auto 1fr;
         grid-template-areas:
             "avatar info"
-            "edit   info";
+            "edit   .";
         column-gap: 1rem;
         row-gap: 0.75rem;
-        align-items: start;
+        align-items: stretch;
     }
     .nb-prof__avatar-col { grid-area: avatar; }
     /* min-width: 0 overrides the grid item's default auto minimum, which
@@ -344,16 +338,22 @@
     .nb-prof__info--card { grid-area: info; width: 100%; min-width: 0; }
     .nb-prof__edit-btn {
         grid-area: edit;
-        justify-self: center;
+        width: 100%; height: 2.8rem;
+        justify-self: stretch;
+        align-self: start;
         margin-top: 0;
     }
     .nb-prof__avatar { width: 5.5rem; height: 5.5rem; }
-    .nb-prof__streak { padding: 0.25rem 0.4rem; }
-    .nb-prof__streak svg { width: 1rem; height: 1rem; }
+    .nb-prof__streak { font-size: 0.7rem; padding: 0.25rem 0.4rem; }
+    .nb-prof__streak svg { width: 0.9rem; height: 0.9rem; }
     .nb-prof__avatar-letter { font-size: 2.8rem; }
     .nb-prof__avatar-badge {
         right: -0.5rem; bottom: -0.5rem;
         width: 1.75rem; height: 1.75rem;
     }
     .nb-prof__avatar-badge svg { width: 0.95rem; height: 0.95rem; }
+    /* Room is too tight for the "Premium" label next to the name; the star
+       badge alone still conveys status. */
+    .nb-prof__premium-star { padding: 0.4em 0.6em; }
+    .nb-prof__premium-star-label { display: none; }
 }

@@ -36,6 +36,10 @@ test.describe('Profile streak chip', () => {
             await page.waitForSelector('[data-testid="profile-streak"]', { timeout: 15000 });
         });
 
+        test('shows the streak as a whole number of days', async ({ page }) => {
+            await expect(streak(page)).toHaveText(/^\d+$/);
+        });
+
         test('sits in the avatar column beside the face', async ({ page }) => {
             await expect(streak(page)).toBeVisible();
 
@@ -74,13 +78,14 @@ test.describe('Profile streak chip', () => {
             }
         });
 
-        // The chip carries no text, so the label is the only thing that states
-        // what the colour means.
+        // The colour is the only thing saying whether today counts, so the label
+        // has to spell that out alongside the number the chip already shows.
         test('describes its state to assistive technology', async ({ page }) => {
             const label = await streak(page).getAttribute('aria-label');
             const cls = (await streak(page).getAttribute('class')) ?? '';
 
-            expect(label).toBe(cls.includes('nb-prof__streak--lit') ? 'Practised today' : 'Not practised today');
+            expect(label).toMatch(/^\d+ days? streak, /);
+            expect(label).toContain(cls.includes('nb-prof__streak--lit') ? ', practised today' : ', not practised today');
         });
     });
 });
