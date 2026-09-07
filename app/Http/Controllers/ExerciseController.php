@@ -95,7 +95,12 @@ class ExerciseController extends Controller
      * correct answer never sends them back to a question they skipped. Once
      * nothing is left ahead of them, the scan restarts from the top of the
      * lesson to pick up those gaps — only when that also comes back empty is
-     * the lesson actually finished.
+     * the lesson actually finished and its pivot marked completed.
+     *
+     * That last write is a direct update rather than updateExistingPivot: the
+     * custom LearningPathLesson pivot makes Eloquent read the row back before
+     * writing it, and nothing observes that pivot for the extra read to be
+     * worth anything.
      */
     public function complete(Exercise $exercise)
     {
@@ -114,15 +119,11 @@ class ExerciseController extends Controller
             return redirect()->route('exercise.show', $incompleteId);
         }
 
-        // All exercises in the lesson are done — mark the lesson complete
         $learningPath = $user->learningPaths()
             ->whereHas('lessons', fn ($q) => $q->where('lessons.id', $lessonId))
             ->first();
 
         if ($learningPath) {
-            // A direct update, not updateExistingPivot: the custom LearningPathLesson
-            // pivot makes Eloquent read the row back before writing it, and nothing
-            // observes that pivot for the extra read to be worth anything.
             DB::table('learning_path_lesson')
                 ->where('learning_path_id', $learningPath->id)
                 ->where('lesson_id', $lessonId)
