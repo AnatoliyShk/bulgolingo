@@ -1,58 +1,46 @@
 <script setup>
 import '@/assets/scss/components/profile/edit.scss'
-import { Link } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
-import { usePage } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import TopBar from '@/Components/TopBar.vue'
 import DeleteUserForm from './Partials/DeleteUserForm.vue'
+import UpdateAvatarForm from './Partials/UpdateAvatarForm.vue'
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue'
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue'
-import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 defineProps({
     mustVerifyEmail: { type: Boolean },
     status: { type: String },
+    avatarUrl: { type: String, default: null },
 })
 
 const { theme } = useTheme()
-const page = usePage()
-const appName = computed(() => page.props.appName ?? 'BalkanBuddy')
 </script>
 
 <template>
-    <div class="pg" :class="theme">
-        <div class="pg__watermark" aria-hidden="true">Ъ</div>
+    <Head>
+        <link
+            href="https://fonts.bunny.net/css?family=unbounded:400,600,700,800,900|manrope:400,500,600,700,800&subset=cyrillic,latin&display=swap"
+            rel="stylesheet"
+        />
+    </Head>
 
-        <header class="bar">
-            <Link :href="route('dashboard')" class="bar__back" aria-label="Back to dashboard">
-                <svg class="bar__back-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </Link>
-            <span class="bar__mark">{{ appName }}</span>
-            <ThemeToggle />
-        </header>
+    <div class="nb-edit" :class="theme">
 
-        <main class="sheet">
-            <p class="eyebrow">
-                <span class="eyebrow__bg">Профил</span>
-                <span class="eyebrow__en">edit profile</span>
-            </p>
+        <TopBar />
 
-            <div class="cards">
-                <div class="card">
-                    <UpdateProfileInformationForm :must-verify-email="mustVerifyEmail" :status="status" />
-                </div>
+        <main class="nb-edit__main">
+            <header class="nb-edit__head">
+                <h1 class="nb-edit__title">Настройки</h1>
+                <span class="nb-edit__badge">settings</span>
+            </header>
 
-                <div class="card">
-                    <UpdatePasswordForm />
-                </div>
-
-                <div class="card card--danger">
-                    <DeleteUserForm />
-                </div>
+            <div class="nb-edit__cards">
+                <UpdateAvatarForm :avatar-url="avatarUrl" />
+                <UpdateProfileInformationForm :must-verify-email="mustVerifyEmail" :status="status" />
+                <UpdatePasswordForm />
+                <DeleteUserForm />
             </div>
         </main>
     </div>
 </template>
-

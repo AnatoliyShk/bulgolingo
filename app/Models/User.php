@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['name', 'email', 'password', 'is_admin', 'experience', 'type'])]
 #[Hidden(['password', 'remember_token'])]
@@ -89,6 +90,24 @@ class User extends Authenticatable
                 $this->getKey(),
             ]
         );
+    }
+
+    /**
+     * A signed link to this user's avatar, or null when they have not set one.
+     *
+     * Deliberately a method rather than an appended attribute: auth.user is
+     * shared into every Inertia response, and appending it would mint a signed
+     * URL on every request in the application to serve the two pages that
+     * actually draw a face. The null case short-circuits before the disk is
+     * touched at all.
+     */
+    public function avatarUrl(): ?string
+    {
+        if (! $this->avatar_path) {
+            return null;
+        }
+
+        return Storage::disk(Images::DISK)->temporaryUrl($this->avatar_path, now()->addHour());
     }
 
     public function isAdmin(): bool

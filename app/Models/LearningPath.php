@@ -2,16 +2,46 @@
 
 namespace App\Models;
 
+use App\Enums\LearningPathType;
+use Database\Factories\LearningPathFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[Fillable(['name', 'language'])]
+#[Fillable(['name', 'language', 'type'])]
 class LearningPath extends Model
 {
-    /** @use HasFactory<\Database\Factories\LearningPathFactory> */
+    /** @use HasFactory<LearningPathFactory> */
     use HasFactory;
+
+    protected function casts(): array
+    {
+        return [
+            'type' => LearningPathType::class,
+        ];
+    }
+
+    /**
+     * Narrows a path query to what the given viewer is allowed to see, null
+     * meaning a guest. Every listing a student can reach goes through this
+     * rather than filtering in PHP, so a type they cannot see is never loaded,
+     * counted, or paged over.
+     */
+    public function scopeVisibleTo(Builder $query, ?User $user): Builder
+    {
+        return $query->whereIn('type', LearningPathType::visibleTo($user));
+    }
+
+    /**
+     * The same rule for a path already in hand, for the routes that take one by
+     * id and must not serve a path its viewer could not have found.
+     */
+    public function isVisibleTo(?User $user): bool
+    {
+        return in_array($this->type->value, LearningPathType::visibleTo($user), true);
+    }
 
     public function users(): BelongsToMany
     {

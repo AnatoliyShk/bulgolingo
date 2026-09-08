@@ -84,5 +84,32 @@ test.describe('Stats page', () => {
         test('bar offers a way back to the dashboard', async ({ page }) => {
             await expect(page.getByRole('link', { name: 'Profile' })).toHaveAttribute('href', '/dashboard');
         });
+
+        test('leaderboard gives every entry a face', async ({ page }) => {
+            const rows = page.locator('.nb-stats__leaderboard-row');
+            test.skip((await rows.count()) === 0, 'no experience earned in this environment');
+
+            for (const row of await rows.all()) {
+                const tile = row.locator('.nb-stats__leaderboard-avatar');
+                await expect(tile).toBeVisible();
+
+                // Exactly one of the two states — a picture, or the fallback letter.
+                const picture = await tile.locator('.nb-stats__leaderboard-avatar-img').count();
+                const letter = (await tile.innerText()).trim().length > 0 ? 1 : 0;
+
+                expect(picture + letter).toBe(1);
+            }
+        });
+
+        test('leaderboard faces keep the row rhythm whatever they show', async ({ page }) => {
+            const tiles = page.locator('.nb-stats__leaderboard-avatar');
+            test.skip((await tiles.count()) === 0, 'no experience earned in this environment');
+
+            const boxes = await Promise.all((await tiles.all()).map((tile) => tile.boundingBox()));
+            const heights = boxes.map((box) => box?.height ?? 0);
+
+            expect(Math.max(...heights) - Math.min(...heights)).toBeLessThan(2);
+            expect(Math.min(...heights)).toBeGreaterThan(0);
+        });
     });
 });

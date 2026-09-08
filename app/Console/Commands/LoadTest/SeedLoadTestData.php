@@ -3,6 +3,7 @@
 namespace App\Console\Commands\LoadTest;
 
 use App\Enums\ExerciseType;
+use App\Enums\LearningPathType;
 use App\Enums\UserType;
 use App\Support\LoadTest\ActivityPlan;
 use App\Support\LoadTest\BulkWriter;
@@ -187,10 +188,12 @@ class SeedLoadTestData extends Command
         $now = now()->toDateTimeString();
         $prefix = RunManifest::NAME_PREFIX;
 
-        $this->writer->write('learning_paths', ['id', 'name', 'language', 'created_at', 'updated_at'],
+        $this->writer->write('learning_paths', ['id', 'name', 'language', 'type', 'created_at', 'updated_at'],
             (function () use ($paths, $pathStart, $now, $prefix): Generator {
+                $type = LearningPathType::Test->value;
+
                 for ($i = 0; $i < $paths; $i++) {
-                    yield [$pathStart + $i, $prefix.' Path '.($i + 1), 'bg', $now, $now];
+                    yield [$pathStart + $i, $prefix.' Path '.($i + 1), 'bg', $type, $now, $now];
                 }
             })());
 

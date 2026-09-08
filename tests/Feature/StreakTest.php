@@ -108,6 +108,8 @@ class StreakTest extends TestCase
      */
     public function test_practising_again_repairs_a_counter_left_at_zero(): void
     {
+        Carbon::setTestNow(Carbon::today()->setTime(12, 0));
+
         $user = User::factory()->create([
             'streak_counter' => 0,
             'latest_exercise_at' => Carbon::now()->subHours(3),
@@ -206,8 +208,15 @@ class StreakTest extends TestCase
         $this->assertSame(9, $other->fresh()->streak_counter);
     }
 
+    /**
+     * The clock is pinned to midday because the fixture is expressed as an
+     * offset back from now: run in the first hours of the day, "two hours ago"
+     * is yesterday, and the test would fail on nothing but the time it ran.
+     */
     public function test_the_profile_lights_the_flame_when_practice_happened_today(): void
     {
+        Carbon::setTestNow(Carbon::today()->setTime(12, 0));
+
         $user = User::factory()->create([
             'streak_counter' => 12,
             'latest_exercise_at' => Carbon::now()->subHours(2),

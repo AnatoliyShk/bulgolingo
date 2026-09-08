@@ -4,12 +4,15 @@ namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
+use App\Models\Images;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\Lexema;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
@@ -322,6 +325,42 @@ class StatsTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Stats/Show')
                 ->where('topUsers.0.isCurrentUser', true)
+            );
+    }
+
+    public function test_top_users_carry_an_avatar_url_when_they_have_one(): void
+    {
+        Storage::fake(Images::DISK);
+
+        $user = User::factory()->create(['name' => 'Leader', 'experience' => 999]);
+
+        $this->actingAs($user)->post(route('profile.avatar.update'), [
+            'avatar' => UploadedFile::fake()->image('face.jpg', 200, 200),
+        ]);
+
+        $this->actingAs($user->fresh())
+            ->get(route('stats.show'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('topUsers.0.name', 'Leader')
+                ->where('topUsers.0.avatarUrl', fn ($url) => is_string($url) && $url !== '')
+            );
+    }
+
+    /**
+     * The key has to survive into the entry as a null rather than be absent, or
+     * the row has nothing to switch its lettered fallback on.
+     */
+    public function test_top_users_without_an_avatar_carry_a_null_url(): void
+    {
+        $user = User::factory()->create(['name' => 'Leader', 'experience' => 999]);
+
+        $this->actingAs($user)
+            ->get(route('stats.show'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->has('topUsers.0.avatarUrl')
+                ->where('topUsers.0.avatarUrl', null)
             );
     }
 

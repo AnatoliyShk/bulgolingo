@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Profile\UpdateAvatarRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Images;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -39,6 +42,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Show', [
             'appName' => config('app.name'),
             'user' => $user,
+            'avatarUrl' => $user->avatarUrl(),
             'streakCounter' => (int) $user->streak_counter,
             'practisedToday' => (bool) $user->latest_exercise_at?->isToday(),
             'activeLearningPath' => $unfinished->first(),
@@ -55,6 +59,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'avatarUrl' => $request->user()->avatarUrl(),
         ]);
     }
 
@@ -93,5 +98,50 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Replaces the user's avatar, deleting whatever it replaced.
+     *
+     * The old object is removed rather than left behind, because nothing else
+     * ever refers to it once the column moves on: keeping it would grow the
+     * bucket by one orphan per change with no way to find them again. The
+     * delete runs after the upload succeeds, so a failed upload leaves the
+     * existing picture in place.
+     */
+    public function updateAvatar(UpdateAvatarRequest $request): RedirectResponse
+    {
+        $user = $request->user();
+        $previous = $user->avatar_path;
+
+        $path = $request->file('avatar')->store('avatars', Images::DISK);
+
+        $user->forceFill(['avatar_path' => $path])->save();
+
+        if ($previous) {
+            Storage::disk(Images::DISK)->delete($previous);
+        }
+
+        return Redirect::route('profile.edit')->with('status', 'avatar-updated');
+    }
+
+    /**
+     * Drops the avatar and the object behind it, returning the profile to its
+     * lettered tile. Doing nothing when there is none keeps a double submit from
+     * turning into an error the user cannot act on.
+     */
+    public function destroyAvatar(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if (! $user->avatar_path) {
+            return Redirect::route('profile.edit');
+        }
+
+        Storage::disk(Images::DISK)->delete($user->avatar_path);
+
+        $user->forceFill(['avatar_path' => null])->save();
+
+        return Redirect::route('profile.edit')->with('status', 'avatar-removed');
     }
 }

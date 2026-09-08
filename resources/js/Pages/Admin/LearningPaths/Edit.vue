@@ -9,11 +9,13 @@ const props = defineProps({
     learningPath: Object,
     lessons: Object,
     lessonSearch: String,
+    types: Array,
 });
 
 const form = useForm({
     name: props.learningPath.name,
     language: props.learningPath.language,
+    type: props.learningPath.type,
     lesson_ids: props.learningPath.lessons.map(l => l.id),
 });
 
@@ -88,6 +90,17 @@ function submit() {
                                 class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
                             />
                             <p v-if="form.errors.language" class="mt-1 text-xs text-red-500">{{ form.errors.language }}</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
+                            <select
+                                v-model="form.type"
+                                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                            >
+                                <option v-for="option in types" :key="option.value" :value="option.value">{{ option.label }}</option>
+                            </select>
+                            <p v-if="form.errors.type" class="mt-1 text-xs text-red-500">{{ form.errors.type }}</p>
                         </div>
 
                         <!-- Lessons picker -->

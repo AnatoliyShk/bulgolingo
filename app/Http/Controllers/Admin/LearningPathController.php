@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\LearningPathType;
 use App\Http\Controllers\Controller;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class LearningPathController extends Controller
@@ -24,7 +26,9 @@ class LearningPathController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/LearningPaths/Create');
+        return Inertia::render('Admin/LearningPaths/Create', [
+            'types' => LearningPathType::options(),
+        ]);
     }
 
     public function store(Request $request)
@@ -32,6 +36,7 @@ class LearningPathController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'language' => ['required', 'string', 'max:255'],
+            'type' => ['required', Rule::enum(LearningPathType::class)],
         ]);
 
         LearningPath::create($validated);
@@ -57,6 +62,7 @@ class LearningPathController extends Controller
                 ->paginate(self::PER_PAGE, ['id', 'name', 'description'], 'lesson_page')
                 ->withQueryString(),
             'lessonSearch' => $search,
+            'types' => LearningPathType::options(),
         ]);
     }
 
@@ -65,6 +71,7 @@ class LearningPathController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'language' => ['required', 'string', 'max:255'],
+            'type' => ['required', Rule::enum(LearningPathType::class)],
             'lesson_ids' => ['nullable', 'array'],
             'lesson_ids.*' => ['integer', 'exists:lessons,id'],
         ]);
@@ -72,6 +79,7 @@ class LearningPathController extends Controller
         $learningPath->update([
             'name' => $validated['name'],
             'language' => $validated['language'],
+            'type' => $validated['type'],
         ]);
 
         $learningPath->lessons()->sync($validated['lesson_ids'] ?? []);

@@ -42,6 +42,13 @@ const props = defineProps({
 
 const isDark = computed(() => theme.value === 'dark')
 
+// Stands in for a leaderboard entry with no picture, the same lettered tile the
+// profile falls back to.
+function leaderboardInitial(name) {
+    const trimmed = name?.trim() ?? ''
+    return trimmed ? Array.from(trimmed)[0].toUpperCase() : '?'
+}
+
 const rootEl = ref(null)
 
 // Exercise-type colors live only in show.scss (--activity-* custom
@@ -206,6 +213,15 @@ const kpis = computed(() => [
                         :class="{ 'nb-stats__leaderboard-row--me': entry.isCurrentUser }"
                     >
                         <span class="nb-stats__leaderboard-rank">{{ i + 1 }}</span>
+                        <span class="nb-stats__leaderboard-avatar">
+                            <img
+                                v-if="entry.avatarUrl"
+                                class="nb-stats__leaderboard-avatar-img"
+                                :src="entry.avatarUrl"
+                                :alt="`${entry.name} avatar`"
+                            />
+                            <span v-else aria-hidden="true">{{ leaderboardInitial(entry.name) }}</span>
+                        </span>
                         <span class="nb-stats__leaderboard-name">{{ entry.name }}</span>
                         <span class="nb-stats__leaderboard-xp">{{ entry.experience }} XP</span>
                     </li>

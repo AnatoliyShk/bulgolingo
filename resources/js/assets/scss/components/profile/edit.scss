@@ -1,132 +1,256 @@
-.pg {
-    position: relative;
-    min-height: 100vh;
-    overflow-x: hidden;
-    font-family: 'PT Sans', sans-serif;
+/* ══════════════ Tokens (mirrors .nb-prof) ══════════════ */
+.nb-edit {
+    --ink:       #14110b;
+    --bg:        #f1e9d6;
+    --paper:     #fffaf0;
+    --on-accent: #14110b;
+
+    --cyan:   #b388ff;
+    --pink:   #ff6ba3;
+    --blue:   #5b8def;
+    --green:  #46d39a;
+    --orange: #ff8a47;
+    --purple: #8c5cf5;
+
+    --flag-red:   #d62612;
+    --flag-green: #00966e;
+    --ash:        #b9b2a6;
+
+    --border:    3px solid var(--ink);
+    --shadow:    6px 6px 0 0 var(--ink);
+    --shadow-sm: 4px 4px 0 0 var(--ink);
+    --radius:    12px;
+
+    font-family: 'Manrope', system-ui, sans-serif;
     background: var(--bg);
     color: var(--ink);
-    transition: background .3s ease, color .3s ease;
-}
-
-.pg.light {
-    --bg: #fbf6ec;
-    --surface: #ffffff;
-    --ink: #2b231b;
-    --muted: #8a7a66;
-    --rose: #b3273e;
-    --gold: #b9862e;
-    --border: rgba(43, 35, 27, .12);
-    --danger-border: rgba(179, 39, 62, .25);
-}
-
-.pg.dark {
-    --bg: #1b1712;
-    --surface: #27201a;
-    --ink: #f3e9d8;
-    --muted: #a4937c;
-    --rose: #e2697b;
-    --gold: #e0b45a;
-    --border: rgba(243, 233, 216, .1);
-    --danger-border: rgba(226, 105, 123, .25);
-}
-
-.pg__watermark {
-    position: fixed;
-    top: 50%;
-    right: -8vw;
-    transform: translateY(-50%);
-    font-family: 'PT Serif', serif;
-    font-weight: 700;
-    font-size: min(70vw, 60rem);
-    line-height: 1;
-    color: var(--ink);
-    opacity: .03;
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
-}
-
-.bar {
+    min-height: 100vh;
     position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 42rem;
-    margin: 0 auto;
-    padding: 1.5rem 1.5rem 0;
+    overflow-x: hidden;
+    background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+    background-position: -11px -11px;
+}
+.nb-edit * { box-sizing: border-box; }
+
+.nb-edit.dark {
+    --ink:   #f4ead6;
+    --bg:    #17140f;
+    --paper: #221d16;
+    --ash:   #4a443b;
+    background-image: radial-gradient(rgba(244,234,214,0.10) 1.2px, transparent 1.2px);
+}
+.nb-edit ::selection { background: var(--pink); color: var(--ink); }
+
+/* ══════════════ Sheet ══════════════ */
+.nb-edit__main {
+    max-width: 720px; margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) 1.5rem clamp(3rem, 7vw, 5rem);
+    display: flex; flex-direction: column; gap: 2rem;
+}
+.nb-edit__head {
+    display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap;
+}
+.nb-edit__title {
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: clamp(1.3rem, 4vw, 1.9rem); letter-spacing: -0.02em; margin: 0;
+}
+.nb-edit__badge {
+    font-weight: 800; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3em 0.75em;
+    background: var(--ink); color: var(--bg);
+    border-radius: 999px; border: var(--border);
 }
 
-.bar__back {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    color: var(--muted);
-    transition: color .2s ease, border-color .2s ease;
-}
-.bar__back:hover { color: var(--rose); }
-.bar__back-icon  { width: 1.1rem; height: 1.1rem; }
+/* ══════════════ Cards ══════════════ */
+.nb-edit__cards { display: flex; flex-direction: column; gap: 1.5rem; }
 
-.bar__mark {
-    font-family: 'PT Serif', serif;
-    font-weight: 700;
-    font-size: .8rem;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: var(--muted);
+.nb-edit__card {
+    background: var(--paper);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: clamp(1.25rem, 4vw, 1.85rem);
+    display: flex; flex-direction: column; gap: 1.25rem;
 }
 
-.sheet {
+/*
+ * The danger card keeps the same ink border as its neighbours — the weight is
+ * the page's whole visual language, and thinning it there would read as less
+ * important rather than more. The warning is carried by the red tag and the red
+ * button instead, which is where the irreversible action actually is.
+ */
+.nb-edit__card--danger .nb-edit__card-tag { background: var(--flag-red); color: #fff; }
+
+.nb-edit__card-head { display: flex; flex-direction: column; gap: 0.5rem; }
+.nb-edit__card-tag {
+    align-self: flex-start;
+    font-weight: 800; font-size: 0.63rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.32em 0.7em;
+    color: var(--on-accent);
+    border: var(--border); border-radius: 999px;
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+.nb-edit__card-tag--blue   { background: var(--blue); }
+.nb-edit__card-tag--purple { background: var(--purple); }
+.nb-edit__card-tag--pink   { background: var(--pink); }
+.nb-edit__card-title {
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: 1.05rem; letter-spacing: -0.01em; margin: 0;
+}
+.nb-edit__card-desc { margin: 0; font-size: 0.88rem; line-height: 1.5; opacity: 0.75; }
+
+/* ══════════════ Avatar ══════════════ */
+.nb-edit__avatar-row { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+.nb-edit__avatar {
+    flex-shrink: 0;
     position: relative;
-    z-index: 1;
-    max-width: 42rem;
-    margin: 0 auto;
-    padding: 2.75rem 1.5rem 4rem;
+    width: 5.5rem; height: 5.5rem;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--pink); color: var(--on-accent);
+    border: var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+.nb-edit__avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nb-edit__avatar-letter {
+    font-family: 'Unbounded', sans-serif; font-weight: 900;
+    font-size: 2.6rem; line-height: 1;
+}
+.nb-edit__avatar-controls {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;
+    min-width: 0;
+}
+/*
+ * The native control is taken out of the layout rather than hidden outright:
+ * display:none would drop it from the tab order, and the styled label is the
+ * only way in for anyone driving the page from the keyboard.
+ */
+.nb-edit__file {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    overflow: hidden; white-space: nowrap;
+    clip-path: inset(50%);
+}
+label.nb-edit__btn { display: inline-block; }
+
+/*
+ * The label sits before the input in the markup, so the focus ring is drawn by
+ * matching the group rather than a sibling: keyboard focus lands on the hidden
+ * control, and this is what makes that visible on the button standing in for it.
+ */
+.nb-edit__avatar-controls:has(.nb-edit__file:focus-visible) label.nb-edit__btn {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+}
+.nb-edit__filename {
+    margin: 0; font-size: 0.8rem; font-weight: 700;
+    max-width: 100%; overflow-wrap: anywhere; opacity: 0.75;
 }
 
-.eyebrow {
-    display: flex;
-    align-items: baseline;
-    gap: .5em;
-    margin: 0 0 1.75rem;
-}
-.eyebrow__bg {
-    font-family: 'PT Serif', serif;
-    font-weight: 700;
-    font-size: .8rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--rose);
-}
-.eyebrow__en {
-    font-size: .72rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--muted);
-}
-.eyebrow__en::before { content: '· '; }
-
-.cards {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+/* ══════════════ Form ══════════════ */
+.nb-edit__form { display: flex; flex-direction: column; gap: 1.15rem; }
+.nb-edit__field { display: flex; flex-direction: column; gap: 0.4rem; }
+.nb-edit__label {
+    font-weight: 800; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
 }
 
-.card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: .85rem;
-    padding: 1.75rem;
+/*
+ * Qualified by the element as well as the block so it outranks PasswordInput's
+ * own `.pw-field .pw-field__input`, which lands on the same element with equal
+ * class weight; left to tie, whichever stylesheet the bundler happened to emit
+ * last would decide how the password fields look.
+ */
+.nb-edit input.nb-edit__input {
+    width: 100%;
+    font-family: 'Manrope', sans-serif; font-size: 0.95rem; font-weight: 600;
+    color: var(--ink); background: var(--paper);
+    padding: 0.65rem 0.85rem;
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-edit input.nb-edit__input:focus {
+    outline: none;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--ink);
+}
+.nb-edit input.nb-edit__input::placeholder { color: var(--ink); opacity: 0.45; }
+
+.nb-edit__error {
+    margin: 0; font-size: 0.8rem; font-weight: 700;
+    color: var(--flag-red);
+}
+.nb-edit.dark .nb-edit__error { color: #ff8b7a; }
+
+.nb-edit__note {
+    margin: 0; font-size: 0.85rem; line-height: 1.5;
+    padding: 0.75rem 0.9rem;
+    background: var(--bg);
+    border: var(--border); border-radius: 10px;
+}
+.nb-edit__note-link {
+    font-weight: 800; color: inherit; text-underline-offset: 3px;
+}
+.nb-edit__note-sent { margin: 0.5rem 0 0; font-weight: 800; color: var(--flag-green); }
+
+.nb-edit__actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.nb-edit__saved { margin: 0; font-weight: 800; font-size: 0.85rem; }
+
+/* ══════════════ Buttons ══════════════ */
+.nb-edit__btn {
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.9rem;
+    cursor: pointer; text-decoration: none;
+    color: var(--on-accent); background: var(--green);
+    padding: 0.65rem 1.5rem;
+    border: var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.nb-edit__btn:hover:not(:disabled) { transform: translate(2px, 2px); box-shadow: 2px 2px 0 0 var(--ink); }
+.nb-edit__btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.nb-edit__btn--danger { background: var(--flag-red); color: #fff; }
+.nb-edit__btn--ghost  { background: var(--paper); color: var(--ink); }
+
+/* ══════════════ Delete confirmation ══════════════ */
+.nb-edit__modal {
+    background: var(--paper); color: var(--ink);
+    padding: clamp(1.25rem, 4vw, 1.75rem);
+    display: flex; flex-direction: column; gap: 1rem;
+    border-top: 10px solid var(--flag-red);
+}
+.nb-edit__modal-title {
+    font-family: 'Unbounded', sans-serif; font-weight: 800;
+    font-size: 1.05rem; margin: 0;
+}
+.nb-edit__modal-desc { margin: 0; font-size: 0.88rem; line-height: 1.5; opacity: 0.8; }
+.nb-edit__modal-actions { display: flex; justify-content: flex-end; gap: 0.75rem; flex-wrap: wrap; }
+
+/*
+ * The cards spring in staggered down the page so the sheet assembles in reading
+ * order, the same entrance the profile uses.
+ */
+.nb-edit__head  { animation: nb-edit-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.nb-edit__card  { animation: nb-edit-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.nb-edit__card:nth-of-type(1) { animation-delay: 0.1s; }
+.nb-edit__card:nth-of-type(2) { animation-delay: 0.18s; }
+.nb-edit__card:nth-of-type(3) { animation-delay: 0.26s; }
+
+@keyframes nb-edit-pop {
+    from { opacity: 0; scale: 0.65; }
+    to   { opacity: 1; scale: 1; }
 }
 
-.card--danger {
-    border-color: var(--danger-border);
+@media (prefers-reduced-motion: reduce) {
+    .nb-edit__head,
+    .nb-edit__card { animation: none; }
+    .nb-edit input.nb-edit__input,
+    .nb-edit__btn { transition: none; }
 }
 
-.bar__back:focus-visible {
-    outline: 2px solid var(--rose);
-    outline-offset: 2px;
+@media (max-width: 560px) {
+    .nb-edit__main { gap: 1.5rem; }
+    .nb-edit__cards { gap: 1.15rem; }
+    .nb-edit__actions { gap: 0.75rem; }
+    .nb-edit__btn { width: 100%; text-align: center; }
 }

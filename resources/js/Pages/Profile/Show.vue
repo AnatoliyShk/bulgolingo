@@ -21,6 +21,10 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    avatarUrl: {
+        type: String,
+        default: null,
+    },
     streakCounter: {
         type: Number,
         default: 0,
@@ -82,7 +86,13 @@ const isPremium = computed(() => props.user?.type === 'premium')
             <section class="nb-prof__hero">
                 <div class="nb-prof__avatar-col">
                     <div class="nb-prof__avatar">
-                        <span class="nb-prof__avatar-letter">{{ initial }}</span>
+                        <img
+                            v-if="avatarUrl"
+                            class="nb-prof__avatar-img"
+                            :src="avatarUrl"
+                            :alt="`${user.name} avatar`"
+                        />
+                        <span v-else class="nb-prof__avatar-letter">{{ initial }}</span>
                         <span
                             class="nb-prof__avatar-badge"
                             :class="isVerified ? 'nb-prof__avatar-badge--verified' : 'nb-prof__avatar-badge--unverified'"

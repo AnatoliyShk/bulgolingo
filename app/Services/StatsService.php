@@ -32,7 +32,13 @@ class StatsService
     }
 
     /**
-     * @return array<int, array{id: int, name: string, experience: int, isCurrentUser: bool}>
+     * avatar_path has to be selected for avatarUrl() to find it — the accessor
+     * reads the column, so a narrowed select would silently leave every face
+     * blank rather than fail. Signing five links costs five local HMACs and no
+     * round trip, which is what makes it affordable to do per render for a list
+     * this short.
+     *
+     * @return array<int, array{id: int, name: string, experience: int, avatarUrl: string|null, isCurrentUser: bool}>
      */
     private function topUsersByExperience(User $user): array
     {
@@ -41,11 +47,12 @@ class StatsService
             ->orderByDesc('experience')
             ->orderBy('id')
             ->limit(5)
-            ->get(['id', 'name', 'experience'])
+            ->get(['id', 'name', 'experience', 'avatar_path'])
             ->map(fn (User $topUser) => [
                 'id' => $topUser->id,
                 'name' => $topUser->name,
                 'experience' => $topUser->experience,
+                'avatarUrl' => $topUser->avatarUrl(),
                 'isCurrentUser' => $topUser->id === $user->id,
             ])
             ->toArray();

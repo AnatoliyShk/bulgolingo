@@ -172,6 +172,25 @@
     border-radius: 999px;
     font-variant-numeric: tabular-nums;
 }
+/*
+ * The face sits between the rank and the name at the row's own height, so the
+ * list keeps one rhythm whether an entry has a picture or falls back to its
+ * letter. Both states carry the same border and radius, which is what stops a
+ * missing avatar from reading as a hole in the row.
+ */
+.nb-stats__leaderboard-avatar {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    width: 2.25rem; height: 2.25rem;
+    overflow: hidden;
+    font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 0.95rem;
+    background: var(--pink); color: var(--on-accent);
+    border: var(--border); border-radius: 10px;
+}
+.nb-stats__leaderboard-avatar-img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+}
 .nb-stats__leaderboard-name {
     flex: 1;
     font-weight: 700; font-size: 1rem;

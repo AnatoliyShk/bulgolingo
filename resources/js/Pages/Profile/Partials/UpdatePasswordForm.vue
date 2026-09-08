@@ -1,25 +1,16 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PasswordInput from '@/Components/PasswordInput.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import PasswordInput from '@/Components/PasswordInput.vue'
+import { useForm } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
-const passwordInput = ref(null);
-const currentPasswordInput = ref(null);
-
-// Mirrors the Breeze TextInput styling so the field looks unchanged.
-const passwordInputClass =
-    'mt-1 block w-full rounded-md border-gray-300 shadow-sm ' +
-    'focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 ' +
-    'dark:text-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600';
+const passwordInput = ref(null)
+const currentPasswordInput = ref(null)
 
 const form = useForm({
     current_password: '',
     password: '',
     password_confirmation: '',
-});
+})
 
 const updatePassword = () => {
     form.put(route('password.update'), {
@@ -27,84 +18,70 @@ const updatePassword = () => {
         onSuccess: () => form.reset(),
         onError: () => {
             if (form.errors.password) {
-                form.reset('password', 'password_confirmation');
-                passwordInput.value.focus();
+                form.reset('password', 'password_confirmation')
+                passwordInput.value.focus()
             }
             if (form.errors.current_password) {
-                form.reset('current_password');
-                currentPasswordInput.value.focus();
+                form.reset('current_password')
+                currentPasswordInput.value.focus()
             }
         },
-    });
-};
+    })
+}
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                Update Password
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Ensure your account is using a long, random password to stay
-                secure.
+    <section class="nb-edit__card">
+        <header class="nb-edit__card-head">
+            <span class="nb-edit__card-tag nb-edit__card-tag--purple">Парола</span>
+            <h2 class="nb-edit__card-title">Update Password</h2>
+            <p class="nb-edit__card-desc">
+                Ensure your account is using a long, random password to stay secure.
             </p>
         </header>
 
-        <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="current_password" value="Current Password" />
-
+        <form class="nb-edit__form" @submit.prevent="updatePassword">
+            <div class="nb-edit__field">
+                <label class="nb-edit__label" for="current_password">Current Password</label>
                 <PasswordInput
                     id="current_password"
                     ref="currentPasswordInput"
                     v-model="form.current_password"
-                    :input-class="passwordInputClass"
+                    input-class="nb-edit__input"
                     autocomplete="current-password"
                 />
-
-                <InputError
-                    :message="form.errors.current_password"
-                    class="mt-2"
-                />
+                <p v-if="form.errors.current_password" class="nb-edit__error">
+                    {{ form.errors.current_password }}
+                </p>
             </div>
 
-            <div>
-                <InputLabel for="password" value="New Password" />
-
+            <div class="nb-edit__field">
+                <label class="nb-edit__label" for="password">New Password</label>
                 <PasswordInput
                     id="password"
                     ref="passwordInput"
                     v-model="form.password"
-                    :input-class="passwordInputClass"
+                    input-class="nb-edit__input"
                     autocomplete="new-password"
                 />
-
-                <InputError :message="form.errors.password" class="mt-2" />
+                <p v-if="form.errors.password" class="nb-edit__error">{{ form.errors.password }}</p>
             </div>
 
-            <div>
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
+            <div class="nb-edit__field">
+                <label class="nb-edit__label" for="password_confirmation">Confirm Password</label>
                 <PasswordInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
-                    :input-class="passwordInputClass"
+                    input-class="nb-edit__input"
                     autocomplete="new-password"
                 />
-
-                <InputError
-                    :message="form.errors.password_confirmation"
-                    class="mt-2"
-                />
+                <p v-if="form.errors.password_confirmation" class="nb-edit__error">
+                    {{ form.errors.password_confirmation }}
+                </p>
             </div>
 
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+            <div class="nb-edit__actions">
+                <button type="submit" class="nb-edit__btn" :disabled="form.processing">Save</button>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
@@ -112,12 +89,7 @@ const updatePassword = () => {
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600 dark:text-gray-400"
-                    >
-                        Saved.
-                    </p>
+                    <p v-if="form.recentlySuccessful" class="nb-edit__saved">Saved.</p>
                 </Transition>
             </div>
         </form>

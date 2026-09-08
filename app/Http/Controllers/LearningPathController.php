@@ -17,6 +17,10 @@ class LearningPathController extends Controller
      * The user's own paths head the page under their own progress headings, so
      * the catalog below drops them: a path already in progress would otherwise
      * appear twice on one screen, the second time offering to start it again.
+     *
+     * What is left is narrowed to the types this viewer may see, so the tier
+     * they have not paid for and the load-test tooling's generated paths are
+     * both absent rather than merely unstartable.
      */
     public function index(Request $request)
     {
@@ -24,7 +28,9 @@ class LearningPathController extends Controller
         $userPaths = $user ? $user->enrolledPathsWithProgress() : collect();
         $enrolledIds = $userPaths->pluck('id')->all();
 
-        $paths = LearningPath::whereNotIn('id', $enrolledIds)->get(['id', 'name', 'language']);
+        $paths = LearningPath::visibleTo($user)
+            ->whereNotIn('id', $enrolledIds)
+            ->get(['id', 'name', 'language', 'type']);
 
         $types = DB::table('learning_path_lesson as lpl')
             ->join('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
@@ -39,6 +45,7 @@ class LearningPathController extends Controller
             'id' => $path->id,
             'name' => $path->name,
             'language' => $path->language,
+            'type' => $path->type->value,
             'exercise_types' => $types->get($path->id) ?? collect(),
         ]);
 
@@ -49,8 +56,14 @@ class LearningPathController extends Controller
         ]);
     }
 
+    /**
+     * Enrolling is guarded by the same rule as the catalog it is reached from,
+     * so a path a viewer cannot see cannot be joined by posting its id either.
+     */
     public function start(Request $request, LearningPath $learningPath)
     {
+        abort_unless($learningPath->isVisibleTo($request->user()), 404);
+
         $request->user()->learningPaths()->syncWithoutDetaching([$learningPath->id]);
 
         return redirect()->route('learning-paths.show', $learningPath);
@@ -81,8 +94,14 @@ class LearningPathController extends Controller
         return $this->enrolled($request);
     }
 
-    public function show(LearningPath $learningPath)
+    /**
+     * A path hidden from this viewer is a 404 rather than a 403: telling them
+     * the id exists is itself more than the catalog was willing to show.
+     */
+    public function show(Request $request, LearningPath $learningPath)
     {
+        abort_unless($learningPath->isVisibleTo($request->user()), 404);
+
         return Inertia::render('LearnPath/Show', [
             'learningPath' => $learningPath,
             'lessons' => $learningPath->lessons,
@@ -96,6 +115,8 @@ class LearningPathController extends Controller
      */
     public function restart(Request $request, LearningPath $learningPath)
     {
+        abort_unless($learningPath->isVisibleTo($request->user()), 404);
+
         $lessonIds = $learningPath->lessons()->pluck('lessons.id');
 
         $exerciseIds = DB::table('exercise_lesson')
