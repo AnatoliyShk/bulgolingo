@@ -26,5 +26,5 @@ test('user can login', async ({page}) => {
 
     await page.click('button[type=submit]');
 
-    await expect(page).toHaveURL('http://localhost/dashboard');
+    await expect(page).toHaveURL('http://localhost/profile');
 })

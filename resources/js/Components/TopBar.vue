@@ -31,7 +31,7 @@ const logout = () => {
 const links = computed(() => isAuthenticated.value
     ? [
         { label: 'Learning paths', href: '/learning-paths' },
-        { label: 'Profile', href: '/dashboard' },
+        { label: 'Profile', href: '/profile' },
         { label: 'Stats', href: '/stats' },
         ...(isAdmin.value ? [{ label: 'Admin', href: '/admin' }] : []),
     ]

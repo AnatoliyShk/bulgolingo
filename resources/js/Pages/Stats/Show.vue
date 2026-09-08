@@ -1,7 +1,7 @@
 <script setup>
 import '@/assets/scss/components/stats/show.scss'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { Head } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import { VueUiWordCloud, VueUiDonutEvolution } from 'vue-data-ui'
 import 'vue-data-ui/style.css'
@@ -222,7 +222,13 @@ const kpis = computed(() => [
                             />
                             <span v-else aria-hidden="true">{{ leaderboardInitial(entry.name) }}</span>
                         </span>
-                        <span class="nb-stats__leaderboard-name">{{ entry.name }}</span>
+                        <span class="nb-stats__leaderboard-who">
+                            <span class="nb-stats__leaderboard-name">{{ entry.name }}</span>
+                            <Link
+                                :href="route('profile.public', entry.id)"
+                                class="nb-stats__leaderboard-link"
+                            >View profile</Link>
+                        </span>
                         <span class="nb-stats__leaderboard-xp">{{ entry.experience }} XP</span>
                     </li>
                 </ol>

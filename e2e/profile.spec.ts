@@ -31,7 +31,7 @@ test.describe('Profile / dashboard page', () => {
         });
 
         test('avatar carries a verified badge for a confirmed email', async ({ page }) => {
-            await page.goto(`${BASE}/dashboard`);
+            await page.goto(`${BASE}/profile`);
 
             const badge = page.locator('.nb-prof__avatar .nb-prof__avatar-badge');
 
@@ -44,7 +44,7 @@ test.describe('Profile / dashboard page', () => {
         });
 
         test('verified badge survives a theme switch', async ({ page }) => {
-            await page.goto(`${BASE}/dashboard`);
+            await page.goto(`${BASE}/profile`);
 
             const badge = page.locator('.nb-prof__avatar-badge');
             await expect(badge).toBeVisible();
@@ -68,7 +68,7 @@ test.describe('Profile / dashboard page', () => {
         });
 
         test('avatar carries an unverified badge', async ({ page }) => {
-            await page.goto(`${BASE}/dashboard`);
+            await page.goto(`${BASE}/profile`);
 
             const badge = page.locator('.nb-prof__avatar .nb-prof__avatar-badge');
 

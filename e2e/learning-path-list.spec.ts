@@ -49,7 +49,7 @@ test.describe('Enrolled / finished learning path lists', () => {
         });
 
         test('dashboard links to both lists when an active path is shown', async ({ page }) => {
-            await page.goto(`${BASE}/dashboard`);
+            await page.goto(`${BASE}/profile`);
 
             const enrolledLink = page.getByRole('link', { name: /All enrolled/ });
             test.skip(!(await enrolledLink.isVisible().catch(() => false)), 'no active learning path on the dashboard in this environment');
@@ -57,7 +57,7 @@ test.describe('Enrolled / finished learning path lists', () => {
             await enrolledLink.click();
             await expect(page).toHaveURL(`${BASE}/learning-paths/enrolled`);
 
-            await page.goto(`${BASE}/dashboard`);
+            await page.goto(`${BASE}/profile`);
             await page.getByRole('link', { name: /All finished/ }).click();
             await expect(page).toHaveURL(`${BASE}/learning-paths/finished`);
         });

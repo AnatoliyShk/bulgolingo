@@ -22,7 +22,7 @@ const avatar = (page: Page) => page.locator('.nb-prof__avatar');
 
 test.describe('Profile streak chip', () => {
     test('redirects guests to the login page', async ({ page }) => {
-        await page.goto(`${BASE}/dashboard`);
+        await page.goto(`${BASE}/profile`);
         await expect(page).toHaveURL(`${BASE}/login`);
     });
 
@@ -32,7 +32,7 @@ test.describe('Profile streak chip', () => {
         test.beforeEach(async ({ page }) => {
             test.skip(!(await login(page)), 'seeded test user is unavailable in this environment');
 
-            await page.goto(`${BASE}/dashboard`);
+            await page.goto(`${BASE}/profile`);
             await page.waitForSelector('[data-testid="profile-streak"]', { timeout: 15000 });
         });
 

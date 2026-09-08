@@ -45,7 +45,7 @@ Route::get('/', function (Request $request) {
     ]);
 });
 
-Route::get('/dashboard', [ProfileController::class, 'show'])
+Route::get('/profile', [ProfileController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -77,12 +77,21 @@ Route::get('/stats', [StatsController::class, 'show'])
     ->name('stats.show');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
     Route::delete('/profile/avatar', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
 });
+
+/*
+ * Anyone's profile by id, with the owner-only blocks left off. Constrained to
+ * digits so it cannot swallow /profile/edit or /profile/avatar, whatever order
+ * the routes happen to be registered in.
+ */
+Route::get('/profile/{user}', [ProfileController::class, 'publicShow'])
+    ->whereNumber('user')
+    ->name('profile.public');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => Inertia::render('Admin/Index'))->name('index');

@@ -9,7 +9,7 @@ const EMAIL = process.env.E2E_USER_EMAIL ?? 'test@example.com';
 const PASSWORD = process.env.E2E_USER_PASSWORD ?? 'password';
 
 const GUEST_PAGES = ['/', '/login', '/register', '/forgot-password'];
-const MEMBER_PAGES = ['/dashboard', '/profile', '/stats', '/learning-paths'];
+const MEMBER_PAGES = ['/profile', '/profile/edit', '/stats', '/learning-paths'];
 
 // Logs in through the UI; returns false when the seeded user is unavailable
 // so callers can skip instead of failing on fixture-less environments.

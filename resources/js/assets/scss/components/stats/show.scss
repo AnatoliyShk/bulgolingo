@@ -191,11 +191,26 @@
     width: 100%; height: 100%;
     object-fit: cover; display: block;
 }
+/*
+ * Name over link, taking the flex slot the name used to hold, so a long name
+ * still truncates rather than pushing the XP off the row.
+ */
+.nb-stats__leaderboard-who {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column; gap: 0.1rem;
+}
 .nb-stats__leaderboard-name {
-    flex: 1;
     font-weight: 700; font-size: 1rem;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
+.nb-stats__leaderboard-link {
+    align-self: flex-start;
+    font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: inherit; opacity: 0.65;
+    text-decoration: underline; text-underline-offset: 3px;
+}
+.nb-stats__leaderboard-link:hover { opacity: 1; }
 .nb-stats__leaderboard-xp {
     flex-shrink: 0;
     font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 0.9rem;

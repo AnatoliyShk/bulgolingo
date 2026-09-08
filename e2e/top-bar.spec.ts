@@ -10,7 +10,7 @@ const PASSWORD = process.env.E2E_USER_PASSWORD ?? 'password';
 
 // Every page that carries the shared bar, split by who can reach it.
 const GUEST_PAGES = ['/', '/learning-paths'];
-const MEMBER_PAGES = ['/', '/learning-paths', '/dashboard', '/stats'];
+const MEMBER_PAGES = ['/', '/learning-paths', '/profile', '/stats'];
 
 // Logs in through the UI; returns false when the seeded user is unavailable
 // so callers can skip instead of failing on fixture-less environments.
@@ -129,7 +129,7 @@ test.describe('Shared top bar', () => {
 
         test('collapses behind a hamburger on a narrow viewport', async ({ page }) => {
             await page.setViewportSize({ width: 375, height: 800 });
-            await page.goto(`${BASE}/dashboard`);
+            await page.goto(`${BASE}/profile`);
 
             const hamburger = page.locator('.nb-topbar__hamburger');
             const links = page.locator('.nb-topbar__links');

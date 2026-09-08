@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Profile\UpdateAvatarRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Images;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -48,6 +49,31 @@ class ProfileController extends Controller
             'activeLearningPath' => $unfinished->first(),
             'enrolledCount' => $unfinished->count(),
             'finishedCount' => $paths->where('is_finished', true)->count(),
+            'isPublic' => false,
+        ]);
+    }
+
+    /**
+     * Anyone's profile, as it looks to someone who is not its owner.
+     *
+     * The same page component as show(), minus the props the owner-only blocks
+     * are keyed on — passing none of them is what removes the learning paths,
+     * the stats link and the settings button, rather than a second copy of the
+     * identity markup that would then have to be kept in step with this one.
+     *
+     * The email is left out on purpose: it is the one thing in the identity
+     * block that is nobody else's business, and this route is reachable without
+     * logging in.
+     */
+    public function publicShow(User $user): Response
+    {
+        return Inertia::render('Profile/Show', [
+            'appName' => config('app.name'),
+            'user' => $user->only(['id', 'name', 'type', 'created_at']),
+            'avatarUrl' => $user->avatarUrl(),
+            'streakCounter' => (int) $user->streak_counter,
+            'practisedToday' => (bool) $user->latest_exercise_at?->isToday(),
+            'isPublic' => true,
         ]);
     }
 

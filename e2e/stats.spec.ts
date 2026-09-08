@@ -82,7 +82,7 @@ test.describe('Stats page', () => {
         });
 
         test('bar offers a way back to the dashboard', async ({ page }) => {
-            await expect(page.getByRole('link', { name: 'Profile' })).toHaveAttribute('href', '/dashboard');
+            await expect(page.getByRole('link', { name: 'Profile' })).toHaveAttribute('href', '/profile');
         });
 
         test('leaderboard gives every entry a face', async ({ page }) => {

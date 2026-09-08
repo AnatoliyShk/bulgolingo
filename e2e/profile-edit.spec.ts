@@ -23,7 +23,7 @@ const dangerCard = (page: Page) => page.locator('.nb-edit__card--danger');
 
 test.describe('Profile edit page', () => {
     test('redirects guests to the login page', async ({ page }) => {
-        await page.goto(`${BASE}/profile`);
+        await page.goto(`${BASE}/profile/edit`);
         await expect(page).toHaveURL(`${BASE}/login`);
     });
 
@@ -33,7 +33,7 @@ test.describe('Profile edit page', () => {
         test.beforeEach(async ({ page }) => {
             test.skip(!(await login(page)), 'seeded test user is unavailable in this environment');
 
-            await page.goto(`${BASE}/profile`);
+            await page.goto(`${BASE}/profile/edit`);
             await page.waitForSelector('.nb-edit__card', { timeout: 15000 });
         });
 
