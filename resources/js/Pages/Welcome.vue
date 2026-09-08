@@ -41,6 +41,8 @@ const steps = computed(() => [
 ])
 
 // Marquee vocabulary — repeated twice in the template for a seamless loop.
+// A long list keeps the repeat from being noticeable; duration below scales
+// with its length so the scroll speed per word stays constant.
 const ticker = [
     { bg: 'Здравей', en: 'hello' },
     { bg: 'Благодаря', en: 'thank you' },
@@ -50,7 +52,31 @@ const ticker = [
     { bg: 'Обичам', en: 'I love' },
     { bg: 'Хляб', en: 'bread' },
     { bg: 'Мляко', en: 'milk' },
+    { bg: 'Добро утро', en: 'good morning' },
+    { bg: 'Довиждане', en: 'goodbye' },
+    { bg: 'Моля', en: 'please' },
+    { bg: 'Извинете', en: 'excuse me' },
+    { bg: 'Семейство', en: 'family' },
+    { bg: 'Слънце', en: 'sun' },
+    { bg: 'Море', en: 'sea' },
+    { bg: 'Планина', en: 'mountain' },
+    { bg: 'Кафе', en: 'coffee' },
+    { bg: 'Вкусно', en: 'delicious' },
+    { bg: 'Училище', en: 'school' },
+    { bg: 'Работа', en: 'work' },
+    { bg: 'Град', en: 'city' },
+    { bg: 'Село', en: 'village' },
+    { bg: 'Пари', en: 'money' },
+    { bg: 'Време', en: 'time / weather' },
+    { bg: 'Ден', en: 'day' },
+    { bg: 'Нощ', en: 'night' },
+    { bg: 'Дом', en: 'home' },
+    { bg: 'Пътуване', en: 'travel' },
+    { bg: 'Музика', en: 'music' },
+    { bg: 'Радост', en: 'joy' },
 ]
+
+const tickerDurationSeconds = computed(() => ticker.length * 3.5)
 
 // Cultural motifs — click a doodle to read about it (English info)
 const info = {
@@ -149,7 +175,7 @@ onBeforeUnmount(() => {
 
             <!-- ── Marquee ── -->
             <div class="nb-marquee" aria-hidden="true">
-                <div class="nb-marquee__track">
+                <div class="nb-marquee__track" :style="{ animationDuration: `${tickerDurationSeconds}s` }">
                     <span v-for="(w, i) in [...ticker, ...ticker]" :key="i" class="nb-marquee__item">
                         <span lang="bg">{{ w.bg }}</span>
                         <span class="nb-marquee__en">{{ w.en }}</span>
