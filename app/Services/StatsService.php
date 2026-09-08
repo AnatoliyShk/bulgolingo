@@ -26,7 +26,7 @@ class StatsService
             'completedLearningPaths' => $completedLessonStats['completed_paths'],
             'lexemas' => UserLexema::lexemas($user),
             'activityByType' => $this->activityByType($countsByTypeAndDay),
-            'activityDays' => $days->map(fn ($d) => Carbon::parse($d)->format('M j'))->values()->toArray(),
+            'activityDays' => $this->activityWeekLabels($days),
             'topUsers' => $this->topUsersByExperience($user),
         ];
     }
@@ -74,9 +74,25 @@ class StatsService
         return $stats;
     }
 
+    /**
+     * 49 days back so the activity chart can bucket into 7 full weeks; the
+     * per-day cache below still keys on individual days, only the chart
+     * output groups them.
+     */
     private function activityDayRange(): Collection
     {
-        return collect(range(13, 0))->map(fn ($i) => now()->subDays($i)->toDateString());
+        return collect(range(48, 0))->map(fn ($i) => now()->subDays($i)->toDateString());
+    }
+
+    /**
+     * One label per week bucket, named after the bucket's first day.
+     */
+    private function activityWeekLabels(Collection $days): array
+    {
+        return $days->chunk(7)
+            ->map(fn ($week) => Carbon::parse($week->first())->format('M j'))
+            ->values()
+            ->toArray();
     }
 
     /**
@@ -116,12 +132,21 @@ class StatsService
         });
     }
 
+    /**
+     * Daily counts summed into 7-day buckets, so the chart shows a 7-week
+     * interval by default instead of raw daily activity.
+     */
     private function activityByType(Collection $countsByTypeAndDay): array
     {
         return collect(ExerciseType::cases())->map(fn ($type) => [
             'name' => $type->getDescription(),
             'type' => $type->value,
-            'values' => $countsByTypeAndDay->get($type->value)->values()->toArray(),
+            'values' => $countsByTypeAndDay->get($type->value)
+                ->values()
+                ->chunk(7)
+                ->map(fn ($week) => $week->sum())
+                ->values()
+                ->toArray(),
         ])->values()->toArray();
     }
 }

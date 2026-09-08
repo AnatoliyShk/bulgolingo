@@ -69,7 +69,7 @@ class ExerciseActivityCacheTest extends TestCase
 
     private function days(): Collection
     {
-        return collect(range(13, 0))->map(fn ($i) => now()->subDays($i)->toDateString());
+        return collect(range(48, 0))->map(fn ($i) => now()->subDays($i)->toDateString());
     }
 
     public function test_stats_page_falls_back_to_database_and_warms_cache_when_nothing_cached(): void
@@ -125,7 +125,7 @@ class ExerciseActivityCacheTest extends TestCase
             ->where('activityByType', function ($activityByType) {
                 $trueFalse = collect($activityByType)->firstWhere('type', 'true_false');
 
-                return $trueFalse['values'][13] === 7;
+                return $trueFalse['values'][6] === 7;
             })
         );
     }

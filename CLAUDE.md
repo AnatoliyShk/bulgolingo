@@ -43,10 +43,6 @@ The local database is stock Sail — user `sail`, password `password`, database
 `testing` created by the image's init script. The `.env` credentials are the
 cloud ones and do not authenticate against it.
 
-**Do not use SQLite.** The migration history cannot be replayed on it: dropping
-`learning_paths.user_id` fails with "unknown column user_id in foreign key
-definition".
-
 Tests that touch no database — those extending `PHPUnit\Framework\TestCase`
 rather than `Tests\TestCase` — run on the host directly, because `phpunit.xml`
 bootstraps only the autoloader and no app boots:
@@ -83,7 +79,7 @@ Every page render goes through Inertia: Laravel returns `Inertia::render('PageNa
 
 ### Route structure
 - `/` — public welcome page
-- `/dashboard` — authenticated user profile/dashboard
+- `/profile` — authenticated user profile
 - `/learning-paths` — browse & start learning paths
 - `/exercise/{id}` — exercise player (student-facing)
 - `/lesson/{id}` — lesson view
@@ -96,14 +92,14 @@ LearningPath ──< learning_path_lesson >── Lesson ──< Exercise
      │                                       │
      └──< learning_path_user >── User        └── (is_completed bool)
                 │
-                └──< user_learned_word >── LearnedWords
+                └──< user_learned_word >── Lexemas
 ```
 
 - **Exercise** is the core unit. Its `clause` column stores a JSON blob whose schema is determined by `decision_type` (an `ExerciseType` enum). The `Exercise` model validates `clause` against `ExerciseType::dataRules()` in a `saving` model hook.
 - **ExerciseType** enum (`app/Enums/ExerciseType.php`) defines five types: `multiple_choice`, `true_false`, `fill_in_the_blank`, `image_matching`, `bot_dialog`. Each type has its own `clause` shape and validation rules.
 - **Lesson** tracks aggregate completion (`refreshCompletionStatus()`) by checking whether all child exercises are completed.
 - **Images** are stored via a many-to-many pivot (`exercise_image`) so an exercise can have associated images. The admin controller handles upload/replace/delete of the physical file on the `public` storage disk.
-- **LearnedWords** are tracked per-user via a `user_learned_word` pivot with an `encounter_count` column. The `LearnedWordCountUpdate` job (currently a stub) is intended to update these counts.
+- **Lexemas** are tracked per-user via a `user_lexema` pivot with an `reps_total` column. The `LearnedWordCountUpdate` job (currently a stub) is intended to update these counts.
 
 ### Admin vs student controllers
 There are two `ExerciseController` classes:

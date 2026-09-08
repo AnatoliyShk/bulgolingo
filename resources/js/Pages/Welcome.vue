@@ -12,29 +12,33 @@ const continueLessonId = computed(() => page.props.continueLessonId ?? null)
 const continueHref = computed(() =>
     continueLessonId.value ? `/lesson/${continueLessonId.value}` : '/learning-paths'
 )
+const progressHref = computed(() => (isAuthenticated.value ? continueHref.value : '/login'))
 
 const { theme } = useTheme()
 
-const steps = [
+const steps = computed(() => [
     {
         bg: 'Избери своя път',
         en: 'Pick a path',
         body: 'Every learning path is built around something you\'d actually say — ordering food, asking directions, talking to family.',
         tone: 'cyan',
+        href: '/learning-paths',
     },
     {
         bg: 'Тренирай всеки ден',
         en: 'Practice daily',
         body: 'Short, mixed exercises — multiple choice, true or false, and more — train your ear as much as your memory.',
         tone: 'pink',
+        href: isAuthenticated.value ? '/profile' : '/login',
     },
     {
         bg: 'Следи напредъка си',
         en: 'Track your progress',
         body: 'Your dashboard keeps the score: lessons finished, streaks kept, and how far the path still goes.',
         tone: 'blue',
+        href: progressHref.value,
     },
-]
+])
 
 // Marquee vocabulary — repeated twice in the template for a seamless loop.
 const ticker = [
@@ -133,7 +137,7 @@ onBeforeUnmount(() => {
                     <div class="nb-actions">
                         <template v-if="isAuthenticated">
                             <Link :href="continueHref" class="nb-btn nb-btn--primary">Continue learning <font-awesome-icon icon="arrow-right" /></Link>
-                            <Link href="/profile" class="nb-btn nb-btn--ghost">Dashboard</Link>
+                            <Link href="/profile" class="nb-btn nb-btn--ghost">Profile</Link>
                         </template>
                         <template v-else>
                             <Link href="/learning-paths" class="nb-btn nb-btn--primary">Start free <font-awesome-icon icon="arrow-right" /></Link>
@@ -172,13 +176,15 @@ onBeforeUnmount(() => {
                         v-for="(step, i) in steps"
                         :key="step.bg"
                         class="nb-card nb-reveal nb-reveal--pop"
-                        :class="`nb-card--${step.tone}`"
+                        :class="[`nb-card--${step.tone}`, { 'nb-card--linked': step.href }]"
                         :style="{ '--reveal-delay': `${i * 130}ms` }"
                     >
-                        <span class="nb-card__num">{{ String(i + 1).padStart(2, '0') }}</span>
-                        <h3 class="nb-card__title" lang="bg">{{ step.bg }}</h3>
-                        <span class="nb-card__en">{{ step.en }}</span>
-                        <p class="nb-card__text">{{ step.body }}</p>
+                        <component :is="step.href ? Link : 'div'" :href="step.href" class="nb-card__body">
+                            <span class="nb-card__num">{{ String(i + 1).padStart(2, '0') }}</span>
+                            <h3 class="nb-card__title" lang="bg">{{ step.bg }}</h3>
+                            <span class="nb-card__en">{{ step.en }}</span>
+                            <p class="nb-card__text">{{ step.body }}</p>
+                        </component>
                     </li>
                 </ol>
 

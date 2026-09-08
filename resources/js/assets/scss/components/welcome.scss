@@ -306,6 +306,12 @@
 .nb-card--cyan { background: var(--cyan); }
 .nb-card--pink   { background: var(--pink); }
 .nb-card--blue   { background: var(--blue); }
+.nb-card--linked { cursor: pointer; }
+
+.nb-card__body {
+    display: block;
+    color: inherit; text-decoration: none;
+}
 
 .nb-card__num {
     display: inline-flex; align-items: center; justify-content: center;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningPath;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -70,28 +71,45 @@ class LearningPathController extends Controller
     }
 
     /**
-     * All enrolled paths split into unfinished and finished sections.
+     * The paths this user is still working through.
+     *
+     * Only the unfinished ones: the finished list is its own page, and sending
+     * both to each meant the two links from the profile led to identical pages.
+     * The empty message speaks of nothing in progress rather than nothing
+     * enrolled, because finishing everything empties this page too.
      */
     public function enrolled(Request $request)
     {
-        $allPaths = $request->user()->enrolledPathsWithProgress();
-        $unfinished = $allPaths->where('is_finished', false)->values();
-        $finished = $allPaths->where('is_finished', true)->values();
-
         return Inertia::render('LearningPath/List', [
-            'title' => 'Learning paths',
-            'unfinishedPaths' => $unfinished,
-            'finishedPaths' => $finished,
-            'emptyMessage' => "You haven't enrolled in any learning path yet.",
+            'title' => 'In progress',
+            'unfinishedPaths' => $this->enrolledPathsByCompletion($request, false),
+            'finishedPaths' => [],
+            'emptyMessage' => 'You have no learning paths in progress.',
         ]);
     }
 
     /**
-     * Alias to enrolled() for backwards compatibility.
+     * The paths this user has completed, and only those.
      */
     public function finished(Request $request)
     {
-        return $this->enrolled($request);
+        return Inertia::render('LearningPath/List', [
+            'title' => 'Finished',
+            'unfinishedPaths' => [],
+            'finishedPaths' => $this->enrolledPathsByCompletion($request, true),
+            'emptyMessage' => "You haven't finished a learning path yet.",
+        ]);
+    }
+
+    /**
+     * One side of the enrolled/finished split, decorated with progress.
+     */
+    private function enrolledPathsByCompletion(Request $request, bool $isFinished): Collection
+    {
+        return $request->user()
+            ->enrolledPathsWithProgress()
+            ->where('is_finished', $isFinished)
+            ->values();
     }
 
     /**

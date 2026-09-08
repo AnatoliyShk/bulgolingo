@@ -43,8 +43,9 @@ class LearningPathListTest extends TestCase
     }
 
     /**
-     * The list page renders both slices at once, so a test names the one it
-     * cares about rather than relying on which route it happened to hit.
+     * Each list page fills only its own slice and sends the other one empty, so
+     * a test names the prop it is reading rather than assuming which of the two
+     * the route populated.
      */
     private function paths(string $route, string $prop = 'unfinishedPaths'): array
     {
@@ -124,6 +125,52 @@ class LearningPathListTest extends TestCase
 
         $ids = collect($this->paths('learning-paths.enrolled'))->pluck('id')->all();
         $this->assertContains($path->id, $ids);
+    }
+
+    /**
+     * The two pages were the same page: enrolled() built both slices and
+     * finished() called straight through to it, so the profile's two links led
+     * to identical lists. Each of these asserts the slice its page must not be
+     * carrying, which is the half the older tests never looked at.
+     */
+    public function test_enrolled_carries_no_finished_paths(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->pathWithLesson($user, 'Done', 1, completeAll: true);
+        $this->pathWithLesson($user, 'Doing', 1);
+
+        $this->assertSame([], $this->paths('learning-paths.enrolled', 'finishedPaths'));
+        $this->assertCount(1, $this->paths('learning-paths.enrolled'));
+    }
+
+    public function test_finished_carries_no_unfinished_paths(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->pathWithLesson($user, 'Done', 1, completeAll: true);
+        $this->pathWithLesson($user, 'Doing', 1);
+
+        $this->assertSame([], $this->paths('learning-paths.finished'));
+        $this->assertCount(1, $this->paths('learning-paths.finished', 'finishedPaths'));
+    }
+
+    public function test_the_two_lists_do_not_show_the_same_paths(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $done = $this->pathWithLesson($user, 'Done', 1, completeAll: true);
+        $doing = $this->pathWithLesson($user, 'Doing', 1);
+
+        $enrolledIds = collect($this->paths('learning-paths.enrolled'))->pluck('id')->all();
+        $finishedIds = collect($this->paths('learning-paths.finished', 'finishedPaths'))->pluck('id')->all();
+
+        $this->assertSame([$doing->id], $enrolledIds);
+        $this->assertSame([$done->id], $finishedIds);
+        $this->assertSame([], array_intersect($enrolledIds, $finishedIds));
     }
 
     public function test_guest_cannot_view_enrolled_or_finished_paths(): void
