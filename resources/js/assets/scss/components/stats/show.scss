@@ -226,6 +226,7 @@
     overflow: hidden;
 }
 .nb-stats__panel--cloud { height: 22rem; }
+.nb-stats__panel--activity { height: 26rem; }
 
 .nb-stats__empty {
     margin: 0;
@@ -249,4 +250,5 @@
 /* ══════════════ Responsive ══════════════ */
 @media (max-width: 560px) {
     .nb-stats__section-count { margin-left: 0; }
+    .nb-stats__panel--activity { height: 32rem; padding: 1.5rem 0.75rem; }
 }

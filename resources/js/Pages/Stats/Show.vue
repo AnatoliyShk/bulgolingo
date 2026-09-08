@@ -124,6 +124,7 @@ const wordCloudConfig = computed(() => ({
 }))
 
 const activityConfig = computed(() => ({
+    responsive: true,
     style: {
         fontFamily: "'Manrope', sans-serif",
         chart: {
@@ -278,7 +279,7 @@ const kpis = computed(() => [
                     <h2 class="nb-stats__section-title">Activity by exercise type</h2>
                 </div>
 
-                <div class="nb-stats__panel">
+                <div class="nb-stats__panel nb-stats__panel--activity">
                     <VueUiDonutEvolution
                         v-if="activityDataset.length"
                         :dataset="activityDataset"

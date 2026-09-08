@@ -43,7 +43,7 @@ class StatsService
     private function topUsersByExperience(User $user): array
     {
         return User::query()
-            ->where('type', '!=', UserType::Playwright->value)
+            ->whereNotIn('type', [UserType::Playwright->value, UserType::Filler->value])
             ->orderByDesc('experience')
             ->orderBy('id')
             ->limit(5)
