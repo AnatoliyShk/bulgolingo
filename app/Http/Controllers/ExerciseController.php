@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ExerciseType;
+use App\Http\Requests\Exercise\SearchExerciseRequest;
 use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\Lesson;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -136,5 +138,20 @@ class ExerciseController extends Controller
             'lesson' => $lessonId,
             'learningPath' => $learningPath?->id,
         ]));
+    }
+
+    public function search(SearchExerciseRequest $request): JsonResponse
+    {
+        $query = $request->validated('query');
+
+        $exercises = Exercise::query()
+            ->whereVectorSimilarTo('embedding', $query, minSimilarity: 0.4)
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'search_term' => $query,
+            'results' => $exercises,
+        ]);
     }
 }

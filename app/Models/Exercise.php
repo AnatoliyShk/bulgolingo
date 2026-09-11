@@ -8,7 +8,9 @@ use App\Jobs\LexemaReviewGrade;
 use App\Observers\ExerciseObserver;
 use App\Services\CompletionCacheSync;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\AsVector;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 #[ObservedBy(ExerciseObserver::class)]
 #[Fillable(['name', 'clause', 'decision_type'])]
+#[Hidden(['embedding'])]
 class Exercise extends Model
 {
     protected function casts(): array
@@ -23,6 +26,7 @@ class Exercise extends Model
         return [
             'decision_type' => ExerciseType::class,
             'clause' => 'array',
+            'embedding' => AsVector::class,
         ];
     }
 
