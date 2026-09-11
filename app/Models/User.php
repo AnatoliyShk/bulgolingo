@@ -23,10 +23,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-     * The counter defaults to 0 in the database, but a model that was just
-     * inserted holds only the attributes it wrote, so without this a fresh user
-     * reads null until it is fetched back. Nothing should have to reload a row
-     * to find out that a counter starts at zero.
+     * Mirrors the database default so a freshly created user reads 0, not null.
      *
      * @var array<string, mixed>
      */
@@ -53,22 +50,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Records that this user has just practised. The stamp always moves
-     * forward; the counter only advances on the first completion of a day — it
-     * goes up by one when the previous completion was yesterday, and resets to
-     * one when the chain was broken or never started. Finishing a second
-     * exercise the same day leaves it alone, which is what makes it a count of
-     * days rather than of answers — alone but never below one, since a day with
-     * practice in it counts, and a row stamped today while the counter still
-     * read zero would otherwise stay stuck there until the date rolled over.
-     *
-     * All of it is one conditional UPDATE against the row rather than a read
-     * followed by a write, because two answers submitted at once would both see
-     * the same "not yet today" and both advance the streak. That also means the
-     * loaded model is stale afterwards; callers that need the new values should
-     * refresh. The day boundaries are computed here and passed as bindings so
-     * they come from the application's clock — the same one the profile uses to
-     * decide whether the flame is lit — rather than from the database's.
+     * Stamps practice and advances the day streak: +1 after a yesterday
+     * completion, reset to 1 after a gap, unchanged (but at least 1) on a repeat
+     * the same day. A single conditional UPDATE so concurrent answers cannot both
+     * advance it, with day bounds from the app clock; refresh to read the result.
      */
     public function recordPractice(): void
     {
@@ -93,13 +78,8 @@ class User extends Authenticatable
     }
 
     /**
-     * A signed link to this user's avatar, or null when they have not set one.
-     *
-     * Deliberately a method rather than an appended attribute: auth.user is
-     * shared into every Inertia response, and appending it would mint a signed
-     * URL on every request in the application to serve the two pages that
-     * actually draw a face. The null case short-circuits before the disk is
-     * touched at all.
+     * Signed avatar URL, or null when unset. A method, not an appended attribute,
+     * so the shared auth.user prop does not sign a URL on every request.
      */
     public function avatarUrl(): ?string
     {
@@ -131,15 +111,8 @@ class User extends Authenticatable
     }
 
     /**
-     * Per learning path: each lesson in the order the path runs, flagged with
-     * whether this user has finished it, plus the exercise types the path
-     * covers. A lesson with no exercises is never complete, which is what makes
-     * it the next thing to continue with.
-     *
-     * Counts are grouped by exercise type as well as by lesson, so a single
-     * aggregate answers both questions — the per-lesson totals are the sum of
-     * that lesson's type rows. Nothing is hydrated, so the cost stays flat no
-     * matter how much the user has enrolled in.
+     * Per path: its lessons in order, each flagged complete for this user, and
+     * the exercise types it covers. A lesson with no exercises is never complete.
      *
      * @param  array<int, int>  $pathIds
      * @return Collection<int, object> keyed by learning path id
@@ -189,10 +162,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Decorates each path with this user's progress on it: lessons finished,
-     * which lesson to continue with next, the exercise types it covers, and
-     * whether every lesson in it is done. $paths must already carry a lessons
-     * count (e.g. via withCount('lessons')) for the progress bar.
+     * Adds this user's progress to each path: lessons finished, lesson to
+     * continue, exercise types, and whether it is finished. $paths must carry
+     * withCount('lessons').
      *
      * @param  Collection<int, LearningPath>  $paths
      * @return Collection<int, LearningPath>
@@ -219,12 +191,8 @@ class User extends Authenticatable
     }
 
     /**
-     * This user's enrolled paths, most recently enrolled first, decorated
-     * with progress. The one query the dashboard's active-path pick and the
-     * enrolled/finished list pages all build on. Rows enrolled before
-     * `learning_path_user` tracked timestamps sort last rather than first,
-     * which a bare DESC would otherwise do since Postgres orders nulls
-     * first on DESC.
+     * Enrolled paths with progress, most recently enrolled first. Rows without an
+     * enrollment timestamp sort last, as Postgres puts nulls first on DESC.
      *
      * @return Collection<int, LearningPath>
      */

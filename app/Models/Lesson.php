@@ -3,20 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;
 
+#[Table('lessons')]
 #[Fillable(['name', 'description'])]
 class Lesson extends Model
 {
-    protected $table = 'lessons';
-
-    protected $hidden = [];
-
     /**
-     * The pivot's `order` is the sequence a student completes the lesson in,
-     * so the relation is always read in that order rather than by exercise id.
+     * Ordered by the pivot's `order`, the sequence students complete them in.
      */
     public function exercises(): BelongsToMany
     {
@@ -27,8 +24,7 @@ class Lesson extends Model
     }
 
     /**
-     * Puts an exercise at the end of this lesson's completion order. Re-running
-     * it for an already-attached exercise leaves its position untouched.
+     * Appends the exercise to the lesson's order; no-op if already attached.
      */
     public function attachExerciseAtEnd(Exercise $exercise): void
     {
@@ -44,13 +40,8 @@ class Lesson extends Model
     }
 
     /**
-     * The earliest-ordered exercise in this lesson the user has not completed,
-     * or null when there is none. Passing $afterOrder limits the search to the
-     * exercises that come after that position in the lesson's order.
-     *
-     * The ids are read straight off the pivot, which already carries both the
-     * order and the exercise id, so the exercises table is never touched; the
-     * finished ones are ruled out by a subquery on the completions table.
+     * The earliest-ordered exercise the user has not completed, optionally only
+     * after $afterOrder; null when there is none.
      */
     public function firstIncompleteExerciseId(User $user, ?int $afterOrder = null): ?int
     {
@@ -69,10 +60,8 @@ class Lesson extends Model
     }
 
     /**
-     * The id of the lesson following this one inside the given path, or null
-     * when this is the last. Lessons in a path run in lesson-id order, and the
-     * pivot already stores that id, so the answer comes off the pivot without
-     * loading a single lesson row.
+     * The next lesson in the path, or null when this is the last. Lessons in a
+     * path run in lesson-id order.
      */
     public function nextLessonId(LearningPath $learningPath): ?int
     {
@@ -86,9 +75,8 @@ class Lesson extends Model
     }
 
     /**
-     * The first exercise in a lesson's completion order. Takes an id rather
-     * than an instance so a caller holding only the next lesson's id — as
-     * nextLessonId() hands back — does not have to load the lesson to ask.
+     * The first exercise in a lesson's order. Takes an id so nextLessonId()'s
+     * result can be used without loading the lesson.
      */
     public static function firstExerciseIdIn(int $lessonId): ?int
     {
@@ -101,13 +89,8 @@ class Lesson extends Model
     }
 
     /**
-     * How many exercises share this exercise's lesson, and how many of them
-     * this user has completed. Both counts come from one grouped aggregate
-     * over the same rows rather than resolving the lesson, then its exercise
-     * ids, then counting completions among them separately.
-     *
-     * The lesson is resolved by its lowest id, matching the current
-     * one-lesson-per-exercise reality without hydrating a Lesson to ask.
+     * Total and user-completed exercise counts for the exercise's lesson. Uses
+     * the lowest lesson id, as an exercise currently belongs to one lesson.
      *
      * @return array{total: int, completed: int}
      */
@@ -143,17 +126,9 @@ class Lesson extends Model
     }
 
     /**
-     * Aggregate per-user completion, derived entirely from `user_exercise_completions`.
-     *
-     * A lesson counts as completed when the user has completed every one of its
-     * exercises; a path counts as completed when every one of its lessons is.
-     * Lessons shared by several enrolled paths are counted once, which keying
-     * the tally by lesson id takes care of. A path with no lessons produces no
-     * rows at all, so it is never counted as finished.
-     *
-     * One grouped query answers all three numbers; the user is passed in rather
-     * than looked up, and nothing is hydrated, so the cost does not grow with
-     * how much the user has enrolled in.
+     * The user's completion totals across enrolled paths. A lesson is complete
+     * when all its exercises are, a path when all its lessons are; lessons
+     * shared between paths count once, and empty paths never count.
      *
      * @return array{completed_lessons: int, total_exercises: int, completed_paths: int}
      */

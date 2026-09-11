@@ -7,6 +7,7 @@ use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LexemaReviewGrade;
 use App\Observers\ExerciseObserver;
 use App\Services\CompletionCacheSync;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,14 +15,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 #[ObservedBy(ExerciseObserver::class)]
+#[Fillable(['name', 'clause', 'decision_type'])]
 class Exercise extends Model
 {
-    protected $fillable = [
-        'name',
-        'clause',
-        'decision_type',
-    ];
-
     protected function casts(): array
     {
         return [
@@ -63,22 +59,11 @@ class Exercise extends Model
     }
 
     /**
-     * Records this exercise as completed for the user, queues the jobs that
-     * derive from it (XP, lexema review), and returns the id of the exercise
-     * the student should see next in $lesson: the earliest incomplete one
-     * ahead of this position, wrapping to the top of the lesson once nothing
-     * is left ahead. Null means no lesson, or the lesson is now complete.
-     *
-     * $lesson is passed in because the caller already holds it and needs it
-     * afterwards; resolving it here would be a second wasted query.
-     *
-     * The raw upsert bypasses the observer that syncs the stats caches, so
-     * CompletionCacheSync is called directly, and only for a newly inserted
-     * row. Grading is not conditional that way — a repeat completion is itself
-     * a real review — but it is queued: it costs a locked transaction per
-     * lexema and nothing in the student's response reads the schedule it
-     * produces. It also subsumes LexemaCountUpdate's per-word reps_total
-     * bookkeeping, so that job is not dispatched here either.
+     * Records the completion, queues XP and lexema grading, and returns the next
+     * incomplete exercise in $lesson, wrapping to the top; null when there is no
+     * lesson or it is finished. The raw insert skips the observer, so the stats
+     * caches are synced here, for new rows only. Grading already covers
+     * reps_total, so LexemaCountUpdate is not dispatched.
      */
     public function completeFor(User $user, ?Lesson $lesson): ?int
     {
@@ -124,9 +109,7 @@ class Exercise extends Model
     }
 
     /**
-     * Lowercased, trimmed, and dot-stripped so the same word is never split
-     * across two lexema rows over a case, whitespace, or punctuation
-     * difference between where it's read from.
+     * Lowercases, trims and strips dots so one word never becomes two lexema rows.
      */
     private static function normalizeWord(string $word): string
     {
@@ -134,9 +117,8 @@ class Exercise extends Model
     }
 
     /**
-     * Every Cyrillic word found in the clause's "options" (fill-in-the-blank,
-     * image-matching), split on whitespace so a multi-word option still
-     * yields one lexema per word rather than one row for the whole phrase.
+     * Unique Cyrillic words from the clause options, one per word even in
+     * multi-word options.
      *
      * @return array<int, string>
      */
@@ -155,10 +137,8 @@ class Exercise extends Model
     }
 
     /**
-     * Creates a lexema row for every Cyrillic word among this exercise's
-     * clause options that isn't already one. A word already owned by another
-     * exercise is left untouched — exercise_id records only which exercise
-     * first introduced the word.
+     * Creates missing lexemas for the option words. Existing ones keep their
+     * exercise_id, which marks the exercise that first introduced the word.
      */
     public function syncLexemasFromOptions(): void
     {

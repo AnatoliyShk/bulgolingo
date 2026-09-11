@@ -2,28 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Collection;
 
+#[Table('user_lexema', incrementing: true)]
+#[Fillable([
+    'user_id',
+    'lexema_id',
+    'reps_total',
+    'stability',
+    'difficulty',
+    'state',
+    'interval_days',
+    'due_at',
+    'last_reviewed_at',
+    'lapses',
+])]
 class UserLexema extends Pivot
 {
-    protected $table = 'user_lexema';
-
-    public $incrementing = true;
-
-    protected $fillable = [
-        'user_id',
-        'lexema_id',
-        'reps_total',
-        'stability',
-        'difficulty',
-        'state',
-        'interval_days',
-        'due_at',
-        'last_reviewed_at',
-        'lapses',
-    ];
-
     protected function casts(): array
     {
         return [
@@ -38,11 +36,8 @@ class UserLexema extends Pivot
     }
 
     /**
-     * Every word this user has met, heaviest first, for the stats word cloud.
-     *
-     * The weight is reps_total, not a row count: (user_id, lexema_id) is unique,
-     * so counting rows would report 1 for every word regardless of how often the
-     * user actually encountered it.
+     * The user's words weighted by reps_total, heaviest first, for the stats word
+     * cloud. Rows are unique per word, so a row count would always be 1.
      */
     public static function lexemas(User $user): Collection
     {

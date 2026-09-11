@@ -24,10 +24,8 @@ class LearningPath extends Model
     }
 
     /**
-     * Narrows a path query to what the given viewer is allowed to see, null
-     * meaning a guest. Every listing a student can reach goes through this
-     * rather than filtering in PHP, so a type they cannot see is never loaded,
-     * counted, or paged over.
+     * Limits paths to the types the viewer may see (null for a guest). Every
+     * student-facing listing must go through this.
      */
     public function scopeVisibleTo(Builder $query, ?User $user): Builder
     {
@@ -35,8 +33,7 @@ class LearningPath extends Model
     }
 
     /**
-     * The same rule for a path already in hand, for the routes that take one by
-     * id and must not serve a path its viewer could not have found.
+     * The visibleTo rule for a single loaded path, for routes that take an id.
      */
     public function isVisibleTo(?User $user): bool
     {
