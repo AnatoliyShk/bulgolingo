@@ -1,0 +1,114 @@
+/* ══════════════ Learning-path search ══════════════ */
+/* Sits under the catalog heading. Reads the neo-brutalist tokens from its
+   host (.nb-paths), with fallbacks so it still renders outside one. */
+
+.nb-path-search {
+    max-width: 44rem;
+    margin: 1.75rem auto 0;
+    text-align: left;
+}
+
+.nb-path-search__form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.nb-path-search__input {
+    flex: 1 1 16rem;
+    min-width: 0;
+    padding: 0.8rem 1rem;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--ink, #14110b);
+    background: var(--paper, #fffaf0);
+    border: var(--border, 3px solid #14110b);
+    border-radius: var(--radius, 12px);
+    box-shadow: var(--shadow-sm, 4px 4px 0 0 #14110b);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.nb-path-search__input::placeholder {
+    color: var(--ink, #14110b);
+    opacity: 0.55;
+}
+
+.nb-path-search__input:focus-visible {
+    outline: none;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 0 var(--ink, #14110b);
+}
+
+.nb-path-search__input--invalid {
+    border-color: #a3103f;
+}
+
+.nb-path-search__submit,
+.nb-path-search__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.2rem;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--on-accent, #14110b);
+    border: var(--border, 3px solid #14110b);
+    border-radius: var(--radius, 12px);
+    box-shadow: var(--shadow-sm, 4px 4px 0 0 #14110b);
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.nb-path-search__submit { background: var(--green, #46d39a); }
+.nb-path-search__clear { background: var(--paper, #fffaf0); color: var(--ink, #14110b); }
+
+.nb-path-search__submit:hover:not(:disabled),
+.nb-path-search__clear:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 0 var(--ink, #14110b);
+}
+
+.nb-path-search__submit:active:not(:disabled),
+.nb-path-search__clear:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 0 var(--ink, #14110b);
+}
+
+.nb-path-search__submit:focus-visible,
+.nb-path-search__clear:focus-visible {
+    outline: 3px solid var(--blue, #5b8def);
+    outline-offset: 3px;
+}
+
+.nb-path-search__submit:disabled,
+.nb-path-search__clear:disabled {
+    cursor: progress;
+    opacity: 0.7;
+}
+
+.nb-path-search__status,
+.nb-path-search__error {
+    margin: 0.9rem 0 0;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+/* The page's pink accent is too light to read as text on the cream ground,
+   so errors use a deep raspberry in light mode and the orange accent, which
+   holds up on the dark ground, in dark mode. */
+.nb-path-search__error { color: #a3103f; }
+.nb-path-search.dark .nb-path-search__error { color: var(--orange, #ff8a47); }
+.nb-path-search.dark .nb-path-search__input--invalid { border-color: var(--orange, #ff8a47); }
+
+@media (max-width: 620px) {
+    .nb-path-search__submit,
+    .nb-path-search__clear { flex: 1 1 auto; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-path-search__input,
+    .nb-path-search__submit,
+    .nb-path-search__clear { transition: none; }
+}

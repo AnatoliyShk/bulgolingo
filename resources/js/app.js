@@ -16,9 +16,10 @@ import {
     faCheckDouble,
     faPenToSquare,
     faImage,
+    faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faArrowRight, faEye, faEyeSlash, faListCheck, faCheckDouble, faPenToSquare, faImage);
+library.add(faArrowRight, faEye, faEyeSlash, faListCheck, faCheckDouble, faPenToSquare, faImage, faMagnifyingGlass);
 
 const appName = 'BalkanBuddy';
 

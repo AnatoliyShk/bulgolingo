@@ -16,13 +16,25 @@ enum ExerciseType: string
 
     case IMAGE_MATCHING = 'image_matching';
 
-    public function getDescription(): string
+    /**
+     * The type's name in the given language. English is the default because
+     * it is what the UI shows everywhere today.
+     */
+    public function getDescription(LanguageCode $language = LanguageCode::EN): string
     {
-        return match ($this) {
-            self::MULTIPLE_CHOICE => 'Multiple Choice',
-            self::TRUE_FALSE => 'True/False',
-            self::FILL_IN_THE_BLANK => 'Fill in the Blank',
-            self::IMAGE_MATCHING => 'Image Matching',
+        return match ($language) {
+            LanguageCode::EN => match ($this) {
+                self::MULTIPLE_CHOICE => 'Multiple Choice',
+                self::TRUE_FALSE => 'True/False',
+                self::FILL_IN_THE_BLANK => 'Fill in the Blank',
+                self::IMAGE_MATCHING => 'Image Matching',
+            },
+            LanguageCode::BG => match ($this) {
+                self::MULTIPLE_CHOICE => 'Множествен избор',
+                self::TRUE_FALSE => 'Вярно/Невярно',
+                self::FILL_IN_THE_BLANK => 'Попълване на празното място',
+                self::IMAGE_MATCHING => 'Съпоставяне на изображения',
+            },
         };
     }
 

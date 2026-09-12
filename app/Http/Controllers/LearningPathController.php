@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LearningPath\IndexLearningPathRequest;
 use App\Models\LearningPath;
+use App\Services\LearningPathSearch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -22,16 +24,29 @@ class LearningPathController extends Controller
      * What is left is narrowed to the types this viewer may see, so the tier
      * they have not paid for and the load-test tooling's generated paths are
      * both absent rather than merely unstartable.
+     *
+     * A search narrows every section to the paths whose exercises are closest
+     * in meaning to the text, each ordered closest first. When the embedding
+     * call fails the page renders unfiltered and says search is unavailable,
+     * rather than showing an empty result the viewer would take at its word.
      */
-    public function index(Request $request)
+    public function index(IndexLearningPathRequest $request, LearningPathSearch $search)
     {
         $user = $request->user();
-        $userPaths = $user ? $user->enrolledPathsWithProgress() : collect();
-        $enrolledIds = $userPaths->pluck('id')->all();
+        $query = $request->validated('q');
+        $ranked = filled($query) ? $search->rankedPathIds($query) : null;
 
-        $paths = LearningPath::visibleTo($user)
-            ->whereNotIn('id', $enrolledIds)
-            ->get(['id', 'name', 'language', 'type']);
+        $enrolled = $user ? $user->enrolledPathsWithProgress() : collect();
+        $enrolledIds = $enrolled->pluck('id')->all();
+        $userPaths = $this->narrowToSearch($enrolled, $ranked);
+
+        $paths = $this->narrowToSearch(
+            LearningPath::visibleTo($user)
+                ->whereNotIn('id', $enrolledIds)
+                ->when($ranked !== null, fn ($q) => $q->whereIn('id', $ranked))
+                ->get(['id', 'name', 'language', 'type']),
+            $ranked,
+        );
 
         $types = DB::table('learning_path_lesson as lpl')
             ->join('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
@@ -54,7 +69,33 @@ class LearningPathController extends Controller
             'paths' => $paths,
             'unfinishedPaths' => $userPaths->where('is_finished', false)->values(),
             'finishedPaths' => $userPaths->where('is_finished', true)->values(),
+            'search' => [
+                'query' => $query ?? '',
+                'unavailable' => filled($query) && $ranked === null,
+            ],
         ]);
+    }
+
+    /**
+     * Keeps only the paths in $ranked, in its order. No ranking — no search,
+     * or a search that could not run — leaves the paths as they came.
+     *
+     * @param  Collection<int, LearningPath>  $paths
+     * @param  Collection<int, int>|null  $ranked
+     * @return Collection<int, LearningPath>
+     */
+    private function narrowToSearch(Collection $paths, ?Collection $ranked): Collection
+    {
+        if ($ranked === null) {
+            return $paths;
+        }
+
+        $position = $ranked->flip();
+
+        return $paths
+            ->filter(fn (LearningPath $path) => $position->has($path->id))
+            ->sortBy(fn (LearningPath $path) => $position->get($path->id))
+            ->values();
     }
 
     /**

@@ -5,16 +5,24 @@ import { Head } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import TopBar from '@/Components/TopBar.vue'
 import LearningPathCardMini from '@/Components/LearningPathCardMini.vue'
+import LearningPathSearch from '@/Components/LearningPathSearch.vue'
 
 const props = defineProps({
     paths: Array,
     unfinishedPaths: { type: Array, default: () => [] },
     finishedPaths: { type: Array, default: () => [] },
+    search: { type: Object, default: () => ({ query: '', unavailable: false }) },
 })
 
 const { theme } = useTheme()
 
 const hasEnrolled = computed(() => props.unfinishedPaths.length > 0 || props.finishedPaths.length > 0)
+
+// While a search narrows the page, an empty catalog means nothing new matched,
+// which the search status already says, so the section drops out instead of
+// claiming the viewer has started every path.
+const isSearching = computed(() => !!props.search.query && !props.search.unavailable)
+const showCatalog = computed(() => !isSearching.value || (props.paths && props.paths.length > 0))
 </script>
 
 <template>
@@ -33,6 +41,7 @@ const hasEnrolled = computed(() => props.unfinishedPaths.length > 0 || props.fin
                 <span class="nb-paths__badge">Пътища</span>
                 <h1 class="nb-paths__title">All learning paths</h1>
                 <p class="nb-paths__sub">Pick a language path and start training today.</p>
+                <LearningPathSearch />
             </div>
 
             <section v-if="unfinishedPaths.length" class="nb-paths__section">
@@ -49,7 +58,7 @@ const hasEnrolled = computed(() => props.unfinishedPaths.length > 0 || props.fin
                 </div>
             </section>
 
-            <section class="nb-paths__section">
+            <section v-if="showCatalog" class="nb-paths__section">
                 <h2 v-if="hasEnrolled" class="nb-paths__section-title">Not started yet</h2>
 
                 <div v-if="paths && paths.length" class="nb-paths__grid">

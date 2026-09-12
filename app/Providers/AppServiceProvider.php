@@ -7,7 +7,10 @@ use App\Observers\UserExerciseCompletionObserver;
 use App\Services\CacheHitRateCache;
 use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Cache\Events\CacheMissed;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,6 +45,21 @@ class AppServiceProvider extends ServiceProvider
                 CacheHitRateCache::recordMiss();
             }
         });
+
+        RateLimiter::for('learning-path-search', static::learningPathSearchLimit(...));
+    }
+
+    /**
+     * The catalog is public and every search is a paid embedding call, so a
+     * search is capped per viewer — the user when signed in, the address
+     * otherwise. Loading the catalog without a search costs nothing extra and
+     * is not limited.
+     */
+    private static function learningPathSearchLimit(Request $request): Limit
+    {
+        return filled($request->query('q'))
+            ? Limit::perMinute(20)->by('learning-path-search:'.($request->user()?->id ?? $request->ip()))
+            : Limit::none();
     }
 
     /**

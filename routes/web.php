@@ -50,6 +50,7 @@ Route::get('/profile', [ProfileController::class, 'show'])
     ->name('dashboard');
 
 Route::get('/learning-paths', [LearningPathController::class, 'index'])
+    ->middleware('throttle:learning-path-search')
     ->name('learning-paths.index');
 
 Route::post('/learning-paths/{learningPath}/start', [LearningPathController::class, 'start'])

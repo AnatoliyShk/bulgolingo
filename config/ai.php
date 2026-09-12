@@ -17,7 +17,7 @@ return [
     'default_for_images' => 'gemini',
     'default_for_audio' => 'openai',
     'default_for_transcription' => 'openai',
-    'default_for_embeddings' => 'openai',
+    'default_for_embeddings' => 'gemini',
     'default_for_reranking' => 'cohere',
 
     /*
@@ -102,6 +102,12 @@ return [
             'driver' => 'gemini',
             'key' => env('GEMINI_API_KEY'),
             'url' => env('GEMINI_URL', 'https://generativelanguage.googleapis.com/v1beta/'),
+            'models' => [
+                'embeddings' => [
+                    'default' => 'gemini-embedding-2',
+                    'dimensions' => 768,
+                ],
+            ],
         ],
 
         'groq' => [
