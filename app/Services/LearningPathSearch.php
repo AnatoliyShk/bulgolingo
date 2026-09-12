@@ -9,11 +9,7 @@ use Throwable;
 
 class LearningPathSearch
 {
-    /**
-     * The same floor ExerciseController::search() applies, so the catalog and
-     * the exercise search agree on what counts as related.
-     */
-    public const MIN_SIMILARITY = 0.4;
+    public function __construct(private SiteSettings $settings) {}
 
     /**
      * How many nearest exercises are gathered before they are grouped into
@@ -28,7 +24,8 @@ class LearningPathSearch
      * Learning path ids related to $query, closest first, ranked by their
      * best-matching exercise. A path is only as relevant as the nearest of its
      * exercises: averaging would bury a path that covers the topic in one
-     * lesson among many unrelated ones.
+     * lesson among many unrelated ones. What counts as related is the
+     * admin-set similarity floor, shared with ExerciseController::search().
      *
      * The query is embedded once and the vector reused, since each string
      * handed to the vector helpers is embedded again on its own. Null means the
@@ -52,7 +49,7 @@ class LearningPathSearch
             ->select('id')
             ->selectVectorDistance('embedding', $vector, 'distance')
             ->whereNotNull('embedding')
-            ->whereVectorSimilarTo('embedding', $vector, self::MIN_SIMILARITY)
+            ->whereVectorSimilarTo('embedding', $vector, $this->settings->embeddingMinSimilarity())
             ->limit(self::NEAREST_EXERCISES);
 
         return DB::query()

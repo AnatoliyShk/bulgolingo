@@ -8,6 +8,7 @@ use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\Lesson;
+use App\Services\SiteSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -140,12 +141,19 @@ class ExerciseController extends Controller
         ]));
     }
 
-    public function search(SearchExerciseRequest $request): JsonResponse
+    /**
+     * The five exercises closest in meaning to the query, using the same
+     * admin-set similarity floor as the learning path search. With embedding
+     * search turned off the endpoint is a 404, before anything is embedded.
+     */
+    public function search(SearchExerciseRequest $request, SiteSettings $settings): JsonResponse
     {
+        abort_unless($settings->embeddingSearchEnabled(), 404);
+
         $query = $request->validated('query');
 
         $exercises = Exercise::query()
-            ->whereVectorSimilarTo('embedding', $query, minSimilarity: 0.4)
+            ->whereVectorSimilarTo('embedding', $query, minSimilarity: $settings->embeddingMinSimilarity())
             ->limit(5)
             ->get();
 

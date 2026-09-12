@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LearningPath\IndexLearningPathRequest;
 use App\Models\LearningPath;
 use App\Services\LearningPathSearch;
+use App\Services\SiteSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -29,11 +30,16 @@ class LearningPathController extends Controller
      * in meaning to the text, each ordered closest first. When the embedding
      * call fails the page renders unfiltered and says search is unavailable,
      * rather than showing an empty result the viewer would take at its word.
+     *
+     * With embedding search turned off in the admin settings, q is ignored
+     * outright — nothing is embedded, so nothing reaches the provider — and
+     * the page is told to leave the search field out.
      */
-    public function index(IndexLearningPathRequest $request, LearningPathSearch $search)
+    public function index(IndexLearningPathRequest $request, LearningPathSearch $search, SiteSettings $settings)
     {
         $user = $request->user();
-        $query = $request->validated('q');
+        $searchEnabled = $settings->embeddingSearchEnabled();
+        $query = $searchEnabled ? $request->validated('q') : null;
         $ranked = filled($query) ? $search->rankedPathIds($query) : null;
 
         $enrolled = $user ? $user->enrolledPathsWithProgress() : collect();
@@ -70,6 +76,7 @@ class LearningPathController extends Controller
             'unfinishedPaths' => $userPaths->where('is_finished', false)->values(),
             'finishedPaths' => $userPaths->where('is_finished', true)->values(),
             'search' => [
+                'enabled' => $searchEnabled,
                 'query' => $query ?? '',
                 'unavailable' => filled($query) && $ranked === null,
             ],

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\MetricsController as AdminMetricsController;
 use App\Http\Controllers\Admin\ScriptedDialogueController as AdminScriptedDialogueController;
 use App\Http\Controllers\Admin\ScriptedLineController as AdminScriptedLineController;
+use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\VitalsController as AdminVitalsController;
 use App\Http\Controllers\ExerciseController;
@@ -100,6 +101,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('metrics/admin', [AdminMetricsController::class, 'adminRequests'])->name('metrics.admin');
     Route::get('metrics/user', [AdminMetricsController::class, 'userRequests'])->name('metrics.user');
     Route::get('vitals', [AdminVitalsController::class, 'index'])->name('vitals.index');
+    Route::get('settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
+    Route::put('settings', [AdminSettingsController::class, 'update'])->name('settings.update');
     Route::resource('lessons', AdminLessonController::class);
     Route::resource('learning-paths', AdminLearningPathController::class);
     Route::get('exercises', [AdminExerciseController::class, 'index'])->name('exercises.index');

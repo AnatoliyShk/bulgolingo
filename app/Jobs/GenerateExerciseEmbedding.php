@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Enums\ExerciseType;
 use App\Enums\LanguageCode;
 use App\Models\Exercise;
+use App\Services\SiteSettings;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,14 +24,22 @@ class GenerateExerciseEmbedding implements ShouldQueue
      * the vector. A clause with no text leaves the embedding untouched rather
      * than paying for a vector of an empty string.
      *
+     * Turning embedding search off in the admin settings stops every call to
+     * the provider, including from jobs queued before it was turned off, so the
+     * setting is checked when the job runs rather than when it was dispatched.
+     *
      * The write is quiet because the observer's updating hooks exist for admin
      * edits: they re-validate the clause and deal a word-pair board afresh, and
      * storing a vector is neither an edit nor a reason to move a student's
      * cards. Assigning the attribute also sidesteps mass assignment, which
      * would silently drop embedding since it is not fillable.
      */
-    public function handle(): void
+    public function handle(SiteSettings $settings): void
     {
+        if (! $settings->embeddingSearchEnabled()) {
+            return;
+        }
+
         $text = $this->textToVectorize();
 
         if ($text === '') {

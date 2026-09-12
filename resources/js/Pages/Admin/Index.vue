@@ -61,6 +61,16 @@ import Breadcrumb from '@/Components/Breadcrumb.vue';
                 </section>
 
                 <section>
+                    <h2 class="admin-panel__section-label">Configuration</h2>
+                    <div class="admin-panel__grid">
+                        <Link :href="route('admin.settings.edit')" class="admin-panel__card">
+                            <h3 class="admin-panel__card-title">Settings</h3>
+                            <p class="admin-panel__card-desc">Turn embedding search on or off and set its minimum similarity.</p>
+                        </Link>
+                    </div>
+                </section>
+
+                <section>
                     <h2 class="admin-panel__section-label">Monitoring</h2>
                     <div class="admin-panel__grid">
                         <Link :href="route('admin.metrics.admin')" class="admin-panel__card">

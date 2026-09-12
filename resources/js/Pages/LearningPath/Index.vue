@@ -11,7 +11,7 @@ const props = defineProps({
     paths: Array,
     unfinishedPaths: { type: Array, default: () => [] },
     finishedPaths: { type: Array, default: () => [] },
-    search: { type: Object, default: () => ({ query: '', unavailable: false }) },
+    search: { type: Object, default: () => ({ enabled: false, query: '', unavailable: false }) },
 })
 
 const { theme } = useTheme()
@@ -41,7 +41,7 @@ const showCatalog = computed(() => !isSearching.value || (props.paths && props.p
                 <span class="nb-paths__badge">Пътища</span>
                 <h1 class="nb-paths__title">All learning paths</h1>
                 <p class="nb-paths__sub">Pick a language path and start training today.</p>
-                <LearningPathSearch />
+                <LearningPathSearch v-if="search.enabled" />
             </div>
 
             <section v-if="unfinishedPaths.length" class="nb-paths__section">

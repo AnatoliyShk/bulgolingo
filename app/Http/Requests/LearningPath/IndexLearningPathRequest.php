@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\LearningPath;
 
+use App\Services\SiteSettings;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,10 +25,18 @@ class IndexLearningPathRequest extends FormRequest
      * match anything meaningful, and the upper bound caps what is sent to the
      * model.
      *
+     * With embedding search turned off there is no search field to answer
+     * for, so q goes unvalidated and a stale ?q= in a bookmark loads the
+     * catalog rather than bouncing back with an error about a hidden field.
+     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
+        if (! app(SiteSettings::class)->embeddingSearchEnabled()) {
+            return [];
+        }
+
         return [
             'q' => ['nullable', 'string', 'min:2', 'max:255'],
         ];

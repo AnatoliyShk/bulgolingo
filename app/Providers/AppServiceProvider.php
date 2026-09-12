@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\UserExerciseCompletion;
 use App\Observers\UserExerciseCompletionObserver;
 use App\Services\CacheHitRateCache;
+use App\Services\SiteSettings;
 use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Cache\Events\CacheMissed;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -53,11 +54,12 @@ class AppServiceProvider extends ServiceProvider
      * The catalog is public and every search is a paid embedding call, so a
      * search is capped per viewer — the user when signed in, the address
      * otherwise. Loading the catalog without a search costs nothing extra and
-     * is not limited.
+     * is not limited, and neither is anything while search is turned off,
+     * since the controller then ignores q and embeds nothing.
      */
     private static function learningPathSearchLimit(Request $request): Limit
     {
-        return filled($request->query('q'))
+        return filled($request->query('q')) && app(SiteSettings::class)->embeddingSearchEnabled()
             ? Limit::perMinute(20)->by('learning-path-search:'.($request->user()?->id ?? $request->ip()))
             : Limit::none();
     }

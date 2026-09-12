@@ -7,6 +7,7 @@ use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
+use App\Services\SiteSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Ai\Embeddings;
@@ -17,7 +18,7 @@ use Tests\TestCase;
  * Vectors are built from 768-wide basis directions so each similarity is known
  * exactly: the query points along axis 0, an exercise on axis 0 scores 1, one
  * halfway between axes 0 and 1 scores cos 45° ≈ 0.71, and one on axis 1 scores
- * 0, below the 0.4 floor.
+ * 0, below the default 0.6 floor.
  */
 class LearningPathSearchTest extends TestCase
 {
@@ -74,6 +75,7 @@ class LearningPathSearchTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->has('paths', 2)
+                ->where('search.enabled', true)
                 ->where('search.query', '')
                 ->where('search.unavailable', false));
 
@@ -163,6 +165,64 @@ class LearningPathSearchTest extends TestCase
                 ->where('unfinishedPaths.0.id', $enrolledMatch->id)
                 ->has('paths', 1)
                 ->where('paths.0.id', $catalogMatch->id));
+    }
+
+    /**
+     * The halfway path scores cos 45° ≈ 0.71, so it is in at the default 0.6
+     * floor and out once an admin raises it to 0.8, which shows the search
+     * reads the saved floor rather than a fixed one.
+     */
+    public function test_the_similarity_floor_comes_from_the_admin_settings(): void
+    {
+        $this->fakeQueryAlongAxisZero();
+        $exact = $this->pathWithExercise('Exact', $this->axis(0));
+        $this->pathWithExercise('Halfway', $this->axis(0, 1));
+
+        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_MIN_SIMILARITY => 0.8]);
+
+        $this->get(route('learning-paths.index', ['q' => 'food']))
+            ->assertInertia(fn (Assert $page) => $page
+                ->has('paths', 1)
+                ->where('paths.0.id', $exact->id));
+    }
+
+    public function test_with_search_turned_off_q_is_ignored_and_nothing_is_embedded(): void
+    {
+        Embeddings::fake();
+        $this->pathWithExercise('Food', $this->axis(0));
+        $this->pathWithExercise('Travel', $this->axis(1));
+        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_SEARCH_ENABLED => false]);
+
+        $this->get(route('learning-paths.index', ['q' => 'food']))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->has('paths', 2)
+                ->where('search.enabled', false)
+                ->where('search.query', '')
+                ->where('search.unavailable', false));
+
+        Embeddings::assertNothingGenerated();
+    }
+
+    /**
+     * A bookmark from before search was turned off can still carry a q the
+     * rules would reject; with the field gone it must load the catalog, and
+     * repeated loads must not be throttled as searches.
+     */
+    public function test_with_search_turned_off_a_stale_q_is_neither_validated_nor_throttled(): void
+    {
+        Embeddings::fake();
+        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_SEARCH_ENABLED => false]);
+
+        $this->get(route('learning-paths.index', ['q' => 'a']))
+            ->assertOk()
+            ->assertSessionHasNoErrors();
+
+        for ($i = 0; $i < 21; $i++) {
+            $this->get(route('learning-paths.index', ['q' => 'food']))->assertOk();
+        }
+
+        Embeddings::assertNothingGenerated();
     }
 
     public function test_a_failed_embedding_call_shows_the_whole_catalog_and_says_so(): void

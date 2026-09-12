@@ -4,7 +4,7 @@ import { test, expect, Page, Route } from '@playwright/test';
 const BASE = process.env.APP_URL ?? 'http://localhost';
 
 type Path = { id: number; name: string; language: string; type: string; exercise_types: string[] };
-type Search = { query: string; unavailable: boolean };
+type Search = { enabled: boolean; query: string; unavailable: boolean };
 type InertiaPage = { component: string; props: Record<string, unknown>; url: string; version: string | null };
 
 const PATHS: Path[] = [
@@ -67,7 +67,7 @@ async function answerSearches(
                     paths,
                     unfinishedPaths: [],
                     finishedPaths: [],
-                    search: { query, unavailable: false, ...search },
+                    search: { enabled: true, query, unavailable: false, ...search },
                 },
             }),
         });
@@ -238,6 +238,35 @@ test.describe('Learning path search', () => {
         await expect(field(page)).toHaveAttribute('aria-describedby', 'nb-path-search-error');
         await expect(field(page)).toHaveClass(/nb-path-search__input--invalid/);
         await expect(status(page)).toHaveCount(0);
+    });
+
+    // Turning search off for real would hide the field from every spec running
+    // in parallel, so the server's first-load page object is edited instead to
+    // say what the controller sends while search is off. The edit happens in
+    // the page, once the document is parsed and before the deferred app script
+    // mounts: replacing the HTML response itself would make Chrome treat the
+    // page as foreign and refuse its scripts from the Vite dev server.
+    test('is left out entirely when search is turned off', async ({ page }) => {
+        await page.addInitScript(() => {
+            document.addEventListener('readystatechange', () => {
+                const app = document.getElementById('app');
+
+                if (document.readyState !== 'interactive' || !app?.dataset.page) {
+                    return;
+                }
+
+                const data = JSON.parse(app.dataset.page);
+                data.props.search = { enabled: false, query: '', unavailable: false };
+                app.dataset.page = JSON.stringify(data);
+            });
+        });
+
+        await page.goto(`${BASE}/learning-paths`);
+
+        await expect(page.getByRole('heading', { name: 'All learning paths' })).toBeVisible();
+        await expect(page.locator('.nb-paths__grid, .nb-paths__empty').first()).toBeVisible();
+        await expect(page.locator('.nb-path-search')).toHaveCount(0);
+        await expect(page.getByRole('search')).toHaveCount(0);
     });
 
     test('follows the dark theme', async ({ page }) => {
