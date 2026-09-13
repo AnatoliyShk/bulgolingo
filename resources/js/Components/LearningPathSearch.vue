@@ -39,8 +39,21 @@ const status = computed(() => {
 // Each search is its own history entry so the back button steps through them,
 // and state is preserved so the field keeps its text while the list reloads.
 // An empty field is a request for the whole catalog, not a search for nothing.
+// A level already chosen in the level filter is carried along, so searching or
+// clearing the search keeps the list at that level.
 function visit(query) {
-    router.get(route('learning-paths.index'), query ? { q: query } : {}, {
+    const params = {}
+    const level = page.props.filters?.level
+
+    if (query) {
+        params.q = query
+    }
+
+    if (level) {
+        params.level = level
+    }
+
+    router.get(route('learning-paths.index'), params, {
         preserveState: true,
         preserveScroll: true,
         onStart: () => { searching.value = true },

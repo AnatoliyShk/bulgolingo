@@ -5,12 +5,14 @@ import Breadcrumb from '@/Components/Breadcrumb.vue';
 
 const props = defineProps({
     types: { type: Array, required: true },
+    levels: { type: Array, required: true },
 });
 
 const form = useForm({
     name: '',
     language: '',
     type: props.types[0]?.value ?? 'regular',
+    level: null,
 });
 
 function submit() {
@@ -66,6 +68,19 @@ function submit() {
                                 <option v-for="option in types" :key="option.value" :value="option.value">{{ option.label }}</option>
                             </select>
                             <p v-if="form.errors.type" class="mt-1 text-xs text-red-500">{{ form.errors.type }}</p>
+                        </div>
+
+                        <div>
+                            <label for="learning-path-level" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Level</label>
+                            <select
+                                id="learning-path-level"
+                                v-model="form.level"
+                                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                            >
+                                <option :value="null">Not set</option>
+                                <option v-for="option in levels" :key="option.value" :value="option.value">{{ option.label }}</option>
+                            </select>
+                            <p v-if="form.errors.level" class="mt-1 text-xs text-red-500">{{ form.errors.level }}</p>
                         </div>
 
                         <div class="flex items-center justify-end gap-3 pt-1">

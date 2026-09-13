@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LanguageLevel;
 use App\Enums\LearningPathType;
 use Database\Factories\LearningPathFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[Fillable(['name', 'language', 'type'])]
+#[Fillable(['name', 'language', 'type', 'level'])]
 class LearningPath extends Model
 {
     /** @use HasFactory<LearningPathFactory> */
@@ -20,6 +21,7 @@ class LearningPath extends Model
     {
         return [
             'type' => LearningPathType::class,
+            'level' => LanguageLevel::class,
         ];
     }
 

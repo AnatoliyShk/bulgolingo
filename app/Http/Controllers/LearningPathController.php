@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\LanguageLevel;
 use App\Http\Requests\LearningPath\IndexLearningPathRequest;
 use App\Models\LearningPath;
+use App\Models\User;
 use App\Services\LearningPathSearch;
 use App\Services\SiteSettings;
 use Illuminate\Http\Request;
@@ -34,6 +36,10 @@ class LearningPathController extends Controller
      * With embedding search turned off in the admin settings, q is ignored
      * outright — nothing is embedded, so nothing reaches the provider — and
      * the page is told to leave the search field out.
+     *
+     * A level narrows every section the same way, on its own or together with
+     * a search. It is read leniently, like any filter in the address bar: a
+     * value that is not a LanguageLevel is ignored rather than rejected.
      */
     public function index(IndexLearningPathRequest $request, LearningPathSearch $search, SiteSettings $settings)
     {
@@ -41,15 +47,19 @@ class LearningPathController extends Controller
         $searchEnabled = $settings->embeddingSearchEnabled();
         $query = $searchEnabled ? $request->validated('q') : null;
         $ranked = filled($query) ? $search->rankedPathIds($query) : null;
+        $rawLevel = $request->query('level');
+        $level = is_string($rawLevel) ? LanguageLevel::tryFrom($rawLevel) : null;
 
         $enrolled = $user ? $user->enrolledPathsWithProgress() : collect();
         $enrolledIds = $enrolled->pluck('id')->all();
-        $userPaths = $this->narrowToSearch($enrolled, $ranked);
+        $userPaths = $this->narrowToSearch($enrolled, $ranked)
+            ->when($level, fn (Collection $paths) => $paths->filter(fn (LearningPath $path) => $path->level === $level)->values());
 
         $paths = $this->narrowToSearch(
             LearningPath::visibleTo($user)
                 ->whereNotIn('id', $enrolledIds)
                 ->when($ranked !== null, fn ($q) => $q->whereIn('id', $ranked))
+                ->when($level, fn ($q) => $q->where('level', $level))
                 ->get(['id', 'name', 'language', 'type']),
             $ranked,
         );
@@ -80,7 +90,32 @@ class LearningPathController extends Controller
                 'query' => $query ?? '',
                 'unavailable' => filled($query) && $ranked === null,
             ],
+            'levels' => $this->levelOptions($user, $level),
+            'filters' => ['level' => $level?->value],
         ]);
+    }
+
+    /**
+     * The levels worth offering this viewer: those that at least one path they
+     * can see actually has, lowest first, so no choice leads to a guaranteed
+     * empty page. The active level is kept even when nothing has it, so the
+     * control still shows what is narrowing the page and how to undo it.
+     *
+     * @return array<int, array{value: string, label: string}>
+     */
+    private function levelOptions(?User $user, ?LanguageLevel $active): array
+    {
+        $present = LearningPath::visibleTo($user)
+            ->whereNotNull('level')
+            ->distinct()
+            ->pluck('level')
+            ->map(fn ($level) => $level instanceof LanguageLevel ? $level : LanguageLevel::from($level));
+
+        return collect(LanguageLevel::cases())
+            ->filter(fn (LanguageLevel $level) => $level === $active || $present->contains($level))
+            ->map(fn (LanguageLevel $level) => ['value' => $level->value, 'label' => $level->label()])
+            ->values()
+            ->all();
     }
 
     /**

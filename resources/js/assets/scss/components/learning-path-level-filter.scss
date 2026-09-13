@@ -1,0 +1,75 @@
+/* ══════════════ Learning-path level filter ══════════════ */
+/* A row of level pills under the catalog search. Reads the neo-brutalist
+   tokens from its host (.nb-paths), with fallbacks so it still renders
+   outside one. */
+
+.nb-level-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    max-width: 44rem;
+    margin: 1.25rem auto 0;
+}
+
+.nb-level-filter__label {
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.nb-level-filter__option {
+    min-width: 3.2rem;
+    padding: 0.45rem 0.9rem;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--ink, #14110b);
+    background: var(--paper, #fffaf0);
+    border: var(--border, 3px solid #14110b);
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm, 4px 4px 0 0 #14110b);
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.nb-level-filter__option:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 0 var(--ink, #14110b);
+}
+
+.nb-level-filter__option:focus-visible {
+    outline: 3px solid var(--blue, #5b8def);
+    outline-offset: 3px;
+}
+
+.nb-level-filter__option:disabled {
+    cursor: progress;
+}
+
+/* The chosen level is pressed in: filled with the accent and pushed down
+   onto its shadow, so it reads as selected by shape as well as colour. */
+.nb-level-filter__option--active {
+    color: var(--on-accent, #14110b);
+    background: var(--cyan, #b388ff);
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 0 var(--ink, #14110b);
+}
+
+.nb-level-filter__option--active:hover:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 0 var(--ink, #14110b);
+}
+
+/* The dark ground's ink is the light cream, which would also paint the
+   active pill's text; the accent keeps its dark text so it stays legible. */
+.nb-level-filter.dark .nb-level-filter__option--active {
+    color: #14110b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-level-filter__option { transition: none; }
+}
