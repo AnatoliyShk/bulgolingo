@@ -8,6 +8,7 @@ use App\Models\LearningPath;
 use App\Models\User;
 use App\Services\LearningPathSearch;
 use App\Services\SiteSettings;
+use App\Support\LearningPathFilters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -37,9 +38,9 @@ class LearningPathController extends Controller
      * outright — nothing is embedded, so nothing reaches the provider — and
      * the page is told to leave the search field out.
      *
-     * A level narrows every section the same way, on its own or together with
-     * a search. It is read leniently, like any filter in the address bar: a
-     * value that is not a LanguageLevel is ignored rather than rejected.
+     * The level filters every section the same way, on its own or together
+     * with a search. The sort orders every section by exercise count instead,
+     * unless a search is already ordering the page by relevance.
      */
     public function index(IndexLearningPathRequest $request, LearningPathSearch $search, SiteSettings $settings)
     {
@@ -47,21 +48,27 @@ class LearningPathController extends Controller
         $searchEnabled = $settings->embeddingSearchEnabled();
         $query = $searchEnabled ? $request->validated('q') : null;
         $ranked = filled($query) ? $search->rankedPathIds($query) : null;
-        $rawLevel = $request->query('level');
-        $level = is_string($rawLevel) ? LanguageLevel::tryFrom($rawLevel) : null;
+        $filters = LearningPathFilters::fromRequest($request);
+        $exerciseCounts = $this->exerciseCounts();
 
         $enrolled = $user ? $user->enrolledPathsWithProgress() : collect();
         $enrolledIds = $enrolled->pluck('id')->all();
-        $userPaths = $this->narrowToSearch($enrolled, $ranked)
-            ->when($level, fn (Collection $paths) => $paths->filter(fn (LearningPath $path) => $path->level === $level)->values());
+        $userPaths = $filters->applySort(
+            $filters->applyToCollection($this->narrowToSearch($enrolled, $ranked)),
+            $exerciseCounts,
+            $ranked !== null,
+        );
 
-        $paths = $this->narrowToSearch(
-            LearningPath::visibleTo($user)
-                ->whereNotIn('id', $enrolledIds)
-                ->when($ranked !== null, fn ($q) => $q->whereIn('id', $ranked))
-                ->when($level, fn ($q) => $q->where('level', $level))
-                ->get(['id', 'name', 'language', 'type']),
-            $ranked,
+        $paths = $filters->applySort(
+            $this->narrowToSearch(
+                $filters->applyToQuery(LearningPath::visibleTo($user))
+                    ->whereNotIn('id', $enrolledIds)
+                    ->when($ranked !== null, fn ($q) => $q->whereIn('id', $ranked))
+                    ->get(['id', 'name', 'language', 'type']),
+                $ranked,
+            ),
+            $exerciseCounts,
+            $ranked !== null,
         );
 
         $types = DB::table('learning_path_lesson as lpl')
@@ -79,6 +86,7 @@ class LearningPathController extends Controller
             'language' => $path->language,
             'type' => $path->type->value,
             'exercise_types' => $types->get($path->id) ?? collect(),
+            'exercise_count' => $exerciseCounts->get($path->id) ?? 0,
         ]);
 
         return Inertia::render('LearningPath/Index', [
@@ -90,9 +98,25 @@ class LearningPathController extends Controller
                 'query' => $query ?? '',
                 'unavailable' => filled($query) && $ranked === null,
             ],
-            'levels' => $this->levelOptions($user, $level),
-            'filters' => ['level' => $level?->value],
+            'levels' => $this->levelOptions($user, $filters->level),
+            'filters' => $filters->toArray(),
         ]);
+    }
+
+    /**
+     * Every learning path's exercise count, keyed by id. A path with no
+     * lessons or no exercises is simply absent rather than zero.
+     *
+     * @return Collection<int, int>
+     */
+    private function exerciseCounts(): Collection
+    {
+        return DB::table('learning_path_lesson as lpl')
+            ->join('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
+            ->select('lpl.learning_path_id', DB::raw('count(distinct el.exercise_id) as exercise_count'))
+            ->groupBy('lpl.learning_path_id')
+            ->get()
+            ->mapWithKeys(fn ($row) => [(int) $row->learning_path_id => (int) $row->exercise_count]);
     }
 
     /**

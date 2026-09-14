@@ -1,38 +1,27 @@
 <script setup>
 import '@/assets/scss/components/learning-path-level-filter.scss'
 import { computed, ref } from 'vue'
-import { router, usePage } from '@inertiajs/vue3'
+import { usePage } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
+import { useLearningPathFilters } from '@/composables/useLearningPathFilters'
 
 const { theme } = useTheme()
 const page = usePage()
+const filters = useLearningPathFilters()
 
 const levels = computed(() => page.props.levels ?? [])
 const active = computed(() => page.props.filters?.level ?? null)
 const loading = ref(false)
 
-// Switching level keeps the search that is already narrowing the page, so the
-// two filters combine instead of one silently dropping the other. Picking the
-// level already active does nothing; "All" is how a level is taken off.
+// Switching level keeps the search and the other filters already narrowing
+// the page, so they combine instead of one silently dropping the rest. Picking
+// the level already active does nothing; "All" is how a level is taken off.
 function choose(level) {
     if (level === active.value) {
         return
     }
 
-    const query = page.props.search?.enabled ? page.props.search?.query : ''
-    const params = {}
-
-    if (query) {
-        params.q = query
-    }
-
-    if (level) {
-        params.level = level
-    }
-
-    router.get(route('learning-paths.index'), params, {
-        preserveState: true,
-        preserveScroll: true,
+    filters.visit({ level }, {
         onStart: () => { loading.value = true },
         onFinish: () => { loading.value = false },
     })

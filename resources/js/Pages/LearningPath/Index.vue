@@ -7,13 +7,14 @@ import TopBar from '@/Components/TopBar.vue'
 import LearningPathCardMini from '@/Components/LearningPathCardMini.vue'
 import LearningPathSearch from '@/Components/LearningPathSearch.vue'
 import LearningPathLevelFilter from '@/Components/LearningPathLevelFilter.vue'
+import LearningPathSortFilter from '@/Components/LearningPathSortFilter.vue'
 
 const props = defineProps({
     paths: Array,
     unfinishedPaths: { type: Array, default: () => [] },
     finishedPaths: { type: Array, default: () => [] },
     search: { type: Object, default: () => ({ enabled: false, query: '', unavailable: false }) },
-    filters: { type: Object, default: () => ({ level: null }) },
+    filters: { type: Object, default: () => ({ level: null, sort: null }) },
 })
 
 const { theme } = useTheme()
@@ -24,7 +25,8 @@ const hasAny = computed(() => hasEnrolled.value || (props.paths?.length ?? 0) > 
 // While a search or a level narrows the page, an empty catalog means nothing
 // new matched rather than that the viewer has started every path, so the
 // section drops out. A search says so in its own status line; a level alone
-// has none, so the page says it when no section has anything left.
+// has none, so the page says it when no section has anything left. The sort
+// only orders the page — it never empties it, so it plays no part here.
 const isSearching = computed(() => !!props.search.query && !props.search.unavailable)
 const isNarrowed = computed(() => isSearching.value || !!props.filters.level)
 const showCatalog = computed(() => !isNarrowed.value || (props.paths && props.paths.length > 0))
@@ -49,6 +51,7 @@ const levelIsEmpty = computed(() => !!props.filters.level && !isSearching.value 
                 <p class="nb-paths__sub">Pick a language path and start training today.</p>
                 <LearningPathSearch v-if="search.enabled" />
                 <LearningPathLevelFilter />
+                <LearningPathSortFilter />
             </div>
 
             <p v-if="levelIsEmpty" class="nb-paths__empty">No learning paths at level {{ filters.level }} yet.</p>

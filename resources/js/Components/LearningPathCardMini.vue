@@ -28,10 +28,11 @@ function typeMeta(type) {
 const page = usePage()
 const isAuthenticated = computed(() => !!page.props.auth?.user)
 
-// Only an enrolled path carries lesson counts — the plain catalog entry
-// doesn't, and that's what tells "not started yet" apart from "finished"
-// (continue_lesson_id is null in both cases).
-const isEnrolled = computed(() => props.path.lessons_count !== undefined)
+// Only an enrolled path carries the viewer's progress — the plain catalog
+// entry has just its exercise count, and that's what tells "not started yet"
+// apart from "finished" (continue_lesson_id is null in both cases).
+const isEnrolled = computed(() => props.path.completed_lessons_count !== undefined)
+const hasExerciseCount = computed(() => props.path.exercise_count !== undefined)
 
 function start() {
     router.post(route('learning-paths.start', props.path.id))
@@ -55,6 +56,9 @@ function start() {
 
         <span v-if="isEnrolled" class="nb-path-card-mini__count">
             {{ path.completed_lessons_count ?? 0 }} / {{ path.lessons_count ?? 0 }} lessons
+        </span>
+        <span v-else-if="hasExerciseCount" class="nb-path-card-mini__count">
+            {{ path.exercise_count }} {{ path.exercise_count === 1 ? 'exercise' : 'exercises' }}
         </span>
 
         <Link

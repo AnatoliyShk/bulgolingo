@@ -1,11 +1,13 @@
 <script setup>
 import '@/assets/scss/components/learning-path-search.scss'
 import { computed, ref, watch } from 'vue'
-import { router, usePage } from '@inertiajs/vue3'
+import { usePage } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
+import { useLearningPathFilters } from '@/composables/useLearningPathFilters'
 
 const { theme } = useTheme()
 const page = usePage()
+const filters = useLearningPathFilters()
 
 const activeQuery = computed(() => page.props.search?.query ?? '')
 const unavailable = computed(() => !!page.props.search?.unavailable)
@@ -39,23 +41,10 @@ const status = computed(() => {
 // Each search is its own history entry so the back button steps through them,
 // and state is preserved so the field keeps its text while the list reloads.
 // An empty field is a request for the whole catalog, not a search for nothing.
-// A level already chosen in the level filter is carried along, so searching or
-// clearing the search keeps the list at that level.
+// Filters already chosen are carried along, so searching or clearing the
+// search keeps the list narrowed by them.
 function visit(query) {
-    const params = {}
-    const level = page.props.filters?.level
-
-    if (query) {
-        params.q = query
-    }
-
-    if (level) {
-        params.level = level
-    }
-
-    router.get(route('learning-paths.index'), params, {
-        preserveState: true,
-        preserveScroll: true,
+    filters.visit({ q: query }, {
         onStart: () => { searching.value = true },
         onFinish: () => { searching.value = false },
     })
