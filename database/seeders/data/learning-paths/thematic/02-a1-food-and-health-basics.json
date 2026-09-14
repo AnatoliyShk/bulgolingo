@@ -1,0 +1,1016 @@
+{
+    "name": "Food and Health Basics",
+    "level": "A1",
+    "lessons": [
+        {
+            "name": "Breakfast",
+            "description": "What Bulgarians eat in the morning, and the verbs \"ям\" and \"пия\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the breakfast food",
+                        "pairs": [
+                            ["Bread", "хляб"],
+                            ["Butter", "масло"],
+                            ["Egg", "яйце"],
+                            ["Milk", "мляко"],
+                            ["Honey", "мед"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Butter and honey",
+                        "sentence": "За закуска ям филия с __ и мед.",
+                        "options": ["масло", "мляко", "вода"],
+                        "correct_option": 0,
+                        "explanation": "\"За закуска ям филия с масло и мед.\" means \"For breakfast I eat a slice of bread with butter and honey.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zakuska",
+                        "sentence": "\"Закуска\" means \"breakfast\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Закусвам\" means \"I have breakfast\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A glass of milk",
+                        "sentence": "Сутрин __ чаша мляко.",
+                        "options": ["пиеш", "пия", "пият"],
+                        "correct_option": 1,
+                        "explanation": "\"Сутрин пия чаша мляко.\" means \"In the morning I drink a glass of milk.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The children eat banitsa",
+                        "sentence": "Децата __ баница за закуска.",
+                        "options": ["ям", "яде", "ядат"],
+                        "correct_option": 2,
+                        "explanation": "\"Децата ядат баница за закуска.\" means \"The children eat banitsa for breakfast.\" Децата is plural."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Yaytse",
+                        "sentence": "\"Яйце\" is a plural noun.",
+                        "correct_option": false,
+                        "explanation": "Яйце is singular and neuter. The plural is яйца."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more breakfast food",
+                        "pairs": [
+                            ["Yoghurt", "кисело мляко"],
+                            ["Jam", "конфитюр"],
+                            ["Cheese pastry", "баница"],
+                            ["Cereal", "зърнена закуска"],
+                            ["Toast", "препечена филийка"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Coffee without sugar",
+                        "sentence": "Обичам кафе __ захар.",
+                        "options": ["без", "от", "на"],
+                        "correct_option": 0,
+                        "explanation": "\"Обичам кафе без захар.\" means \"I like coffee without sugar.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kiselo mlyako",
+                        "sentence": "\"Кисело мляко\" is yoghurt, literally \"sour milk\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarian yoghurt is famous for its bacterium, Lactobacillus bulgaricus."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "What is there for breakfast",
+                        "sentence": "Какво __ за закуска днес?",
+                        "options": ["имам", "има", "имат"],
+                        "correct_option": 1,
+                        "explanation": "\"Какво има за закуска днес?\" means \"What is there for breakfast today?\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Lunch and Dinner",
+            "description": "Main meals, cooking verbs and adjectives for food.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the meals",
+                        "pairs": [
+                            ["Lunch", "обяд"],
+                            ["Dinner", "вечеря"],
+                            ["Chicken", "пиле"],
+                            ["Rice", "ориз"],
+                            ["Meatballs", "кюфтета"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Chicken with rice",
+                        "sentence": "На обяд ядем пиле с __ и салата.",
+                        "options": ["ориз", "мляко", "мед"],
+                        "correct_option": 0,
+                        "explanation": "\"На обяд ядем пиле с ориз и салата.\" means \"For lunch we eat chicken with rice and salad.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vecherya",
+                        "sentence": "\"Вечеря\" is the evening meal.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Вечерям\" means \"I have dinner\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I am cooking dinner",
+                        "sentence": "Тази вечер аз __ вечеря за всички.",
+                        "options": ["готвят", "готвиш", "готвя"],
+                        "correct_option": 2,
+                        "explanation": "\"Тази вечер аз готвя вечеря за всички.\" means \"Tonight I am cooking dinner for everyone.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Very hot soup",
+                        "sentence": "Супата е много __ и не мога да я ям.",
+                        "options": ["горещ", "гореща", "горещо"],
+                        "correct_option": 1,
+                        "explanation": "\"Супата е много гореща и не мога да я ям.\" means \"The soup is very hot and I cannot eat it.\" Супа is feminine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pile",
+                        "sentence": "\"Пиле\" means \"fish\".",
+                        "correct_option": false,
+                        "explanation": "\"Пиле\" means \"chicken\". Fish is \"риба\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the cooking verbs",
+                        "pairs": [
+                            ["To cook", "готвя"],
+                            ["To boil", "варя"],
+                            ["To fry", "пържа"],
+                            ["To bake", "пека"],
+                            ["To cut", "режа"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Mum bakes bread",
+                        "sentence": "Мама __ хляб в неделя.",
+                        "options": ["пече", "пека", "печем"],
+                        "correct_option": 0,
+                        "explanation": "\"Мама пече хляб в неделя.\" means \"Mum bakes bread on Sundays.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Parzheni kartofi",
+                        "sentence": "\"Пържени картофи\" are chips, or French fries.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"fried potatoes\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Grilled meatballs",
+                        "sentence": "Обичам __ кюфтета с картофи.",
+                        "options": ["печен", "печена", "печени"],
+                        "correct_option": 2,
+                        "explanation": "\"Обичам печени кюфтета с картофи.\" means \"I love grilled meatballs with potatoes.\" Кюфтета is plural."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Drinks",
+            "description": "Order drinks, count bottles and glasses, and describe tastes.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the drinks",
+                        "pairs": [
+                            ["Water", "вода"],
+                            ["Juice", "сок"],
+                            ["Tea", "чай"],
+                            ["Coffee", "кафе"],
+                            ["Beer", "бира"]
+                        ],
+                        "explanation": "Match each drink to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A bottle of water",
+                        "sentence": "Една __ вода, моля.",
+                        "options": ["бутилки", "бутилка", "бутилката"],
+                        "correct_option": 1,
+                        "explanation": "\"Една бутилка вода, моля.\" means \"A bottle of water, please.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Mineralna voda",
+                        "sentence": "\"Минерална вода\" can be still or sparkling (\"газирана\").",
+                        "correct_option": true,
+                        "explanation": "Correct. Still water is \"негазирана\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Coffee with milk",
+                        "sentence": "Искате ли кафето __ мляко?",
+                        "options": ["с", "от", "за"],
+                        "correct_option": 0,
+                        "explanation": "\"Искате ли кафето с мляко?\" means \"Would you like your coffee with milk?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two cups of tea",
+                        "sentence": "Две __ чай, моля.",
+                        "options": ["чаша", "чашата", "чаши"],
+                        "correct_option": 2,
+                        "explanation": "\"Две чаши чай, моля.\" means \"Two cups of tea, please.\" Чаша is feminine, so the number is две."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sok",
+                        "sentence": "\"Сок\" means \"soup\".",
+                        "correct_option": false,
+                        "explanation": "\"Сок\" means \"juice\". Soup is \"супа\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the tastes",
+                        "pairs": [
+                            ["Hot", "горещ"],
+                            ["Cold", "студен"],
+                            ["Sweet", "сладък"],
+                            ["Bitter", "горчив"],
+                            ["Sour", "кисел"]
+                        ],
+                        "explanation": "Match each English adjective to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Bitter tea",
+                        "sentence": "Чаят е много __ без захар.",
+                        "options": ["горчив", "горчива", "горчиво"],
+                        "correct_option": 0,
+                        "explanation": "\"Чаят е много горчив без захар.\" means \"The tea is very bitter without sugar.\" Чай is masculine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ayryan",
+                        "sentence": "\"Айрян\" is a drink made of yoghurt and water.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is a cold, slightly salty drink, popular with a banitsa."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Cold beer",
+                        "sentence": "Бирата е __ и приятна.",
+                        "options": ["студен", "студена", "студено"],
+                        "correct_option": 1,
+                        "explanation": "\"Бирата е студена и приятна.\" means \"The beer is cold and pleasant.\" Бира is feminine."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Hungry and Thirsty",
+            "description": "Say how you feel before and after a meal.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the feelings",
+                        "pairs": [
+                            ["Hungry", "гладен"],
+                            ["Thirsty", "жаден"],
+                            ["Full", "сит"],
+                            ["Tired", "уморен"],
+                            ["Sleepy", "сънлив"]
+                        ],
+                        "explanation": "Match each English adjective to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I am hungry",
+                        "sentence": "Гладна __ и искам да ям.",
+                        "options": ["си", "съм", "е"],
+                        "correct_option": 1,
+                        "explanation": "\"Гладна съм и искам да ям.\" means \"I am hungry and I want to eat.\" A woman says гладна, a man гладен."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zhaden sam",
+                        "sentence": "\"Жаден съм\" means \"I am thirsty\".",
+                        "correct_option": true,
+                        "explanation": "Correct. A woman says \"Жадна съм\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The children are thirsty",
+                        "sentence": "Децата са __ и искат вода.",
+                        "options": ["жаден", "жадна", "жадни"],
+                        "correct_option": 2,
+                        "explanation": "\"Децата са жадни и искат вода.\" means \"The children are thirsty and want water.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I am full",
+                        "sentence": "Благодаря, __ съм и не искам повече.",
+                        "options": ["сит", "гладен", "жаден"],
+                        "correct_option": 0,
+                        "explanation": "\"Благодаря, сит съм и не искам повече.\" means \"Thank you, I am full and do not want any more.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Gladen sam for a woman",
+                        "sentence": "A woman says \"Гладен съм\" when she is hungry.",
+                        "correct_option": false,
+                        "explanation": "A woman says \"Гладна съм\". The adjective agrees with the speaker."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the mealtime phrases",
+                        "pairs": [
+                            ["I want to eat", "искам да ям"],
+                            ["I want to drink", "искам да пия"],
+                            ["Let's eat", "хайде да ядем"],
+                            ["Enjoy your meal", "добър апетит"],
+                            ["Something to eat", "нещо за ядене"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Let's have a bite",
+                        "sentence": "Хайде да __ нещо!",
+                        "options": ["хапна", "хапнем", "хапваме"],
+                        "correct_option": 1,
+                        "explanation": "\"Хайде да хапнем нещо!\" means \"Let's have a bite to eat!\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dobar apetit",
+                        "sentence": "\"Добър апетит\" is said before a meal.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is like \"Enjoy your meal\" or \"Bon appétit\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Something in the fridge",
+                        "sentence": "Имаш ли нещо за __ в хладилника?",
+                        "options": ["ядене", "ям", "яде"],
+                        "correct_option": 0,
+                        "explanation": "\"Имаш ли нещо за ядене в хладилника?\" means \"Have you got anything to eat in the fridge?\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Laying the Table",
+            "description": "Plates, cutlery and passing things at the table.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the tableware",
+                        "pairs": [
+                            ["Plate", "чиния"],
+                            ["Glass", "чаша"],
+                            ["Fork", "вилица"],
+                            ["Knife", "нож"],
+                            ["Spoon", "лъжица"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Soup with a spoon",
+                        "sentence": "Супата се яде с __ от дълбока чиния.",
+                        "options": ["лъжица", "нож", "вилица"],
+                        "correct_option": 0,
+                        "explanation": "\"Супата се яде с лъжица от дълбока чиния.\" means \"Soup is eaten with a spoon from a deep plate.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nozh",
+                        "sentence": "\"Нож\" is a knife.",
+                        "correct_option": true,
+                        "explanation": "Correct. The plural is ножове."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Six plates",
+                        "sentence": "Сложи шест __ на масата, моля.",
+                        "options": ["чиния", "чинии", "чинията"],
+                        "correct_option": 1,
+                        "explanation": "\"Сложи шест чинии на масата, моля.\" means \"Put six plates on the table, please.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A fork for the salad",
+                        "sentence": "Може ли една __ за салатата?",
+                        "options": ["вилици", "вилицата", "вилица"],
+                        "correct_option": 2,
+                        "explanation": "\"Може ли една вилица за салатата?\" means \"Could I have a fork for the salad?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Salfetka",
+                        "sentence": "\"Салфетка\" is a tablecloth.",
+                        "correct_option": false,
+                        "explanation": "A салфетка is a napkin. A tablecloth is a \"покривка\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more table words",
+                        "pairs": [
+                            ["Table", "маса"],
+                            ["Napkin", "салфетка"],
+                            ["Salt", "сол"],
+                            ["Black pepper", "черен пипер"],
+                            ["Oil", "олио"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Pass the salt",
+                        "sentence": "Подай ми __ и пипера, моля.",
+                        "options": ["солта", "сол", "соли"],
+                        "correct_option": 0,
+                        "explanation": "\"Подай ми солта и пипера, моля.\" means \"Pass me the salt and pepper, please.\" Сол is feminine, so the article is -та."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pokrivka",
+                        "sentence": "\"Покривка\" is a tablecloth.",
+                        "correct_option": true,
+                        "explanation": "Correct. It comes from покривам, \"to cover\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In the cupboard",
+                        "sentence": "Чашите са в __ до хладилника.",
+                        "options": ["шкаф", "шкафа", "шкафове"],
+                        "correct_option": 1,
+                        "explanation": "\"Чашите са в шкафа до хладилника.\" means \"The glasses are in the cupboard next to the fridge.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Ordering at a Restaurant",
+            "description": "Ask for the menu, order Bulgarian dishes and ask for the bill.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the restaurant words",
+                        "pairs": [
+                            ["Menu", "меню"],
+                            ["Waiter", "сервитьор"],
+                            ["Bill", "сметка"],
+                            ["Table", "маса"],
+                            ["Tip", "бакшиш"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "May I have the menu",
+                        "sentence": "__ ли менюто, моля?",
+                        "options": ["Искам", "Може", "Имам"],
+                        "correct_option": 1,
+                        "explanation": "\"Може ли менюто, моля?\" means \"May I have the menu, please?\" \"Може ли...\" is the easiest way to ask for something."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Smetkata",
+                        "sentence": "\"Сметката, моля\" is how you ask for the bill.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"The bill, please\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A shopska salad for me",
+                        "sentence": "За мен една шопска __ и кебапчета.",
+                        "options": ["салата", "салати", "салатата"],
+                        "correct_option": 0,
+                        "explanation": "\"За мен една шопска салата и кебапчета.\" means \"For me, a shopska salad and kebapcheta.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "What will you order",
+                        "sentence": "Ти какво ще __ за десерт?",
+                        "options": ["поръчам", "поръчат", "поръчаш"],
+                        "correct_option": 2,
+                        "explanation": "\"Ти какво ще поръчаш за десерт?\" means \"What will you order for dessert?\" Поръчаш goes with ти."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Bakshish",
+                        "sentence": "\"Бакшиш\" means \"menu\".",
+                        "correct_option": false,
+                        "explanation": "A бакшиш is a tip for the waiter."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the Bulgarian dishes",
+                        "pairs": [
+                            ["Shopska salad", "шопска салата"],
+                            ["Stuffed vine leaves", "сарми"],
+                            ["Moussaka", "мусака"],
+                            ["Bean soup", "боб чорба"],
+                            ["Tripe soup", "шкембе чорба"]
+                        ],
+                        "explanation": "Match each English name to the Bulgarian dish."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The waiter brings the menu",
+                        "sentence": "Сервитьорът носи __ на масата.",
+                        "options": ["менюто", "меню", "менюта"],
+                        "correct_option": 0,
+                        "explanation": "\"Сервитьорът носи менюто на масата.\" means \"The waiter brings the menu to the table.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Musaka",
+                        "sentence": "Bulgarian moussaka is usually made with potatoes and minced meat.",
+                        "correct_option": true,
+                        "explanation": "Correct. Unlike the Greek version, it is made with potatoes rather than aubergines."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Another cold beer",
+                        "sentence": "Може ли още една __ бира?",
+                        "options": ["студен", "студено", "студена"],
+                        "correct_option": 2,
+                        "explanation": "\"Може ли още една студена бира?\" means \"Could I have another cold beer?\" Бира is feminine."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "The Body",
+            "description": "Parts of the body and their unusual plurals.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the body parts",
+                        "pairs": [
+                            ["Head", "глава"],
+                            ["Hand, arm", "ръка"],
+                            ["Leg, foot", "крак"],
+                            ["Eye", "око"],
+                            ["Ear", "ухо"]
+                        ],
+                        "explanation": "Match each part of the body to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two hands",
+                        "sentence": "Имам две __ и два крака.",
+                        "options": ["ръка", "ръце", "ръцете"],
+                        "correct_option": 1,
+                        "explanation": "\"Имам две ръце и два крака.\" means \"I have two hands and two legs.\" The plural of ръка is ръце."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ochi",
+                        "sentence": "The plural of \"око\" (eye) is \"очи\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Some body parts have old, irregular plurals: око, очи; ухо, уши."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Long hair",
+                        "sentence": "Той има дълга __ и сини очи.",
+                        "options": ["коса", "косата", "коси"],
+                        "correct_option": 0,
+                        "explanation": "\"Той има дълга коса и сини очи.\" means \"He has long hair and blue eyes.\" Коса is singular in Bulgarian."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Washing their hands",
+                        "sentence": "Децата мият __ си преди ядене.",
+                        "options": ["ръка", "ръце", "ръцете"],
+                        "correct_option": 2,
+                        "explanation": "\"Децата мият ръцете си преди ядене.\" means \"The children wash their hands before eating.\" With си the noun takes the article."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Uhota",
+                        "sentence": "The plural of \"ухо\" (ear) is \"ухота\".",
+                        "correct_option": false,
+                        "explanation": "The plural of ухо is уши."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more body parts",
+                        "pairs": [
+                            ["Nose", "нос"],
+                            ["Mouth", "уста"],
+                            ["Tooth", "зъб"],
+                            ["Back", "гръб"],
+                            ["Stomach", "корем"]
+                        ],
+                        "explanation": "Match each part of the body to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Brushing teeth",
+                        "sentence": "Мия си __ сутрин и вечер.",
+                        "options": ["зъбите", "зъб", "зъба"],
+                        "correct_option": 0,
+                        "explanation": "\"Мия си зъбите сутрин и вечер.\" means \"I brush my teeth morning and evening.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Usta",
+                        "sentence": "\"Уста\" (mouth) is feminine: \"устата\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Затвори си устата\" means \"Shut your mouth\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A broad back",
+                        "sentence": "Той има широк __ и силни ръце.",
+                        "options": ["гърба", "гръб", "гърбове"],
+                        "correct_option": 1,
+                        "explanation": "\"Той има широк гръб и силни ръце.\" means \"He has a broad back and strong arms.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "I Feel Ill",
+            "description": "Say what hurts, describe symptoms and talk to a doctor.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the symptoms",
+                        "pairs": [
+                            ["Headache", "главоболие"],
+                            ["Fever", "температура"],
+                            ["Cold (illness)", "настинка"],
+                            ["Cough", "кашлица"],
+                            ["Flu", "грип"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My head hurts",
+                        "sentence": "Боли __ главата.",
+                        "options": ["ме", "ми", "аз"],
+                        "correct_option": 0,
+                        "explanation": "\"Боли ме главата.\" means \"My head hurts\", literally \"The head hurts me\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Boli me garloto",
+                        "sentence": "\"Боли ме гърлото\" means \"I have a sore throat\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"The throat hurts me\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A high temperature",
+                        "sentence": "Имам висока __ и оставам вкъщи.",
+                        "options": ["температури", "температура", "температурата"],
+                        "correct_option": 1,
+                        "explanation": "\"Имам висока температура и оставам вкъщи.\" means \"I have a high temperature and I am staying at home.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I am ill",
+                        "sentence": "Болен __ и не мога да дойда на работа.",
+                        "options": ["си", "е", "съм"],
+                        "correct_option": 2,
+                        "explanation": "\"Болен съм и не мога да дойда на работа.\" means \"I am ill and cannot come to work.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nastinka",
+                        "sentence": "\"Настинка\" means a broken leg.",
+                        "correct_option": false,
+                        "explanation": "A настинка is a cold. A broken leg is \"счупен крак\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the medical words",
+                        "pairs": [
+                            ["Doctor", "лекар"],
+                            ["Nurse", "медицинска сестра"],
+                            ["Medicine", "лекарство"],
+                            ["Tablet", "хапче"],
+                            ["Prescription", "рецепта"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "One tablet three times a day",
+                        "sentence": "Пия по едно __ три пъти на ден.",
+                        "options": ["хапче", "хапчета", "хапчето"],
+                        "correct_option": 0,
+                        "explanation": "\"Пия по едно хапче три пъти на ден.\" means \"I take one tablet three times a day.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Retsepta",
+                        "sentence": "\"Рецепта\" can be a doctor's prescription or a cooking recipe.",
+                        "correct_option": true,
+                        "explanation": "Correct. The same word covers both."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A check-up",
+                        "sentence": "Утре имам __ при зъболекаря.",
+                        "options": ["преглед", "лекарство", "хапче"],
+                        "correct_option": 0,
+                        "explanation": "\"Утре имам преглед при зъболекаря.\" means \"Tomorrow I have a check-up at the dentist's.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Sport for Everyone",
+            "description": "Popular sports and what you do to play them.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the sports",
+                        "pairs": [
+                            ["Football", "футбол"],
+                            ["Basketball", "баскетбол"],
+                            ["Volleyball", "волейбол"],
+                            ["Skiing", "ски"],
+                            ["Running", "бягане"]
+                        ],
+                        "explanation": "Match each sport to its Bulgarian name."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I play football",
+                        "sentence": "В неделя __ футбол с приятели.",
+                        "options": ["играеш", "играя", "играят"],
+                        "correct_option": 1,
+                        "explanation": "\"В неделя играя футбол с приятели.\" means \"On Sundays I play football with friends.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Igraya futbol",
+                        "sentence": "In Bulgarian you \"play\" football: \"играя футбол\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Играя is used for most ball games."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Skiing in Bansko",
+                        "sentence": "През зимата караме __ в Банско.",
+                        "options": ["тенис", "футбол", "ски"],
+                        "correct_option": 2,
+                        "explanation": "\"През зимата караме ски в Банско.\" means \"In winter we ski in Bansko.\" You \"drive\" skis: карам ски."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My favourite sport",
+                        "sentence": "Любимият ми __ е волейбол.",
+                        "options": ["спорт", "спорта", "спортове"],
+                        "correct_option": 0,
+                        "explanation": "\"Любимият ми спорт е волейбол.\" means \"My favourite sport is volleyball.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Byagane",
+                        "sentence": "\"Бягане\" means \"swimming\".",
+                        "correct_option": false,
+                        "explanation": "\"Бягане\" means \"running\". Swimming is \"плуване\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the sport words",
+                        "pairs": [
+                            ["Ball", "топка"],
+                            ["Team", "отбор"],
+                            ["Match", "мач"],
+                            ["Stadium", "стадион"],
+                            ["Gym", "фитнес зала"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A ball for basketball",
+                        "sentence": "Имаш ли __ за баскетбол?",
+                        "options": ["топки", "топка", "топката"],
+                        "correct_option": 1,
+                        "explanation": "\"Имаш ли топка за баскетбол?\" means \"Have you got a basketball?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Stadion",
+                        "sentence": "A \"стадион\" is a place where you watch matches.",
+                        "correct_option": true,
+                        "explanation": "Correct. The national stadium in Sofia is \"Васил Левски\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Three times a week",
+                        "sentence": "Ходя на фитнес три __ седмично.",
+                        "options": ["път", "пъти", "пътя"],
+                        "correct_option": 1,
+                        "explanation": "\"Ходя на фитнес три пъти седмично.\" means \"I go to the gym three times a week.\" After a number, път becomes пъти."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Healthy Habits",
+            "description": "Sleep, food and exercise: talk about a healthy life.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the healthy words",
+                        "pairs": [
+                            ["Healthy", "здравословен"],
+                            ["Sleep", "сън"],
+                            ["Walk", "разходка"],
+                            ["Vegetables", "зеленчуци"],
+                            ["Fruit", "плодове"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I walk every day",
+                        "sentence": "Всеки ден __ по един час.",
+                        "options": ["вървя", "върви", "вървят"],
+                        "correct_option": 0,
+                        "explanation": "\"Всеки ден вървя по един час.\" means \"Every day I walk for an hour.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zdrave",
+                        "sentence": "\"Здраве\" means \"health\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Здрав\" means \"healthy\" or \"strong\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Eight hours a night",
+                        "sentence": "Спя по осем __ на нощ.",
+                        "options": ["час", "часове", "часа"],
+                        "correct_option": 2,
+                        "explanation": "\"Спя по осем часа на нощ.\" means \"I sleep eight hours a night.\" After a number, час becomes часа."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Plenty of water",
+                        "sentence": "Пия много __ всеки ден.",
+                        "options": ["вода", "водата", "води"],
+                        "correct_option": 0,
+                        "explanation": "\"Пия много вода всеки ден.\" means \"I drink a lot of water every day.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Razhodka",
+                        "sentence": "\"Разходка\" means \"a meal\".",
+                        "correct_option": false,
+                        "explanation": "A разходка is a walk. A meal is \"ядене\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the habit verbs",
+                        "pairs": [
+                            ["To sleep", "спя"],
+                            ["To rest", "почивам"],
+                            ["To walk", "ходя пеша"],
+                            ["To eat", "ям"],
+                            ["To do sport", "спортувам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I do not smoke",
+                        "sentence": "Не __ и не пия алкохол.",
+                        "options": ["пушиш", "пуша", "пушат"],
+                        "correct_option": 1,
+                        "explanation": "\"Не пуша и не пия алкохол.\" means \"I do not smoke and I do not drink alcohol.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nazdrave",
+                        "sentence": "\"Наздраве!\" literally wishes someone good health.",
+                        "correct_option": true,
+                        "explanation": "Correct. It comes from \"на здраве\", \"to health\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "More vegetables",
+                        "sentence": "Лекарят казва да ям повече __ и плодове.",
+                        "options": ["захар", "сол", "зеленчуци"],
+                        "correct_option": 2,
+                        "explanation": "\"Лекарят казва да ям повече зеленчуци и плодове.\" means \"The doctor says I should eat more vegetables and fruit.\""
+                    }
+                }
+            ]
+        }
+    ]
+}

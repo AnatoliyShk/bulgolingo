@@ -17,18 +17,25 @@ use Illuminate\Support\Collection;
 final readonly class LearningPathFilters
 {
     /**
-     * @param  'exercises_asc'|'exercises_desc'|null  $sort
+     * The catalog defaults to its most substantial paths first, so it always
+     * carries a sort rather than an unordered one being a third option.
      */
-    public function __construct(
-        public ?LanguageLevel $level = null,
-        public ?string $sort = null,
-    ) {}
+    private const DEFAULT_SORT = 'exercises_desc';
 
     private const SORTS = ['exercises_asc', 'exercises_desc'];
 
     /**
+     * @param  'exercises_asc'|'exercises_desc'  $sort
+     */
+    public function __construct(
+        public ?LanguageLevel $level = null,
+        public string $sort = self::DEFAULT_SORT,
+    ) {}
+
+    /**
      * Read leniently, like any filter in the address bar: a value that does
-     * not match a known option is ignored rather than rejected.
+     * not match a known option falls back to the default rather than being
+     * rejected.
      */
     public static function fromRequest(Request $request): self
     {
@@ -37,7 +44,7 @@ final readonly class LearningPathFilters
 
         return new self(
             is_string($level) ? LanguageLevel::tryFrom($level) : null,
-            is_string($sort) && in_array($sort, self::SORTS, true) ? $sort : null,
+            is_string($sort) && in_array($sort, self::SORTS, true) ? $sort : self::DEFAULT_SORT,
         );
     }
 
@@ -66,8 +73,8 @@ final readonly class LearningPathFilters
     /**
      * Orders loaded paths by exercise count, looked up from $exerciseCounts
      * (path id => count; a path missing from it has none). Left in whatever
-     * order it arrived when no sort is chosen, or when a search is already
-     * ordering the page by relevance — a sort would only fight it.
+     * order it arrived when a search is already ordering the page by
+     * relevance — a sort would only fight it.
      *
      * @param  Collection<int, LearningPath>  $paths
      * @param  Collection<int, int>  $exerciseCounts
@@ -75,7 +82,7 @@ final readonly class LearningPathFilters
      */
     public function applySort(Collection $paths, Collection $exerciseCounts, bool $searchIsOrdering): Collection
     {
-        if ($this->sort === null || $searchIsOrdering) {
+        if ($searchIsOrdering) {
             return $paths;
         }
 
@@ -85,7 +92,7 @@ final readonly class LearningPathFilters
     }
 
     /**
-     * @return array{level: ?string, sort: ?string}
+     * @return array{level: ?string, sort: string}
      */
     public function toArray(): array
     {

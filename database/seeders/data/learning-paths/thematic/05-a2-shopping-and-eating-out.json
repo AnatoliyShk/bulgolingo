@@ -1,0 +1,1016 @@
+{
+    "name": "Shopping and Eating Out",
+    "level": "A2",
+    "lessons": [
+        {
+            "name": "At the Supermarket",
+            "description": "Trolleys, shelves and special offers.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the supermarket words",
+                        "pairs": [
+                            ["Trolley", "количка"],
+                            ["Basket", "кошница"],
+                            ["Checkout", "каса"],
+                            ["Shelf", "рафт"],
+                            ["Bag", "торбичка"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I took a trolley",
+                        "sentence": "Взех една __ и започнах да пазарувам.",
+                        "options": ["количка", "количката", "колички"],
+                        "correct_option": 0,
+                        "explanation": "\"Взех една количка и започнах да пазарувам.\" means \"I took a trolley and started shopping.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kasa",
+                        "sentence": "In a shop, the \"каса\" is the checkout.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Плащате на каса номер три\" means \"Pay at checkout three\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "On the bottom shelf",
+                        "sentence": "Млякото е на долния __ вляво.",
+                        "options": ["рафта", "рафт", "рафтове"],
+                        "correct_option": 1,
+                        "explanation": "\"Млякото е на долния рафт вляво.\" means \"The milk is on the bottom shelf on the left.\" The article is already on долния."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Shopping for the week",
+                        "sentence": "Вчера __ продукти за цялата седмица.",
+                        "options": ["купувам", "ще купя", "купих"],
+                        "correct_option": 2,
+                        "explanation": "\"Вчера купих продукти за цялата седмица.\" means \"Yesterday I bought groceries for the whole week.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Torbichka",
+                        "sentence": "\"Торбичка\" is a shopping trolley.",
+                        "correct_option": false,
+                        "explanation": "A торбичка is a small bag. A trolley is a \"количка\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the aisles",
+                        "pairs": [
+                            ["Dairy products", "млечни продукти"],
+                            ["Meat products", "месни продукти"],
+                            ["Frozen food", "замразени храни"],
+                            ["Drinks", "напитки"],
+                            ["Household goods", "домакински стоки"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In the freezers",
+                        "sentence": "Замразените храни са в __ в дъното.",
+                        "options": ["хладилниците", "хладилник", "хладилници"],
+                        "correct_option": 0,
+                        "explanation": "\"Замразените храни са в хладилниците в дъното.\" means \"The frozen food is in the freezers at the back.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Promotsiya",
+                        "sentence": "In a shop, \"промоция\" means a special offer.",
+                        "correct_option": true,
+                        "explanation": "Correct. You will see \"Промоция!\" on the price tags of discounted goods."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "On special offer",
+                        "sentence": "Сиренето е __ промоция тази седмица.",
+                        "options": ["в", "с", "на"],
+                        "correct_option": 2,
+                        "explanation": "\"Сиренето е на промоция тази седмица.\" means \"The cheese is on special offer this week.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Weights and Quantities",
+            "description": "Grams, litres and packets, and the count form after numbers.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the measures",
+                        "pairs": [
+                            ["Kilogram", "килограм"],
+                            ["Gram", "грам"],
+                            ["Litre", "литър"],
+                            ["Packet", "пакет"],
+                            ["Jar", "буркан"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two hundred grams",
+                        "sentence": "Дайте ми двеста __ сирене.",
+                        "options": ["грама", "грам", "грамове"],
+                        "correct_option": 0,
+                        "explanation": "\"Дайте ми двеста грама сирене.\" means \"Give me two hundred grams of cheese.\" After a number, грам becomes грама."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Burkan",
+                        "sentence": "\"Буркан\" is a glass jar.",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarians fill буркани with winter preserves every autumn."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two litres of milk",
+                        "sentence": "Купих два __ мляко.",
+                        "options": ["литър", "литра", "литри"],
+                        "correct_option": 1,
+                        "explanation": "\"Купих два литра мляко.\" means \"I bought two litres of milk.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A packet of rice",
+                        "sentence": "Купи един __ ориз и два хляба.",
+                        "options": ["пакета", "пакети", "пакет"],
+                        "correct_option": 2,
+                        "explanation": "\"Купи един пакет ориз и два хляба.\" means \"Buy a packet of rice and two loaves of bread.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dva kilogrami",
+                        "sentence": "After a number, \"килограм\" becomes \"килограми\": \"два килограми\".",
+                        "correct_option": false,
+                        "explanation": "It is \"два килограма\". Masculine nouns for things take the count form in -а after a number."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the portions",
+                        "pairs": [
+                            ["Slice of bread", "филия"],
+                            ["Piece", "парче"],
+                            ["Bottle", "бутилка"],
+                            ["Box", "кутия"],
+                            ["Bunch of grapes", "чепка грозде"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A piece of cake",
+                        "sentence": "Може ли едно __ торта?",
+                        "options": ["парче", "парчета", "парчето"],
+                        "correct_option": 0,
+                        "explanation": "\"Може ли едно парче торта?\" means \"Could I have a piece of cake?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kutiya",
+                        "sentence": "\"Кутия\" means \"box\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Кутия бонбони\" is a box of chocolates."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Half a kilo",
+                        "sentence": "Дайте ми половин __ сирене.",
+                        "options": ["кила", "кило", "килото"],
+                        "correct_option": 1,
+                        "explanation": "\"Дайте ми половин кило сирене.\" means \"Give me half a kilo of cheese.\" Кило is the everyday word for килограм."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Buying Clothes",
+            "description": "Fitting rooms, sizes, sales and fabrics.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the clothes shop words",
+                        "pairs": [
+                            ["Fitting room", "пробна"],
+                            ["Size", "размер"],
+                            ["Sale", "разпродажба"],
+                            ["Discount", "намаление"],
+                            ["Cashier", "касиер"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In the fitting room",
+                        "sentence": "Пробвах панталона в __ и ми е малък.",
+                        "options": ["пробната", "пробна", "пробни"],
+                        "correct_option": 0,
+                        "explanation": "\"Пробвах панталона в пробната и ми е малък.\" means \"I tried the trousers on in the fitting room and they are too small.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Razprodazhba",
+                        "sentence": "\"Разпродажба\" is a sale with lower prices.",
+                        "correct_option": true,
+                        "explanation": "Correct. Big sales usually come in January and July."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In a smaller size",
+                        "sentence": "Този пуловер ми е голям, имате ли го __ по-малък размер?",
+                        "options": ["с", "в", "на"],
+                        "correct_option": 1,
+                        "explanation": "\"Имате ли го в по-малък размер?\" means \"Do you have it in a smaller size?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I like the dress",
+                        "sentence": "Роклята __ много, ще я взема.",
+                        "options": ["ме харесва", "аз харесва", "ми харесва"],
+                        "correct_option": 2,
+                        "explanation": "\"Роклята ми харесва много, ще я взема.\" means \"I like the dress a lot, I will take it.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Namalenie",
+                        "sentence": "\"Намаление\" means a price increase.",
+                        "correct_option": false,
+                        "explanation": "An намаление is a reduction, a discount. \"Намаление 30%\" means 30% off."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the fabrics",
+                        "pairs": [
+                            ["Cotton", "памук"],
+                            ["Wool", "вълна"],
+                            ["Silk", "коприна"],
+                            ["Leather", "кожа"],
+                            ["Linen", "лен"]
+                        ],
+                        "explanation": "Match each fabric to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Pure cotton",
+                        "sentence": "Тази риза е от чист __ и е много лека.",
+                        "options": ["памук", "памука", "памуци"],
+                        "correct_option": 0,
+                        "explanation": "\"Тази риза е от чист памук и е много лека.\" means \"This shirt is pure cotton and very light.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kozha",
+                        "sentence": "\"Кожа\" can mean skin or leather.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Кожено яке\" is a leather jacket."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A silk dress",
+                        "sentence": "Купих си копринена __ за сватбата.",
+                        "options": ["роклята", "рокли", "рокля"],
+                        "correct_option": 2,
+                        "explanation": "\"Купих си копринена рокля за сватбата.\" means \"I bought a silk dress for the wedding.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Buying Shoes",
+            "description": "Trainers, boots and sandals, and whether they fit.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the footwear",
+                        "pairs": [
+                            ["Trainers", "маратонки"],
+                            ["Boots", "ботуши"],
+                            ["Sandals", "сандали"],
+                            ["Slippers", "чехли"],
+                            ["High heels", "обувки на ток"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A bit tight",
+                        "sentence": "Тези маратонки __ ми малко тесни.",
+                        "options": ["са", "е", "съм"],
+                        "correct_option": 0,
+                        "explanation": "\"Тези маратонки са ми малко тесни.\" means \"These trainers are a bit tight on me.\" Са comes before ми, while е comes after it: \"ми е\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Maratonki",
+                        "sentence": "\"Маратонки\" are trainers.",
+                        "correct_option": true,
+                        "explanation": "Correct. The name comes from the marathon."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I will take them",
+                        "sentence": "Обувките са хубави, ще __ взема.",
+                        "options": ["го", "ги", "я"],
+                        "correct_option": 1,
+                        "explanation": "\"Обувките са хубави, ще ги взема.\" means \"The shoes are nice, I will take them.\" Ги replaces a plural noun."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Slippers on the beach",
+                        "sentence": "През лятото нося __ на плажа.",
+                        "options": ["ботуши", "ръкавици", "чехли"],
+                        "correct_option": 2,
+                        "explanation": "\"През лятото нося чехли на плажа.\" means \"In summer I wear flip-flops on the beach.\" Чехли covers slippers and flip-flops."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Botushi",
+                        "sentence": "\"Ботуши\" are sandals.",
+                        "correct_option": false,
+                        "explanation": "Ботуши are boots. Sandals are \"сандали\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the shoe verbs",
+                        "pairs": [
+                            ["To try on", "пробвам"],
+                            ["To fit", "ставам"],
+                            ["To pinch", "стягам"],
+                            ["To wear", "нося"],
+                            ["To take off (shoes)", "събувам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "They do not fit",
+                        "sentence": "Обувките не ми __ и трябва да ги върна.",
+                        "options": ["стават", "става", "ставам"],
+                        "correct_option": 0,
+                        "explanation": "\"Обувките не ми стават и трябва да ги върна.\" means \"The shoes do not fit me and I have to return them.\" \"Ставам\" here means \"to fit\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sabuvam se",
+                        "sentence": "\"Събувам се\" means taking off your shoes.",
+                        "correct_option": true,
+                        "explanation": "Correct. Putting them on is \"обувам се\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Shoes off at the door",
+                        "sentence": "У дома гостите често __ обувките си на входа.",
+                        "options": ["обуват", "събуват", "носят"],
+                        "correct_option": 1,
+                        "explanation": "\"У дома гостите често събуват обувките си на входа.\" means \"At home, guests often take their shoes off at the door.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Returns and Complaints",
+            "description": "Take something back, ask for a refund and complain politely.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the return words",
+                        "pairs": [
+                            ["Refund", "възстановяване на парите"],
+                            ["Exchange", "замяна"],
+                            ["Faulty", "дефектен"],
+                            ["Complaint", "рекламация"],
+                            ["Guarantee", "гаранция"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I want to return it",
+                        "sentence": "Искам да __ тази блуза, защото е скъсана.",
+                        "options": ["върна", "връщам", "върнах"],
+                        "correct_option": 0,
+                        "explanation": "\"Искам да върна тази блуза, защото е скъсана.\" means \"I want to return this blouse because it is torn.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Reklamatsiya",
+                        "sentence": "In Bulgarian a \"рекламация\" is a complaint about a faulty product, not an advert.",
+                        "correct_option": true,
+                        "explanation": "Correct. An advert is a \"реклама\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Do you have the receipt",
+                        "sentence": "Имате ли касовата __ от покупката?",
+                        "options": ["бележки", "бележка", "бележката"],
+                        "correct_option": 1,
+                        "explanation": "\"Имате ли касовата бележка от покупката?\" means \"Do you have the receipt for the purchase?\" The article sits on the adjective, not the noun."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two years guarantee",
+                        "sentence": "Телефонът е в __ две години.",
+                        "options": ["гаранцията", "гаранции", "гаранция"],
+                        "correct_option": 2,
+                        "explanation": "\"Телефонът е в гаранция две години.\" means \"The phone is under guarantee for two years.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zamyana",
+                        "sentence": "\"Замяна\" means getting your money back.",
+                        "correct_option": false,
+                        "explanation": "A замяна is an exchange for another item. Getting your money back is \"възстановяване на парите\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the complaint phrases",
+                        "pairs": [
+                            ["It's broken", "Счупено е"],
+                            ["It doesn't work", "Не работи"],
+                            ["It's the wrong size", "Не е моят размер"],
+                            ["I want to speak to the manager", "Искам да говоря с управителя"],
+                            ["Can I exchange it?", "Може ли да го заменя?"]
+                        ],
+                        "explanation": "Match each English sentence to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "It does not work at all",
+                        "sentence": "Чайникът, който купих вчера, не __ изобщо.",
+                        "options": ["работи", "работят", "работих"],
+                        "correct_option": 0,
+                        "explanation": "\"Чайникът, който купих вчера, не работи изобщо.\" means \"The kettle I bought yesterday does not work at all.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Upravitel",
+                        "sentence": "\"Управител\" is a shop manager.",
+                        "correct_option": true,
+                        "explanation": "Correct. A female manager is an \"управителка\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "She gave me my money back",
+                        "sentence": "Продавачката __ върна парите без проблем.",
+                        "options": ["ме", "ми", "мен"],
+                        "correct_option": 1,
+                        "explanation": "\"Продавачката ми върна парите без проблем.\" means \"The shop assistant gave me my money back with no problem.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Booking a Table",
+            "description": "Reserve a table by phone and arrange the time.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the booking words",
+                        "pairs": [
+                            ["Booking", "резервация"],
+                            ["Table for two", "маса за двама"],
+                            ["Garden", "градина"],
+                            ["Non-smoking", "за непушачи"],
+                            ["Tonight", "довечера"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Reserve a table",
+                        "sentence": "Бих искал да __ маса за четирима.",
+                        "options": ["запазя", "запазвам", "запазих"],
+                        "correct_option": 0,
+                        "explanation": "\"Бих искал да запазя маса за четирима.\" means \"I would like to book a table for four.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Masa za dvama",
+                        "sentence": "\"Маса за двама\" means a table for two people.",
+                        "correct_option": true,
+                        "explanation": "Correct. Двама is used for two people when at least one is a man."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "For what time",
+                        "sentence": "За кой __ искате масата?",
+                        "options": ["часа", "час", "часове"],
+                        "correct_option": 1,
+                        "explanation": "\"За кой час искате масата?\" means \"For what time would you like the table?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "At eight",
+                        "sentence": "Ще дойдем __ осем часа.",
+                        "options": ["на", "за", "в"],
+                        "correct_option": 2,
+                        "explanation": "\"Ще дойдем в осем часа.\" means \"We will come at eight o'clock.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dovechera",
+                        "sentence": "\"Довечера\" means \"tomorrow morning\".",
+                        "correct_option": false,
+                        "explanation": "\"Довечера\" means \"tonight\" or \"this evening\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the phone phrases",
+                        "pairs": [
+                            ["I'd like to book", "Бих искал да резервирам"],
+                            ["Under what name?", "На чие име?"],
+                            ["For how many people?", "За колко души?"],
+                            ["We're fully booked", "Нямаме свободни маси"],
+                            ["See you tonight", "До довечера"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In the name of",
+                        "sentence": "Резервацията е на __ на Петрова.",
+                        "options": ["името", "име", "имена"],
+                        "correct_option": 0,
+                        "explanation": "\"Резервацията е на името на Петрова.\" means \"The booking is in the name of Petrova.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nyamame svobodni masi",
+                        "sentence": "\"Нямаме свободни маси\" means the restaurant is full.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"We have no free tables\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We will come later",
+                        "sentence": "Ще __ малко по-късно, около девет.",
+                        "options": ["дойдохме", "дойдем", "идвахме"],
+                        "correct_option": 1,
+                        "explanation": "\"Ще дойдем малко по-късно, около девет.\" means \"We will come a little later, around nine.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Ordering a Meal",
+            "description": "Courses, cooking styles and special requests.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the courses",
+                        "pairs": [
+                            ["Starter", "предястие"],
+                            ["Main course", "основно ястие"],
+                            ["Dessert", "десерт"],
+                            ["Side dish", "гарнитура"],
+                            ["Wine list", "винена листа"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "For the main course",
+                        "sentence": "За основно __ ще взема пиле.",
+                        "options": ["ястие", "ястия", "ястието"],
+                        "correct_option": 0,
+                        "explanation": "\"За основно ястие ще взема пиле.\" means \"For my main course I will have chicken.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Garnitura",
+                        "sentence": "\"Гарнитура\" is the side dish served with the main course.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Пържола с гарнитура от картофи\" is a chop with potatoes on the side."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "What do you recommend",
+                        "sentence": "Какво ще ни __ за десерт?",
+                        "options": ["препоръчвам", "препоръчате", "препоръчах"],
+                        "correct_option": 1,
+                        "explanation": "\"Какво ще ни препоръчате за десерт?\" means \"What would you recommend for dessert?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Without nuts",
+                        "sentence": "Алергичен съм към ядки, може ли десертът да бъде __ ядки?",
+                        "options": ["с", "от", "без"],
+                        "correct_option": 2,
+                        "explanation": "\"...може ли десертът да бъде без ядки?\" means \"...can the dessert be made without nuts?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Predyastie",
+                        "sentence": "\"Предястие\" is the dessert.",
+                        "correct_option": false,
+                        "explanation": "An предястие is a starter, literally \"before the dish\". Dessert is \"десерт\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the cooking styles",
+                        "pairs": [
+                            ["Grilled", "на скара"],
+                            ["Baked", "печен"],
+                            ["Boiled", "варен"],
+                            ["Fried", "пържен"],
+                            ["Stuffed", "пълнен"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Grilled fish",
+                        "sentence": "Препоръчвам ви рибата на __ с лимон.",
+                        "options": ["скара", "скарата", "скари"],
+                        "correct_option": 0,
+                        "explanation": "\"Препоръчвам ви рибата на скара с лимон.\" means \"I recommend the grilled fish with lemon.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Palneni chushki",
+                        "sentence": "\"Пълнени чушки\" are stuffed peppers.",
+                        "correct_option": true,
+                        "explanation": "Correct. They are filled with rice and minced meat, or just rice."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The waiter took the order",
+                        "sentence": "Сервитьорът __ поръчката ни и отиде в кухнята.",
+                        "options": ["ще запише", "записа", "записва"],
+                        "correct_option": 1,
+                        "explanation": "\"Сервитьорът записа поръчката ни и отиде в кухнята.\" means \"The waiter took our order and went to the kitchen.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Bulgarian Cuisine",
+            "description": "Traditional dishes and the words for how they taste.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the traditional food",
+                        "pairs": [
+                            ["Pepper stuffed with cheese", "чушка бюрек"],
+                            ["Stew in a clay pot", "гювеч"],
+                            ["Roasted pepper relish", "лютеница"],
+                            ["Dry cured sausage", "луканка"],
+                            ["Cheese pastry", "баница"]
+                        ],
+                        "explanation": "Match each description to the Bulgarian dish."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Peppers and tomatoes",
+                        "sentence": "Лютеницата се прави от чушки и __ през есента.",
+                        "options": ["домати", "ябълки", "ориз"],
+                        "correct_option": 0,
+                        "explanation": "\"Лютеницата се прави от чушки и домати през есента.\" means \"Lyutenitsa is made from peppers and tomatoes in autumn.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Gyuvech",
+                        "sentence": "\"Гювеч\" is both a dish and the clay pot it is cooked in.",
+                        "correct_option": true,
+                        "explanation": "Correct. Small single portions are cooked in a \"гювече\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "White cheese in the banitsa",
+                        "sentence": "Баницата се прави с яйца и бяло __ в тънки кори.",
+                        "options": ["мляко", "сирене", "брашно"],
+                        "correct_option": 1,
+                        "explanation": "\"Баницата се прави с яйца и бяло сирене в тънки кори.\" means \"Banitsa is made with eggs and white cheese in thin pastry sheets.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Tarator is served cold",
+                        "sentence": "Тараторът се __ студен през лятото.",
+                        "options": ["сервират", "сервирам", "сервира"],
+                        "correct_option": 2,
+                        "explanation": "\"Тараторът се сервира студен през лятото.\" means \"Tarator is served cold in summer.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Lukanka",
+                        "sentence": "\"Луканка\" is a sweet cake.",
+                        "correct_option": false,
+                        "explanation": "Луканка is a flat, dry-cured sausage."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the tastes",
+                        "pairs": [
+                            ["Spicy", "лют"],
+                            ["Salty", "солен"],
+                            ["Greasy", "мазен"],
+                            ["Tasty", "вкусен"],
+                            ["Fresh", "пресен"]
+                        ],
+                        "explanation": "Match each English adjective to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Too spicy for the children",
+                        "sentence": "Тази лютеница е много __ за децата.",
+                        "options": ["люта", "лют", "люто"],
+                        "correct_option": 0,
+                        "explanation": "\"Тази лютеница е много люта за децата.\" means \"This lyutenitsa is too spicy for the children.\" Лютеница is feminine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kavarma",
+                        "sentence": "\"Кавърма\" is a Bulgarian meat stew.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is usually made with pork, onions and wine."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Fresh bread",
+                        "sentence": "Хлябът е __ и още топъл.",
+                        "options": ["прясна", "пресен", "прясно"],
+                        "correct_option": 1,
+                        "explanation": "\"Хлябът е пресен и още топъл.\" means \"The bread is fresh and still warm.\" The masculine is пресен, the others прясна, прясно, пресни."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Cooking at Home",
+            "description": "Pots and pans, and recipe instructions in the polite imperative.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the kitchen things",
+                        "pairs": [
+                            ["Pot", "тенджера"],
+                            ["Frying pan", "тиган"],
+                            ["Oven", "фурна"],
+                            ["Bowl", "купа"],
+                            ["Chopping board", "дъска за рязане"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Chop the onion",
+                        "sentence": "__ лука на малки парчета.",
+                        "options": ["Нарежете", "Нарязвате", "Нарязахте"],
+                        "correct_option": 0,
+                        "explanation": "\"Нарежете лука на малки парчета.\" means \"Chop the onion into small pieces.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Furna",
+                        "sentence": "\"Фурна\" can mean an oven or a bakery.",
+                        "correct_option": true,
+                        "explanation": "Correct. The context tells you which one."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "On the hob",
+                        "sentence": "Сложете тенджерата на __ и изчакайте да заври.",
+                        "options": ["фурната", "котлона", "масата"],
+                        "correct_option": 1,
+                        "explanation": "\"Сложете тенджерата на котлона и изчакайте да заври.\" means \"Put the pot on the hob and wait for it to boil.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Beat the eggs in a bowl",
+                        "sentence": "Разбийте яйцата в голяма __ със захар.",
+                        "options": ["тиган", "фурна", "купа"],
+                        "correct_option": 2,
+                        "explanation": "\"Разбийте яйцата в голяма купа със захар.\" means \"Beat the eggs with sugar in a big bowl.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Tigan",
+                        "sentence": "\"Тиган\" is a pot for soup.",
+                        "correct_option": false,
+                        "explanation": "A тиган is a frying pan. Soup is cooked in a \"тенджера\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the recipe verbs",
+                        "pairs": [
+                            ["To mix", "смесвам"],
+                            ["To stir", "бъркам"],
+                            ["To peel", "беля"],
+                            ["To add", "добавям"],
+                            ["To pour", "наливам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Add salt and pepper",
+                        "sentence": "__ малко сол и черен пипер.",
+                        "options": ["Добавете", "Добавяте", "Добавихте"],
+                        "correct_option": 0,
+                        "explanation": "\"Добавете малко сол и черен пипер.\" means \"Add a little salt and black pepper.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Recipe imperatives",
+                        "sentence": "Recipes in Bulgarian often use polite commands such as \"Нарежете\" and \"Сложете\".",
+                        "correct_option": true,
+                        "explanation": "Correct. They address the reader politely, as \"Вие\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Bake in the oven",
+                        "sentence": "Печете __ фурната на 180 градуса.",
+                        "options": ["в", "във", "на"],
+                        "correct_option": 1,
+                        "explanation": "\"Печете във фурната на 180 градуса.\" means \"Bake in the oven at 180 degrees.\" Before a word starting with в or ф, в becomes във."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Paying the Bill",
+            "description": "Ask for the bill, split it, tip and thank your hosts.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the payment words",
+                        "pairs": [
+                            ["Bill", "сметка"],
+                            ["Tip", "бакшиш"],
+                            ["Change", "ресто"],
+                            ["Card payment", "плащане с карта"],
+                            ["Separately", "поотделно"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Bring us the bill",
+                        "sentence": "Може ли да ни донесете __ на масата?",
+                        "options": ["сметката", "сметка", "сметки"],
+                        "correct_option": 0,
+                        "explanation": "\"Може ли да ни донесете сметката на масата?\" means \"Could you bring the bill to our table?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Tipping",
+                        "sentence": "In Bulgarian restaurants a tip of about 10% is usual.",
+                        "correct_option": true,
+                        "explanation": "Correct. Many people simply round the bill up."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Everyone pays their part",
+                        "sentence": "Всеки плаща своята __ от сметката.",
+                        "options": ["части", "част", "частта"],
+                        "correct_option": 1,
+                        "explanation": "\"Всеки плаща своята част от сметката.\" means \"Everyone pays their share of the bill.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Keep the change",
+                        "sentence": "Задръжте __ за вас.",
+                        "options": ["ресто", "рестота", "рестото"],
+                        "correct_option": 2,
+                        "explanation": "\"Задръжте рестото за вас.\" means \"Keep the change for yourself.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Smetkata",
+                        "sentence": "\"Сметката\" means \"the menu\".",
+                        "correct_option": false,
+                        "explanation": "\"Сметката\" is the bill. The menu is \"менюто\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the payment phrases",
+                        "pairs": [
+                            ["Can I pay by card?", "Може ли с карта?"],
+                            ["Together or separately?", "Заедно или поотделно?"],
+                            ["It's on me", "Аз черпя"],
+                            ["The bill is wrong", "Сметката е грешна"],
+                            ["It was delicious", "Беше много вкусно"]
+                        ],
+                        "explanation": "Match each English sentence to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A mistake in the bill",
+                        "sentence": "Мисля, че има грешка в __ ни.",
+                        "options": ["сметката", "сметка", "сметки"],
+                        "correct_option": 0,
+                        "explanation": "\"Мисля, че има грешка в сметката ни.\" means \"I think there is a mistake in our bill.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Az cherpya",
+                        "sentence": "\"Аз черпя\" means \"It's on me\": I pay for everyone.",
+                        "correct_option": true,
+                        "explanation": "Correct. On a birthday or name day, the person celebrating usually does this."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Last night's dinner",
+                        "sentence": "Вчерашната вечеря __ много вкусна.",
+                        "options": ["е", "беше", "ще бъде"],
+                        "correct_option": 1,
+                        "explanation": "\"Вчерашната вечеря беше много вкусна.\" means \"Last night's dinner was delicious.\""
+                    }
+                }
+            ]
+        }
+    ]
+}

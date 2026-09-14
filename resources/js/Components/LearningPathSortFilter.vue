@@ -14,12 +14,13 @@ const OPTIONS = [
     { value: 'exercises_asc', label: 'Fewest exercises' },
 ]
 
-const active = computed(() => page.props.filters?.sort ?? null)
+const active = computed(() => page.props.filters?.sort)
 const loading = ref(false)
 
 // Switching sort keeps the search and the level already narrowing the page,
 // so they combine instead of one silently dropping the other. Picking the
-// sort already active does nothing; "Default" is how sorting is taken off.
+// sort already active does nothing. The catalog always carries a sort — most
+// exercises first by default — so there is no "off" option to pick here.
 function choose(sort) {
     if (sort === active.value) {
         return
@@ -40,16 +41,6 @@ function choose(sort) {
         aria-label="Sort learning paths by exercise count"
     >
         <span class="nb-sort-filter__label" aria-hidden="true">Exercises</span>
-        <button
-            type="button"
-            class="nb-sort-filter__option"
-            :class="{ 'nb-sort-filter__option--active': !active }"
-            :aria-pressed="!active"
-            :disabled="loading"
-            @click="choose(null)"
-        >
-            Default
-        </button>
         <button
             v-for="option in OPTIONS"
             :key="option.value"

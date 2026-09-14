@@ -1,0 +1,756 @@
+{
+    "name": "Advanced Bulgarian",
+    "level": "C1",
+    "lessons": [
+        {
+            "name": "Networking and Small Talk",
+            "description": "Linking words and set phrases that make conversation flow.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the linking words",
+                        "pairs": [
+                            ["Nevertheless", "въпреки това"],
+                            ["Moreover", "освен това"],
+                            ["In other words", "с други думи"],
+                            ["On the contrary", "напротив"],
+                            ["As a matter of fact", "всъщност"]
+                        ],
+                        "explanation": "Match each English linking word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Not only late",
+                        "sentence": "Не само че закъсня, __ и не се извини.",
+                        "options": ["или", "ами", "нито"],
+                        "correct_option": 1,
+                        "explanation": "\"Не само че закъсня, ами и не се извини.\" means \"Not only was he late, he did not even apologise.\" The pair is \"не само ..., ами/но и ...\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Naprotiv",
+                        "sentence": "\"Напротив\" strongly contradicts a negative question: \"Не ти ли хареса?\" \"Напротив, много ми хареса!\"",
+                        "correct_option": true,
+                        "explanation": "Correct. It means \"On the contrary\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Stay in touch",
+                        "sentence": "Ще се радвам да __ контакт и в бъдеще.",
+                        "options": ["правим", "водим", "поддържаме"],
+                        "correct_option": 2,
+                        "explanation": "\"Ще се радвам да поддържаме контакт и в бъдеще.\" means \"I would be glad to stay in touch in future.\" The collocation is \"поддържам контакт\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vsashtnost",
+                        "sentence": "\"Всъщност\" means \"at first\".",
+                        "correct_option": false,
+                        "explanation": "\"Всъщност\" means \"actually\" or \"in fact\". \"At first\" is \"отначало\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the opinion phrases",
+                        "pairs": [
+                            ["In my view", "по мое мнение"],
+                            ["As far as I know", "доколкото знам"],
+                            ["To be honest", "честно казано"],
+                            ["By the way", "между другото"],
+                            ["In short", "накратко"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "As far as I know",
+                        "sentence": "__ знам, срещата е отложена за четвъртък.",
+                        "options": ["Колкото", "Доколкото", "Докато"],
+                        "correct_option": 1,
+                        "explanation": "\"Доколкото знам, срещата е отложена за четвъртък.\" means \"As far as I know, the meeting has been moved to Thursday.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Memoir and Autobiography",
+            "description": "The -йки adverbial participle and the doubting \"бил бил\" form.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the -йки forms",
+                        "pairs": [
+                            ["Walking", "вървейки"],
+                            ["Reading", "четейки"],
+                            ["Smiling", "усмихвайки се"],
+                            ["Knowing", "знаейки"],
+                            ["Looking back", "поглеждайки назад"]
+                        ],
+                        "explanation": "Match each English form to its Bulgarian adverbial participle."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Looking back",
+                        "sentence": "__ назад, осъзнавам колко много съм научил.",
+                        "options": ["Погледнал", "Поглеждайки", "Поглеждащ"],
+                        "correct_option": 1,
+                        "explanation": "\"Поглеждайки назад, осъзнавам колко много съм научил.\" means \"Looking back, I realise how much I have learned.\" The -йки form describes an action at the same time as the main verb."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dangling participle",
+                        "sentence": "The -йки participle can have a different subject from the main verb: \"Четейки книгата, телефонът звънна.\"",
+                        "correct_option": false,
+                        "explanation": "The participle must share the main verb's subject, and a phone cannot read. Say \"Докато четях книгата, телефонът звънна.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A great scientist, supposedly",
+                        "sentence": "Той бил __ голям учен, а никой не е чувал за него!",
+                        "options": ["беше", "е", "бил"],
+                        "correct_option": 2,
+                        "explanation": "\"Той бил бил голям учен...\" means \"He is supposedly a great scientist...\", said with doubt. The doubled бил repeats a claim you do not believe."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Reported about yourself",
+                        "sentence": "You can use the renarrative about yourself, as in \"Бил съм много палав като дете\", to pass on what others told you.",
+                        "correct_option": true,
+                        "explanation": "Correct. It means \"Apparently I was very naughty as a child\", something you only know from others."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the memoir words",
+                        "pairs": [
+                            ["Nostalgia", "носталгия"],
+                            ["To recollect", "припомням си"],
+                            ["Turning point", "повратна точка"],
+                            ["Hardship", "лишения"],
+                            ["Reflection", "размисъл"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Every evening he wrote",
+                        "sentence": "Имаше период, в който всяка вечер __ писма на баба си.",
+                        "options": ["написа", "пише", "пишеше"],
+                        "correct_option": 2,
+                        "explanation": "\"Имаше период, в който всяка вечер пишеше писма на баба си.\" means \"There was a time when every evening he wrote letters to his grandmother.\" A past habit takes the imperfect."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Family and Society",
+            "description": "Demographics and social policy, and the difference between cause words.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the society words",
+                        "pairs": [
+                            ["Birth rate", "раждаемост"],
+                            ["Ageing population", "застаряващо население"],
+                            ["Single-parent family", "еднородителско семейство"],
+                            ["Social benefits", "социални помощи"],
+                            ["Maternity leave", "отпуск по майчинство"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Taking measures",
+                        "sentence": "Правителството __ мерки за насърчаване на раждаемостта.",
+                        "options": ["изпълни", "предприе", "постави"],
+                        "correct_option": 1,
+                        "explanation": "\"Правителството предприе мерки за насърчаване на раждаемостта.\" means \"The government took measures to encourage the birth rate.\" The collocation is \"предприемам мерки\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kakto takа i",
+                        "sentence": "\"Както ..., така и ...\" means \"both ... and ...\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Засяга както града, така и селото\" means \"It affects both the city and the village\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "As a consequence",
+                        "sentence": "__ на застаряването населението в селата намалява.",
+                        "options": ["Благодарение", "Въпреки", "Вследствие"],
+                        "correct_option": 2,
+                        "explanation": "\"Вследствие на застаряването населението в селата намалява.\" means \"As a result of ageing, the village population is shrinking.\" Благодарение на is kept for good outcomes."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Blagodarenie na",
+                        "sentence": "\"Благодарение на\" works for any cause, good or bad: \"Благодарение на кризата загубих работата си.\"",
+                        "correct_option": false,
+                        "explanation": "\"Благодарение на\" implies gratitude, so a bad cause takes \"поради\", \"заради\" or \"вследствие на\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the social issues",
+                        "pairs": [
+                            ["Unemployment", "безработица"],
+                            ["Inequality", "неравенство"],
+                            ["Emigration", "емиграция"],
+                            ["Welfare state", "социална държава"],
+                            ["Census", "преброяване"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The latest census",
+                        "sentence": "Според последното __ населението на България е под седем милиона.",
+                        "options": ["изброяване", "преброяване", "отброяване"],
+                        "correct_option": 1,
+                        "explanation": "\"Според последното преброяване...\" means \"According to the latest census, Bulgaria's population is under seven million.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Productivity and Time",
+            "description": "Time idioms, past unreal conditions and perfectives for typical repeated actions.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the time idioms",
+                        "pairs": [
+                            ["To kill time", "убивам времето"],
+                            ["At the last minute", "в последния момент"],
+                            ["Sooner or later", "рано или късно"],
+                            ["When pigs fly", "на куково лято"],
+                            ["Pressed for time", "притиснат от времето"]
+                        ],
+                        "explanation": "Match each English meaning to its Bulgarian idiom."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The last moment",
+                        "sentence": "Той е свикнал да оставя всичко за __ момент.",
+                        "options": ["последен", "последния", "последната"],
+                        "correct_option": 1,
+                        "explanation": "\"Той е свикнал да оставя всичко за последния момент.\" means \"He is used to leaving everything to the last minute.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kukovo lyato",
+                        "sentence": "\"На куково лято\" means \"early next summer\".",
+                        "correct_option": false,
+                        "explanation": "It means \"never\", literally \"in the cuckoo's summer\", much like \"when pigs fly\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If we had left earlier",
+                        "sentence": "Ако __ по-рано, нямаше да се наложи да бързаме.",
+                        "options": ["тръгваме", "тръгнахме", "бяхме тръгнали"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако бяхме тръгнали по-рано, нямаше да се наложи да бързаме.\" means \"If we had left earlier, we would not have had to hurry.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Repeated perfectives",
+                        "sentence": "In \"Всяка сутрин той ще изпие едно кафе и ще тръгне\", perfective verbs describe a typical, repeated sequence.",
+                        "correct_option": true,
+                        "explanation": "Correct. Ще + perfective can describe a habitual chain of actions: \"Every morning he'll drink a coffee and set off.\""
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the time verbs",
+                        "pairs": [
+                            ["To oversleep", "успивам се"],
+                            ["To catch up (on work)", "наваксвам"],
+                            ["To drag things out", "протакам"],
+                            ["To rush", "бързам"],
+                            ["To manage in time", "смогвам"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I overslept",
+                        "sentence": "Тази сутрин се __ и изпуснах автобуса.",
+                        "options": ["наспах", "успах", "събудих"],
+                        "correct_option": 1,
+                        "explanation": "\"Тази сутрин се успах и изпуснах автобуса.\" means \"This morning I overslept and missed the bus.\" Се наспах means \"I got enough sleep\"."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Urban Living",
+            "description": "City planning and administrative style, with its preference for nouns over verbs.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the city words",
+                        "pairs": [
+                            ["Municipality", "община"],
+                            ["Building permit", "разрешение за строеж"],
+                            ["Public transport", "градски транспорт"],
+                            ["Pedestrian zone", "пешеходна зона"],
+                            ["Green spaces", "зелени площи"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Construction will begin",
+                        "sentence": "__ на пешеходната зона ще започне през пролетта.",
+                        "options": ["Изграждам", "Изграждането", "Изградена"],
+                        "correct_option": 1,
+                        "explanation": "\"Изграждането на пешеходната зона ще започне през пролетта.\" means \"Construction of the pedestrian zone will begin in spring.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nominal style",
+                        "sentence": "Administrative Bulgarian prefers nouns to verbs: \"извършване на проверка\" instead of \"проверявам\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Official texts often turn verbs into nouns: извършване, осъществяване, предоставяне."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Protest against building",
+                        "sentence": "Жителите на квартала протестираха __ застрояването на парка.",
+                        "options": ["върху", "пред", "срещу"],
+                        "correct_option": 2,
+                        "explanation": "\"Жителите на квартала протестираха срещу застрояването на парка.\" means \"Residents protested against building on the park.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Panelen blok",
+                        "sentence": "\"Панелен блок\" is a luxury villa with a garden.",
+                        "correct_option": false,
+                        "explanation": "A панелен блок is a prefabricated concrete apartment block, common in Bulgarian cities."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the city problems",
+                        "pairs": [
+                            ["Suburb", "предградие"],
+                            ["Traffic jam", "задръстване"],
+                            ["Parking space", "паркомясто"],
+                            ["Urban sprawl", "неконтролирано разрастване на града"],
+                            ["Underpass", "подлез"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Traffic is restricted",
+                        "sentence": "Заради ремонта движението по булеварда е __ до края на месеца.",
+                        "options": ["ограничаващо", "ограничило", "ограничено"],
+                        "correct_option": 2,
+                        "explanation": "\"...движението по булеварда е ограничено до края на месеца\" means \"...traffic on the boulevard is restricted until the end of the month.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Hospitality Culture",
+            "description": "Proverbs about guests and gifts, and what they say about Bulgarian manners.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the proverbs",
+                        "pairs": [
+                            ["Hospitality is sacred", "Гост в къщи, Бог в къщи"],
+                            ["Don't look a gift horse in the mouth", "На харизан кон зъби не се гледат"],
+                            ["Teamwork moves mountains", "Сговорна дружина планина повдига"],
+                            ["Out of sight, out of mind", "Далеч от очите, далеч от сърцето"],
+                            ["Better late than never", "По-добре късно, отколкото никога"]
+                        ],
+                        "explanation": "Match each English meaning to the Bulgarian proverb."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A gift horse",
+                        "sentence": "На харизан кон __ не се гледат.",
+                        "options": ["очи", "зъби", "крака"],
+                        "correct_option": 1,
+                        "explanation": "\"На харизан кон зъби не се гледат.\" means \"You don't check the teeth of a gift horse\", so do not criticise a gift."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sgovorna druzhina",
+                        "sentence": "\"Сговорна дружина планина повдига\" means that people who work together can achieve anything.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"a like-minded company lifts a mountain\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "She insisted on treating us",
+                        "sentence": "Домакинята настоя да ни __ с домашна баница.",
+                        "options": ["почерпим", "почерпят", "почерпи"],
+                        "correct_option": 2,
+                        "explanation": "\"Домакинята настоя да ни почерпи с домашна баница.\" means \"The hostess insisted on treating us to homemade banitsa.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dalech ot ochite",
+                        "sentence": "\"Далеч от очите, далеч от сърцето\" means that absence makes the heart grow fonder.",
+                        "correct_option": false,
+                        "explanation": "It means the opposite: out of sight, out of mind."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more proverbs",
+                        "pairs": [
+                            ["The early bird catches the worm", "Който рано рани, две гърнета напълни"],
+                            ["Every novelty soon fades", "Всяко чудо за три дни"],
+                            ["All that glitters is not gold", "Не всичко, що блести, е злато"],
+                            ["You can't do two big things at once", "Две дини под една мишница не се носят"],
+                            ["Nobody works on an empty stomach", "Гладна мечка хоро не играе"]
+                        ],
+                        "explanation": "Match each English meaning to the Bulgarian proverb."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A hungry bear",
+                        "sentence": "Гладна мечка __ не играе.",
+                        "options": ["танц", "хоро", "песен"],
+                        "correct_option": 1,
+                        "explanation": "\"Гладна мечка хоро не играе.\" means \"A hungry bear does not dance the horo\": feed people before you expect work from them."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Negotiations and Business",
+            "description": "Business collocations and softened proposals.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the business phrases",
+                        "pairs": [
+                            ["To reach an agreement", "постигам споразумение"],
+                            ["To make a concession", "правя отстъпка"],
+                            ["To meet a deadline", "спазвам срок"],
+                            ["To sign a contract", "подписвам договор"],
+                            ["To submit an offer", "подавам оферта"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Reached an agreement",
+                        "sentence": "Страните най-накрая __ споразумение.",
+                        "options": ["направиха", "постигнаха", "стигнаха"],
+                        "correct_option": 1,
+                        "explanation": "\"Страните най-накрая постигнаха споразумение.\" means \"The parties finally reached an agreement.\" The collocation is \"постигам споразумение\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Bihme mogli",
+                        "sentence": "\"Бихме могли да обсъдим отстъпка\" is a softened way to suggest a discount.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Бихме могли\" (we could) sounds less direct than \"искаме\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Enters into force",
+                        "sentence": "Договорът влиза в __ от първи януари.",
+                        "options": ["мощ", "срок", "сила"],
+                        "correct_option": 2,
+                        "explanation": "\"Договорът влиза в сила от първи януари.\" means \"The contract enters into force on 1 January.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Spazvam sroka",
+                        "sentence": "\"Спазвам срока\" means \"to miss the deadline\".",
+                        "correct_option": false,
+                        "explanation": "It means \"to meet the deadline\". Missing it is \"пропускам срока\" or \"не спазвам срока\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the contract words",
+                        "pairs": [
+                            ["Counter-offer", "насрещно предложение"],
+                            ["Terms and conditions", "общи условия"],
+                            ["Penalty", "неустойка"],
+                            ["Invoice", "фактура"],
+                            ["Tender", "търг"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A penalty for late payment",
+                        "sentence": "При забава на плащането се дължи __ в размер на 1% на ден.",
+                        "options": ["отстъпка", "фактура", "неустойка"],
+                        "correct_option": 2,
+                        "explanation": "\"При забава на плащането се дължи неустойка...\" means \"Late payment incurs a penalty of 1% per day.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Science and Discovery",
+            "description": "Academic register: the passive, impersonal \"се\" and scholarly collocations.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the research words",
+                        "pairs": [
+                            ["Hypothesis", "хипотеза"],
+                            ["Evidence", "доказателства"],
+                            ["Research", "изследване"],
+                            ["Findings", "резултати"],
+                            ["Peer review", "рецензиране"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The hypothesis was confirmed",
+                        "sentence": "Хипотезата беше __ от последващите експерименти.",
+                        "options": ["потвърдила", "потвърдена", "потвърждаваща"],
+                        "correct_option": 1,
+                        "explanation": "\"Хипотезата беше потвърдена от последващите експерименти.\" means \"The hypothesis was confirmed by later experiments.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Impersonal se",
+                        "sentence": "Bulgarian academic writing often uses impersonal forms such as \"Установено е, че...\" and \"Смята се, че...\"",
+                        "correct_option": true,
+                        "explanation": "Correct. They mean \"It has been established that...\" and \"It is believed that...\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The data suggest",
+                        "sentence": "Данните __ на извода, че температурите растат.",
+                        "options": ["водят", "дават", "навеждат"],
+                        "correct_option": 2,
+                        "explanation": "\"Данните навеждат на извода, че температурите растат.\" means \"The data suggest that temperatures are rising.\" The collocation is \"навеждам на извода\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Izsledvane",
+                        "sentence": "\"Изследване\" can only mean a medical test, never scientific research.",
+                        "correct_option": false,
+                        "explanation": "It means both: a blood test (изследване на кръв) and a scientific study."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the research verbs",
+                        "pairs": [
+                            ["To prove", "доказвам"],
+                            ["To refute", "опровергавам"],
+                            ["To assume", "предполагам"],
+                            ["To measure", "измервам"],
+                            ["To observe", "наблюдавам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The results refuted it",
+                        "sentence": "Резултатите __ първоначалната хипотеза и учените трябваше да започнат отначало.",
+                        "options": ["потвърдиха", "опровергаха", "доказаха"],
+                        "correct_option": 1,
+                        "explanation": "\"Резултатите опровергаха първоначалната хипотеза...\" means \"The results refuted the original hypothesis, and the scientists had to start again.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Weather and Mood",
+            "description": "Idioms that use weather to describe feelings and events.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the weather idioms",
+                        "pairs": [
+                            ["To be on cloud nine", "на седмото небе съм"],
+                            ["A storm in a teacup", "буря в чаша вода"],
+                            ["Out of the blue", "като гръм от ясно небе"],
+                            ["Too late to be useful", "след дъжд качулка"],
+                            ["To have your head in the clouds", "витая в облаците"]
+                        ],
+                        "explanation": "Match each English meaning to its Bulgarian idiom."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Out of a clear sky",
+                        "sentence": "Новината дойде като гръм от __ небе.",
+                        "options": ["синьо", "ясно", "облачно"],
+                        "correct_option": 1,
+                        "explanation": "\"Новината дойде като гръм от ясно небе.\" means \"The news came out of the blue\", literally \"like thunder from a clear sky\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sled dazhd kachulka",
+                        "sentence": "\"След дъжд качулка\" means \"every cloud has a silver lining\".",
+                        "correct_option": false,
+                        "explanation": "It means help or action that comes too late, literally \"a hood after the rain\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A storm in a teacup",
+                        "sentence": "Спорът им беше буря в __ вода.",
+                        "options": ["кофа", "море", "чаша"],
+                        "correct_option": 2,
+                        "explanation": "\"Спорът им беше буря в чаша вода.\" means \"Their argument was a storm in a teacup.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vitaya v oblatsite",
+                        "sentence": "\"Витая в облаците\" describes someone dreamy and distracted.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"I hover in the clouds\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the moods",
+                        "pairs": [
+                            ["Gloomy", "мрачен"],
+                            ["Cheerful", "весел"],
+                            ["Irritable", "раздразнителен"],
+                            ["Melancholic", "меланхоличен"],
+                            ["Carefree", "безгрижен"]
+                        ],
+                        "explanation": "Match each English adjective to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Rain makes him gloomy",
+                        "sentence": "Когато вали, той става __ и не му се излиза.",
+                        "options": ["весел", "мрачен", "безгрижен"],
+                        "correct_option": 1,
+                        "explanation": "\"Когато вали, той става мрачен и не му се излиза.\" means \"When it rains he turns gloomy and does not feel like going out.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Traditions Today",
+            "description": "Folk costume, ritual and dance, and the beliefs behind them.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the folklore words",
+                        "pairs": [
+                            ["Folk song", "народна песен"],
+                            ["Traditional costume", "народна носия"],
+                            ["Ritual bread", "обреден хляб"],
+                            ["Round dance", "хоро"],
+                            ["Embroidery", "шевица"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whoever hangs the martenitsa",
+                        "sentence": "Според поверието, който __ мартеницата си на цъфнало дърво, ще бъде здрав цяла година.",
+                        "options": ["закача", "закачи", "закачил"],
+                        "correct_option": 1,
+                        "explanation": "\"...който закачи мартеницата си на цъфнало дърво, ще бъде здрав цяла година\" means \"...whoever hangs their martenitsa on a tree in blossom will be healthy all year.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Lazaruvane",
+                        "sentence": "\"Лазаруване\" is a spring custom in which young girls sing and dance from house to house.",
+                        "correct_option": true,
+                        "explanation": "Correct. It takes place on Лазаровден, the Saturday before Palm Sunday."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Playing the horo",
+                        "sentence": "Хорото се __ в кръг, като танцьорите се държат за ръце.",
+                        "options": ["пее", "върти", "играе"],
+                        "correct_option": 2,
+                        "explanation": "\"Хорото се играе в кръг...\" means \"The horo is danced in a circle...\" Bulgarians \"play\" (играят) a horo rather than dance it."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Survakane",
+                        "sentence": "\"Сурвакане\" takes place on Easter morning.",
+                        "correct_option": false,
+                        "explanation": "Сурвакане is on New Year's Day. Children tap people on the back with a decorated cornel branch (сурвачка) and wish them health."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the feast days",
+                        "pairs": [
+                            ["Lazarus' Saturday", "Лазаровден"],
+                            ["Palm Sunday", "Цветница"],
+                            ["Midsummer Day (24 June)", "Еньовден"],
+                            ["St Nicholas' Day", "Никулден"],
+                            ["St Tryphon's Day", "Трифон Зарезан"]
+                        ],
+                        "explanation": "Match each English name to the Bulgarian feast day."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Herbs picked before sunrise",
+                        "sentence": "На Еньовден по традиция се __ билки преди изгрев.",
+                        "options": ["бере", "берат", "брали"],
+                        "correct_option": 1,
+                        "explanation": "\"На Еньовден по традиция се берат билки преди изгрев.\" means \"On Midsummer Day herbs are traditionally picked before sunrise.\" Билки is plural."
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,1016 @@
+{
+    "name": "Bulgarian History and Culture",
+    "level": "B1",
+    "lessons": [
+        {
+            "name": "The Thracians",
+            "description": "Bulgaria's ancient people, their gold and their tombs, with the passive and relative clauses.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the archaeology words",
+                        "pairs": [
+                            ["Tribe", "племе"],
+                            ["Treasure", "съкровище"],
+                            ["Tomb", "гробница"],
+                            ["Gold", "злато"],
+                            ["Ruler", "владетел"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The Thracians lived here",
+                        "sentence": "Траките са __ по нашите земи преди хиляди години.",
+                        "options": ["живели", "живеели", "живееха"],
+                        "correct_option": 0,
+                        "explanation": "\"Траките са живели по нашите земи преди хиляди години.\" means \"The Thracians lived in our lands thousands of years ago.\" Съм + the -л participle makes the present perfect."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Orpheus",
+                        "sentence": "According to legend, the singer Orpheus came from the Rhodope Mountains.",
+                        "correct_option": true,
+                        "explanation": "Correct. The Rhodopes are full of places named after him."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Made of pure gold",
+                        "sentence": "Панагюрското съкровище е __ от чисто злато.",
+                        "options": ["направил", "направено", "направи"],
+                        "correct_option": 1,
+                        "explanation": "\"Панагюрското съкровище е направено от чисто злато.\" means \"The Panagyurishte treasure is made of pure gold.\" Съкровище is neuter."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The tomb on the UNESCO list",
+                        "sentence": "Казанлъшката гробница, __ е в списъка на ЮНЕСКО, е от IV век пр. Хр.",
+                        "options": ["който", "което", "която"],
+                        "correct_option": 2,
+                        "explanation": "\"Казанлъшката гробница, която е в списъка на ЮНЕСКО...\" means \"The Kazanlak tomb, which is on the UNESCO list, dates from the 4th century BC.\" Гробница is feminine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Thracian writing",
+                        "sentence": "The Thracians wrote in the Cyrillic alphabet.",
+                        "correct_option": false,
+                        "explanation": "Cyrillic appeared more than a thousand years after the Thracians. They left almost no writing of their own."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the discovery verbs",
+                        "pairs": [
+                            ["To dig", "копая"],
+                            ["To discover", "откривам"],
+                            ["To study", "изучавам"],
+                            ["To preserve", "запазвам"],
+                            ["To exhibit", "излагам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Three brothers found it",
+                        "sentence": "Трима братя __ съкровището случайно през 1949 година.",
+                        "options": ["откриха", "откриваха", "откриват"],
+                        "correct_option": 0,
+                        "explanation": "\"Трима братя откриха съкровището случайно през 1949 година.\" means \"Three brothers found the treasure by chance in 1949.\" A single past event takes the aorist."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Spartacus",
+                        "sentence": "Spartacus, who led a slave revolt against Rome, was a Thracian.",
+                        "correct_option": true,
+                        "explanation": "Correct. He is often claimed as a Bulgarian national symbol."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Kept in the museum",
+                        "sentence": "Съкровището се __ в Националния исторически музей.",
+                        "options": ["пазят", "пазя", "пази"],
+                        "correct_option": 2,
+                        "explanation": "\"Съкровището се пази в Националния исторически музей.\" means \"The treasure is kept in the National History Museum.\" Се + third person makes a passive."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "The First Bulgarian State",
+            "description": "Khans, tsars and the early capitals, with the passive and \"чийто\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the early history words",
+                        "pairs": [
+                            ["Khan", "хан"],
+                            ["State", "държава"],
+                            ["Army", "войска"],
+                            ["To found", "основавам"],
+                            ["Battle", "битка"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Founded in 681",
+                        "sentence": "Българската държава е __ през 681 година.",
+                        "options": ["основана", "основал", "основава"],
+                        "correct_option": 0,
+                        "explanation": "\"Българската държава е основана през 681 година.\" means \"The Bulgarian state was founded in 681.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Asparuh",
+                        "sentence": "Khan Asparuh is considered the founder of the Bulgarian state.",
+                        "correct_option": true,
+                        "explanation": "Correct. He led the Bulgars across the Danube in the 7th century."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The first capital",
+                        "sentence": "Първата столица __ Плиска.",
+                        "options": ["бяха", "беше", "бях"],
+                        "correct_option": 1,
+                        "explanation": "\"Първата столица беше Плиска.\" means \"The first capital was Pliska.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Boris adopted Christianity",
+                        "sentence": "Княз Борис I __ християнството през 864 година.",
+                        "options": ["приема", "ще приеме", "прие"],
+                        "correct_option": 2,
+                        "explanation": "\"Княз Борис I прие християнството през 864 година.\" means \"Prince Boris I adopted Christianity in 864.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Christianity date",
+                        "sentence": "Bulgaria adopted Christianity in the 14th century.",
+                        "correct_option": false,
+                        "explanation": "Bulgaria adopted Christianity in 864, in the 9th century."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the royal words",
+                        "pairs": [
+                            ["Tsar", "цар"],
+                            ["Prince", "княз"],
+                            ["Kingdom", "царство"],
+                            ["Throne", "трон"],
+                            ["Crown", "корона"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whose father was Boris",
+                        "sentence": "Симеон, __ баща е княз Борис, е наречен Велики.",
+                        "options": ["чийто", "чиято", "чието"],
+                        "correct_option": 0,
+                        "explanation": "\"Симеон, чийто баща е княз Борис, е наречен Велики.\" means \"Simeon, whose father was Prince Boris, is called the Great.\" Чийто agrees with баща."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Golden Age",
+                        "sentence": "The reign of Tsar Simeon is called the \"Golden Age\" of Bulgarian culture.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literature and learning flourished in Preslav and Ohrid."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Archaeological reserves",
+                        "sentence": "Днес Плиска и Преслав са археологически __ с музеи.",
+                        "options": ["резерват", "резервати", "резервата"],
+                        "correct_option": 1,
+                        "explanation": "\"Днес Плиска и Преслав са археологически резервати с музеи.\" means \"Today Pliska and Preslav are archaeological reserves with museums.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "The Cyrillic Alphabet",
+            "description": "How the alphabet was created and spread, and the letters that make it unique.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the writing words",
+                        "pairs": [
+                            ["Alphabet", "азбука"],
+                            ["Letter", "буква"],
+                            ["Script, literacy", "писменост"],
+                            ["Disciple", "ученик"],
+                            ["Manuscript", "ръкопис"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "They created Glagolitic",
+                        "sentence": "Кирил и Методий __ глаголицата.",
+                        "options": ["създадоха", "създаваха", "създават"],
+                        "correct_option": 0,
+                        "explanation": "\"Кирил и Методий създадоха глаголицата.\" means \"Cyril and Methodius created the Glagolitic alphabet.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Glagolitic",
+                        "sentence": "The Glagolitic alphabet was created by Cyril and Methodius.",
+                        "correct_option": true,
+                        "explanation": "Correct. Cyrillic came later, from their disciples in Bulgaria."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "By their disciples",
+                        "sentence": "Кирилицата е създадена от __ на Кирил и Методий.",
+                        "options": ["ученици", "учениците", "ученик"],
+                        "correct_option": 1,
+                        "explanation": "\"Кирилицата е създадена от учениците на Кирил и Методий.\" means \"Cyrillic was created by the disciples of Cyril and Methodius.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Thirty letters",
+                        "sentence": "Днес българската азбука има тридесет __ на брой.",
+                        "options": ["буква", "буквата", "букви"],
+                        "correct_option": 2,
+                        "explanation": "\"Днес българската азбука има тридесет букви на брой.\" means \"Today the Bulgarian alphabet has thirty letters.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Only in Bulgaria",
+                        "sentence": "The Cyrillic alphabet is used only in Bulgaria.",
+                        "correct_option": false,
+                        "explanation": "Cyrillic is also used in Russia, Ukraine, Serbia, North Macedonia and many other countries."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match sounds and letters",
+                        "pairs": [
+                            ["sh", "ш"],
+                            ["ch", "ч"],
+                            ["zh", "ж"],
+                            ["ts", "ц"],
+                            ["sht", "щ"]
+                        ],
+                        "explanation": "Match each sound to its Bulgarian letter."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Used by millions",
+                        "sentence": "Кирилицата, __ днес използват милиони хора, идва от България.",
+                        "options": ["която", "който", "които"],
+                        "correct_option": 0,
+                        "explanation": "\"Кирилицата, която днес използват милиони хора, идва от България.\" means \"Cyrillic, which millions of people use today, comes from Bulgaria.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: EU alphabet",
+                        "sentence": "In 2007 Cyrillic became the third official alphabet of the European Union.",
+                        "correct_option": true,
+                        "explanation": "Correct. It happened when Bulgaria joined the EU, after Latin and Greek."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "How щ is read",
+                        "sentence": "Буквата „щ“ се __ като „шт“.",
+                        "options": ["четат", "чета", "чете"],
+                        "correct_option": 2,
+                        "explanation": "\"Буквата „щ“ се чете като „шт“.\" means \"The letter щ is read as 'sht'.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Ottoman Rule and the Revival",
+            "description": "Five centuries of Ottoman rule, the National Revival and the fight for freedom.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the Revival words",
+                        "pairs": [
+                            ["Uprising", "въстание"],
+                            ["Freedom", "свобода"],
+                            ["Revolutionary", "революционер"],
+                            ["National Revival", "Възраждане"],
+                            ["Monastery school", "килийно училище"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Almost five centuries",
+                        "sentence": "България __ под османска власт почти пет века.",
+                        "options": ["беше", "бяха", "бъде"],
+                        "correct_option": 0,
+                        "explanation": "\"България беше под османска власт почти пет века.\" means \"Bulgaria was under Ottoman rule for almost five centuries.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Levski",
+                        "sentence": "Vasil Levski is known as the \"Apostle of Freedom\".",
+                        "correct_option": true,
+                        "explanation": "Correct. He built a network of secret revolutionary committees."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Paisiy wrote his history",
+                        "sentence": "Паисий Хилендарски __ „История славянобългарска“ през 1762 година.",
+                        "options": ["пишеше", "написа", "пише"],
+                        "correct_option": 1,
+                        "explanation": "\"Паисий Хилендарски написа „История славянобългарска“ през 1762 година.\" means \"Paisius of Hilendar wrote his Slavonic-Bulgarian History in 1762.\" A finished work takes the aorist."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The uprising broke out",
+                        "sentence": "Априлското въстание __ през 1876 година.",
+                        "options": ["избухваше", "избухне", "избухна"],
+                        "correct_option": 2,
+                        "explanation": "\"Априлското въстание избухна през 1876 година.\" means \"The April Uprising broke out in 1876.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: April Uprising",
+                        "sentence": "The April Uprising of 1876 won Bulgaria its freedom at once.",
+                        "correct_option": false,
+                        "explanation": "The uprising was crushed, but its brutal suppression turned Europe's attention to Bulgaria and led to the war of 1877-78."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the community words",
+                        "pairs": [
+                            ["School", "училище"],
+                            ["Church", "църква"],
+                            ["Community cultural centre", "читалище"],
+                            ["Teacher", "учител"],
+                            ["Enlightenment", "просвета"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A place where people read",
+                        "sentence": "Читалището е място, __ хората четат, учат и празнуват.",
+                        "options": ["където", "когато", "което"],
+                        "correct_option": 0,
+                        "explanation": "\"Читалището е място, където хората четат, учат и празнуват.\" means \"A chitalishte is a place where people read, learn and celebrate.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Chitalishte",
+                        "sentence": "A \"читалище\" is a traditional Bulgarian community cultural centre.",
+                        "correct_option": true,
+                        "explanation": "Correct. Almost every town and village has one, with a library, a stage and classes."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Levski travelled the country",
+                        "sentence": "Левски __ из цялата страна и създаваше революционни комитети.",
+                        "options": ["обиколи", "обикаляше", "обикаля"],
+                        "correct_option": 1,
+                        "explanation": "\"Левски обикаляше из цялата страна и създаваше революционни комитети.\" means \"Levski travelled all over the country setting up revolutionary committees.\" A repeated background activity takes the imperfect, like създаваше."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Liberation and the Third Bulgarian State",
+            "description": "The war of 1877-78, the new state and its first milestones.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the state words",
+                        "pairs": [
+                            ["Treaty", "договор"],
+                            ["War", "война"],
+                            ["Constitution", "конституция"],
+                            ["Parliament", "парламент"],
+                            ["Volunteer soldier", "опълченец"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Signed on 3 March",
+                        "sentence": "Санстефанският мирен договор е __ на 3 март 1878 година.",
+                        "options": ["подписан", "подписал", "подписва"],
+                        "correct_option": 0,
+                        "explanation": "\"Санстефанският мирен договор е подписан на 3 март 1878 година.\" means \"The Treaty of San Stefano was signed on 3 March 1878.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Shipka",
+                        "sentence": "The battles at the Shipka Pass were a key part of the war of 1877-78.",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarian volunteers and Russian troops held the pass for months."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The capital was moved",
+                        "sentence": "След Освобождението столицата __ в София.",
+                        "options": ["премести", "беше преместена", "преместваше"],
+                        "correct_option": 1,
+                        "explanation": "\"След Освобождението столицата беше преместена в София.\" means \"After the Liberation, the capital was moved to Sofia.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The constitution was adopted",
+                        "sentence": "Търновската конституция __ приета през 1879 година.",
+                        "options": ["бяха", "бях", "беше"],
+                        "correct_option": 2,
+                        "explanation": "\"Търновската конституция беше приета през 1879 година.\" means \"The Tarnovo Constitution was adopted in 1879.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Independence 1878",
+                        "sentence": "Bulgaria declared full independence in 1878.",
+                        "correct_option": false,
+                        "explanation": "Full independence was declared in 1908. That is why 22 September is Independence Day."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match dates and events",
+                        "pairs": [
+                            ["681", "основаването на държавата"],
+                            ["1878", "Освобождението"],
+                            ["1879", "Търновската конституция"],
+                            ["1885", "Съединението"],
+                            ["1908", "Независимостта"]
+                        ],
+                        "explanation": "Match each year to the Bulgarian event."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Who defended Shipka",
+                        "sentence": "Опълченците, __ защитаваха Шипка, са национални герои.",
+                        "options": ["които", "който", "която"],
+                        "correct_option": 0,
+                        "explanation": "\"Опълченците, които защитаваха Шипка, са национални герои.\" means \"The volunteers who defended Shipka are national heroes.\" Които is the plural form."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sofia capital",
+                        "sentence": "Sofia has been the capital of Bulgaria since 1879.",
+                        "correct_option": true,
+                        "explanation": "Correct. Before that, the capital was Veliko Tarnovo."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "It would have been smaller",
+                        "sentence": "Ако не беше Съединението, днешна България __ по-малка.",
+                        "options": ["ще бъде", "беше", "щеше да бъде"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако не беше Съединението, днешна България щеше да бъде по-малка.\" means \"Had it not been for the Unification, today's Bulgaria would be smaller.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Famous Bulgarians",
+            "description": "Sportspeople, artists and inventors who made Bulgaria known.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the achievers",
+                        "pairs": [
+                            ["Inventor", "изобретател"],
+                            ["Athlete", "спортист"],
+                            ["Painter", "художник"],
+                            ["Singer", "певец"],
+                            ["Scientist", "учен"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "He won the Ballon d'Or",
+                        "sentence": "Христо Стоичков __ „Златната топка“ през 1994 година.",
+                        "options": ["печелеше", "спечели", "печели"],
+                        "correct_option": 1,
+                        "explanation": "\"Христо Стоичков спечели „Златната топка“ през 1994 година.\" means \"Hristo Stoichkov won the Ballon d'Or in 1994.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Christo",
+                        "sentence": "The artist Christo, famous for wrapping buildings, was born in Bulgaria.",
+                        "correct_option": true,
+                        "explanation": "Correct. He was born in Gabrovo in 1935."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "She set a world record",
+                        "sentence": "Стефка Костадинова __ световен рекорд в скока на височина през 1987 година.",
+                        "options": ["поставяше", "поставя", "постави"],
+                        "correct_option": 2,
+                        "explanation": "\"Стефка Костадинова постави световен рекорд в скока на височина през 1987 година.\" means \"Stefka Kostadinova set a world high jump record in 1987.\" Her 2.09 m stood for 37 years."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Born in Haskovo",
+                        "sentence": "Григор Димитров е тенисист, __ е роден в Хасково.",
+                        "options": ["който", "която", "което"],
+                        "correct_option": 0,
+                        "explanation": "\"Григор Димитров е тенисист, който е роден в Хасково.\" means \"Grigor Dimitrov is a tennis player who was born in Haskovo.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Stoichkov",
+                        "sentence": "Hristo Stoichkov is a famous Bulgarian opera singer.",
+                        "correct_option": false,
+                        "explanation": "Stoichkov is a footballer. A famous Bulgarian opera singer is the bass Boris Christoff."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the success words",
+                        "pairs": [
+                            ["World record", "световен рекорд"],
+                            ["Medal", "медал"],
+                            ["Award", "награда"],
+                            ["Champion", "шампион"],
+                            ["Fame", "слава"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Known all over the world",
+                        "sentence": "Той е известен __ целия свят.",
+                        "options": ["по", "в", "на"],
+                        "correct_option": 0,
+                        "explanation": "\"Той е известен по целия свят.\" means \"He is famous all over the world.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Atanasoff",
+                        "sentence": "John Atanasoff, a pioneer of the electronic computer, had a Bulgarian father.",
+                        "correct_option": true,
+                        "explanation": "Correct. His father came from the village of Boyadzhik."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I would like to meet",
+                        "sentence": "Бих искал да се __ с някой известен спортист.",
+                        "options": ["запознах", "запозная", "запознавам"],
+                        "correct_option": 1,
+                        "explanation": "\"Бих искал да се запозная с някой известен спортист.\" means \"I would like to meet a famous athlete.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Art and Museums",
+            "description": "Icons, frescoes and painters, with passive participles and \"чието\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the art words",
+                        "pairs": [
+                            ["Painting", "картина"],
+                            ["Sculpture", "скулптура"],
+                            ["Exhibition", "изложба"],
+                            ["Icon", "икона"],
+                            ["Fresco", "стенопис"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The exhibition will open",
+                        "sentence": "Изложбата ще __ открита в петък.",
+                        "options": ["бъде", "е", "беше"],
+                        "correct_option": 0,
+                        "explanation": "\"Изложбата ще бъде открита в петък.\" means \"The exhibition will be opened on Friday.\" The future passive uses ще бъде."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zahari Zograf",
+                        "sentence": "Zahari Zograf was a 19th-century painter of icons and church frescoes.",
+                        "correct_option": true,
+                        "explanation": "Correct. His work can be seen at the Rila, Troyan and Bachkovo monasteries."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whose real name",
+                        "sentence": "Картините на Майстора, __ истинско име е Владимир Димитров, са много цветни.",
+                        "options": ["чийто", "чието", "чиято"],
+                        "correct_option": 1,
+                        "explanation": "\"...Майстора, чието истинско име е Владимир Димитров...\" means \"...the Master, whose real name is Vladimir Dimitrov...\" Чието agrees with име, which is neuter."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Painted in 1259",
+                        "sentence": "Стенописите в Боянската църква са __ през 1259 година.",
+                        "options": ["рисувал", "рисуващи", "нарисувани"],
+                        "correct_option": 2,
+                        "explanation": "\"Стенописите в Боянската църква са нарисувани през 1259 година.\" means \"The frescoes in Boyana Church were painted in 1259.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Boyana Church",
+                        "sentence": "The Boyana Church is famous for its modern street art.",
+                        "correct_option": false,
+                        "explanation": "It is famous for its medieval frescoes and is on the UNESCO World Heritage list."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the art verbs",
+                        "pairs": [
+                            ["To create", "създавам"],
+                            ["To admire", "възхищавам се"],
+                            ["To restore", "реставрирам"],
+                            ["To collect", "колекционирам"],
+                            ["To paint", "рисувам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I admire his talent",
+                        "sentence": "Възхищавам се __ таланта му.",
+                        "options": ["на", "от", "за"],
+                        "correct_option": 0,
+                        "explanation": "\"Възхищавам се на таланта му.\" means \"I admire his talent.\" Възхищавам се takes на."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ars longa",
+                        "sentence": "The saying \"Животът е кратък, изкуството е вечно\" means \"Life is short, art is eternal\".",
+                        "correct_option": true,
+                        "explanation": "Correct. It goes back to the Latin \"Ars longa, vita brevis\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Icons are restored by experts",
+                        "sentence": "Иконите се __ от специалисти.",
+                        "options": ["реставрира", "реставрирах", "реставрират"],
+                        "correct_option": 2,
+                        "explanation": "\"Иконите се реставрират от специалисти.\" means \"The icons are restored by specialists.\" Иконите is plural."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Music and Folklore",
+            "description": "Folk instruments, odd rhythms and the voices that went to space.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the instruments",
+                        "pairs": [
+                            ["Bagpipe", "гайда"],
+                            ["Shepherd's flute", "кавал"],
+                            ["Folk fiddle", "гъдулка"],
+                            ["Big drum", "тъпан"],
+                            ["Long-necked lute", "тамбура"]
+                        ],
+                        "explanation": "Match each English description to the Bulgarian instrument."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Made from goatskin",
+                        "sentence": "Гайдата се __ от козя кожа.",
+                        "options": ["прави", "правят", "правя"],
+                        "correct_option": 0,
+                        "explanation": "\"Гайдата се прави от козя кожа.\" means \"The bagpipe is made from goatskin.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Voyager",
+                        "sentence": "A Bulgarian folk song was sent into space on the Voyager Golden Record in 1977.",
+                        "correct_option": true,
+                        "explanation": "Correct. The song was \"Излел е Дельо хайдутин\", sung by Valya Balkanska."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Its irregular rhythms",
+                        "sentence": "Българската народна музика е известна с __ си ритми.",
+                        "options": ["неравноделни", "неравноделните", "неравноделна"],
+                        "correct_option": 1,
+                        "explanation": "\"...е известна с неравноделните си ритми\" means \"...is known for its irregular rhythms.\" With си, the adjective takes the article."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A dance in 7/16",
+                        "sentence": "Ръченицата е танц, __ се играе в ритъм 7/16.",
+                        "options": ["която", "което", "който"],
+                        "correct_option": 2,
+                        "explanation": "\"Ръченицата е танц, който се играе в ритъм 7/16.\" means \"The rachenitsa is a dance performed in 7/16 time.\" The relative pronoun agrees with танц."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kaval",
+                        "sentence": "The \"кавал\" is a kind of drum.",
+                        "correct_option": false,
+                        "explanation": "The кавал is a long wooden shepherd's flute."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the folklore words",
+                        "pairs": [
+                            ["Folk song", "народна песен"],
+                            ["Dancer", "танцьор"],
+                            ["Folk costume", "носия"],
+                            ["Choir", "хор"],
+                            ["Folk fair", "събор"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Thousands of performers",
+                        "sentence": "На събора в Копривщица се __ хиляди изпълнители.",
+                        "options": ["събират", "събира", "събирам"],
+                        "correct_option": 0,
+                        "explanation": "\"На събора в Копривщица се събират хиляди изпълнители.\" means \"Thousands of performers gather at the Koprivshtitsa folk fair.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Grammy",
+                        "sentence": "The choir \"Le Mystère des Voix Bulgares\" won a Grammy award.",
+                        "correct_option": true,
+                        "explanation": "Correct. It won in 1990 for its second album."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The horo had already begun",
+                        "sentence": "Когато пристигнахме, хорото вече __ започнало.",
+                        "options": ["е", "беше", "ще е"],
+                        "correct_option": 1,
+                        "explanation": "\"Когато пристигнахме, хорото вече беше започнало.\" means \"When we arrived, the horo had already begun.\" The earlier event takes the pluperfect."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Bulgarian Literature",
+            "description": "Classic and modern writers, and the words for talking about books.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the literature words",
+                        "pairs": [
+                            ["Novel", "роман"],
+                            ["Short story", "разказ"],
+                            ["Poem", "стихотворение"],
+                            ["Poet", "поет"],
+                            ["Writer", "писател"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A novel by Vazov",
+                        "sentence": "„Под игото“ е __ от Иван Вазов.",
+                        "options": ["роман", "романа", "романи"],
+                        "correct_option": 0,
+                        "explanation": "\"„Под игото“ е роман от Иван Вазов.\" means \"Under the Yoke is a novel by Ivan Vazov.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Gospodinov",
+                        "sentence": "Georgi Gospodinov won the International Booker Prize in 2023.",
+                        "correct_option": true,
+                        "explanation": "Correct. He won for \"Времеубежище\" (Time Shelter), the first Bulgarian novel to win it."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whose poems",
+                        "sentence": "Христо Ботев е поет, __ стихове учат всички ученици.",
+                        "options": ["чийто", "чиито", "чиято"],
+                        "correct_option": 1,
+                        "explanation": "\"Христо Ботев е поет, чиито стихове учат всички ученици.\" means \"Hristo Botev is a poet whose poems every pupil learns.\" Чиито agrees with the plural стихове."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If I had more time",
+                        "sentence": "Ако __ повече време, щях да прочета всички разкази на Йовков.",
+                        "options": ["имам", "ще имам", "имах"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако имах повече време, щях да прочета всички разкази на Йовков.\" means \"If I had more time, I would read all of Yovkov's stories.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Aleko Konstantinov",
+                        "sentence": "Aleko Konstantinov wrote only poetry.",
+                        "correct_option": false,
+                        "explanation": "He is famous for prose: the stories of Бай Ганьо and the travel book \"До Чикаго и назад\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the book words",
+                        "pairs": [
+                            ["Author", "автор"],
+                            ["Character, hero", "герой"],
+                            ["Plot", "сюжет"],
+                            ["Chapter", "глава"],
+                            ["Reader", "читател"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The main character",
+                        "sentence": "Главният __ в „Бай Ганьо“ е търговец, който пътува из Европа.",
+                        "options": ["герой", "героя", "герои"],
+                        "correct_option": 0,
+                        "explanation": "\"Главният герой в „Бай Ганьо“ е търговец...\" means \"The main character of Bay Ganyo is a trader who travels around Europe.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Glava",
+                        "sentence": "\"Глава\" can mean both \"head\" and \"chapter\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Първа глава\" is the first chapter."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Translated into many languages",
+                        "sentence": "Тази книга е __ на много езици.",
+                        "options": ["превела", "превежда", "преведена"],
+                        "correct_option": 2,
+                        "explanation": "\"Тази книга е преведена на много езици.\" means \"This book has been translated into many languages.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Bulgaria Today",
+            "description": "The country in Europe today: economy, travel and the future.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the Europe words",
+                        "pairs": [
+                            ["European Union", "Европейски съюз"],
+                            ["Member state", "държава членка"],
+                            ["Economy", "икономика"],
+                            ["Tourism", "туризъм"],
+                            ["Population", "население"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A member since 2007",
+                        "sentence": "България е член на Европейския съюз __ 2007 година.",
+                        "options": ["от", "в", "през"],
+                        "correct_option": 0,
+                        "explanation": "\"България е член на Европейския съюз от 2007 година.\" means \"Bulgaria has been a member of the EU since 2007.\" \"Since\" is от."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: NATO",
+                        "sentence": "Bulgaria joined NATO in 2004.",
+                        "correct_option": true,
+                        "explanation": "Correct. It joined the European Union three years later."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Important for the economy",
+                        "sentence": "Туризмът е важен __ икономиката.",
+                        "options": ["на", "за", "от"],
+                        "correct_option": 1,
+                        "explanation": "\"Туризмът е важен за икономиката.\" means \"Tourism is important for the economy.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Young people decide to return",
+                        "sentence": "Все повече млади хора __ да се върнат в България.",
+                        "options": ["решава", "реша", "решават"],
+                        "correct_option": 2,
+                        "explanation": "\"Все повече млади хора решават да се върнат в България.\" means \"More and more young people are deciding to come back to Bulgaria.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Not in the EU",
+                        "sentence": "Bulgaria is not a member of the European Union.",
+                        "correct_option": false,
+                        "explanation": "Bulgaria has been an EU member since 1 January 2007."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the modern words",
+                        "pairs": [
+                            ["IT sector", "ИТ сектор"],
+                            ["Start-up", "стартъп"],
+                            ["Investment", "инвестиция"],
+                            ["Infrastructure", "инфраструктура"],
+                            ["Motorway", "магистрала"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The motorway makes it shorter",
+                        "sentence": "Новата магистрала __ пътуването до морето по-кратко.",
+                        "options": ["прави", "правят", "правя"],
+                        "correct_option": 0,
+                        "explanation": "\"Новата магистрала прави пътуването до морето по-кратко.\" means \"The new motorway makes the trip to the seaside shorter.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: IT sector",
+                        "sentence": "Sofia has a growing IT sector with many international companies.",
+                        "correct_option": true,
+                        "explanation": "Correct. IT has become one of the fastest-growing parts of the economy."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In ten years",
+                        "sentence": "Мисля, че след десет години България __ още по-различна.",
+                        "options": ["беше", "ще бъде", "щеше"],
+                        "correct_option": 1,
+                        "explanation": "\"Мисля, че след десет години България ще бъде още по-различна.\" means \"I think that in ten years Bulgaria will be even more different.\""
+                    }
+                }
+            ]
+        }
+    ]
+}

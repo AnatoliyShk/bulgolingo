@@ -1,0 +1,1016 @@
+{
+    "name": "Travel Stories and Everyday Life",
+    "level": "B1",
+    "lessons": [
+        {
+            "name": "On the Road",
+            "description": "Tell the story of a road trip, with the imperfect for background and the aorist for events.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the road trip words",
+                        "pairs": [
+                            ["Road trip", "пътуване с кола"],
+                            ["Petrol station", "бензиностанция"],
+                            ["Detour", "обиколен път"],
+                            ["Traffic", "движение"],
+                            ["Border crossing", "граничен пункт"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "While we were travelling",
+                        "sentence": "Докато __ към морето, слушахме музика.",
+                        "options": ["пътувахме", "пътуваме", "ще пътуваме"],
+                        "correct_option": 0,
+                        "explanation": "\"Докато пътувахме към морето, слушахме музика.\" means \"While we were driving to the sea, we listened to music.\" Both actions are background, so both take the imperfect."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Imperfect background",
+                        "sentence": "The imperfect (\"пътувахме\", \"говореше\") often describes the background of a story.",
+                        "correct_option": true,
+                        "explanation": "Correct. The aorist then moves the story forward: \"...и изведнъж колата спря.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We stopped for lunch",
+                        "sentence": "По пътя __ в едно малко село за обяд.",
+                        "options": ["спирахме", "спряхме", "спрем"],
+                        "correct_option": 1,
+                        "explanation": "\"По пътя спряхме в едно малко село за обяд.\" means \"On the way we stopped in a small village for lunch.\" A single event takes the aorist."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Every summer he packed the car",
+                        "sentence": "Всяко лято баща ми __ колата и тръгвахме за Гърция.",
+                        "options": ["натовари", "товари", "товареше"],
+                        "correct_option": 2,
+                        "explanation": "\"Всяко лято баща ми товареше колата и тръгвахме за Гърция.\" means \"Every summer my father would pack the car and we would set off for Greece.\" A repeated past action takes the imperfect."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Benzinostantsiya",
+                        "sentence": "\"Бензиностанция\" is a bus station.",
+                        "correct_option": false,
+                        "explanation": "A бензиностанция is a petrol station. A bus station is an \"автогара\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the driving verbs",
+                        "pairs": [
+                            ["To stop", "спирам"],
+                            ["To overtake", "изпреварвам"],
+                            ["To get lost", "изгубвам се"],
+                            ["To fill up (the tank)", "зареждам"],
+                            ["To arrive", "пристигам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "When we arrived",
+                        "sentence": "Когато __ в Пловдив, вече беше тъмно.",
+                        "options": ["пристигнахме", "пристигахме", "пристигаме"],
+                        "correct_option": 0,
+                        "explanation": "\"Когато пристигнахме в Пловдив, вече беше тъмно.\" means \"When we arrived in Plovdiv, it was already dark.\" The arrival is an event; the darkness is the background."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zarezhdam",
+                        "sentence": "At a petrol station, \"зареждам\" means filling up the tank.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Зареждам с бензин\" is \"I fill up with petrol\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The road was narrow",
+                        "sentence": "Пътят __ тесен и много стръмен.",
+                        "options": ["бяха", "беше", "бях"],
+                        "correct_option": 1,
+                        "explanation": "\"Пътят беше тесен и много стръмен.\" means \"The road was narrow and very steep.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Driving in Bulgaria",
+            "description": "Road signs, fines, vignettes and the parts of a car.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the road rules",
+                        "pairs": [
+                            ["Road sign", "пътен знак"],
+                            ["Speed limit", "ограничение на скоростта"],
+                            ["Fine", "глоба"],
+                            ["Vignette", "винетка"],
+                            ["Car park", "паркинг"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "An electronic vignette",
+                        "sentence": "За магистралите ви трябва електронна __ за колата.",
+                        "options": ["винетка", "винетки", "винетката"],
+                        "correct_option": 0,
+                        "explanation": "\"За магистралите ви трябва електронна винетка за колата.\" means \"You need an electronic vignette for your car to use the motorways.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Right-hand side",
+                        "sentence": "In Bulgaria, cars drive on the right-hand side of the road.",
+                        "correct_option": true,
+                        "explanation": "Correct. Overtaking is on the left."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The officer gave me a fine",
+                        "sentence": "Полицаят ми __ глоба за превишена скорост.",
+                        "options": ["дадох", "даде", "дадоха"],
+                        "correct_option": 1,
+                        "explanation": "\"Полицаят ми даде глоба за превишена скорост.\" means \"The police officer gave me a speeding fine.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Parking is allowed",
+                        "sentence": "Паркирането в центъра е __ само с платен билет.",
+                        "options": ["позволен", "позволена", "позволено"],
+                        "correct_option": 2,
+                        "explanation": "\"Паркирането в центъра е позволено само с платен билет.\" means \"Parking in the centre is allowed only with a paid ticket.\" Паркирането is neuter."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Globa",
+                        "sentence": "A \"глоба\" is a kind of road sign.",
+                        "correct_option": false,
+                        "explanation": "A глоба is a fine."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the car parts",
+                        "pairs": [
+                            ["Steering wheel", "волан"],
+                            ["Brakes", "спирачки"],
+                            ["Tyre", "гума"],
+                            ["Headlights", "фарове"],
+                            ["Engine", "двигател"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Four winter tyres",
+                        "sentence": "Колата има четири __ за зима.",
+                        "options": ["гуми", "гума", "гумата"],
+                        "correct_option": 0,
+                        "explanation": "\"Колата има четири гуми за зима.\" means \"The car has four winter tyres.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Volan",
+                        "sentence": "\"Волан\" is a steering wheel.",
+                        "correct_option": true,
+                        "explanation": "Correct. The driver sits \"зад волана\", behind the wheel."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If you had driven slower",
+                        "sentence": "Ако __ по-бавно, нямаше да получиш глоба.",
+                        "options": ["караш", "караше", "ще караш"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако караше по-бавно, нямаше да получиш глоба.\" means \"If you had driven more slowly, you would not have got a fine.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Camping and Nature",
+            "description": "Tents, campfires and springs, and a weekend in the wild.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the camping words",
+                        "pairs": [
+                            ["Tent", "палатка"],
+                            ["Sleeping bag", "спален чувал"],
+                            ["Campfire", "лагерен огън"],
+                            ["Spring (of water)", "извор"],
+                            ["Waterfall", "водопад"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We pitched our tent",
+                        "sentence": "Опънахме __ си до реката.",
+                        "options": ["палатката", "палатка", "палатки"],
+                        "correct_option": 0,
+                        "explanation": "\"Опънахме палатката си до реката.\" means \"We pitched our tent by the river.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Izvor",
+                        "sentence": "\"Извор\" is a natural spring of water.",
+                        "correct_option": true,
+                        "explanation": "Correct. Many Bulgarian villages have a fountain fed by one, a \"чешма\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Around the fire",
+                        "sentence": "Вечерта седяхме около __ и пеехме.",
+                        "options": ["огън", "огъня", "огньове"],
+                        "correct_option": 1,
+                        "explanation": "\"Вечерта седяхме около огъня и пеехме.\" means \"In the evening we sat around the fire and sang.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Ice-cold water",
+                        "sentence": "Водата в __ беше ледено студена.",
+                        "options": ["извор", "изворите", "извора"],
+                        "correct_option": 2,
+                        "explanation": "\"Водата в извора беше ледено студена.\" means \"The water in the spring was ice cold.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vodopad",
+                        "sentence": "\"Водопад\" means \"lake\".",
+                        "correct_option": false,
+                        "explanation": "A водопад is a waterfall, literally \"water fall\". A lake is an \"езеро\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the outdoor phrases",
+                        "pairs": [
+                            ["To go on a hike", "ходя на преход"],
+                            ["To pitch a tent", "опъвам палатка"],
+                            ["To light a fire", "паля огън"],
+                            ["To pick mushrooms", "бера гъби"],
+                            ["To watch wildlife", "наблюдавам животни"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The children picked mushrooms",
+                        "sentence": "Децата __ много гъби в гората.",
+                        "options": ["набраха", "набере", "берем"],
+                        "correct_option": 0,
+                        "explanation": "\"Децата набраха много гъби в гората.\" means \"The children picked lots of mushrooms in the forest.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: National parks",
+                        "sentence": "Rila and Pirin are national parks in Bulgaria.",
+                        "correct_option": true,
+                        "explanation": "Correct. Pirin National Park is also on the UNESCO World Heritage list."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We put out the fire",
+                        "sentence": "Преди да тръгнем, __ огъня.",
+                        "options": ["загасяваме", "загасихме", "загасим"],
+                        "correct_option": 1,
+                        "explanation": "\"Преди да тръгнем, загасихме огъня.\" means \"Before we left, we put out the fire.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Healthy Body, Healthy Mind",
+            "description": "Stress, sport and balance, with the negative pronouns никой, нищо and никакъв.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the wellbeing words",
+                        "pairs": [
+                            ["Stress", "стрес"],
+                            ["Relaxation", "отпускане"],
+                            ["Balance", "баланс"],
+                            ["Meditation", "медитация"],
+                            ["Diet", "диета"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Sport helps",
+                        "sentence": "Спортът __ да се справим със стреса.",
+                        "options": ["помага", "помагат", "помогна"],
+                        "correct_option": 0,
+                        "explanation": "\"Спортът помага да се справим със стреса.\" means \"Sport helps us cope with stress.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: V zdravo tyalo",
+                        "sentence": "\"В здраво тяло – здрав дух\" means \"A healthy mind in a healthy body\".",
+                        "correct_option": true,
+                        "explanation": "Correct. It comes from the Latin \"mens sana in corpore sano\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "As a child I played every day",
+                        "sentence": "Като малък всеки ден __ по два часа футбол.",
+                        "options": ["изиграх", "играех", "играя"],
+                        "correct_option": 1,
+                        "explanation": "\"Като малък всеки ден играех по два часа футбол.\" means \"As a child I played football for two hours every day.\" A past habit takes the imperfect."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Nobody told me",
+                        "sentence": "__ не ми каза, че състезанието е отменено.",
+                        "options": ["Нищо", "Никога", "Никой"],
+                        "correct_option": 2,
+                        "explanation": "\"Никой не ми каза, че състезанието е отменено.\" means \"Nobody told me the race had been cancelled.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nishto",
+                        "sentence": "\"Нищо\" means \"nobody\".",
+                        "correct_option": false,
+                        "explanation": "\"Нищо\" means \"nothing\". \"Nobody\" is \"никой\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the negative words",
+                        "pairs": [
+                            ["Nobody", "никой"],
+                            ["Nothing", "нищо"],
+                            ["Never", "никога"],
+                            ["Nowhere", "никъде"],
+                            ["No kind of", "никакъв"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I know nobody here",
+                        "sentence": "Не познавам __ в този град.",
+                        "options": ["никого", "никой", "нищо"],
+                        "correct_option": 0,
+                        "explanation": "\"Не познавам никого в този град.\" means \"I do not know anybody in this town.\" As an object, никой becomes никого."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Double negative",
+                        "sentence": "Bulgarian uses double negatives: \"Никой не дойде.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. The sentence means \"Nobody came\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I need no help at all",
+                        "sentence": "Не ми трябва __ помощ.",
+                        "options": ["никакъв", "никаква", "никакво"],
+                        "correct_option": 1,
+                        "explanation": "\"Не ми трябва никаква помощ.\" means \"I do not need any help at all.\" Помощ is feminine."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "What People Say",
+            "description": "Pass on stories and rumours with the renarrative mood.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match seen and heard",
+                        "pairs": [
+                            ["He went (I saw it)", "той отиде"],
+                            ["He went (I was told)", "той отишъл"],
+                            ["She said (I heard her)", "тя каза"],
+                            ["She said (I was told)", "тя казала"],
+                            ["They came (I was told)", "те дошли"]
+                        ],
+                        "explanation": "Match each English description to the Bulgarian verb form."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "There was once a town",
+                        "sentence": "Според легендата едно време тук __ голям град, но той изчезнал.",
+                        "options": ["имаше", "има", "имало"],
+                        "correct_option": 2,
+                        "explanation": "\"Според легендата едно време тук имало голям град, но той изчезнал.\" means \"According to legend, there was once a big town here, but it disappeared.\" A legend is told in the renarrative throughout."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Renarrative forms",
+                        "sentence": "Bulgarian verbs have special forms, such as \"бил\" and \"отишъл\", for things you did not see yourself.",
+                        "correct_option": true,
+                        "explanation": "Correct. They are called the renarrative mood (преизказно наклонение)."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Her son went to Germany",
+                        "sentence": "Съседката ми разказа, че синът ѝ __ в Германия и там се оженил.",
+                        "options": ["замина", "заминал", "заминава"],
+                        "correct_option": 1,
+                        "explanation": "\"...синът ѝ заминал в Германия и там се оженил\" means \"...her son went to Germany and got married there.\" The story is passed on, so it stays renarrative, like оженил."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A poor but clever man",
+                        "sentence": "Имало едно време един бедняк, който __ много хитър.",
+                        "options": ["бил", "беше", "е"],
+                        "correct_option": 0,
+                        "explanation": "\"Имало едно време един бедняк, който бил много хитър.\" means \"Once upon a time there was a poor man who was very clever.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Otishal",
+                        "sentence": "The form \"отишъл\" means you saw him leave with your own eyes.",
+                        "correct_option": false,
+                        "explanation": "\"Отишъл\" reports what you heard. If you saw it yourself, you say \"отиде\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the rumour words",
+                        "pairs": [
+                            ["They say", "казват"],
+                            ["Apparently", "явно"],
+                            ["Supposedly", "уж"],
+                            ["According to", "според"],
+                            ["Rumour", "слух"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "According to rumours",
+                        "sentence": "__ слуховете, фирмата ще затвори.",
+                        "options": ["Според", "Относно", "Заради"],
+                        "correct_option": 0,
+                        "explanation": "\"Според слуховете, фирмата ще затвори.\" means \"According to the rumours, the company will close.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Imalo edno vreme",
+                        "sentence": "Bulgarian fairy tales usually begin with \"Имало едно време\", a renarrative form.",
+                        "correct_option": true,
+                        "explanation": "Correct. It means \"Once upon a time\", literally \"There was (they say) once a time\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The dragon ate a sheep",
+                        "sentence": "Разправят, че змеят живеел в пещерата и __ по цяла овца на ден.",
+                        "options": ["изяждаше", "изяждал", "изяде"],
+                        "correct_option": 1,
+                        "explanation": "\"...змеят живеел в пещерата и изяждал по цяла овца на ден\" means \"...the dragon lived in the cave and ate a whole sheep a day.\" Both verbs stay renarrative."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Impressions of Bulgaria",
+            "description": "What surprises visitors, and what it takes to feel at home.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the impression words",
+                        "pairs": [
+                            ["Hospitable", "гостоприемен"],
+                            ["Beautiful", "красив"],
+                            ["Friendly", "дружелюбен"],
+                            ["Varied", "разнообразен"],
+                            ["Unforgettable", "незабравим"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Hospitable people",
+                        "sentence": "Хората тук са много __ и винаги помагат.",
+                        "options": ["гостоприемни", "гостоприемен", "гостоприемна"],
+                        "correct_option": 0,
+                        "explanation": "\"Хората тук са много гостоприемни и винаги помагат.\" means \"People here are very hospitable and always help.\" Хората is plural."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Rose oil",
+                        "sentence": "Bulgaria is known for its rose oil, produced in the Rose Valley near Kazanlak.",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarian rose oil is used in perfumes around the world."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Nature impressed me most",
+                        "sentence": "Най-много ме __ природата.",
+                        "options": ["впечатлих", "впечатли", "впечатлиха"],
+                        "correct_option": 1,
+                        "explanation": "\"Най-много ме впечатли природата.\" means \"What impressed me most was the nature.\" Природата is the singular subject."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I would like to live in Plovdiv",
+                        "sentence": "Ако имах възможност, __ да живея в Пловдив.",
+                        "options": ["ще искам", "искам", "бих искал"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако имах възможност, бих искал да живея в Пловдив.\" means \"If I had the chance, I would like to live in Plovdiv.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Head shaking",
+                        "sentence": "In Bulgaria, shaking your head from side to side always means \"no\".",
+                        "correct_option": false,
+                        "explanation": "Traditionally, a side-to-side shake means \"yes\" and a nod means \"no\", which confuses many visitors."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the settling-in words",
+                        "pairs": [
+                            ["Impression", "впечатление"],
+                            ["Culture shock", "културен шок"],
+                            ["Custom", "обичай"],
+                            ["Way of life", "бит"],
+                            ["To get used to", "свиквам с"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Getting used to Cyrillic",
+                        "sentence": "Трудно ми беше да __ с кирилицата.",
+                        "options": ["свикна", "свиквам", "свикнах"],
+                        "correct_option": 0,
+                        "explanation": "\"Трудно ми беше да свикна с кирилицата.\" means \"It was hard for me to get used to Cyrillic.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Rose Festival",
+                        "sentence": "The Rose Festival in Kazanlak takes place in early summer.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is held at the start of June, when the roses are picked."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I have lived in Sofia for two years",
+                        "sentence": "Вече __ две години в София и се чувствам у дома.",
+                        "options": ["живях", "живея", "живеех"],
+                        "correct_option": 1,
+                        "explanation": "\"Вече живея две години в София и се чувствам у дома.\" means \"I have been living in Sofia for two years and feel at home.\" Bulgarian uses the present for something still going on."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Neighbours and Community",
+            "description": "Life in a block of flats, house meetings and getting along.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the block words",
+                        "pairs": [
+                            ["Neighbour", "съсед"],
+                            ["Block of flats", "блок"],
+                            ["Entrance (of a block)", "вход"],
+                            ["Building manager", "домоуправител"],
+                            ["Staircase", "стълбище"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Our neighbours",
+                        "sentence": "Съседите __ организираха парти в двора.",
+                        "options": ["ни", "нас", "ние"],
+                        "correct_option": 0,
+                        "explanation": "\"Съседите ни организираха парти в двора.\" means \"Our neighbours organised a party in the yard.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Domoupravitel",
+                        "sentence": "In a Bulgarian block of flats, the \"домоуправител\" looks after the building.",
+                        "correct_option": true,
+                        "explanation": "Correct. They collect money for repairs and call the house meetings."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "She brought me a cake",
+                        "sentence": "Съседката от третия етаж ми __ торта за рождения ден.",
+                        "options": ["донесох", "донесе", "донесоха"],
+                        "correct_option": 1,
+                        "explanation": "\"Съседката от третия етаж ми донесе торта за рождения ден.\" means \"The neighbour from the third floor brought me a birthday cake.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The meeting will be held",
+                        "sentence": "Събранието на входа ще се __ в четвъртък.",
+                        "options": ["проведат", "провеждам", "проведе"],
+                        "correct_option": 2,
+                        "explanation": "\"Събранието на входа ще се проведе в четвъртък.\" means \"The residents' meeting will be held on Thursday.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Stalbishte",
+                        "sentence": "A \"стълбище\" is a garden.",
+                        "correct_option": false,
+                        "explanation": "A стълбище is a staircase."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the community verbs",
+                        "pairs": [
+                            ["To help", "помагам"],
+                            ["To borrow", "заемам"],
+                            ["To complain", "оплаквам се"],
+                            ["To say hello", "поздравявам"],
+                            ["To get along with", "разбирам се с"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I get on with my neighbours",
+                        "sentence": "Разбирам се много добре __ съседите си.",
+                        "options": ["със", "с", "от"],
+                        "correct_option": 0,
+                        "explanation": "\"Разбирам се много добре със съседите си.\" means \"I get on very well with my neighbours.\" Before с or з, the preposition с becomes със."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sharing preserves",
+                        "sentence": "Bulgarian neighbours often share home-made food such as lyutenitsa or jam.",
+                        "correct_option": true,
+                        "explanation": "Correct. Autumn preserving is a social event in many neighbourhoods."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Our neighbour complained",
+                        "sentence": "Съседът ни се __ от шума вчера.",
+                        "options": ["оплаквам", "оплака", "оплакаха"],
+                        "correct_option": 1,
+                        "explanation": "\"Съседът ни се оплака от шума вчера.\" means \"Our neighbour complained about the noise yesterday.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Home Repairs",
+            "description": "Renovations, tradesmen and tools.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the renovation words",
+                        "pairs": [
+                            ["Renovation", "ремонт"],
+                            ["Paint", "боя"],
+                            ["Wall", "стена"],
+                            ["Tiles", "плочки"],
+                            ["Electrician", "електротехник"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We renovated the bathroom",
+                        "sentence": "Миналото лято __ ремонт на банята.",
+                        "options": ["направихме", "правим", "ще направим"],
+                        "correct_option": 0,
+                        "explanation": "\"Миналото лято направихме ремонт на банята.\" means \"Last summer we renovated the bathroom.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Remont",
+                        "sentence": "\"Ремонт\" means repair or renovation work.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"В ремонт\" on a sign means \"under repair\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Painted light blue",
+                        "sentence": "Стените бяха __ в светлосиньо.",
+                        "options": ["боядисал", "боядисани", "боядисва"],
+                        "correct_option": 1,
+                        "explanation": "\"Стените бяха боядисани в светлосиньо.\" means \"The walls were painted light blue.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "While the builders worked",
+                        "sentence": "Докато майсторите __ по банята, ние живеехме при родителите си.",
+                        "options": ["работиха", "работят", "работеха"],
+                        "correct_option": 2,
+                        "explanation": "\"Докато майсторите работеха по банята, ние живеехме при родителите си.\" means \"While the builders were working on the bathroom, we stayed with my parents.\" Both actions are background."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Maystor",
+                        "sentence": "A \"майстор\" can only be a master artist, never a builder.",
+                        "correct_option": false,
+                        "explanation": "A майстор is also any skilled tradesman, such as a builder or a plumber."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the tools",
+                        "pairs": [
+                            ["Hammer", "чук"],
+                            ["Screwdriver", "отвертка"],
+                            ["Drill", "бормашина"],
+                            ["Ladder", "стълба"],
+                            ["Nail", "пирон"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A hammer and a nail",
+                        "sentence": "Трябва ми __ и пирон, за да закача картината.",
+                        "options": ["чук", "чука", "чукове"],
+                        "correct_option": 0,
+                        "explanation": "\"Трябва ми чук и пирон, за да закача картината.\" means \"I need a hammer and a nail to hang the picture.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Stalba",
+                        "sentence": "\"Стълба\" is a ladder, and \"стълбище\" is a staircase.",
+                        "correct_option": true,
+                        "explanation": "Correct. The two words share the same root."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "It would have finished sooner",
+                        "sentence": "Ако бяхме наели майстор, ремонтът __ по-бързо.",
+                        "options": ["ще свърши", "щеше да свърши", "свърши"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако бяхме наели майстор, ремонтът щеше да свърши по-бързо.\" means \"If we had hired a builder, the renovation would have finished sooner.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Protecting the Environment",
+            "description": "Recycling, clean air and small everyday changes.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the environment words",
+                        "pairs": [
+                            ["Waste", "отпадъци"],
+                            ["Plastic", "пластмаса"],
+                            ["Nature reserve", "резерват"],
+                            ["Saving energy", "пестене на енергия"],
+                            ["Air quality", "качество на въздуха"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The yellow bin",
+                        "sentence": "Хвърлям пластмасата в __ контейнер.",
+                        "options": ["жълтия", "жълт", "жълтите"],
+                        "correct_option": 0,
+                        "explanation": "\"Хвърлям пластмасата в жълтия контейнер.\" means \"I throw plastic into the yellow bin.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Green bins",
+                        "sentence": "In many Bulgarian towns, glass is collected in green containers.",
+                        "correct_option": true,
+                        "explanation": "Correct. Paper usually goes in blue and plastic in yellow."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If everyone sorted their waste",
+                        "sentence": "Ако всички __ отпадъците си, градът щеше да е по-чист.",
+                        "options": ["разделят", "разделяха", "разделиха"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако всички разделяха отпадъците си, градът щеше да е по-чист.\" means \"If everyone sorted their waste, the town would be cleaner.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A serious problem in winter",
+                        "sentence": "Замърсяването на въздуха __ сериозен проблем през зимата.",
+                        "options": ["са", "съм", "е"],
+                        "correct_option": 2,
+                        "explanation": "\"Замърсяването на въздуха е сериозен проблем през зимата.\" means \"Air pollution is a serious problem in winter.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Otpadatsi",
+                        "sentence": "\"Отпадъци\" means fresh food.",
+                        "correct_option": false,
+                        "explanation": "\"Отпадъци\" means waste or rubbish."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the green verbs",
+                        "pairs": [
+                            ["To throw away", "изхвърлям"],
+                            ["To reuse", "използвам повторно"],
+                            ["To plant", "засаждам"],
+                            ["To switch off", "изключвам"],
+                            ["To protect", "опазвам"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Switch off the light",
+                        "sentence": "Изключвай __ в стаята, когато излизаш.",
+                        "options": ["лампата", "лампа", "лампи"],
+                        "correct_option": 0,
+                        "explanation": "\"Изключвай лампата в стаята, когато излизаш.\" means \"Switch off the light in the room when you go out.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Plastic bags",
+                        "sentence": "Plastic bags in Bulgarian shops usually cost money.",
+                        "correct_option": true,
+                        "explanation": "Correct. The charge is there to cut plastic waste."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We planted a hundred trees",
+                        "sentence": "Миналата пролет __ сто дървета в парка.",
+                        "options": ["засаждаме", "засадихме", "ще засадим"],
+                        "correct_option": 1,
+                        "explanation": "\"Миналата пролет засадихме сто дървета в парка.\" means \"Last spring we planted a hundred trees in the park.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Plans and Dreams",
+            "description": "Hopes, goals and what you would do if you could.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the dream words",
+                        "pairs": [
+                            ["Dream", "мечта"],
+                            ["Goal", "цел"],
+                            ["Plan", "план"],
+                            ["Hope", "надежда"],
+                            ["Future", "бъдеще"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My own restaurant",
+                        "sentence": "Мечтата ми е да __ собствен ресторант.",
+                        "options": ["отворя", "отварям", "отворих"],
+                        "correct_option": 0,
+                        "explanation": "\"Мечтата ми е да отворя собствен ресторант.\" means \"My dream is to open my own restaurant.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dano",
+                        "sentence": "\"Дано\" expresses a hope: \"Дано успея!\"",
+                        "correct_option": true,
+                        "explanation": "Correct. The sentence means \"I hope I succeed!\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If I win the lottery",
+                        "sentence": "Ако спечеля от лотарията, __ около света.",
+                        "options": ["пътувах", "ще пътувам", "пътувам"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако спечеля от лотарията, ще пътувам около света.\" means \"If I win the lottery, I will travel around the world.\" A real condition takes the future."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I would have changed jobs",
+                        "sentence": "Ако бях по-смел, отдавна __ работата си.",
+                        "options": ["ще сменя", "сменям", "щях да сменя"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако бях по-смел, отдавна щях да сменя работата си.\" means \"If I were braver, I would have changed jobs long ago.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Mechta",
+                        "sentence": "\"Мечта\" means \"a nightmare\".",
+                        "correct_option": false,
+                        "explanation": "A мечта is a dream or a wish. A nightmare is a \"кошмар\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the future words",
+                        "pairs": [
+                            ["Next year", "догодина"],
+                            ["One day", "някой ден"],
+                            ["As soon as possible", "възможно най-скоро"],
+                            ["In the future", "в бъдеще"],
+                            ["Hopefully", "дано"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I plan to learn Spanish",
+                        "sentence": "Догодина __ да уча испански.",
+                        "options": ["смятам", "смята", "смятат"],
+                        "correct_option": 0,
+                        "explanation": "\"Догодина смятам да уча испански.\" means \"Next year I plan to learn Spanish.\" Смятам да means \"I intend to\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dogodina",
+                        "sentence": "\"Догодина\" means \"next year\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Last year\" is \"миналата година\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "One day I would like to go",
+                        "sentence": "Бих искал някой ден да __ в Япония.",
+                        "options": ["отидох", "отида", "отивам"],
+                        "correct_option": 1,
+                        "explanation": "\"Бих искал някой ден да отида в Япония.\" means \"One day I would like to go to Japan.\""
+                    }
+                }
+            ]
+        }
+    ]
+}

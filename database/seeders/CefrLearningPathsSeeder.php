@@ -2,29 +2,25 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Cefr\A1PathSeeder;
-use Database\Seeders\Cefr\A2PathSeeder;
-use Database\Seeders\Cefr\B1PathSeeder;
-use Database\Seeders\Cefr\B2PathSeeder;
-use Database\Seeders\Cefr\C1PathSeeder;
-use Database\Seeders\Cefr\C2PathSeeder;
+use Database\Seeders\Concerns\SeedsLearningPaths;
 use Illuminate\Database\Seeder;
 
+/**
+ * One path per CEFR level, A1 to C2, read from
+ * data/learning-paths/cefr. Every level runs through the same ten themes,
+ * taken from the sequence of lessons 1-10 in Ivanova's "The Bulgarian
+ * Language in Practice": meeting people, introductions, family, numbers and
+ * routine, home, guests, work, the natural world, time and weather, seasons
+ * and holidays. Each level revisits them with the grammar and register that
+ * suit it. The exercises themselves are original; only the themes and the
+ * order the grammar is introduced follow the book.
+ */
 class CefrLearningPathsSeeder extends Seeder
 {
-    /**
-     * Seeds one path per CEFR level, A1 to C2, lowest first so the catalog's
-     * id order matches the level order.
-     */
+    use SeedsLearningPaths;
+
     public function run(): void
     {
-        $this->call([
-            A1PathSeeder::class,
-            A2PathSeeder::class,
-            B1PathSeeder::class,
-            B2PathSeeder::class,
-            C1PathSeeder::class,
-            C2PathSeeder::class,
-        ]);
+        $this->seedPathsFrom(__DIR__.'/data/learning-paths/cefr');
     }
 }

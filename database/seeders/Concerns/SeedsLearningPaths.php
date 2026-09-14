@@ -8,9 +8,52 @@ use App\Enums\LearningPathType;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
+use InvalidArgumentException;
 
 trait SeedsLearningPaths
 {
+    /**
+     * Seeds every path file in the directory in filename order, which is why
+     * the files carry a numeric prefix: paths are listed in id order, so the
+     * prefix decides where each one lands in the catalog.
+     */
+    protected function seedPathsFrom(string $directory): void
+    {
+        $files = glob($directory.'/*.json');
+
+        if (! $files) {
+            throw new InvalidArgumentException("No learning path files found in {$directory}.");
+        }
+
+        sort($files);
+
+        foreach ($files as $file) {
+            $this->seedPathFile($file);
+        }
+    }
+
+    /**
+     * A path file holds the path's name and level and its lessons in study
+     * order. Each exercise is an object with a single key, the ExerciseType
+     * value, whose value is the exercise's name plus its clause, so a file
+     * reads as the list of exercises a student will see.
+     */
+    protected function seedPathFile(string $file): void
+    {
+        $path = json_decode(file_get_contents($file), true, flags: JSON_THROW_ON_ERROR);
+
+        $lessons = array_map(fn (array $lesson) => [
+            'name' => $lesson['name'],
+            'description' => $lesson['description'],
+            'exercises' => array_map(
+                fn (array $entry) => self::exerciseFromEntry($entry, $file),
+                $lesson['exercises']
+            ),
+        ], $path['lessons']);
+
+        $this->seedPath($path['name'], LanguageLevel::from($path['level']), $lessons);
+    }
+
     /**
      * Lessons are looked up inside this path rather than by name across the
      * table, so a lesson that shares a name with one in another path never
@@ -46,49 +89,24 @@ trait SeedsLearningPaths
     }
 
     /**
-     * A word-pair board. The explanation doubles as the player's prompt.
+     * Turns one {"<type>": {name, ...clause}} entry into Exercise attributes.
+     * An entry with more or fewer than one key is refused rather than guessed
+     * at, and an unknown type fails in ExerciseType::from(); the clause itself
+     * is validated by ExerciseObserver when the exercise is created.
      *
-     * @param  array<int, array{0: string, 1: string}>  $pairs
+     * @return array{name: string, decision_type: ExerciseType, clause: array}
      */
-    protected static function pairs(string $name, string $explanation, array $pairs): array
+    private static function exerciseFromEntry(array $entry, string $file): array
     {
-        return [
-            'name' => $name,
-            'decision_type' => ExerciseType::MULTIPLE_CHOICE,
-            'clause' => ['pairs' => $pairs, 'explanation' => $explanation],
-        ];
-    }
+        if (count($entry) !== 1) {
+            throw new InvalidArgumentException('Each exercise in '.basename($file).' must have exactly one type key, got: '.implode(', ', array_keys($entry)));
+        }
 
-    /**
-     * The player finds the gap by splitting the sentence on whitespace, so
-     * "__" has to stand alone with a space on each side.
-     *
-     * @param  array<int, string>  $options
-     */
-    protected static function fill(string $name, string $sentence, array $options, int $correct, string $explanation): array
-    {
-        return [
-            'name' => $name,
-            'decision_type' => ExerciseType::FILL_IN_THE_BLANK,
-            'clause' => [
-                'sentence' => $sentence,
-                'options' => $options,
-                'correct_option' => $correct,
-                'explanation' => $explanation,
-            ],
-        ];
-    }
+        $type = ExerciseType::from(array_key_first($entry));
+        $clause = $entry[$type->value];
+        $name = $clause['name'];
+        unset($clause['name']);
 
-    protected static function trueFalse(string $name, string $sentence, bool $correct, string $explanation): array
-    {
-        return [
-            'name' => $name,
-            'decision_type' => ExerciseType::TRUE_FALSE,
-            'clause' => [
-                'sentence' => $sentence,
-                'correct_option' => $correct,
-                'explanation' => $explanation,
-            ],
-        ];
+        return ['name' => $name, 'decision_type' => $type, 'clause' => $clause];
     }
 }

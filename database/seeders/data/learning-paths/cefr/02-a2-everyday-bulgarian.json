@@ -1,0 +1,756 @@
+{
+    "name": "Everyday Bulgarian",
+    "level": "A2",
+    "lessons": [
+        {
+            "name": "Catching Up",
+            "description": "Meet an old friend again and say where you were with the past tense of \"съм\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the catching-up phrases",
+                        "pairs": [
+                            ["Long time no see", "Отдавна не сме се виждали"],
+                            ["What's new?", "Какво ново?"],
+                            ["Nothing special", "Нищо особено"],
+                            ["Take care", "Пази се"],
+                            ["Say hi to your mum", "Поздрави майка си"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I was at home",
+                        "sentence": "Вчера аз __ вкъщи цял ден.",
+                        "options": ["беше", "бях", "бяха"],
+                        "correct_option": 1,
+                        "explanation": "\"Вчера аз бях вкъщи цял ден.\" means \"Yesterday I was at home all day.\" Бях is the \"I\" form of the past of съм."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Byahme",
+                        "sentence": "\"Бяхме\" is the past tense of \"съм\" for \"ние\" (we were).",
+                        "correct_option": true,
+                        "explanation": "Correct. The past of съм runs бях, беше, беше, бяхме, бяхте, бяха."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Where were you, Ivan",
+                        "sentence": "Къде __ миналата седмица, Иване?",
+                        "options": ["бях", "бяхте", "беше"],
+                        "correct_option": 2,
+                        "explanation": "\"Къде беше миналата седмица, Иване?\" means \"Where were you last week, Ivan?\" Иване is a friendly form of address, so the informal \"ти\" form беше fits."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pazi se",
+                        "sentence": "\"Пази се!\" is something you say when you first meet someone.",
+                        "correct_option": false,
+                        "explanation": "\"Пази се!\" means \"Take care!\" and is said when you part."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the past of to be",
+                        "pairs": [
+                            ["I was", "бях"],
+                            ["He was", "беше"],
+                            ["We were", "бяхме"],
+                            ["You were (a group)", "бяхте"],
+                            ["They were", "бяха"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian past form of \"съм\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Last summer we were",
+                        "sentence": "Миналото лято ние __ на море в Созопол.",
+                        "options": ["бяха", "бяхме", "бях"],
+                        "correct_option": 1,
+                        "explanation": "\"Миналото лято ние бяхме на море в Созопол.\" means \"Last summer we were at the seaside in Sozopol.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Tell Me About Yourself",
+            "description": "Talk about likes and belongings with the short possessive forms ми, ти, му, ѝ.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the possessives",
+                        "pairs": [
+                            ["My name", "името ми"],
+                            ["Your job", "работата ти"],
+                            ["His car", "колата му"],
+                            ["Her brother", "брат ѝ"],
+                            ["Our house", "къщата ни"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Your sister",
+                        "sentence": "Как се казва __ ти?",
+                        "options": ["сестрата", "сестра", "сестри"],
+                        "correct_option": 1,
+                        "explanation": "\"Как се казва сестра ти?\" means \"What is your sister's name?\" Close family words in the singular take no article before ми, ти, му, ѝ."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Haresva mi",
+                        "sentence": "\"Харесва ми\" means \"I like it\", literally \"It pleases me\".",
+                        "correct_option": true,
+                        "explanation": "Correct. The thing you like is the subject, and \"ми\" (to me) shows who likes it."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I like reading",
+                        "sentence": "На мен ми __ да чета книги.",
+                        "options": ["харесвам", "харесват", "харесва"],
+                        "correct_option": 2,
+                        "explanation": "\"На мен ми харесва да чета книги.\" means \"I like reading books.\" The verb agrees with the activity you like, not with you."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Maikata mi",
+                        "sentence": "With close family words in the singular you add the article before the short possessive: \"майката ми\".",
+                        "correct_option": false,
+                        "explanation": "It is \"майка ми\", \"баща ми\", \"брат ми\" with no article. Most other nouns do take it: \"колата ми\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the hobbies",
+                        "pairs": [
+                            ["Reading", "четене"],
+                            ["Cooking", "готвене"],
+                            ["Hiking", "планинарство"],
+                            ["Swimming", "плуване"],
+                            ["Photography", "фотография"]
+                        ],
+                        "explanation": "Match each hobby to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I like to go to the mountains",
+                        "sentence": "Обичам да __ в планината през уикенда.",
+                        "options": ["ходиш", "ходят", "ходя"],
+                        "correct_option": 2,
+                        "explanation": "\"Обичам да ходя в планината през уикенда.\" means \"I like going to the mountains at the weekend.\" After \"обичам да\" the verb stays in the \"I\" form."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Family Stories",
+            "description": "Weddings, birthdays and relatives, told in the simple past tense.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the family events",
+                        "pairs": [
+                            ["Wedding", "сватба"],
+                            ["Birthday", "рожден ден"],
+                            ["Cousin (male)", "братовчед"],
+                            ["Aunt", "леля"],
+                            ["Grandson", "внук"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My sister got married",
+                        "sentence": "Сестра ми __ миналата година.",
+                        "options": ["се ожени", "се омъжи", "се омъжих"],
+                        "correct_option": 1,
+                        "explanation": "\"Сестра ми се омъжи миналата година.\" means \"My sister got married last year.\" A woman \"се омъжва\", a man \"се жени\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vuycho and chicho",
+                        "sentence": "\"Вуйчо\" is your mother's brother, while \"чичо\" is your father's brother.",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarian keeps the two uncles apart: вуйчо on the mother's side, чичо on the father's."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We called grandma",
+                        "sentence": "Вчера ние __ на баба за рождения ѝ ден.",
+                        "options": ["се обадихме", "се обади", "се обадиха"],
+                        "correct_option": 0,
+                        "explanation": "\"Вчера ние се обадихме на баба за рождения ѝ ден.\" means \"Yesterday we called grandma for her birthday.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Rodih se",
+                        "sentence": "\"Родих се през 1990 г.\" means \"I got married in 1990.\"",
+                        "correct_option": false,
+                        "explanation": "\"Родих се през 1990 г.\" means \"I was born in 1990.\""
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the past forms",
+                        "pairs": [
+                            ["I went", "отидох"],
+                            ["I saw", "видях"],
+                            ["I bought", "купих"],
+                            ["I ate", "ядох"],
+                            ["I came", "дойдох"]
+                        ],
+                        "explanation": "Match each English past form to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We danced until morning",
+                        "sentence": "Миналата събота на сватбата __ до сутринта.",
+                        "options": ["ще танцуваме", "танцувахме", "танцуваме"],
+                        "correct_option": 1,
+                        "explanation": "\"Миналата събота на сватбата танцувахме до сутринта.\" means \"Last Saturday at the wedding we danced until morning.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Plans for the Week",
+            "description": "Numbers up to a hundred, appointments and the future tense with \"ще\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the numbers",
+                        "pairs": [
+                            ["30", "тридесет"],
+                            ["45", "четиридесет и пет"],
+                            ["50", "петдесет"],
+                            ["70", "седемдесет"],
+                            ["100", "сто"]
+                        ],
+                        "explanation": "Match each number to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Tomorrow I will go",
+                        "sentence": "Утре __ отида на фитнес.",
+                        "options": ["щях", "ще", "да"],
+                        "correct_option": 1,
+                        "explanation": "\"Утре ще отида на фитнес.\" means \"Tomorrow I will go to the gym.\" Ще comes before the verb to make the future."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nyama da",
+                        "sentence": "The negative future is made with \"няма да\": \"Няма да дойда.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Няма да дойда\" means \"I will not come\". Bulgarian does not say \"не ще\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Half past eight",
+                        "sentence": "Филмът започва в осем и __ вечерта.",
+                        "options": ["половин", "половината", "половина"],
+                        "correct_option": 2,
+                        "explanation": "\"Филмът започва в осем и половина вечерта.\" means \"The film starts at half past eight in the evening.\" Половин is used before a noun, as in половин час."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Shte changes",
+                        "sentence": "In the future tense \"ще\" changes with the person: \"аз щя, ти щеш\".",
+                        "correct_option": false,
+                        "explanation": "Ще never changes in the future: аз ще, ти ще, те ще. Only the main verb changes."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the future times",
+                        "pairs": [
+                            ["Next week", "следващата седмица"],
+                            ["The day after tomorrow", "вдругиден"],
+                            ["Tonight", "довечера"],
+                            ["Soon", "скоро"],
+                            ["In a month", "след месец"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Tonight we will watch",
+                        "sentence": "Довечера __ гледаме филм у нас.",
+                        "options": ["щях", "ще", "няма"],
+                        "correct_option": 1,
+                        "explanation": "\"Довечера ще гледаме филм у нас.\" means \"Tonight we will watch a film at our place.\" \"Няма\" would need \"да\": \"няма да гледаме\"."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Finding a Flat",
+            "description": "Rent a flat and refer back to things with го, я and ги.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the renting words",
+                        "pairs": [
+                            ["Rent", "наем"],
+                            ["Landlord", "хазяин"],
+                            ["Furniture", "мебели"],
+                            ["Floor (storey)", "етаж"],
+                            ["Balcony", "балкон"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I will take it",
+                        "sentence": "Харесвам апартамента и ще __ взема.",
+                        "options": ["го", "я", "ги"],
+                        "correct_option": 0,
+                        "explanation": "\"Харесвам апартамента и ще го взема.\" means \"I like the flat and I will take it.\" Апартамент is masculine, so \"it\" is го."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vidyah ya",
+                        "sentence": "In \"Видях я вчера\", \"я\" means \"her\", or a feminine thing.",
+                        "correct_option": true,
+                        "explanation": "Correct. The sentence means \"I saw her yesterday\". Я replaces a feminine noun."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I do not like them",
+                        "sentence": "Столовете са нови, но не __ харесвам.",
+                        "options": ["го", "ги", "я"],
+                        "correct_option": 1,
+                        "explanation": "\"Столовете са нови, но не ги харесвам.\" means \"The chairs are new, but I do not like them.\" Ги replaces a plural noun."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Tretiya etazh",
+                        "sentence": "\"Апартаментът е на третия етаж.\" means \"The flat is on the thirteenth floor.\"",
+                        "correct_option": false,
+                        "explanation": "Третия means \"third\". Thirteenth is \"тринадесетия\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the flat adjectives",
+                        "pairs": [
+                            ["Spacious", "просторен"],
+                            ["Bright", "светъл"],
+                            ["Quiet", "тих"],
+                            ["Cheap", "евтин"],
+                            ["Expensive", "скъп"]
+                        ],
+                        "explanation": "Match each English adjective to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A bright kitchen",
+                        "sentence": "Кухнята е малка, но много __ през деня.",
+                        "options": ["светъл", "светли", "светла"],
+                        "correct_option": 2,
+                        "explanation": "\"Кухнята е малка, но много светла през деня.\" means \"The kitchen is small but very bright during the day.\" Кухня is feminine."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Dinner Guests",
+            "description": "Toasts and table talk, with the short forms ми, ти, му, ѝ for \"to me\", \"to you\", \"to him\" and \"to her\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the table talk",
+                        "pairs": [
+                            ["Cheers!", "Наздраве!"],
+                            ["Enjoy your meal", "Добър апетит"],
+                            ["Help yourself", "Заповядай"],
+                            ["It's delicious", "Много е вкусно"],
+                            ["Pass me the salt, please", "Подай ми солта, моля"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Pass me the bread",
+                        "sentence": "Може ли да __ дадеш хляба?",
+                        "options": ["ме", "мен", "ми"],
+                        "correct_option": 2,
+                        "explanation": "\"Може ли да ми дадеш хляба?\" means \"Could you give me the bread?\" Ми means \"to me\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nazdrave",
+                        "sentence": "When Bulgarians clink glasses they say \"Наздраве!\"",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Наздраве!\" means \"To your health!\" and is the usual toast."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Flowers for her",
+                        "sentence": "Донесох __ цветя, защото е рожденият ѝ ден.",
+                        "options": ["му", "ѝ", "им"],
+                        "correct_option": 1,
+                        "explanation": "\"Донесох ѝ цветя, защото е рожденият ѝ ден.\" means \"I brought her flowers because it is her birthday.\" Ѝ means \"to her\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sit sam",
+                        "sentence": "\"Сит съм\" means \"I am hungry\".",
+                        "correct_option": false,
+                        "explanation": "\"Сит съм\" means \"I am full\". \"I am hungry\" is \"Гладен съм\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the courses",
+                        "pairs": [
+                            ["Soup", "супа"],
+                            ["Salad", "салата"],
+                            ["Meat", "месо"],
+                            ["Fish", "риба"],
+                            ["Dessert", "десерт"]
+                        ],
+                        "explanation": "Match each dish to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Lentil soup",
+                        "sentence": "За първо ядене има __ от леща.",
+                        "options": ["десерт", "супа", "торта"],
+                        "correct_option": 1,
+                        "explanation": "\"За първо ядене има супа от леща.\" means \"For the first course there is lentil soup.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "A Day at the Office",
+            "description": "Emails, meetings and deadlines, with more verbs in the past tense.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the office words",
+                        "pairs": [
+                            ["Meeting", "среща"],
+                            ["Deadline", "краен срок"],
+                            ["Colleague", "колега"],
+                            ["Salary", "заплата"],
+                            ["Leave (time off)", "отпуск"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I wrote an email",
+                        "sentence": "Вчера __ имейл на шефа си.",
+                        "options": ["написах", "пиша", "ще пиша"],
+                        "correct_option": 0,
+                        "explanation": "\"Вчера написах имейл на шефа си.\" means \"Yesterday I wrote an email to my boss.\" Вчера (yesterday) calls for the past tense."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Shefkata",
+                        "sentence": "\"Шефката\" refers to a female boss.",
+                        "correct_option": true,
+                        "explanation": "Correct. Шеф is the boss, шефка a female boss, and -та is the article."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The meeting started",
+                        "sentence": "Срещата __ в десет, но аз закъснях.",
+                        "options": ["започва", "ще започне", "започна"],
+                        "correct_option": 2,
+                        "explanation": "\"Срещата започна в десет, но аз закъснях.\" means \"The meeting started at ten, but I was late.\" The whole story is in the past."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zakasnyah",
+                        "sentence": "\"Закъснях\" means \"I was early\".",
+                        "correct_option": false,
+                        "explanation": "\"Закъснях\" means \"I was late\". \"I was early\" is \"Подраних\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the office things",
+                        "pairs": [
+                            ["Printer", "принтер"],
+                            ["Computer", "компютър"],
+                            ["Folder", "папка"],
+                            ["Desk", "бюро"],
+                            ["Phone", "телефон"]
+                        ],
+                        "explanation": "Match each office item to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The boss asked me",
+                        "sentence": "Шефът __ помоли да остана до късно.",
+                        "options": ["ми", "мен", "ме"],
+                        "correct_option": 2,
+                        "explanation": "\"Шефът ме помоли да остана до късно.\" means \"The boss asked me to stay late.\" Помолям takes a direct object, so \"me\" is ме."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Nature and Travel",
+            "description": "Mountains, rivers and lakes of Bulgaria, compared with \"от\" and \"отколкото\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the landscape",
+                        "pairs": [
+                            ["Mountain", "планина"],
+                            ["River", "река"],
+                            ["Lake", "езеро"],
+                            ["Forest", "гора"],
+                            ["Peak", "връх"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Longer than the Iskar",
+                        "sentence": "Дунав е по-дълъг __ Искър.",
+                        "options": ["от", "с", "за"],
+                        "correct_option": 0,
+                        "explanation": "\"Дунав е по-дълъг от Искър.\" means \"The Danube is longer than the Iskar.\" \"Than\" before a noun is от."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Cherno more",
+                        "sentence": "\"Черно море\" lies on the eastern side of Bulgaria.",
+                        "correct_option": true,
+                        "explanation": "Correct. The Black Sea coast is Bulgaria's eastern border."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The highest mountain",
+                        "sentence": "Рила е __ планина в България.",
+                        "options": ["по-високата", "най-високата", "високият"],
+                        "correct_option": 1,
+                        "explanation": "\"Рила е най-високата планина в България.\" means \"Rila is the highest mountain in Bulgaria.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kolkoto poveche",
+                        "sentence": "\"Колкото повече, толкова по-добре\" means \"The less, the better\".",
+                        "correct_option": false,
+                        "explanation": "It means \"The more, the better\". \"Колкото ..., толкова ...\" links two comparisons."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the animals",
+                        "pairs": [
+                            ["Bear", "мечка"],
+                            ["Wolf", "вълк"],
+                            ["Fox", "лисица"],
+                            ["Eagle", "орел"],
+                            ["Deer", "елен"]
+                        ],
+                        "explanation": "Match each animal to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Warmer than the Baltic",
+                        "sentence": "Черно море е по-топло __ Балтийско море.",
+                        "options": ["отколкото", "от", "с"],
+                        "correct_option": 1,
+                        "explanation": "\"Черно море е по-топло от Балтийско море.\" means \"The Black Sea is warmer than the Baltic Sea.\" Before a noun, \"than\" is от."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Weather and Time",
+            "description": "Describe the weather and say how long ago something happened.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the weather",
+                        "pairs": [
+                            ["It's raining", "Вали дъжд"],
+                            ["It's snowing", "Вали сняг"],
+                            ["It's windy", "Духа вятър"],
+                            ["It's sunny", "Слънчево е"],
+                            ["It's cloudy", "Облачно е"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Take an umbrella",
+                        "sentence": "Вземи чадър, навън __ дъжд.",
+                        "options": ["духа", "вали", "грее"],
+                        "correct_option": 1,
+                        "explanation": "\"Вземи чадър, навън вали дъжд.\" means \"Take an umbrella, it is raining outside.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vali",
+                        "sentence": "Weather verbs like \"вали\" need no subject: you just say \"Вали.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Вали\" alone means \"It is raining\". Bulgarian has no \"it\" here."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A week ago",
+                        "sentence": "Преди една __ беше много горещо.",
+                        "options": ["седмици", "седмицата", "седмица"],
+                        "correct_option": 2,
+                        "explanation": "\"Преди една седмица беше много горещо.\" means \"A week ago it was very hot.\" Преди + a length of time means \"ago\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Prognozata",
+                        "sentence": "\"Прогнозата за утре\" means \"yesterday's forecast\".",
+                        "correct_option": false,
+                        "explanation": "It means \"the forecast for tomorrow\". Утре is tomorrow."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the temperatures",
+                        "pairs": [
+                            ["Warm", "топло"],
+                            ["Cool", "хладно"],
+                            ["Freezing", "мразовито"],
+                            ["Humid", "влажно"],
+                            ["Dry", "сухо"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "It rained all day",
+                        "sentence": "Вчера __ целия ден и улиците бяха мокри.",
+                        "options": ["вали", "ще вали", "валя"],
+                        "correct_option": 2,
+                        "explanation": "\"Вчера валя целия ден...\" means \"Yesterday it rained all day, and the streets were wet.\" Валя is the past tense of вали."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Celebrations",
+            "description": "Wishes for birthdays, name days, Christmas and Easter.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the wishes",
+                        "pairs": [
+                            ["Happy birthday!", "Честит рожден ден!"],
+                            ["Merry Christmas!", "Весела Коледа!"],
+                            ["Happy New Year!", "Честита Нова година!"],
+                            ["Happy name day!", "Честит имен ден!"],
+                            ["Christ is risen!", "Христос воскресе!"]
+                        ],
+                        "explanation": "Match each English wish to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Easter eggs",
+                        "sentence": "За Великден боядисваме __ в червено.",
+                        "options": ["яйца", "елха", "торта"],
+                        "correct_option": 0,
+                        "explanation": "\"За Великден боядисваме яйца в червено.\" means \"At Easter we dye eggs red.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Imen den",
+                        "sentence": "A name day (имен ден) is celebrated on the day of the saint you are named after.",
+                        "correct_option": true,
+                        "explanation": "Correct. For example, people named Георги celebrate on Гергьовден, 6 May."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Christmas Eve table",
+                        "sentence": "На Бъдни вечер на масата има нечетен брой __ без месо.",
+                        "options": ["чаши", "гости", "ястия"],
+                        "correct_option": 2,
+                        "explanation": "\"На Бъдни вечер на масата има нечетен брой ястия без месо.\" means \"On Christmas Eve there is an odd number of meatless dishes on the table.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Easter reply",
+                        "sentence": "The reply to \"Христос воскресе!\" is \"Честит рожден ден!\"",
+                        "correct_option": false,
+                        "explanation": "The reply is \"Воистина воскресе!\", meaning \"He is risen indeed!\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the party words",
+                        "pairs": [
+                            ["Present", "подарък"],
+                            ["Guest", "гост"],
+                            ["Candle", "свещ"],
+                            ["Invitation", "покана"],
+                            ["Party", "парти"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Decorating the tree",
+                        "sentence": "На Коледа украсяваме __ в хола.",
+                        "options": ["яйца", "елха", "агне"],
+                        "correct_option": 1,
+                        "explanation": "\"На Коледа украсяваме елха в хола.\" means \"At Christmas we decorate a tree in the living room.\""
+                    }
+                }
+            ]
+        }
+    ]
+}

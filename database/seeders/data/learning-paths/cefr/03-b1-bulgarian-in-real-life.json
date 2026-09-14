@@ -1,0 +1,756 @@
+{
+    "name": "Bulgarian in Real Life",
+    "level": "B1",
+    "lessons": [
+        {
+            "name": "Making Connections",
+            "description": "Introduce people politely, choose between \"ти\" and \"Вие\", and soften requests with \"бих\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the meeting verbs",
+                        "pairs": [
+                            ["To introduce oneself", "представям се"],
+                            ["To get acquainted", "запознавам се"],
+                            ["Acquaintance", "познат"],
+                            ["To greet", "поздравявам"],
+                            ["To shake hands", "ръкувам се"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "May I introduce",
+                        "sentence": "__ ли да ви представя моя колега?",
+                        "options": ["Бихте", "Може", "Искам"],
+                        "correct_option": 1,
+                        "explanation": "\"Може ли да ви представя моя колега?\" means \"May I introduce my colleague to you?\" \"Може ли да...\" is the usual way to ask permission."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Bih iskal",
+                        "sentence": "\"Бих искал\" is a more polite way of saying \"искам\" (I want).",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Бих искал\" (a woman says \"бих искала\") means \"I would like\" and softens a request."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We finally met",
+                        "sentence": "Радвам се, че най-после се __ лично.",
+                        "options": ["запознаваме", "запознаем", "запознахме"],
+                        "correct_option": 2,
+                        "explanation": "\"Радвам се, че най-после се запознахме лично.\" means \"I am glad we finally met in person.\" It happened once and is finished, so the past perfective form fits."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Formal email",
+                        "sentence": "In a formal email to a new business contact it is normal to write \"ти\".",
+                        "correct_option": false,
+                        "explanation": "Formal writing uses \"Вие\", and it is capitalised when you address one person."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the polite phrases",
+                        "pairs": [
+                            ["Sorry to interrupt", "Извинете, че ви прекъсвам"],
+                            ["With pleasure", "С удоволствие"],
+                            ["Allow me", "Позволете ми"],
+                            ["Pleased to meet you", "Приятно ми е да се запознаем"],
+                            ["Business card", "визитка"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Shall we use ti",
+                        "sentence": "Може ли да си __ на ти?",
+                        "options": ["кажем", "говорим", "говори"],
+                        "correct_option": 1,
+                        "explanation": "\"Може ли да си говорим на ти?\" means \"Shall we switch to the informal ti?\" It is how Bulgarians offer to drop the formal Вие."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Life Stories",
+            "description": "Tell your life story and choose between the two past tenses: background or event.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the life words",
+                        "pairs": [
+                            ["Childhood", "детство"],
+                            ["Memory", "спомен"],
+                            ["To grow up", "пораствам"],
+                            ["To move house", "премествам се"],
+                            ["To remember", "спомням си"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Every summer",
+                        "sentence": "Когато бях малък, всяко лято __ на село при баба.",
+                        "options": ["отидох", "ходех", "ще ходя"],
+                        "correct_option": 1,
+                        "explanation": "\"Когато бях малък, всяко лято ходех на село при баба.\" means \"When I was little, every summer I went to my grandma's village.\" A repeated action in the past takes the imperfect."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Two past tenses",
+                        "sentence": "The imperfect (\"четях\") sets the scene or repeats, while the aorist (\"прочетох\") reports a finished event.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Четях, когато той дойде\" means \"I was reading when he came\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "While I was cooking",
+                        "sentence": "Докато __ вечеря, телефонът звънна.",
+                        "options": ["готвех", "сготвих", "готвя"],
+                        "correct_option": 0,
+                        "explanation": "\"Докато готвех вечеря, телефонът звънна.\" means \"While I was cooking dinner, the phone rang.\" The action in progress takes the imperfect."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Izrasnah",
+                        "sentence": "\"Израснах в малък град.\" means \"I was born in a small town.\"",
+                        "correct_option": false,
+                        "explanation": "It means \"I grew up in a small town\". \"I was born\" is \"Родих се\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the life events",
+                        "pairs": [
+                            ["To retire", "пенсионирам се"],
+                            ["To emigrate", "емигрирам"],
+                            ["To settle down", "установявам се"],
+                            ["To change jobs", "сменям работата си"],
+                            ["To graduate", "завършвам"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I used to stay late",
+                        "sentence": "Като студент често __ до късно в библиотеката.",
+                        "options": ["постоях", "стоя", "стоях"],
+                        "correct_option": 2,
+                        "explanation": "\"Като студент често стоях до късно в библиотеката.\" means \"As a student I often stayed late in the library.\" Често marks a habit, which takes the imperfect."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Family Matters",
+            "description": "Relationships and in-laws, and the reflexive possessive \"си\" (one's own).",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the relationship words",
+                        "pairs": [
+                            ["Relationship", "връзка"],
+                            ["Divorce", "развод"],
+                            ["To get engaged", "сгодявам се"],
+                            ["Mother-in-law (husband's mother)", "свекърва"],
+                            ["Father-in-law (wife's father)", "тъст"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "His own mother",
+                        "sentence": "Иван се обади на майка __ вчера.",
+                        "options": ["му", "си", "ѝ"],
+                        "correct_option": 1,
+                        "explanation": "\"Иван се обади на майка си вчера.\" means \"Ivan called his (own) mother yesterday.\" Си points back to the subject; \"майка му\" would be another man's mother."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kolata mu",
+                        "sentence": "\"Петър взе колата му.\" means Peter took his own car.",
+                        "correct_option": false,
+                        "explanation": "Му points to another man. Peter's own car is \"колата си\": \"Петър взе колата си.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Her boyfriend",
+                        "sentence": "Сестра ми и __ приятел се сгодиха.",
+                        "options": ["неговият", "техният", "нейният"],
+                        "correct_option": 2,
+                        "explanation": "\"Сестра ми и нейният приятел се сгодиха.\" means \"My sister and her boyfriend got engaged.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Svekarva",
+                        "sentence": "\"Свекърва\" is the husband's mother, from the wife's point of view.",
+                        "correct_option": true,
+                        "explanation": "Correct. The wife's mother is \"тъща\" from the husband's point of view."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the possessives",
+                        "pairs": [
+                            ["Her husband", "мъжът ѝ"],
+                            ["Their children", "децата им"],
+                            ["Our parents", "родителите ни"],
+                            ["Your (plural) home", "домът ви"],
+                            ["My relatives", "роднините ми"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Their own parents",
+                        "sentence": "Мария и Петър посетиха родителите __ в неделя.",
+                        "options": ["им", "си", "ѝ"],
+                        "correct_option": 1,
+                        "explanation": "\"Мария и Петър посетиха родителите си в неделя.\" means \"Maria and Petar visited their (own) parents on Sunday.\" \"Родителите им\" would be someone else's parents."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Schedules and Routines",
+            "description": "How often things happen, and when to use the perfective aspect after \"да\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the frequency words",
+                        "pairs": [
+                            ["Usually", "обикновено"],
+                            ["Rarely", "рядко"],
+                            ["Sometimes", "понякога"],
+                            ["Always", "винаги"],
+                            ["Never", "никога"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Finish the report",
+                        "sentence": "Трябва да __ отчета до петък.",
+                        "options": ["завършвам", "завърша", "завършвах"],
+                        "correct_option": 1,
+                        "explanation": "\"Трябва да завърша отчета до петък.\" means \"I have to finish the report by Friday.\" One completed result takes the perfective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Da + perfective",
+                        "sentence": "After \"да\", a perfective verb usually means one complete action: \"Искам да купя хляб.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Искам да купувам хляб оттук\" would mean buying it regularly."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Every morning I run",
+                        "sentence": "Всяка сутрин __ по половин час.",
+                        "options": ["изтичам", "изтичах", "тичам"],
+                        "correct_option": 2,
+                        "explanation": "\"Всяка сутрин тичам по половин час.\" means \"Every morning I run for half an hour.\" A habit takes the imperfective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nikoga",
+                        "sentence": "\"Никога\" works without \"не\": \"Никога ходя на кино.\"",
+                        "correct_option": false,
+                        "explanation": "Bulgarian needs the double negative: \"Никога не ходя на кино.\""
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the routine phrases",
+                        "pairs": [
+                            ["In the morning", "сутринта"],
+                            ["At lunchtime", "на обяд"],
+                            ["On weekdays", "в делничните дни"],
+                            ["At the weekend", "през уикенда"],
+                            ["Once a week", "веднъж седмично"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I usually go swimming",
+                        "sentence": "__ ходя на плуване два пъти седмично.",
+                        "options": ["Вчера", "Обикновено", "Никога"],
+                        "correct_option": 1,
+                        "explanation": "\"Обикновено ходя на плуване два пъти седмично.\" means \"I usually go swimming twice a week.\" Никога would need \"не\", and вчера needs the past."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Moving House",
+            "description": "Tenancy agreements, bills and repairs, with impersonal and \"се\" sentences.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the tenancy words",
+                        "pairs": [
+                            ["Plumber", "водопроводчик"],
+                            ["Electricity bill", "сметка за ток"],
+                            ["Tenancy agreement", "договор за наем"],
+                            ["Neighbour", "съсед"],
+                            ["Deposit", "депозит"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The tap is leaking",
+                        "sentence": "Кранът в банята __ от два дни.",
+                        "options": ["текат", "тече", "течем"],
+                        "correct_option": 1,
+                        "explanation": "\"Кранът в банята тече от два дни.\" means \"The bathroom tap has been leaking for two days.\" Bulgarian uses the present with \"от\" for something still going on."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dava se pod naem",
+                        "sentence": "\"Апартаментът се дава под наем.\" means \"The flat is for rent.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Се дава под наем\" is literally \"is given under rent\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "They will cut the power",
+                        "sentence": "Ако не платиш сметката, ще ти __ тока.",
+                        "options": ["спра", "спреш", "спрат"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако не платиш сметката, ще ти спрат тока.\" means \"If you do not pay the bill, they will cut off your electricity.\" The unnamed \"they\" takes the plural."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Otgore",
+                        "sentence": "\"Съседите отгоре\" are the neighbours downstairs.",
+                        "correct_option": false,
+                        "explanation": "Отгоре means \"from above\", so these are the upstairs neighbours. Downstairs is \"отдолу\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the repair words",
+                        "pairs": [
+                            ["To break down", "развалям се"],
+                            ["To fix", "поправям"],
+                            ["To replace", "сменям"],
+                            ["Mould", "мухъл"],
+                            ["Noise", "шум"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The washing machine broke",
+                        "sentence": "Пералнята се __ и трябва да извикаме техник.",
+                        "options": ["развалят", "развалих", "развали"],
+                        "correct_option": 2,
+                        "explanation": "\"Пералнята се развали и трябва да извикаме техник.\" means \"The washing machine broke down and we need to call a technician.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Being a Good Host",
+            "description": "Offer food, propose toasts and give friendly commands with \"нека\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the host words",
+                        "pairs": [
+                            ["To treat (someone)", "черпя"],
+                            ["Homemade", "домашен"],
+                            ["Appetizer", "мезе"],
+                            ["To pour", "наливам"],
+                            ["To taste", "опитвам"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Have more salad",
+                        "sentence": "Заповядайте, __ си още от салатата!",
+                        "options": ["сипвате", "сипете", "сипахте"],
+                        "correct_option": 1,
+                        "explanation": "\"Заповядайте, сипете си още от салатата!\" means \"Please, help yourselves to more salad!\" Сипете is the polite command form."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Cherpya",
+                        "sentence": "\"Черпя\" means you pay for food or drinks for others, for example on your birthday.",
+                        "correct_option": true,
+                        "explanation": "Correct. In Bulgaria the person celebrating treats everyone else: \"Днес аз черпя!\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Let us raise a toast",
+                        "sentence": "__ да вдигнем тост за домакините!",
+                        "options": ["Нека", "Дано", "Ако"],
+                        "correct_option": 0,
+                        "explanation": "\"Нека да вдигнем тост за домакините!\" means \"Let us raise a toast to the hosts!\" Нека means \"let\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ne se pritesnyavaite",
+                        "sentence": "You say \"Не се притеснявайте\" when you want the host to go to more trouble for you.",
+                        "correct_option": false,
+                        "explanation": "It means \"Please don't worry\" or \"Don't go to any trouble\", so it tells the host not to bother."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the Bulgarian dishes",
+                        "pairs": [
+                            ["Cheese pastry", "баница"],
+                            ["Stuffed peppers", "пълнени чушки"],
+                            ["Yoghurt", "кисело мляко"],
+                            ["Cold cucumber soup", "таратор"],
+                            ["Grilled mince roll", "кебапче"]
+                        ],
+                        "explanation": "Match each description to the Bulgarian dish."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "What tarator is made of",
+                        "sentence": "Таратор се прави от краставици, __ и чесън.",
+                        "options": ["сирене", "кисело мляко", "ориз"],
+                        "correct_option": 1,
+                        "explanation": "\"Таратор се прави от краставици, кисело мляко и чесън.\" means \"Tarator is made from cucumbers, yoghurt and garlic.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Job Hunting",
+            "description": "CVs and interviews, the conditional \"бих\" and reporting questions with \"дали\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the job-hunting words",
+                        "pairs": [
+                            ["Job interview", "интервю за работа"],
+                            ["CV", "автобиография"],
+                            ["Experience", "опит"],
+                            ["Employer", "работодател"],
+                            ["Application", "кандидатура"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I would like to work",
+                        "sentence": "Бих __ да работя в международен екип.",
+                        "options": ["искам", "искал", "исках"],
+                        "correct_option": 1,
+                        "explanation": "\"Бих искал да работя в международен екип.\" means \"I would like to work in an international team.\" Бих is followed by the -л form: искал, or искала for a woman."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Reported speech",
+                        "sentence": "\"Каза, че търси работа.\" means \"He said he was looking for a job.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarian keeps the tense of the original words, so the present \"търси\" stays."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whether I speak German",
+                        "sentence": "Интервюиращият ме попита __ говоря немски.",
+                        "options": ["че", "ако", "дали"],
+                        "correct_option": 2,
+                        "explanation": "\"Интервюиращият ме попита дали говоря немски.\" means \"The interviewer asked me whether I speak German.\" Reported yes/no questions use дали."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Naznachiha me",
+                        "sentence": "\"Назначиха ме.\" means \"I was fired.\"",
+                        "correct_option": false,
+                        "explanation": "\"Назначиха ме\" means \"I was hired\". \"I was fired\" is \"Уволниха ме\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the contract terms",
+                        "pairs": [
+                            ["Full-time", "пълен работен ден"],
+                            ["Part-time", "непълен работен ден"],
+                            ["Remote work", "дистанционна работа"],
+                            ["Probation period", "изпитателен срок"],
+                            ["Notice period", "предизвестие"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If I had more experience",
+                        "sentence": "Ако __ повече опит, бих кандидатствал за тази позиция.",
+                        "options": ["имам", "имах", "имаш"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако имах повече опит, бих кандидатствал...\" means \"If I had more experience, I would apply for this position.\" An unreal condition takes the past form имах."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Science Around Us",
+            "description": "Planets and space, and comparing equals with \"толкова ... колкото\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the space words",
+                        "pairs": [
+                            ["Planet", "планета"],
+                            ["Solar system", "Слънчева система"],
+                            ["Gravity", "гравитация"],
+                            ["Orbit", "орбита"],
+                            ["Telescope", "телескоп"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The largest planet",
+                        "sentence": "Юпитер е __ планета в Слънчевата система.",
+                        "options": ["по-голямата", "най-голямата", "голямата"],
+                        "correct_option": 1,
+                        "explanation": "\"Юпитер е най-голямата планета в Слънчевата система.\" means \"Jupiter is the largest planet in the Solar System.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Tolkova kolkoto",
+                        "sentence": "\"Толкова ... колкото\" shows two things are equal: \"Той е толкова висок, колкото брат си.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. The sentence means \"He is as tall as his brother\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Around its axis",
+                        "sentence": "Земята се върти около __ си за едно денонощие.",
+                        "options": ["осите", "ос", "оста"],
+                        "correct_option": 2,
+                        "explanation": "\"Земята се върти около оста си за едно денонощие.\" means \"The Earth turns on its axis in one day and night.\" With си, the noun takes the article: оста си."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Denonoshtie",
+                        "sentence": "\"Денонощие\" means a period of twelve hours.",
+                        "correct_option": false,
+                        "explanation": "A денонощие is a full day and night, 24 hours."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the units",
+                        "pairs": [
+                            ["Kilometre", "километър"],
+                            ["Light year", "светлинна година"],
+                            ["Degree", "градус"],
+                            ["Kilogram", "килограм"],
+                            ["Second", "секунда"]
+                        ],
+                        "explanation": "Match each unit to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In about eight minutes",
+                        "sentence": "Светлината от Слънцето стига до Земята __ около осем минути.",
+                        "options": ["от", "през", "за"],
+                        "correct_option": 2,
+                        "explanation": "\"Светлината от Слънцето стига до Земята за около осем минути.\" means \"Sunlight reaches the Earth in about eight minutes.\" За + time says how long something takes."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Deadlines and Forecasts",
+            "description": "Weather forecasts and time clauses with \"преди да\", \"след като\" and \"докато\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the forecast words",
+                        "pairs": [
+                            ["Forecast", "прогноза"],
+                            ["Storm", "буря"],
+                            ["Fog", "мъгла"],
+                            ["Heat (weather)", "жега"],
+                            ["Frost", "слана"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Before you leave",
+                        "sentence": "Обади ми се, __ тръгнеш.",
+                        "options": ["след", "преди да", "докато"],
+                        "correct_option": 1,
+                        "explanation": "\"Обади ми се, преди да тръгнеш.\" means \"Call me before you leave.\" Преди да is followed by a verb."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sled kato",
+                        "sentence": "\"След като\" is followed by a completed action: \"След като вечеряхме, излязохме.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. The sentence means \"After we had dinner, we went out\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Below zero",
+                        "sentence": "Според прогнозата температурите ще __ под нулата.",
+                        "options": ["падне", "падат", "паднат"],
+                        "correct_option": 2,
+                        "explanation": "\"Според прогнозата температурите ще паднат под нулата.\" means \"According to the forecast, temperatures will drop below zero.\" Температурите is plural."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Magla",
+                        "sentence": "\"Мъгла\" means \"rainbow\".",
+                        "correct_option": false,
+                        "explanation": "\"Мъгла\" means \"fog\". A rainbow is \"дъга\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the time links",
+                        "pairs": [
+                            ["Before", "преди да"],
+                            ["After", "след като"],
+                            ["While", "докато"],
+                            ["Until", "докато не"],
+                            ["As soon as", "щом"]
+                        ],
+                        "explanation": "Match each English conjunction to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "As soon as you finish",
+                        "sentence": "__ свършиш работа, обади ми се.",
+                        "options": ["Докато", "Щом", "Преди"],
+                        "correct_option": 1,
+                        "explanation": "\"Щом свършиш работа, обади ми се.\" means \"As soon as you finish work, call me.\" Преди would need \"да\"."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Traditions and Customs",
+            "description": "Kukeri, fire dancers and wine growers, with \"за да\" and the passive with \"се\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the tradition words",
+                        "pairs": [
+                            ["Custom", "обичай"],
+                            ["Mask", "маска"],
+                            ["Holiday", "празник"],
+                            ["Wine grower", "лозар"],
+                            ["Fire dancing", "нестинарство"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "To chase away spirits",
+                        "sentence": "Кукерите носят маски, за да __ злите духове.",
+                        "options": ["прогонват", "прогонят", "прогониха"],
+                        "correct_option": 1,
+                        "explanation": "\"Кукерите носят маски, за да прогонят злите духове.\" means \"The kukeri wear masks to chase away evil spirits.\" За да + perfective expresses a purpose."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Trifon Zarezan",
+                        "sentence": "Трифон Зарезан, on 14 February, is the holiday of wine growers.",
+                        "correct_option": true,
+                        "explanation": "Correct. On Трифон Зарезан the vines are pruned and the new wine is blessed."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Worn until spring",
+                        "sentence": "Мартеницата се __ до пролетта.",
+                        "options": ["носим", "носят", "носи"],
+                        "correct_option": 2,
+                        "explanation": "\"Мартеницата се носи до пролетта.\" means \"The martenitsa is worn until spring.\" Се + third person makes a passive. Traditionally you take it off when you see a stork or a tree in blossom."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nestinari",
+                        "sentence": "Nestinari (нестинари) walk on water on Christmas Eve.",
+                        "correct_option": false,
+                        "explanation": "Nestinari dance barefoot on glowing embers, on the feast of Saints Constantine and Helena."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the holidays",
+                        "pairs": [
+                            ["Christmas", "Коледа"],
+                            ["Easter", "Великден"],
+                            ["St George's Day", "Гергьовден"],
+                            ["New Year's Day", "Нова година"],
+                            ["1 March", "Баба Марта"]
+                        ],
+                        "explanation": "Match each holiday to its Bulgarian name."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Lamb on St George's Day",
+                        "sentence": "На Гергьовден традиционно се яде печено __ с ориз.",
+                        "options": ["прасе", "пиле", "агне"],
+                        "correct_option": 2,
+                        "explanation": "\"На Гергьовден традиционно се яде печено агне...\" means \"On St George's Day, roast lamb is traditionally eaten...\""
+                    }
+                }
+            ]
+        }
+    ]
+}

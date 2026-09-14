@@ -1,0 +1,1016 @@
+{
+    "name": "Around Town",
+    "level": "A1",
+    "lessons": [
+        {
+            "name": "Numbers and Prices",
+            "description": "Count in tens, ask how much things cost and pay at the till.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the tens",
+                        "pairs": [
+                            ["10", "десет"],
+                            ["20", "двадесет"],
+                            ["40", "четиридесет"],
+                            ["60", "шестдесет"],
+                            ["90", "деветдесет"]
+                        ],
+                        "explanation": "Match each number to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "How much is the bread",
+                        "sentence": "Колко __ хлябът?",
+                        "options": ["струва", "струват", "струваш"],
+                        "correct_option": 0,
+                        "explanation": "\"Колко струва хлябът?\" means \"How much does the bread cost?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sto",
+                        "sentence": "\"Сто\" is the number 100.",
+                        "correct_option": true,
+                        "explanation": "Correct. Сто is 100, and двеста is 200."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two euro fifty",
+                        "sentence": "Кафето струва две __ и петдесет цента.",
+                        "options": ["евра", "евро", "еврота"],
+                        "correct_option": 1,
+                        "explanation": "\"Кафето струва две евро и петдесет цента.\" means \"The coffee costs two euro fifty.\" Евро never changes its form."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The apples cost",
+                        "sentence": "Ябълките __ три евро за килограм.",
+                        "options": ["струва", "струвам", "струват"],
+                        "correct_option": 2,
+                        "explanation": "\"Ябълките струват три евро за килограм.\" means \"The apples cost three euro a kilo.\" Ябълките is plural."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Skapo",
+                        "sentence": "\"Скъпо\" means \"cheap\".",
+                        "correct_option": false,
+                        "explanation": "\"Скъпо\" means \"expensive\". \"Cheap\" is \"евтино\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the till phrases",
+                        "pairs": [
+                            ["How much is it?", "Колко струва?"],
+                            ["Anything else?", "Нещо друго?"],
+                            ["That's all", "Това е всичко"],
+                            ["In cash", "в брой"],
+                            ["Receipt", "касова бележка"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Pay by card",
+                        "sentence": "Може ли да платя с __ вместо в брой?",
+                        "options": ["пари", "карта", "сметка"],
+                        "correct_option": 1,
+                        "explanation": "\"Може ли да платя с карта вместо в брой?\" means \"Can I pay by card instead of cash?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: V broi",
+                        "sentence": "\"В брой\" means paying in cash.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Плащам в брой\" is \"I pay in cash\", and \"плащам с карта\" is \"I pay by card\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Your change",
+                        "sentence": "Заповядайте, ето ви __ и касовата бележка.",
+                        "options": ["рестото", "менюто", "цената"],
+                        "correct_option": 0,
+                        "explanation": "\"Заповядайте, ето ви рестото и касовата бележка.\" means \"Here you are, your change and the receipt.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Big Numbers and Sums",
+            "description": "Hundreds and thousands, the year, and simple sums out loud.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the hundreds",
+                        "pairs": [
+                            ["100", "сто"],
+                            ["200", "двеста"],
+                            ["300", "триста"],
+                            ["500", "петстотин"],
+                            ["1000", "хиляда"]
+                        ],
+                        "explanation": "Match each number to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Ten thousand euro",
+                        "sentence": "Колата струва десет __ евро.",
+                        "options": ["хиляда", "хиляди", "хилядата"],
+                        "correct_option": 1,
+                        "explanation": "\"Колата струва десет хиляди евро.\" means \"The car costs ten thousand euro.\" One is хиляда, more are хиляди."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Hilyada",
+                        "sentence": "\"Хиляда\" is the number 1000.",
+                        "correct_option": true,
+                        "explanation": "Correct. 2000 is \"две хиляди\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "This year",
+                        "sentence": "Сега е две хиляди двадесет и __ година.",
+                        "options": ["шеста", "шест", "шести"],
+                        "correct_option": 0,
+                        "explanation": "\"Сега е две хиляди двадесет и шеста година.\" means \"It is now the year 2026.\" A year is an ordinal number, and година is feminine."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "One hundred and fifty seats",
+                        "sentence": "В залата има сто и __ места.",
+                        "options": ["петдесети", "петдесетте", "петдесет"],
+                        "correct_option": 2,
+                        "explanation": "\"В залата има сто и петдесет места.\" means \"There are one hundred and fifty seats in the hall.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dvesta",
+                        "sentence": "\"Двеста\" means 2000.",
+                        "correct_option": false,
+                        "explanation": "\"Двеста\" is 200. 2000 is \"две хиляди\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the maths words",
+                        "pairs": [
+                            ["Plus", "плюс"],
+                            ["Minus", "минус"],
+                            ["Equals", "равно на"],
+                            ["Times", "по"],
+                            ["Divided by", "делено на"]
+                        ],
+                        "explanation": "Match each English maths word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two plus two",
+                        "sentence": "Две плюс две е __ на четири.",
+                        "options": ["равно", "равен", "равна"],
+                        "correct_option": 0,
+                        "explanation": "\"Две плюс две е равно на четири.\" means \"Two plus two equals four.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pet po pet",
+                        "sentence": "In maths, \"пет по пет\" means \"five times five\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Пет по пет е двадесет и пет."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Ten minus three",
+                        "sentence": "Десет минус три __ седем.",
+                        "options": ["са", "сме", "е"],
+                        "correct_option": 2,
+                        "explanation": "\"Десет минус три е седем.\" means \"Ten minus three is seven.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "At the Market: Fruit",
+            "description": "Buy fruit by the kilo and describe it.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the fruit",
+                        "pairs": [
+                            ["Apple", "ябълка"],
+                            ["Pear", "круша"],
+                            ["Grapes", "грозде"],
+                            ["Cherries", "череши"],
+                            ["Watermelon", "диня"]
+                        ],
+                        "explanation": "Match each fruit to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A kilo of apples",
+                        "sentence": "Искам един килограм __ за сладкиш.",
+                        "options": ["ябълки", "ябълка", "ябълките"],
+                        "correct_option": 0,
+                        "explanation": "\"Искам един килограм ябълки за сладкиш.\" means \"I want a kilo of apples for a cake.\" After a quantity, the noun is plural with no article."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Grozde",
+                        "sentence": "\"Грозде\" means \"grapes\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Грозде is a collective noun: \"гроздето е сладко\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Sweet cherries",
+                        "sentence": "Черешите са много __ днес.",
+                        "options": ["сладък", "сладка", "сладки"],
+                        "correct_option": 2,
+                        "explanation": "\"Черешите са много сладки днес.\" means \"The cherries are very sweet today.\" Черешите is plural."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Half a kilo",
+                        "sentence": "Дайте ми __ килограм круши, моля.",
+                        "options": ["половин", "половина", "половината"],
+                        "correct_option": 0,
+                        "explanation": "\"Дайте ми половин килограм круши, моля.\" means \"Give me half a kilo of pears, please.\" Before a noun, \"half\" is половин."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dinya",
+                        "sentence": "\"Диня\" means \"lemon\".",
+                        "correct_option": false,
+                        "explanation": "\"Диня\" is a watermelon. A lemon is \"лимон\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more fruit",
+                        "pairs": [
+                            ["Plum", "слива"],
+                            ["Strawberry", "ягода"],
+                            ["Peach", "праскова"],
+                            ["Apricot", "кайсия"],
+                            ["Banana", "банан"]
+                        ],
+                        "explanation": "Match each fruit to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Are the peaches fresh",
+                        "sentence": "Прасковите __ ли пресни?",
+                        "options": ["е", "са", "сте"],
+                        "correct_option": 1,
+                        "explanation": "\"Прасковите са ли пресни?\" means \"Are the peaches fresh?\" You will also hear \"Пресни ли са прасковите?\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kaysiya",
+                        "sentence": "\"Кайсия\" is an apricot.",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarian apricot jam, \"конфитюр от кайсии\", is a classic."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Cheaper than those",
+                        "sentence": "Тези ягоди са по-евтини __ онези.",
+                        "options": ["с", "от", "на"],
+                        "correct_option": 1,
+                        "explanation": "\"Тези ягоди са по-евтини от онези.\" means \"These strawberries are cheaper than those.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "At the Market: Vegetables",
+            "description": "Vegetables for a salad or a soup, and adjectives that agree with them.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the vegetables",
+                        "pairs": [
+                            ["Tomato", "домат"],
+                            ["Cucumber", "краставица"],
+                            ["Potato", "картоф"],
+                            ["Onion", "лук"],
+                            ["Pepper", "чушка"]
+                        ],
+                        "explanation": "Match each vegetable to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "White cheese",
+                        "sentence": "За шопска салата ни трябват домати, краставици и __ сирене.",
+                        "options": ["бял", "бели", "бяло"],
+                        "correct_option": 2,
+                        "explanation": "\"...домати, краставици и бяло сирене\" means \"...tomatoes, cucumbers and white cheese.\" Сирене is neuter."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Luk",
+                        "sentence": "\"Лук\" means \"onion\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Garlic is \"чесън\", and a spring onion is \"зелен лук\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two kilos of potatoes",
+                        "sentence": "Купих два килограма __ за супата.",
+                        "options": ["картоф", "картофи", "картофа"],
+                        "correct_option": 1,
+                        "explanation": "\"Купих два килограма картофи за супата.\" means \"I bought two kilos of potatoes for the soup.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Green and sweet",
+                        "sentence": "Тези чушки са __ и сладки.",
+                        "options": ["зелени", "зелена", "зелено"],
+                        "correct_option": 0,
+                        "explanation": "\"Тези чушки са зелени и сладки.\" means \"These peppers are green and sweet.\" Чушки is plural."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Krastavitsa",
+                        "sentence": "\"Краставица\" means \"carrot\".",
+                        "correct_option": false,
+                        "explanation": "\"Краставица\" is a cucumber. A carrot is \"морков\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more vegetables",
+                        "pairs": [
+                            ["Carrot", "морков"],
+                            ["Garlic", "чесън"],
+                            ["Cabbage", "зеле"],
+                            ["Beans", "боб"],
+                            ["Aubergine", "патладжан"]
+                        ],
+                        "explanation": "Match each vegetable to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Good for your eyes",
+                        "sentence": "Морковите са __ за очите.",
+                        "options": ["полезно", "полезни", "полезна"],
+                        "correct_option": 1,
+                        "explanation": "\"Морковите са полезни за очите.\" means \"Carrots are good for your eyes.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Chesan",
+                        "sentence": "\"Чесън\" means \"garlic\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Garlic goes into many Bulgarian dishes, from таратор to боб."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "How much are the tomatoes",
+                        "sentence": "По колко са __ днес?",
+                        "options": ["домат", "домати", "доматите"],
+                        "correct_option": 2,
+                        "explanation": "\"По колко са доматите днес?\" means \"How much are the tomatoes today?\" \"По колко\" asks for a price per unit."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Shops in Town",
+            "description": "Where to buy what, and whether a shop is open or closed.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the shops",
+                        "pairs": [
+                            ["Bakery", "фурна"],
+                            ["Pharmacy", "аптека"],
+                            ["Bookshop", "книжарница"],
+                            ["Butcher's", "месарница"],
+                            ["Flower shop", "цветарница"]
+                        ],
+                        "explanation": "Match each shop to its Bulgarian name."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Bread from the bakery",
+                        "sentence": "Купувам хляб от __ до нас.",
+                        "options": ["аптеката", "фурната", "книжарницата"],
+                        "correct_option": 1,
+                        "explanation": "\"Купувам хляб от фурната до нас.\" means \"I buy bread from the bakery near us.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Apteka",
+                        "sentence": "You buy medicine in an \"аптека\".",
+                        "correct_option": true,
+                        "explanation": "Correct. An аптека is a pharmacy."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Open until eight",
+                        "sentence": "Магазинът е __ до осем вечерта.",
+                        "options": ["отворен", "отворена", "отворено"],
+                        "correct_option": 0,
+                        "explanation": "\"Магазинът е отворен до осем вечерта.\" means \"The shop is open until eight in the evening.\" Магазин is masculine."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Closed all day",
+                        "sentence": "В неделя книжарницата е __ цял ден.",
+                        "options": ["затворен", "затворени", "затворена"],
+                        "correct_option": 2,
+                        "explanation": "\"В неделя книжарницата е затворена цял ден.\" means \"On Sunday the bookshop is closed all day.\" Книжарница is feminine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Mesarnitsa",
+                        "sentence": "In a \"месарница\" you buy flowers.",
+                        "correct_option": false,
+                        "explanation": "A месарница is a butcher's, where you buy meat. Flowers are sold in a цветарница."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the places to shop",
+                        "pairs": [
+                            ["Supermarket", "супермаркет"],
+                            ["Market", "пазар"],
+                            ["Kiosk", "павилион"],
+                            ["Shopping centre", "мол"],
+                            ["Shoe shop", "магазин за обувки"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Going shopping",
+                        "sentence": "В събота ходим на __ за плодове.",
+                        "options": ["пазар", "аптека", "фурна"],
+                        "correct_option": 0,
+                        "explanation": "\"В събота ходим на пазар за плодове.\" means \"On Saturday we go shopping for fruit.\" \"Ходя на пазар\" means \"to go shopping\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Mol",
+                        "sentence": "\"Мол\" is a big shopping centre.",
+                        "correct_option": true,
+                        "explanation": "Correct. It comes from the English word \"mall\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A pharmacy nearby",
+                        "sentence": "Извинете, къде има __ наблизо?",
+                        "options": ["аптеки", "аптеката", "аптека"],
+                        "correct_option": 2,
+                        "explanation": "\"Извинете, къде има аптека наблизо?\" means \"Excuse me, where is there a pharmacy nearby?\" After \"има\" the noun usually has no article."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Clothes",
+            "description": "Everyday clothes, trying things on and dressing for the weather.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the clothes",
+                        "pairs": [
+                            ["Shirt", "риза"],
+                            ["Trousers", "панталон"],
+                            ["Dress", "рокля"],
+                            ["Jacket", "яке"],
+                            ["Skirt", "пола"]
+                        ],
+                        "explanation": "Match each item of clothing to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A blue shirt",
+                        "sentence": "Днес нося синя __ и бял панталон.",
+                        "options": ["риза", "ризи", "ризата"],
+                        "correct_option": 0,
+                        "explanation": "\"Днес нося синя риза и бял панталон.\" means \"Today I am wearing a blue shirt and white trousers.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Roklya",
+                        "sentence": "\"Рокля\" is a dress.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Нова рокля\" is \"a new dress\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Try it on",
+                        "sentence": "Може ли да __ пробвам това яке?",
+                        "options": ["я", "го", "ги"],
+                        "correct_option": 1,
+                        "explanation": "\"Може ли да го пробвам това яке?\" means \"May I try this jacket on?\" Яке is neuter, so \"it\" is го."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A warm coat",
+                        "sentence": "През зимата нося __ палто.",
+                        "options": ["топъл", "топла", "топло"],
+                        "correct_option": 2,
+                        "explanation": "\"През зимата нося топло палто.\" means \"In winter I wear a warm coat.\" Палто is neuter."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pola",
+                        "sentence": "\"Пола\" means \"trousers\".",
+                        "correct_option": false,
+                        "explanation": "\"Пола\" is a skirt. Trousers are \"панталон\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the accessories",
+                        "pairs": [
+                            ["Shoes", "обувки"],
+                            ["Socks", "чорапи"],
+                            ["Hat", "шапка"],
+                            ["Scarf", "шал"],
+                            ["Gloves", "ръкавици"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Comfortable shoes",
+                        "sentence": "Тези __ са нови и много удобни.",
+                        "options": ["обувки", "обувка", "обувките"],
+                        "correct_option": 0,
+                        "explanation": "\"Тези обувки са нови и много удобни.\" means \"These shoes are new and very comfortable.\" After \"тези\" the noun takes no article."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Rakavitsi",
+                        "sentence": "You wear \"ръкавици\" on your hands.",
+                        "correct_option": true,
+                        "explanation": "Correct. Ръкавици are gloves, from ръка (hand)."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Put on a hat",
+                        "sentence": "Студено е, сложи си __ и шал.",
+                        "options": ["рокля", "шапка", "пола"],
+                        "correct_option": 1,
+                        "explanation": "\"Студено е, сложи си шапка и шал.\" means \"It is cold, put on a hat and a scarf.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Colours and Sizes",
+            "description": "Describe clothes by colour and size, with adjectives that agree.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the colours",
+                        "pairs": [
+                            ["Red", "червен"],
+                            ["Blue", "син"],
+                            ["Green", "зелен"],
+                            ["Yellow", "жълт"],
+                            ["Black", "черен"]
+                        ],
+                        "explanation": "Match each colour to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A red dress",
+                        "sentence": "Харесвам тази __ рокля.",
+                        "options": ["червен", "червена", "червено"],
+                        "correct_option": 1,
+                        "explanation": "\"Харесвам тази червена рокля.\" means \"I like this red dress.\" Рокля is feminine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Byal",
+                        "sentence": "\"Бял\" means \"white\".",
+                        "correct_option": true,
+                        "explanation": "Correct. The forms are бял, бяла, бяло, бели."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "What colour",
+                        "sentence": "Какъв __ е колата ти? Червена.",
+                        "options": ["цвят", "размер", "номер"],
+                        "correct_option": 0,
+                        "explanation": "\"Какъв цвят е колата ти?\" means \"What colour is your car?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A bigger size",
+                        "sentence": "Имате ли този панталон в __ размер?",
+                        "options": ["по-голяма", "по-голям", "по-голямо"],
+                        "correct_option": 1,
+                        "explanation": "\"Имате ли този панталон в по-голям размер?\" means \"Do you have these trousers in a bigger size?\" Размер is masculine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Siv",
+                        "sentence": "\"Сив\" means \"pink\".",
+                        "correct_option": false,
+                        "explanation": "\"Сив\" means \"grey\". Pink is \"розов\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the sizes",
+                        "pairs": [
+                            ["Big", "голям"],
+                            ["Small", "малък"],
+                            ["Long", "дълъг"],
+                            ["Short", "къс"],
+                            ["Tight", "тесен"]
+                        ],
+                        "explanation": "Match each English adjective to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Blue eyes",
+                        "sentence": "Тя има __ очи.",
+                        "options": ["синя", "син", "сини"],
+                        "correct_option": 2,
+                        "explanation": "\"Тя има сини очи.\" means \"She has blue eyes.\" Очи is plural."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Plural adjectives",
+                        "sentence": "In the plural, Bulgarian adjectives have one form for every gender: червени рокли, червени якета.",
+                        "correct_option": true,
+                        "explanation": "Correct. The genders only differ in the singular: червен, червена, червено."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Black trousers",
+                        "sentence": "Купих си __ панталон за работа.",
+                        "options": ["черна", "черен", "черно"],
+                        "correct_option": 1,
+                        "explanation": "\"Купих си черен панталон за работа.\" means \"I bought black trousers for work.\" Панталон is masculine and singular in Bulgarian."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Taking the Tram",
+            "description": "City transport, tickets and stops.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the transport",
+                        "pairs": [
+                            ["Tram", "трамвай"],
+                            ["Bus", "автобус"],
+                            ["Trolleybus", "тролейбус"],
+                            ["Underground", "метро"],
+                            ["Stop", "спирка"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Which tram",
+                        "sentence": "Кой __ отива до центъра?",
+                        "options": ["трамвай", "трамвая", "трамваи"],
+                        "correct_option": 0,
+                        "explanation": "\"Кой трамвай отива до центъра?\" means \"Which tram goes to the centre?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Metro",
+                        "sentence": "Sofia has an underground railway, the \"метро\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Sofia's metro links the airport, the centre and many districts."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Next stop",
+                        "sentence": "Слизам на следващата __ до пазара.",
+                        "options": ["спирки", "спирка", "спирката"],
+                        "correct_option": 1,
+                        "explanation": "\"Слизам на следващата спирка до пазара.\" means \"I get off at the next stop, by the market.\" With \"следващата\" the article is already there."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Buy a ticket first",
+                        "sentence": "Трябва да __ билет, преди да се кача.",
+                        "options": ["купувам", "купих", "купя"],
+                        "correct_option": 2,
+                        "explanation": "\"Трябва да купя билет, преди да се кача.\" means \"I have to buy a ticket before I get on.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Troleybus",
+                        "sentence": "A \"тролейбус\" runs on rails like a train.",
+                        "correct_option": false,
+                        "explanation": "A тролейбус runs on tyres and takes power from overhead wires. A трамвай runs on rails."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the travel verbs",
+                        "pairs": [
+                            ["To get on", "качвам се"],
+                            ["To get off", "слизам"],
+                            ["To wait", "чакам"],
+                            ["To change lines", "прекачвам се"],
+                            ["To travel", "пътувам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Twenty minutes",
+                        "sentence": "Чакам автобуса вече __ минути.",
+                        "options": ["двадесет", "двадесети", "двадесетте"],
+                        "correct_option": 0,
+                        "explanation": "\"Чакам автобуса вече двадесет минути.\" means \"I have been waiting for the bus for twenty minutes.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kachvam se",
+                        "sentence": "\"Качвам се\" means \"to get on\" a tram or a bus.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Качвам се на трамвая\" is \"I get on the tram\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Is this seat free",
+                        "sentence": "Това място __ ли е?",
+                        "options": ["свободен", "свободна", "свободно"],
+                        "correct_option": 2,
+                        "explanation": "\"Това място свободно ли е?\" means \"Is this seat free?\" Място is neuter."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Asking the Way",
+            "description": "Directions, landmarks and polite commands.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the directions",
+                        "pairs": [
+                            ["Left", "наляво"],
+                            ["Right", "надясно"],
+                            ["Straight on", "направо"],
+                            ["Back", "назад"],
+                            ["Opposite", "срещу"]
+                        ],
+                        "explanation": "Match each English direction to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Go straight on",
+                        "sentence": "Вървете __ до светофара.",
+                        "options": ["назад", "направо", "горе"],
+                        "correct_option": 1,
+                        "explanation": "\"Вървете направо до светофара.\" means \"Go straight on to the traffic lights.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Svetofar",
+                        "sentence": "\"Светофар\" means \"traffic lights\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"На светофара завийте наляво\" means \"Turn left at the traffic lights\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Turn right",
+                        "sentence": "На ъгъла __ надясно.",
+                        "options": ["завийте", "завивате", "завихте"],
+                        "correct_option": 0,
+                        "explanation": "\"На ъгъла завийте надясно.\" means \"At the corner, turn right.\" Завийте is the polite command."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Not far",
+                        "sentence": "Музеят не е __ оттук, на пет минути е.",
+                        "options": ["близо", "тук", "далече"],
+                        "correct_option": 2,
+                        "explanation": "\"Музеят не е далече оттук, на пет минути е.\" means \"The museum is not far from here, it is five minutes away.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sreshtu",
+                        "sentence": "\"Срещу\" means \"next to\".",
+                        "correct_option": false,
+                        "explanation": "\"Срещу\" means \"opposite\". \"Next to\" is \"до\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the landmarks",
+                        "pairs": [
+                            ["Square", "площад"],
+                            ["Street", "улица"],
+                            ["Bridge", "мост"],
+                            ["Corner", "ъгъл"],
+                            ["Crossroads", "кръстовище"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "To the square",
+                        "sentence": "Извинете, как да стигна до __ „Св. Александър Невски“?",
+                        "options": ["площада", "площад", "площади"],
+                        "correct_option": 1,
+                        "explanation": "\"Как да стигна до площад „Св. Александър Невски“?\" means \"How do I get to St Alexander Nevsky Square?\" Before a name the noun takes no article."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Most",
+                        "sentence": "\"Мост\" means \"bridge\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Лъвов мост\" (Lions' Bridge) is a well-known bridge in Sofia."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "On the corner",
+                        "sentence": "Аптеката е на __ до банката.",
+                        "options": ["ъгъла", "ъгъл", "ъгли"],
+                        "correct_option": 0,
+                        "explanation": "\"Аптеката е на ъгъла до банката.\" means \"The pharmacy is on the corner by the bank.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Calling a Taxi",
+            "description": "Order a taxi, give an address and pay the driver.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the taxi words",
+                        "pairs": [
+                            ["Taxi", "такси"],
+                            ["Driver", "шофьор"],
+                            ["Address", "адрес"],
+                            ["Airport", "летище"],
+                            ["Railway station", "гара"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "To the airport",
+                        "sentence": "Моля, закарайте ме до __ за полета в осем.",
+                        "options": ["летището", "летище", "летища"],
+                        "correct_option": 0,
+                        "explanation": "\"Моля, закарайте ме до летището за полета в осем.\" means \"Please take me to the airport for the eight o'clock flight.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Gara",
+                        "sentence": "\"Гара\" is a railway station.",
+                        "correct_option": true,
+                        "explanation": "Correct. The bus station is \"автогара\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "How much will it cost",
+                        "sentence": "Колко ще __ до центъра?",
+                        "options": ["струват", "струва", "струвам"],
+                        "correct_option": 1,
+                        "explanation": "\"Колко ще струва до центъра?\" means \"How much will it cost to the centre?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Stop here",
+                        "sentence": "__ тук, моля.",
+                        "options": ["Спират", "Спряхте", "Спрете"],
+                        "correct_option": 2,
+                        "explanation": "\"Спрете тук, моля.\" means \"Stop here, please.\" Спрете is the polite command."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Letishte",
+                        "sentence": "\"Летище\" means \"port\".",
+                        "correct_option": false,
+                        "explanation": "\"Летище\" is an airport, from летя (to fly). A port is \"пристанище\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the taxi phrases",
+                        "pairs": [
+                            ["Keep the change", "Задръжте рестото"],
+                            ["How long will it take?", "Колко време ще отнеме?"],
+                            ["I'm in a hurry", "Бързам"],
+                            ["Here is fine", "Тук е добре"],
+                            ["Please wait", "Изчакайте, моля"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I will order a taxi",
+                        "sentence": "Ще ти __ такси за осем часа.",
+                        "options": ["поръчам", "поръчвам", "поръчах"],
+                        "correct_option": 0,
+                        "explanation": "\"Ще ти поръчам такси за осем часа.\" means \"I will order you a taxi for eight o'clock.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zadrazhte restoto",
+                        "sentence": "\"Задръжте рестото\" means \"Keep the change\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Рестото is the change you get back."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I have a train to catch",
+                        "sentence": "Моля, карайте по-бързо, __ за влака.",
+                        "options": ["бързаш", "бърза", "бързам"],
+                        "correct_option": 2,
+                        "explanation": "\"Моля, карайте по-бързо, бързам за влака.\" means \"Please drive faster, I am hurrying to catch the train.\""
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,756 @@
+{
+    "name": "Confident Bulgarian",
+    "level": "B2",
+    "lessons": [
+        {
+            "name": "First Impressions",
+            "description": "Idioms for describing people, and the present perfect for experiences.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the character idioms",
+                        "pairs": [
+                            ["To hold a grudge", "имам зъб на някого"],
+                            ["To talk in vain", "говоря на вятъра"],
+                            ["To be good with your hands", "имам златни ръце"],
+                            ["To show off to impress", "хвърлям прах в очите"],
+                            ["To keep your word", "държа на думата си"]
+                        ],
+                        "explanation": "Match each English meaning to its Bulgarian idiom."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A good impression",
+                        "sentence": "Той ми направи добро __ още на първата среща.",
+                        "options": ["мнение", "впечатление", "изражение"],
+                        "correct_option": 1,
+                        "explanation": "\"Той ми направи добро впечатление още на първата среща.\" means \"He made a good impression on me at our very first meeting.\" The fixed phrase is \"правя впечатление\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Imam zab",
+                        "sentence": "\"Имам зъб на някого\" means \"I have a toothache because of someone\".",
+                        "correct_option": false,
+                        "explanation": "It means \"I hold a grudge against someone\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I have never met",
+                        "sentence": "Никога не съм __ толкова приятелски настроен човек.",
+                        "options": ["срещнах", "срещам", "срещал"],
+                        "correct_option": 2,
+                        "explanation": "\"Никога не съм срещал толкова приятелски настроен човек.\" means \"I have never met such a friendly person.\" The present perfect is съм + the -л participle."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Present perfect",
+                        "sentence": "The present perfect (\"съм срещал\") is made from \"съм\" plus the past active participle.",
+                        "correct_option": true,
+                        "explanation": "Correct. The participle agrees with the subject: срещал, срещала, срещали."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the character adjectives",
+                        "pairs": [
+                            ["Generous", "щедър"],
+                            ["Stingy", "стиснат"],
+                            ["Modest", "скромен"],
+                            ["Arrogant", "надменен"],
+                            ["Reliable", "надежден"]
+                        ],
+                        "explanation": "Match each English adjective to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A person who helps",
+                        "sentence": "Тя е човек, __ винаги помага на другите.",
+                        "options": ["която", "който", "което"],
+                        "correct_option": 1,
+                        "explanation": "\"Тя е човек, който винаги помага на другите.\" means \"She is a person who always helps others.\" The relative pronoun agrees with човек, which is masculine."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Biographies",
+            "description": "The renarrative mood: telling what you heard rather than what you saw.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match witnessed and reported",
+                        "pairs": [
+                            ["He was (I saw it)", "той беше"],
+                            ["He was (I was told)", "той бил"],
+                            ["She lived (I saw it)", "тя живееше"],
+                            ["She lived (I was told)", "тя живяла"],
+                            ["They left (I was told)", "те заминали"]
+                        ],
+                        "explanation": "Match each English description to the Bulgarian verb form."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I was not at the concert",
+                        "sentence": "Не бях на концерта, но той __ страхотен.",
+                        "options": ["беше", "бил", "е"],
+                        "correct_option": 1,
+                        "explanation": "\"Не бях на концерта, но той бил страхотен.\" means \"I was not at the concert, but apparently it was great.\" You did not witness it, so the renarrative бил fits."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Renarrative mood",
+                        "sentence": "Bulgarian has special verb forms for events the speaker did not witness.",
+                        "correct_option": true,
+                        "explanation": "Correct. The renarrative mood (преизказно наклонение) marks information as reported, not seen."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Once upon a time",
+                        "sentence": "Имало едно време един цар, който __ три дъщери.",
+                        "options": ["имаше", "има", "имал"],
+                        "correct_option": 2,
+                        "explanation": "\"Имало едно време един цар, който имал три дъщери.\" means \"Once upon a time there was a king who had three daughters.\" Fairy tales are told in the renarrative, and the story keeps to it."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zavarshil",
+                        "sentence": "\"Завършил е медицина.\" means he dropped out of medical school.",
+                        "correct_option": false,
+                        "explanation": "It means he graduated in medicine. Завършвам means \"to finish\" or \"to graduate\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the reported be",
+                        "pairs": [
+                            ["I was (reportedly)", "съм бил"],
+                            ["You were (reportedly)", "си бил"],
+                            ["She was (reportedly)", "била"],
+                            ["We were (reportedly)", "сме били"],
+                            ["They were (reportedly)", "били"]
+                        ],
+                        "explanation": "Match each English phrase to the renarrative form of \"съм\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "He has lived in Sofia",
+                        "sentence": "Той е роден в Габрово, но е __ целия си живот в София.",
+                        "options": ["живя", "живееше", "живял"],
+                        "correct_option": 2,
+                        "explanation": "\"Той е роден в Габрово, но е живял целия си живот в София.\" means \"He was born in Gabrovo but has lived all his life in Sofia.\" After е you need the -л participle."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Generations",
+            "description": "Family across generations, the pluperfect and unreal conditions.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the generation words",
+                        "pairs": [
+                            ["Generation", "поколение"],
+                            ["Upbringing", "възпитание"],
+                            ["Inheritance", "наследство"],
+                            ["To rely on", "разчитам на"],
+                            ["To take after (resemble)", "приличам на"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "She had already cooked",
+                        "sentence": "Когато пристигнахме, баба вече __ обяда.",
+                        "options": ["сготви", "беше сготвила", "готви"],
+                        "correct_option": 1,
+                        "explanation": "\"Когато пристигнахме, баба вече беше сготвила обяда.\" means \"When we arrived, grandma had already cooked lunch.\" The earlier of two past events takes the pluperfect."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ako byah znael",
+                        "sentence": "\"Ако бях знаел, щях да дойда.\" means \"If I had known, I would have come.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. The pluperfect after ако plus щях да makes a past unreal condition."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I would call more often",
+                        "sentence": "Ако имах повече време, __ по-често на родителите си.",
+                        "options": ["ще се обадя", "се обадих", "бих се обаждал"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако имах повече време, бих се обаждал по-често на родителите си.\" means \"If I had more time, I would call my parents more often.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Prilicham",
+                        "sentence": "\"Приличам на баща си.\" means \"I like my father.\"",
+                        "correct_option": false,
+                        "explanation": "It means \"I look like my father\". \"Харесвам\" is \"to like\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the values",
+                        "pairs": [
+                            ["Tradition", "традиция"],
+                            ["Progress", "прогрес"],
+                            ["Respect", "уважение"],
+                            ["Conflict", "конфликт"],
+                            ["Independence", "независимост"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If I were younger",
+                        "sentence": "Ако __ по-млад, бих учил отново.",
+                        "options": ["съм", "бях", "бъда"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако бях по-млад, бих учил отново.\" means \"If I were younger, I would study again.\" An unreal condition takes the past бях."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Busy Lives",
+            "description": "Time management, verbal nouns in -не and pairs of imperfective and perfective verbs.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the aspect pairs",
+                        "pairs": [
+                            ["казвам", "кажа"],
+                            ["давам", "дам"],
+                            ["купувам", "купя"],
+                            ["отговарям", "отговоря"],
+                            ["започвам", "започна"]
+                        ],
+                        "explanation": "Match each imperfective verb with its perfective partner."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Ordering tasks",
+                        "sentence": "__ на задачите по важност спестява време.",
+                        "options": ["Подреждам", "Подреждането", "Подредих"],
+                        "correct_option": 1,
+                        "explanation": "\"Подреждането на задачите по важност спестява време.\" means \"Ordering tasks by importance saves time.\" The verbal noun подреждане acts as the subject."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Otlagam",
+                        "sentence": "\"Отлагам\" means \"to put off\" or \"to postpone\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Не отлагай за утре това, което можеш да направиш днес.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "All morning",
+                        "sentence": "Цяла сутрин __ на имейли и не успях да свърша нищо друго.",
+                        "options": ["отговорих", "отговарям", "отговарях"],
+                        "correct_option": 2,
+                        "explanation": "\"Цяла сутрин отговарях на имейли...\" means \"All morning I was answering emails...\" An activity over a stretch of time takes the imperfective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Verbal nouns",
+                        "sentence": "Verbal nouns ending in -не, like \"четене\", are feminine.",
+                        "correct_option": false,
+                        "explanation": "They are neuter: четенето, писането, подреждането."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the productivity words",
+                        "pairs": [
+                            ["To set priorities", "определям приоритети"],
+                            ["To delegate", "делегирам"],
+                            ["To multitask", "върша няколко неща едновременно"],
+                            ["Burnout", "прегаряне"],
+                            ["Work-life balance", "баланс между работата и личния живот"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I read three chapters",
+                        "sentence": "Докато чаках влака, __ три глави от книгата.",
+                        "options": ["прочетох", "четях", "чета"],
+                        "correct_option": 0,
+                        "explanation": "\"Докато чаках влака, прочетох три глави от книгата.\" means \"While I was waiting for the train, I read three chapters.\" A finished, counted result takes the perfective."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "The Housing Market",
+            "description": "Buying property, mortgages and past passive participles.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the property words",
+                        "pairs": [
+                            ["Mortgage", "ипотечен кредит"],
+                            ["Estate agency", "агенция за недвижими имоти"],
+                            ["Down payment", "самоучастие"],
+                            ["Square metre", "квадратен метър"],
+                            ["Newly built", "новопостроен"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Fully furnished",
+                        "sentence": "Апартаментът е напълно __ и готов за нанасяне.",
+                        "options": ["обзавел", "обзаведен", "обзавеждан"],
+                        "correct_option": 1,
+                        "explanation": "\"Апартаментът е напълно обзаведен и готов за нанасяне.\" means \"The flat is fully furnished and ready to move into.\" Обзаведен is a past passive participle."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Postroena",
+                        "sentence": "\"Сградата е построена през 2010 г.\" means \"The building was built in 2010.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. Съм + a past passive participle makes the passive."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "VAT included",
+                        "sentence": "Цената __ ДДС.",
+                        "options": ["включена", "включи", "включва"],
+                        "correct_option": 2,
+                        "explanation": "\"Цената включва ДДС.\" means \"The price includes VAT.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Tuhlena kooperatsiya",
+                        "sentence": "\"Тухлена кооперация\" is a wooden house in a village.",
+                        "correct_option": false,
+                        "explanation": "It is a brick-built block of flats, usually older and smaller than the prefabricated panel blocks."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the moving verbs",
+                        "pairs": [
+                            ["To move in", "нанасям се"],
+                            ["To move out", "изнасям се"],
+                            ["To renovate", "ремонтирам"],
+                            ["To insulate (a building)", "санирам"],
+                            ["Neighbourhood", "квартал"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The building was insulated",
+                        "sentence": "Сградата беше __ миналата година и сега е по-топла.",
+                        "options": ["санирала", "санираща", "санирана"],
+                        "correct_option": 2,
+                        "explanation": "\"Сградата беше санирана миналата година...\" means \"The building was insulated last year and is now warmer.\" The passive needs the past passive participle."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Hospitality and Etiquette",
+            "description": "Negative questions as invitations, negative commands and everyday reactions.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the reactions",
+                        "pairs": [
+                            ["Come on!", "Хайде!"],
+                            ["Really?", "Така ли?"],
+                            ["No way!", "Няма начин!"],
+                            ["Never mind", "Няма значение"],
+                            ["Of course", "Разбира се"]
+                        ],
+                        "explanation": "Match each English reaction to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Stay a bit longer",
+                        "sentence": "Няма ли да __ още малко? Рано е!",
+                        "options": ["остави", "останеш", "остана"],
+                        "correct_option": 1,
+                        "explanation": "\"Няма ли да останеш още малко? Рано е!\" means \"Won't you stay a little longer? It's early!\" A negative question makes a warm invitation."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nodding",
+                        "sentence": "Traditionally in Bulgaria, nodding the head up and down means \"no\", and shaking it means \"yes\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Many younger Bulgarians use both gestures, so listen for \"да\" and \"не\" as well."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Do not worry about the dishes",
+                        "sentence": "Не се __ за чиниите, ние ще ги измием.",
+                        "options": ["безпокоите", "безпокоихте", "безпокойте"],
+                        "correct_option": 2,
+                        "explanation": "\"Не се безпокойте за чиниите, ние ще ги измием.\" means \"Don't worry about the dishes, we will wash them.\" A negative command takes the imperfective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Negative imperative",
+                        "sentence": "A negative command usually takes the perfective aspect: \"Не затвори вратата!\"",
+                        "correct_option": false,
+                        "explanation": "A negative command normally takes the imperfective: \"Не затваряй вратата!\""
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the exclamations",
+                        "pairs": [
+                            ["Wow!", "Леле!"],
+                            ["Oh dear!", "Олеле!"],
+                            ["Well done!", "Браво!"],
+                            ["Well then", "Е, добре"],
+                            ["Enough!", "Стига!"]
+                        ],
+                        "explanation": "Match each English exclamation to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Do not be shy",
+                        "sentence": "Не се __ и се чувствайте като у дома си!",
+                        "options": ["стеснявате", "стеснявайте", "стеснете"],
+                        "correct_option": 1,
+                        "explanation": "\"Не се стеснявайте и се чувствайте като у дома си!\" means \"Don't be shy, make yourselves at home!\" A negative command takes the imperfective."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Workplace Communication",
+            "description": "Formal letters, set phrases and the passive with \"бъда\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the letter phrases",
+                        "pairs": [
+                            ["Dear Sir or Madam", "Уважаеми госпожи и господа"],
+                            ["Kind regards", "С уважение"],
+                            ["Please find attached", "Приложено Ви изпращам"],
+                            ["I look forward to your reply", "Очаквам отговора Ви"],
+                            ["Regarding", "Относно"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Thank you for the reply",
+                        "sentence": "__ Ви за бързия отговор.",
+                        "options": ["Благодарение", "Благодаря", "Благодарен"],
+                        "correct_option": 1,
+                        "explanation": "\"Благодаря Ви за бързия отговор.\" means \"Thank you for the quick reply.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Capital Vie",
+                        "sentence": "In a formal Bulgarian letter to one person, \"Вие\" and \"Ви\" are written with a capital letter.",
+                        "correct_option": true,
+                        "explanation": "Correct. The capital letter shows respect to the reader."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Must be finished",
+                        "sentence": "Проектът трябва да бъде __ до края на месеца.",
+                        "options": ["завършващ", "завършил", "завършен"],
+                        "correct_option": 2,
+                        "explanation": "\"Проектът трябва да бъде завършен до края на месеца.\" means \"The project must be finished by the end of the month.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Komandirovka",
+                        "sentence": "\"Командировка\" means \"a promotion\".",
+                        "correct_option": false,
+                        "explanation": "A командировка is a business trip. A promotion is \"повишение\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the email terms",
+                        "pairs": [
+                            ["Attachment", "прикачен файл"],
+                            ["Recipient", "получател"],
+                            ["Sender", "подател"],
+                            ["Signature", "подпис"],
+                            ["Reply all", "отговор до всички"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Please send the documents",
+                        "sentence": "Моля, __ ни необходимите документи до петък.",
+                        "options": ["изпращайте", "изпратихте", "изпратете"],
+                        "correct_option": 2,
+                        "explanation": "\"Моля, изпратете ни необходимите документи до петък.\" means \"Please send us the necessary documents by Friday.\" A single request takes the perfective command."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Environment and Science",
+            "description": "Climate and pollution, and abstract nouns built with -ост and -ство.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the environment words",
+                        "pairs": [
+                            ["Climate change", "климатични промени"],
+                            ["Pollution", "замърсяване"],
+                            ["Renewable energy", "възобновяема енергия"],
+                            ["Drought", "суша"],
+                            ["Recycling", "рециклиране"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Sorting waste",
+                        "sentence": "Все повече хора __ отпадъците си.",
+                        "options": ["разделя", "разделят", "разделихме"],
+                        "correct_option": 1,
+                        "explanation": "\"Все повече хора разделят отпадъците си.\" means \"More and more people sort their waste.\" Хора is plural."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Suffix -ost",
+                        "sentence": "The suffix -ост makes abstract nouns from adjectives: \"устойчив\" becomes \"устойчивост\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Устойчив means \"sustainable\", so устойчивост is \"sustainability\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Cut emissions in half",
+                        "sentence": "Ако до 2030 г. не __ емисиите наполовина, климатът ще продължи да се затопля.",
+                        "options": ["намаляваме", "намалихме", "намалим"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако до 2030 г. не намалим емисиите наполовина...\" means \"If we do not cut emissions in half by 2030...\" A single result by a deadline takes the perfective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Susha",
+                        "sentence": "\"Суша\" means \"flood\".",
+                        "correct_option": false,
+                        "explanation": "\"Суша\" means \"drought\", and also \"dry land\". A flood is \"наводнение\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the environment verbs",
+                        "pairs": [
+                            ["To pollute", "замърсявам"],
+                            ["To protect", "опазвам"],
+                            ["To save (energy)", "пестя"],
+                            ["To waste", "хабя"],
+                            ["To reduce", "намалявам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Forests must be protected",
+                        "sentence": "Горите трябва да бъдат __ от пожари.",
+                        "options": ["опазващи", "опазени", "опазили"],
+                        "correct_option": 1,
+                        "explanation": "\"Горите трябва да бъдат опазени от пожари.\" means \"Forests must be protected from fires.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Climate and Seasons",
+            "description": "Predictions, hedging and the future in the past with \"щеше да\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the hedges",
+                        "pairs": [
+                            ["It is likely", "вероятно е"],
+                            ["It is expected", "очаква се"],
+                            ["Supposedly", "уж"],
+                            ["Without a doubt", "без съмнение"],
+                            ["Hardly", "едва ли"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "It was going to rain",
+                        "sentence": "Синоптиците казаха, че __ да вали, но беше слънчево цял ден.",
+                        "options": ["ще", "щеше", "щял"],
+                        "correct_option": 1,
+                        "explanation": "\"Синоптиците казаха, че щеше да вали...\" means \"The forecasters said it was going to rain...\" A future seen from the past takes щеше да."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Edva li",
+                        "sentence": "\"Едва ли ще завали.\" means \"It will definitely rain.\"",
+                        "correct_option": false,
+                        "explanation": "It means \"It is unlikely to rain\". Едва ли expresses doubt."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Raining heavily",
+                        "sentence": "Вали като из __ цял ден.",
+                        "options": ["чаша", "небе", "ведро"],
+                        "correct_option": 2,
+                        "explanation": "\"Вали като из ведро цял ден.\" means \"It has been pouring all day\", literally \"raining as if from a bucket\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Uzh",
+                        "sentence": "\"Уж е лято, а е студено.\" means \"It's supposedly summer, but it's cold.\"",
+                        "correct_option": true,
+                        "explanation": "Correct. Уж casts doubt on what follows."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the extreme weather",
+                        "pairs": [
+                            ["Hail", "градушка"],
+                            ["Flood", "наводнение"],
+                            ["Blizzard", "виелица"],
+                            ["Landslide", "свлачище"],
+                            ["Thunderstorm", "гръмотевична буря"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We would have gone out",
+                        "sentence": "Ако не беше валяло, __ на разходка.",
+                        "options": ["ще излезем", "излязохме", "щяхме да излезем"],
+                        "correct_option": 2,
+                        "explanation": "\"Ако не беше валяло, щяхме да излезем на разходка.\" means \"If it had not rained, we would have gone for a walk.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Heritage and Holidays",
+            "description": "National holidays, cultural heritage and the passive voice.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the national holidays",
+                        "pairs": [
+                            ["3 March", "Ден на Освобождението"],
+                            ["24 May", "Ден на българската просвета и култура"],
+                            ["6 September", "Ден на Съединението"],
+                            ["22 September", "Ден на Независимостта"],
+                            ["1 November", "Ден на народните будители"]
+                        ],
+                        "explanation": "Match each date to the Bulgarian name of the holiday."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Cyrillic was created",
+                        "sentence": "Кирилицата е __ в края на IX век.",
+                        "options": ["създала", "създадена", "създаваща"],
+                        "correct_option": 1,
+                        "explanation": "\"Кирилицата е създадена в края на IX век.\" means \"The Cyrillic alphabet was created at the end of the 9th century.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: 3 March",
+                        "sentence": "On 3 March Bulgaria celebrates its liberation from Ottoman rule in 1878.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is the national day, marking the Treaty of San Stefano."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "On the UNESCO list",
+                        "sentence": "Рилският манастир е __ в списъка на ЮНЕСКО.",
+                        "options": ["включил", "включващ", "включен"],
+                        "correct_option": 2,
+                        "explanation": "\"Рилският манастир е включен в списъка на ЮНЕСКО.\" means \"The Rila Monastery is included in the UNESCO list.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Unification Day",
+                        "sentence": "Unification Day on 6 September marks the union of Bulgaria with Macedonia.",
+                        "correct_option": false,
+                        "explanation": "It marks the union of the Principality of Bulgaria with Eastern Rumelia in 1885."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the heritage sites",
+                        "pairs": [
+                            ["Thracian tomb", "тракийска гробница"],
+                            ["Fortress", "крепост"],
+                            ["Monastery", "манастир"],
+                            ["Icon", "икона"],
+                            ["Mural", "стенопис"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Famous for its murals",
+                        "sentence": "Боянската църква е известна със __ си от XIII век.",
+                        "options": ["стенописи", "стенописите", "стенопис"],
+                        "correct_option": 1,
+                        "explanation": "\"Боянската църква е известна със стенописите си от XIII век.\" means \"Boyana Church is famous for its 13th-century murals.\" With си the noun takes the article."
+                    }
+                }
+            ]
+        }
+    ]
+}

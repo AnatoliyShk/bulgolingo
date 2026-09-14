@@ -14,7 +14,7 @@ const props = defineProps({
     unfinishedPaths: { type: Array, default: () => [] },
     finishedPaths: { type: Array, default: () => [] },
     search: { type: Object, default: () => ({ enabled: false, query: '', unavailable: false }) },
-    filters: { type: Object, default: () => ({ level: null, sort: null }) },
+    filters: { type: Object, default: () => ({ level: null, sort: 'exercises_desc' }) },
 })
 
 const { theme } = useTheme()

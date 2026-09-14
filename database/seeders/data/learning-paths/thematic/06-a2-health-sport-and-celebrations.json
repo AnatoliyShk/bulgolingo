@@ -1,0 +1,1016 @@
+{
+    "name": "Health, Sport and Celebrations",
+    "level": "A2",
+    "lessons": [
+        {
+            "name": "Aches and Pains",
+            "description": "Say what hurt and how you got better, in the past tense.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the aches",
+                        "pairs": [
+                            ["Throat", "гърло"],
+                            ["Knee", "коляно"],
+                            ["Shoulder", "рамо"],
+                            ["Toothache", "зъбобол"],
+                            ["Neck", "врат"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My head hurt",
+                        "sentence": "Вчера ме __ главата цял ден.",
+                        "options": ["болеше", "боли", "ще боли"],
+                        "correct_option": 0,
+                        "explanation": "\"Вчера ме болеше главата цял ден.\" means \"Yesterday my head hurt all day.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kolene",
+                        "sentence": "The plural of \"коляно\" (knee) is \"колене\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Like other body parts, it has an irregular plural."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My leg hurts",
+                        "sentence": "Боли __ кракът и не мога да ходя.",
+                        "options": ["ми", "ме", "мен"],
+                        "correct_option": 1,
+                        "explanation": "\"Боли ме кракът и не мога да ходя.\" means \"My leg hurts and I cannot walk.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My sister was ill",
+                        "sentence": "Сестра ми беше __ цяла седмица.",
+                        "options": ["болен", "болни", "болна"],
+                        "correct_option": 2,
+                        "explanation": "\"Сестра ми беше болна цяла седмица.\" means \"My sister was ill all week.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ramo",
+                        "sentence": "\"Рамо\" means \"knee\".",
+                        "correct_option": false,
+                        "explanation": "\"Рамо\" means \"shoulder\". A knee is \"коляно\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the illness verbs",
+                        "pairs": [
+                            ["To catch a cold", "настинвам"],
+                            ["To cough", "кашлям"],
+                            ["To sneeze", "кихам"],
+                            ["To recover", "оздравявам"],
+                            ["To hurt", "боли"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I cough all night",
+                        "sentence": "Настинах и сега __ цяла нощ.",
+                        "options": ["кашлям", "кашляш", "кашлят"],
+                        "correct_option": 0,
+                        "explanation": "\"Настинах и сега кашлям цяла нощ.\" means \"I caught a cold and now I cough all night.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sneezing",
+                        "sentence": "When someone sneezes, Bulgarians say \"Наздраве!\"",
+                        "correct_option": true,
+                        "explanation": "Correct. The same word is used for a toast."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The children recovered",
+                        "sentence": "Децата __ бързо и вече са на училище.",
+                        "options": ["оздравя", "оздравяха", "оздравявам"],
+                        "correct_option": 1,
+                        "explanation": "\"Децата оздравяха бързо и вече са на училище.\" means \"The children got better quickly and are back at school.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "At the Pharmacy",
+            "description": "Ask for medicine and understand how to take it.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the pharmacy words",
+                        "pairs": [
+                            ["Painkiller", "обезболяващо"],
+                            ["Syrup", "сироп"],
+                            ["Drops", "капки"],
+                            ["Plaster", "лепенка"],
+                            ["Vitamins", "витамини"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Something for a sore throat",
+                        "sentence": "Имате ли нещо __ болки в гърлото?",
+                        "options": ["против", "към", "над"],
+                        "correct_option": 0,
+                        "explanation": "\"Имате ли нещо против болки в гърлото?\" means \"Have you got anything for a sore throat?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Prescription only",
+                        "sentence": "Some medicines in Bulgaria are sold only with a doctor's prescription.",
+                        "correct_option": true,
+                        "explanation": "Correct. Others are sold \"без рецепта\", without one."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two tablets a day",
+                        "sentence": "Взимайте по две __ на ден.",
+                        "options": ["таблетка", "таблетки", "таблетката"],
+                        "correct_option": 1,
+                        "explanation": "\"Взимайте по две таблетки на ден.\" means \"Take two tablets a day.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "After meals",
+                        "sentence": "Сиропът се пие __ хранене.",
+                        "options": ["през", "между", "след"],
+                        "correct_option": 2,
+                        "explanation": "\"Сиропът се пие след хранене.\" means \"The syrup is taken after meals.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Lepenka",
+                        "sentence": "\"Лепенка\" is a cough syrup.",
+                        "correct_option": false,
+                        "explanation": "A лепенка is a sticking plaster."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the instructions",
+                        "pairs": [
+                            ["Without a prescription", "без рецепта"],
+                            ["Twice a day", "два пъти дневно"],
+                            ["Before meals", "преди хранене"],
+                            ["Side effects", "странични ефекти"],
+                            ["Dose", "доза"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Only with a prescription",
+                        "sentence": "Това лекарство се продава само __ рецепта.",
+                        "options": ["с", "без", "от"],
+                        "correct_option": 0,
+                        "explanation": "\"Това лекарство се продава само с рецепта.\" means \"This medicine is sold only with a prescription.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vitamini",
+                        "sentence": "In Bulgarian, \"витамини\" are vitamins.",
+                        "correct_option": true,
+                        "explanation": "Correct. The singular is витамин."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The pharmacist recommended",
+                        "sentence": "Вчера фармацевтът ми __ сироп за кашлица.",
+                        "options": ["препоръчва", "препоръча", "ще препоръча"],
+                        "correct_option": 1,
+                        "explanation": "\"Вчера фармацевтът ми препоръча сироп за кашлица.\" means \"Yesterday the pharmacist recommended a cough syrup to me.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "At the Doctor's",
+            "description": "Make an appointment, answer the doctor and get a sick note.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the doctor's words",
+                        "pairs": [
+                            ["Doctor's appointment", "час при лекар"],
+                            ["Examination", "преглед"],
+                            ["Blood test", "кръвно изследване"],
+                            ["Blood pressure", "кръвно налягане"],
+                            ["Sick note", "болничен"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "An appointment with my GP",
+                        "sentence": "Записах си __ при личния лекар.",
+                        "options": ["час", "часа", "часове"],
+                        "correct_option": 0,
+                        "explanation": "\"Записах си час при личния лекар.\" means \"I made an appointment with my GP.\" \"Час\" here means an appointment."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Lichen lekar",
+                        "sentence": "In Bulgaria your GP is called your \"личен лекар\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"personal doctor\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The doctor examined me",
+                        "sentence": "Лекарят ме __ и ми даде рецепта.",
+                        "options": ["преглежда", "прегледа", "ще прегледа"],
+                        "correct_option": 1,
+                        "explanation": "\"Лекарят ме прегледа и ми даде рецепта.\" means \"The doctor examined me and gave me a prescription.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Open your mouth",
+                        "sentence": "Отворете __ и кажете „а“.",
+                        "options": ["уста", "устите", "устата"],
+                        "correct_option": 2,
+                        "explanation": "\"Отворете устата и кажете „а“.\" means \"Open your mouth and say 'ah'.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Bolnichen",
+                        "sentence": "\"Болничен\" is a hospital building.",
+                        "correct_option": false,
+                        "explanation": "A болничен is a sick note for work. A hospital is a \"болница\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the doctor's questions",
+                        "pairs": [
+                            ["What's wrong?", "Какво ви има?"],
+                            ["Where does it hurt?", "Къде ви боли?"],
+                            ["Since when?", "От колко време?"],
+                            ["Take a deep breath", "Поемете дълбоко въздух"],
+                            ["Get well soon", "Бързо оздравяване"]
+                        ],
+                        "explanation": "Match each English sentence to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "How long has it hurt",
+                        "sentence": "От колко време ви __ гърлото?",
+                        "options": ["боли", "болят", "болиш"],
+                        "correct_option": 0,
+                        "explanation": "\"От колко време ви боли гърлото?\" means \"How long has your throat been hurting?\" The present with \"от\" covers something still going on."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kakvo vi ima",
+                        "sentence": "\"Какво ви има?\" is how a doctor asks \"What's wrong with you?\"",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"What do you have?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two weeks off",
+                        "sentence": "Лекарят ми даде болничен за две __ и ми каза да почивам.",
+                        "options": ["седмица", "седмици", "седмицата"],
+                        "correct_option": 1,
+                        "explanation": "\"Лекарят ми даде болничен за две седмици...\" means \"The doctor gave me two weeks' sick leave and told me to rest.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Keeping Fit",
+            "description": "Training, gyms and staying in shape.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the fitness words",
+                        "pairs": [
+                            ["Workout", "тренировка"],
+                            ["Coach", "треньор"],
+                            ["Stretching", "разтягане"],
+                            ["Weight", "тегло"],
+                            ["Muscles", "мускули"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The workout lasts an hour",
+                        "sentence": "Тренировката __ един час.",
+                        "options": ["трае", "трая", "траят"],
+                        "correct_option": 0,
+                        "explanation": "\"Тренировката трае един час.\" means \"The workout lasts an hour.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Trenyor",
+                        "sentence": "A \"треньор\" is a sports coach.",
+                        "correct_option": true,
+                        "explanation": "Correct. A female coach is a \"треньорка\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Five kilos lighter",
+                        "sentence": "Отслабнах пет __ за два месеца.",
+                        "options": ["килограм", "килограма", "килограми"],
+                        "correct_option": 1,
+                        "explanation": "\"Отслабнах пет килограма за два месеца.\" means \"I lost five kilos in two months.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I ran a marathon",
+                        "sentence": "Миналата година __ маратон.",
+                        "options": ["бягам", "ще пробягам", "пробягах"],
+                        "correct_option": 2,
+                        "explanation": "\"Миналата година пробягах маратон.\" means \"Last year I ran a marathon.\" A finished achievement takes the perfective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Otslabvam",
+                        "sentence": "\"Отслабвам\" means \"to put on weight\".",
+                        "correct_option": false,
+                        "explanation": "\"Отслабвам\" means \"to lose weight\". Putting it on is \"напълнявам\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the fitness verbs",
+                        "pairs": [
+                            ["To lose weight", "отслабвам"],
+                            ["To put on weight", "напълнявам"],
+                            ["To train", "тренирам"],
+                            ["To lift", "вдигам"],
+                            ["To stretch", "разтягам се"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "He lifts weights",
+                        "sentence": "Той __ тежести във фитнеса.",
+                        "options": ["вдига", "вдигам", "вдигат"],
+                        "correct_option": 0,
+                        "explanation": "\"Той вдига тежести във фитнеса.\" means \"He lifts weights at the gym.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Fitnes",
+                        "sentence": "In Bulgarian, \"фитнес\" usually means a gym.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Ходя на фитнес\" means \"I go to the gym\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "You will be healthier",
+                        "sentence": "Ще __ по-здрав, ако спортуваш.",
+                        "options": ["бъда", "бъдеш", "бъдат"],
+                        "correct_option": 1,
+                        "explanation": "\"Ще бъдеш по-здрав, ако спортуваш.\" means \"You will be healthier if you do sport.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Football and Fans",
+            "description": "Matches, goals and results.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the match words",
+                        "pairs": [
+                            ["Goal", "гол"],
+                            ["Referee", "съдия"],
+                            ["Fan", "фен"],
+                            ["Score", "резултат"],
+                            ["Draw", "равенство"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two all",
+                        "sentence": "Двата отбора __ два на два.",
+                        "options": ["завършиха", "завърши", "завършихме"],
+                        "correct_option": 0,
+                        "explanation": "\"Двата отбора завършиха два на два.\" means \"The two teams drew two all.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ravenstvo",
+                        "sentence": "A match that ends 1:1 is a \"равенство\" (draw).",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Мачът завърши наравно\" also means \"The match ended in a draw\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Who scored first",
+                        "sentence": "Кой __ първия гол?",
+                        "options": ["вкарва", "вкара", "вкарам"],
+                        "correct_option": 1,
+                        "explanation": "\"Кой вкара първия гол?\" means \"Who scored the first goal?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Our team won",
+                        "sentence": "Отборът ни __ с три на нула!",
+                        "options": ["загубихме", "спечелихме", "спечели"],
+                        "correct_option": 2,
+                        "explanation": "\"Отборът ни спечели с три на нула!\" means \"Our team won three nil!\" Отборът is singular."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sadiya",
+                        "sentence": "In football, the \"съдия\" is the goalkeeper.",
+                        "correct_option": false,
+                        "explanation": "The съдия is the referee. The goalkeeper is the \"вратар\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the positions",
+                        "pairs": [
+                            ["Goalkeeper", "вратар"],
+                            ["Defender", "защитник"],
+                            ["Striker", "нападател"],
+                            ["Captain", "капитан"],
+                            ["Substitute", "резерва"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The keeper saved the penalty",
+                        "sentence": "Вратарят __ дузпата.",
+                        "options": ["спаси", "спасих", "спасява"],
+                        "correct_option": 0,
+                        "explanation": "\"Вратарят спаси дузпата.\" means \"The goalkeeper saved the penalty.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Duzpa",
+                        "sentence": "\"Дузпа\" is a penalty kick.",
+                        "correct_option": true,
+                        "explanation": "Correct. The word comes from the Turkish for \"straight\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We will watch the match",
+                        "sentence": "Утре ще __ мача по телевизията.",
+                        "options": ["гледахме", "гледах", "гледаме"],
+                        "correct_option": 2,
+                        "explanation": "\"Утре ще гледаме мача по телевизията.\" means \"Tomorrow we will watch the match on TV.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Birthdays",
+            "description": "Birthday parties, presents and wishes.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the party words",
+                        "pairs": [
+                            ["Birthday", "рожден ден"],
+                            ["Cake", "торта"],
+                            ["Candles", "свещи"],
+                            ["Party", "парти"],
+                            ["Invitation", "покана"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I turn thirty",
+                        "sentence": "Утре __ тридесет години.",
+                        "options": ["навършвам", "навърших", "навършва"],
+                        "correct_option": 0,
+                        "explanation": "\"Утре навършвам тридесет години.\" means \"Tomorrow I turn thirty.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Treating on birthdays",
+                        "sentence": "In Bulgaria, the person celebrating a birthday usually treats friends and colleagues.",
+                        "correct_option": true,
+                        "explanation": "Correct. Bring sweets to the office, or pay for the drinks."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Mum made a cake",
+                        "sentence": "Миналата година за рождения ми ден мама __ торта.",
+                        "options": ["прави", "направи", "ще направи"],
+                        "correct_option": 1,
+                        "explanation": "\"Миналата година за рождения ми ден мама направи торта.\" means \"Last year Mum made a cake for my birthday.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Happy birthday",
+                        "sentence": "Честит рожден __ и много щастие!",
+                        "options": ["дни", "деня", "ден"],
+                        "correct_option": 2,
+                        "explanation": "\"Честит рожден ден и много щастие!\" means \"Happy birthday and lots of happiness!\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Navarshvam",
+                        "sentence": "\"Навършвам\" means \"to forget\".",
+                        "correct_option": false,
+                        "explanation": "\"Навършвам\" means \"to reach\" an age: \"навършвам 18 години\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the birthday wishes",
+                        "pairs": [
+                            ["Many happy returns", "За много години"],
+                            ["Health and happiness", "Здраве и щастие"],
+                            ["Make a wish", "Пожелай си нещо"],
+                            ["Blow out the candles", "Духни свещите"],
+                            ["Cheers to you", "Наздраве за теб"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The children blew out the candles",
+                        "sentence": "Децата __ свещите на тортата.",
+                        "options": ["духнаха", "духна", "духнах"],
+                        "correct_option": 0,
+                        "explanation": "\"Децата духнаха свещите на тортата.\" means \"The children blew out the candles on the cake.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Za mnogo godini",
+                        "sentence": "\"За много години\" wishes someone many more years.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is said on birthdays and name days."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "What shall I give you",
+                        "sentence": "Какво да ти __ за рождения ден?",
+                        "options": ["подарявам", "подаря", "подарих"],
+                        "correct_option": 1,
+                        "explanation": "\"Какво да ти подаря за рождения ден?\" means \"What shall I give you for your birthday?\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Name Days",
+            "description": "Saints' days, the names that go with them and how to congratulate people.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match names and name days",
+                        "pairs": [
+                            ["Georgi", "Гергьовден"],
+                            ["Ivan", "Ивановден"],
+                            ["Nikolay", "Никулден"],
+                            ["Dimitar", "Димитровден"],
+                            ["Vasil", "Васильовден"]
+                        ],
+                        "explanation": "Match each name to the day its bearers celebrate."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Nikolay celebrates today",
+                        "sentence": "Днес е Никулден и __ има имен ден.",
+                        "options": ["Николай", "Иван", "Георги"],
+                        "correct_option": 0,
+                        "explanation": "\"Днес е Никулден и Николай има имен ден.\" means \"Today is St Nicholas' Day, and Nikolay celebrates his name day.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nikulden fish",
+                        "sentence": "On Nikulden (6 December) it is traditional to eat fish.",
+                        "correct_option": true,
+                        "explanation": "Correct. St Nicholas is the patron of fishermen, so carp is the classic dish."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Happy name day",
+                        "sentence": "Честит имен __ на всички Ивановци!",
+                        "options": ["деня", "ден", "дни"],
+                        "correct_option": 1,
+                        "explanation": "\"Честит имен ден на всички Ивановци!\" means \"Happy name day to all the Ivans!\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "He treated his colleagues",
+                        "sentence": "На имения си ден той __ всички колеги.",
+                        "options": ["почерпих", "почерпиха", "почерпи"],
+                        "correct_option": 2,
+                        "explanation": "\"На имения си ден той почерпи всички колеги.\" means \"On his name day he treated all his colleagues.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Only children",
+                        "sentence": "Only children celebrate name days in Bulgaria.",
+                        "correct_option": false,
+                        "explanation": "Everyone celebrates them, and for many people a name day matters as much as a birthday."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the name day words",
+                        "pairs": [
+                            ["Name day", "имен ден"],
+                            ["Person celebrating a name day", "именник"],
+                            ["Saint", "светец"],
+                            ["Feast day", "празник"],
+                            ["Calendar", "календар"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "On the sixth of May",
+                        "sentence": "Гергьовден се празнува __ шести май.",
+                        "options": ["на", "в", "през"],
+                        "correct_option": 0,
+                        "explanation": "\"Гергьовден се празнува на шести май.\" means \"St George's Day is celebrated on 6 May.\" An exact date takes на."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Imennik",
+                        "sentence": "A person celebrating a name day is called an \"именник\".",
+                        "correct_option": true,
+                        "explanation": "Correct. A woman celebrating is an \"именничка\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "To congratulate him",
+                        "sentence": "Ще се обадя на Иван, за да го __ за имения ден.",
+                        "options": ["поздравих", "поздравя", "поздравявам"],
+                        "correct_option": 1,
+                        "explanation": "\"Ще се обадя на Иван, за да го поздравя за имения ден.\" means \"I will call Ivan to congratulate him on his name day.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "A Jubilee",
+            "description": "Round-number birthdays and anniversaries, speeches and toasts.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the jubilee words",
+                        "pairs": [
+                            ["Anniversary", "годишнина"],
+                            ["Jubilee", "юбилей"],
+                            ["Guest of honour", "почетен гост"],
+                            ["Speech", "реч"],
+                            ["Toast", "наздравица"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A big jubilee",
+                        "sentence": "Дядо направи голям __ за осемдесетия си рожден ден.",
+                        "options": ["юбилей", "юбилея", "юбилеи"],
+                        "correct_option": 0,
+                        "explanation": "\"Дядо направи голям юбилей за осемдесетия си рожден ден.\" means \"Grandpa threw a big party for his eightieth birthday.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Yubiley",
+                        "sentence": "A \"юбилей\" is a round-number anniversary, such as 50 or 60 years.",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarians celebrate round birthdays in style."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Thirty years married",
+                        "sentence": "Родителите ми празнуваха тридесет __ от сватбата си.",
+                        "options": ["годишнина", "години", "година"],
+                        "correct_option": 1,
+                        "explanation": "\"Родителите ми празнуваха тридесет години от сватбата си.\" means \"My parents celebrated thirty years since their wedding.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "His son gave a speech",
+                        "sentence": "Синът му __ реч на празника.",
+                        "options": ["държах", "държаха", "държа"],
+                        "correct_option": 2,
+                        "explanation": "\"Синът му държа реч на празника.\" means \"His son gave a speech at the party.\" Държа is also the past form of the verb."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Godishnina",
+                        "sentence": "\"Годишнина\" means \"a birthday cake\".",
+                        "correct_option": false,
+                        "explanation": "A годишнина is an anniversary."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the jubilee phrases",
+                        "pairs": [
+                            ["Congratulations!", "Поздравления!"],
+                            ["Long life!", "Дълъг живот!"],
+                            ["We are proud of you", "Гордеем се с теб"],
+                            ["Thank you for coming", "Благодаря, че дойдохте"],
+                            ["It was a lovely evening", "Беше прекрасна вечер"]
+                        ],
+                        "explanation": "Match each English sentence to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The guests danced",
+                        "sentence": "Гостите __ до късно през нощта.",
+                        "options": ["танцуваха", "танцува", "танцувах"],
+                        "correct_option": 0,
+                        "explanation": "\"Гостите танцуваха до късно през нощта.\" means \"The guests danced until late at night.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Gordeem se",
+                        "sentence": "\"Гордеем се с теб\" means \"We are proud of you\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Гордея се\" is \"I am proud\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Relatives and friends",
+                        "sentence": "Поканихме всички __ и приятели.",
+                        "options": ["роднина", "роднини", "роднината"],
+                        "correct_option": 1,
+                        "explanation": "\"Поканихме всички роднини и приятели.\" means \"We invited all our relatives and friends.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "A Bulgarian Wedding",
+            "description": "The couple, the witnesses and the customs of a Bulgarian wedding.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the wedding words",
+                        "pairs": [
+                            ["Bride", "булка"],
+                            ["Groom", "младоженец"],
+                            ["Wedding ring", "халка"],
+                            ["Best man", "кум"],
+                            ["Veil", "було"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A white dress",
+                        "sentence": "Булката беше в бяла __ с дълго було.",
+                        "options": ["рокля", "роклята", "рокли"],
+                        "correct_option": 0,
+                        "explanation": "\"Булката беше в бяла рокля с дълго було.\" means \"The bride wore a white dress with a long veil.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kum and kuma",
+                        "sentence": "At a Bulgarian wedding the \"кум\" and \"кума\" are the official witnesses.",
+                        "correct_option": true,
+                        "explanation": "Correct. They are often also godparents to the couple's first child."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "They exchanged rings",
+                        "sentence": "Младоженците си __ халки.",
+                        "options": ["размени", "размениха", "разменихме"],
+                        "correct_option": 1,
+                        "explanation": "\"Младоженците си размениха халки.\" means \"The newlyweds exchanged rings.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Dancing the horo",
+                        "sentence": "Гостите __ хоро цяла нощ.",
+                        "options": ["игра", "играхме", "играха"],
+                        "correct_option": 2,
+                        "explanation": "\"Гостите играха хоро цяла нощ.\" means \"The guests danced the horo all night.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Halka",
+                        "sentence": "\"Халка\" is a wedding cake.",
+                        "correct_option": false,
+                        "explanation": "A халка is a wedding ring."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the wedding verbs",
+                        "pairs": [
+                            ["To marry (of a woman)", "омъжвам се"],
+                            ["To marry (of a man)", "женя се"],
+                            ["To propose", "предлагам брак"],
+                            ["To get engaged", "сгодявам се"],
+                            ["To invite", "каня"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "He proposed to her",
+                        "sentence": "Той __ предложи брак на Коледа.",
+                        "options": ["ѝ", "я", "ги"],
+                        "correct_option": 0,
+                        "explanation": "\"Той ѝ предложи брак на Коледа.\" means \"He proposed to her at Christmas.\" Ѝ means \"to her\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Breaking bread",
+                        "sentence": "At Bulgarian weddings the newlyweds often pull a round loaf apart to see who gets the bigger piece.",
+                        "correct_option": true,
+                        "explanation": "Correct. Tradition says whoever gets the bigger piece will lead the family."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "They invited us to their wedding",
+                        "sentence": "Поканиха ни на __ си през юни.",
+                        "options": ["сватба", "сватбата", "сватби"],
+                        "correct_option": 1,
+                        "explanation": "\"Поканиха ни на сватбата си през юни.\" means \"They invited us to their wedding in June.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "National Holidays",
+            "description": "The flag, the anthem and the days Bulgaria remembers.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the national words",
+                        "pairs": [
+                            ["Flag", "знаме"],
+                            ["Anthem", "химн"],
+                            ["Parade", "парад"],
+                            ["Independence", "независимост"],
+                            ["Day off", "почивен ден"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Liberation Day",
+                        "sentence": "На Трети март празнуваме __ на България.",
+                        "options": ["Освобождението", "Освобождение", "освобождения"],
+                        "correct_option": 0,
+                        "explanation": "\"На Трети март празнуваме Освобождението на България.\" means \"On 3 March we celebrate the Liberation of Bulgaria.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: The flag",
+                        "sentence": "The Bulgarian flag is white, green and red.",
+                        "correct_option": true,
+                        "explanation": "Correct. The three stripes run from top to bottom in that order."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Education and culture",
+                        "sentence": "На 24 май празнуваме българската __ и култура.",
+                        "options": ["просвети", "просвета", "просветата"],
+                        "correct_option": 1,
+                        "explanation": "\"На 24 май празнуваме българската просвета и култура.\" means \"On 24 May we celebrate Bulgarian education and culture.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A day off",
+                        "sentence": "Шести септември е __ ден.",
+                        "options": ["почивна", "почивно", "почивен"],
+                        "correct_option": 2,
+                        "explanation": "\"Шести септември е почивен ден.\" means \"6 September is a public holiday.\" Ден is masculine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: 3 March",
+                        "sentence": "Bulgaria's national day, 3 March, marks the Unification of 1885.",
+                        "correct_option": false,
+                        "explanation": "3 March marks the Liberation of 1878. The Unification is celebrated on 6 September."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the ceremony words",
+                        "pairs": [
+                            ["National", "национален"],
+                            ["Celebration", "празненство"],
+                            ["Ceremony", "церемония"],
+                            ["Wreath", "венец"],
+                            ["Soldier", "войник"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Laying wreaths",
+                        "sentence": "Хората поднасят __ пред паметника.",
+                        "options": ["венци", "венец", "венеца"],
+                        "correct_option": 0,
+                        "explanation": "\"Хората поднасят венци пред паметника.\" means \"People lay wreaths at the monument.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Buditeli",
+                        "sentence": "On 1 November Bulgaria honours the \"народни будители\", who awakened the national spirit.",
+                        "correct_option": true,
+                        "explanation": "Correct. They were teachers, writers and clergy of the National Revival."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We were at the parade",
+                        "sentence": "Миналата година __ на парада в София.",
+                        "options": ["сме", "бяхме", "ще бъдем"],
+                        "correct_option": 1,
+                        "explanation": "\"Миналата година бяхме на парада в София.\" means \"Last year we were at the parade in Sofia.\""
+                    }
+                }
+            ]
+        }
+    ]
+}

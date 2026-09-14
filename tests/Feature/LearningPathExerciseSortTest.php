@@ -61,14 +61,18 @@ class LearningPathExerciseSortTest extends TestCase
         $this->path('Long', 9);
     }
 
-    public function test_without_a_sort_paths_come_back_and_no_sort_is_active(): void
+    public function test_without_a_sort_the_catalog_defaults_to_most_exercises_first(): void
     {
         $this->seedThreeSizes();
 
         $this->get(route('learning-paths.index'))
-            ->assertInertia(fn (Assert $page) => $page
-                ->has('paths', 3)
-                ->where('filters.sort', null));
+            ->assertInertia(function (Assert $page) {
+                $page->where('filters.sort', 'exercises_desc');
+                $this->assertSame(
+                    ['Long', 'Short', 'Empty'],
+                    collect($page->toArray()['props']['paths'])->pluck('name')->all(),
+                );
+            });
     }
 
     public function test_each_catalog_entry_carries_its_exercise_count(): void
@@ -128,7 +132,7 @@ class LearningPathExerciseSortTest extends TestCase
     }
 
     #[DataProvider('unrecognisedSorts')]
-    public function test_an_unrecognised_sort_is_ignored_rather_than_rejected(mixed $sort): void
+    public function test_an_unrecognised_sort_falls_back_to_the_default_rather_than_being_rejected(mixed $sort): void
     {
         $this->seedThreeSizes();
 
@@ -136,7 +140,7 @@ class LearningPathExerciseSortTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->has('paths', 3)
-                ->where('filters.sort', null));
+                ->where('filters.sort', 'exercises_desc'));
     }
 
     public function test_the_signed_in_viewers_own_paths_are_sorted_too(): void

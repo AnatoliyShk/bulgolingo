@@ -1,0 +1,1016 @@
+{
+    "name": "Study, Work and Media",
+    "level": "B1",
+    "lessons": [
+        {
+            "name": "The Education System",
+            "description": "From kindergarten to the final exams, and the Bulgarian grading scale.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the school stages",
+                        "pairs": [
+                            ["Kindergarten", "детска градина"],
+                            ["Primary school", "основно училище"],
+                            ["Secondary school", "средно училище"],
+                            ["School year (grade)", "клас"],
+                            ["Pupil", "ученик"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Starting school at seven",
+                        "sentence": "Децата __ на училище на седем години.",
+                        "options": ["тръгват", "тръгна", "тръгнаха"],
+                        "correct_option": 0,
+                        "explanation": "\"Децата тръгват на училище на седем години.\" means \"Children start school at the age of seven.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ezikova gimnaziya",
+                        "sentence": "An \"езикова гимназия\" is a secondary school with intensive foreign language teaching.",
+                        "correct_option": true,
+                        "explanation": "Correct. Pupils often spend their first year learning a language almost full time."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "They take the final exams",
+                        "sentence": "След дванадесети клас учениците __ матури.",
+                        "options": ["държи", "държат", "държах"],
+                        "correct_option": 1,
+                        "explanation": "\"След дванадесети клас учениците държат матури.\" means \"After twelfth grade, pupils take their final exams.\" You \"hold\" an exam: държа изпит."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In ninth grade",
+                        "sentence": "Сестра ми е в девети __ в езикова гимназия.",
+                        "options": ["класа", "класове", "клас"],
+                        "correct_option": 2,
+                        "explanation": "\"Сестра ми е в девети клас в езикова гимназия.\" means \"My sister is in ninth grade at a language school.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Mark 2",
+                        "sentence": "In Bulgaria a mark of 2 is the best possible grade.",
+                        "correct_option": false,
+                        "explanation": "Marks run from 2 to 6: 2 is a fail and 6 is excellent."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the school subjects",
+                        "pairs": [
+                            ["Maths", "математика"],
+                            ["History", "история"],
+                            ["Geography", "география"],
+                            ["Literature", "литература"],
+                            ["Physics", "физика"]
+                        ],
+                        "explanation": "Match each subject to its Bulgarian name."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My favourite subject",
+                        "sentence": "Любимият ми __ е историята.",
+                        "options": ["предмет", "предмета", "предмети"],
+                        "correct_option": 0,
+                        "explanation": "\"Любимият ми предмет е историята.\" means \"My favourite subject is history.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Detska gradina",
+                        "sentence": "\"Детска градина\" is a kindergarten.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"children's garden\", just like the German Kindergarten."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If I had been better at maths",
+                        "sentence": "Ако __ по-добър по математика, щях да стана инженер.",
+                        "options": ["съм", "бях", "бъда"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако бях по-добър по математика, щях да стана инженер.\" means \"If I had been better at maths, I would have become an engineer.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "University Life",
+            "description": "Lectures, halls of residence and degrees.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the university words",
+                        "pairs": [
+                            ["Lecture", "лекция"],
+                            ["Seminar", "семинар"],
+                            ["Professor", "професор"],
+                            ["Hall of residence", "общежитие"],
+                            ["Scholarship", "стипендия"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The lecture starts at nine",
+                        "sentence": "Лекцията __ в девет часа в зала 5.",
+                        "options": ["започва", "започват", "започвам"],
+                        "correct_option": 0,
+                        "explanation": "\"Лекцията започва в девет часа в зала 5.\" means \"The lecture starts at nine in room 5.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sofia University",
+                        "sentence": "Sofia University \"St Kliment Ohridski\" is the oldest university in Bulgaria.",
+                        "correct_option": true,
+                        "explanation": "Correct. It was founded in 1888."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "When I was a student",
+                        "sentence": "Докато __ студент, живеех в общежитие.",
+                        "options": ["бъда", "бях", "съм"],
+                        "correct_option": 1,
+                        "explanation": "\"Докато бях студент, живеех в общежитие.\" means \"While I was a student, I lived in a hall of residence.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A scholarship for top marks",
+                        "sentence": "Получавам __ за отличен успех.",
+                        "options": ["стипендии", "стипендията", "стипендия"],
+                        "correct_option": 2,
+                        "explanation": "\"Получавам стипендия за отличен успех.\" means \"I get a scholarship for excellent results.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Obshtezhitie",
+                        "sentence": "\"Общежитие\" is a lecture hall.",
+                        "correct_option": false,
+                        "explanation": "An общежитие is a hall of residence. A lecture hall is an \"аудитория\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the degree words",
+                        "pairs": [
+                            ["Bachelor's degree", "бакалавър"],
+                            ["Master's degree", "магистър"],
+                            ["Doctoral studies", "докторантура"],
+                            ["Faculty", "факултет"],
+                            ["Diploma", "диплома"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In the Faculty of Law",
+                        "sentence": "Той е студент в Юридическия __ на Софийския университет.",
+                        "options": ["факултет", "факултета", "факултети"],
+                        "correct_option": 0,
+                        "explanation": "\"Той е студент в Юридическия факултет...\" means \"He is a student in the Faculty of Law...\" The article already sits on the adjective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Four years",
+                        "sentence": "In Bulgaria a bachelor's degree usually takes four years.",
+                        "correct_option": true,
+                        "explanation": "Correct. A master's degree usually takes one or two more."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The exam will be on Wednesday",
+                        "sentence": "Професорът ни каза, че изпитът __ в сряда.",
+                        "options": ["беше", "щеше", "ще бъде"],
+                        "correct_option": 2,
+                        "explanation": "\"Професорът ни каза, че изпитът ще бъде в сряда.\" means \"The professor told us the exam would be on Wednesday.\" Bulgarian keeps the original tense in reported speech."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Exams and Grades",
+            "description": "Revising, passing, failing and resits, with past unreal conditions.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the grades",
+                        "pairs": [
+                            ["Excellent (6)", "отличен"],
+                            ["Very good (5)", "много добър"],
+                            ["Good (4)", "добър"],
+                            ["Satisfactory (3)", "среден"],
+                            ["Fail (2)", "слаб"]
+                        ],
+                        "explanation": "Match each grade to its Bulgarian name."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "An excellent six",
+                        "sentence": "Взех изпита с __ шест.",
+                        "options": ["отличен", "отлична", "отлично"],
+                        "correct_option": 0,
+                        "explanation": "\"Взех изпита с отличен шест.\" means \"I passed the exam with an excellent six.\" The grade names are masculine: отличен шест."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Slab 2",
+                        "sentence": "In Bulgarian schools, \"слаб 2\" means you have failed.",
+                        "correct_option": true,
+                        "explanation": "Correct. You then have to retake the exam."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If you had studied more",
+                        "sentence": "Ако __ повече, щеше да вземеш изпита.",
+                        "options": ["учиш", "беше учил", "ще учиш"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако беше учил повече, щеше да вземеш изпита.\" means \"If you had studied more, you would have passed the exam.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Strictly forbidden",
+                        "sentence": "Преписването на изпит е строго __ в университета.",
+                        "options": ["забранен", "забранена", "забранено"],
+                        "correct_option": 2,
+                        "explanation": "\"Преписването на изпит е строго забранено в университета.\" means \"Cheating in exams is strictly forbidden at university.\" Преписването is neuter."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Prepisvam",
+                        "sentence": "In an exam, \"преписвам\" means to study hard.",
+                        "correct_option": false,
+                        "explanation": "In an exam, \"преписвам\" means to copy, or cheat."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the exam phrases",
+                        "pairs": [
+                            ["To pass an exam", "взимам изпит"],
+                            ["To be failed", "скъсват ме"],
+                            ["To revise", "преговарям"],
+                            ["To cheat", "преписвам"],
+                            ["To sit a resit", "явявам се на поправка"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I studied all night",
+                        "sentence": "Цяла нощ __ за изпита и сега съм уморен.",
+                        "options": ["учих", "уча", "ще уча"],
+                        "correct_option": 0,
+                        "explanation": "\"Цяла нощ учих за изпита и сега съм уморен.\" means \"I studied all night for the exam and now I am tired.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Skasaha me",
+                        "sentence": "\"Скъсаха ме на изпита\" means \"I failed the exam\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"They tore me at the exam\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A resit in September",
+                        "sentence": "Трябва да се __ на поправка през септември.",
+                        "options": ["явявам", "явя", "явих"],
+                        "correct_option": 1,
+                        "explanation": "\"Трябва да се явя на поправка през септември.\" means \"I have to sit a resit in September.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Applying for a Job",
+            "description": "Job adverts, cover letters and interview questions.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the application words",
+                        "pairs": [
+                            ["Job advert", "обява за работа"],
+                            ["Cover letter", "мотивационно писмо"],
+                            ["Qualifications", "квалификация"],
+                            ["Salary expectations", "очаквано възнаграждение"],
+                            ["References", "препоръки"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I applied for a position",
+                        "sentence": "Кандидатствах за __ в банка.",
+                        "options": ["позиция", "позицията", "позиции"],
+                        "correct_option": 0,
+                        "explanation": "\"Кандидатствах за позиция в банка.\" means \"I applied for a position at a bank.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Motivatsionno pismo",
+                        "sentence": "A \"мотивационно писмо\" is a cover letter sent with a CV.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"motivation letter\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If they hire me",
+                        "sentence": "Ако ме __ на работа, ще започна от първи октомври.",
+                        "options": ["наема", "наемат", "наеха"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако ме наемат на работа, ще започна от първи октомври.\" means \"If they hire me, I will start on 1 October.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whether I have experience",
+                        "sentence": "Работодателят ме попита __ имам опит с клиенти.",
+                        "options": ["че", "ако", "дали"],
+                        "correct_option": 2,
+                        "explanation": "\"Работодателят ме попита дали имам опит с клиенти.\" means \"The employer asked me whether I have experience with clients.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Preporaka",
+                        "sentence": "\"Препоръка\" means a job rejection.",
+                        "correct_option": false,
+                        "explanation": "A препоръка is a recommendation or a reference."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the skills",
+                        "pairs": [
+                            ["Teamwork", "работа в екип"],
+                            ["Communication skills", "комуникативни умения"],
+                            ["Computer skills", "компютърна грамотност"],
+                            ["Driving licence", "шофьорска книжка"],
+                            ["Fluent command", "свободно владеене"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I speak English fluently",
+                        "sentence": "Владея английски __ и немски на добро ниво.",
+                        "options": ["свободно", "свободен", "свободна"],
+                        "correct_option": 0,
+                        "explanation": "\"Владея английски свободно и немски на добро ниво.\" means \"I speak English fluently and German to a good level.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Driving licence",
+                        "sentence": "Bulgarian CVs often mention a driving licence (\"шофьорска книжка\").",
+                        "correct_option": true,
+                        "explanation": "Correct. Many job adverts ask for one."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I was invited to an interview",
+                        "sentence": "Бях __ на интервю миналата седмица.",
+                        "options": ["поканил", "покани", "поканен"],
+                        "correct_option": 2,
+                        "explanation": "\"Бях поканен на интервю миналата седмица.\" means \"I was invited to an interview last week.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "At the Office",
+            "description": "Departments, reports and meetings.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the office words",
+                        "pairs": [
+                            ["Manager", "мениджър"],
+                            ["Department", "отдел"],
+                            ["Report", "доклад"],
+                            ["Meeting room", "заседателна зала"],
+                            ["Overtime", "извънреден труд"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The Sales department",
+                        "sentence": "Работя в __ „Продажби“.",
+                        "options": ["отдел", "отдела", "отдели"],
+                        "correct_option": 0,
+                        "explanation": "\"Работя в отдел „Продажби“.\" means \"I work in the Sales department.\" Before a name the noun takes no article."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Izvanreden trud",
+                        "sentence": "\"Извънреден труд\" means overtime.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"extraordinary work\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Ready by noon",
+                        "sentence": "Шефът поиска докладът да бъде __ до обяд.",
+                        "options": ["готова", "готов", "готово"],
+                        "correct_option": 1,
+                        "explanation": "\"Шефът поиска докладът да бъде готов до обяд.\" means \"The boss wanted the report ready by noon.\" Доклад is masculine."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "While they were in a meeting",
+                        "sentence": "Докато колегите __ на среща, аз пишех имейли.",
+                        "options": ["са", "бъдат", "бяха"],
+                        "correct_option": 2,
+                        "explanation": "\"Докато колегите бяха на среща, аз пишех имейли.\" means \"While my colleagues were in a meeting, I was writing emails.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zasedatelna zala",
+                        "sentence": "A \"заседателна зала\" is the office kitchen.",
+                        "correct_option": false,
+                        "explanation": "A заседателна зала is a meeting room."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the office tasks",
+                        "pairs": [
+                            ["To attend a meeting", "присъствам на среща"],
+                            ["To send an email", "изпращам имейл"],
+                            ["To take a break", "правя почивка"],
+                            ["To print", "разпечатвам"],
+                            ["To work from home", "работя от вкъщи"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Print this for me",
+                        "sentence": "Може ли да ми __ този документ?",
+                        "options": ["разпечаташ", "разпечатваш", "разпечата"],
+                        "correct_option": 0,
+                        "explanation": "\"Може ли да ми разпечаташ този документ?\" means \"Could you print this document for me?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Lunch break",
+                        "sentence": "Many Bulgarian offices have a lunch break of about an hour.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is often called \"обедна почивка\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "As soon as I finish",
+                        "sentence": "Щом __ отчета, ще ти го изпратя.",
+                        "options": ["завърших", "завърша", "завършвам"],
+                        "correct_option": 1,
+                        "explanation": "\"Щом завърша отчета, ще ти го изпратя.\" means \"As soon as I finish the report, I will send it to you.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Advertising",
+            "description": "Adverts, brands and persuasion, with the conditional and \"чиито\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the advertising words",
+                        "pairs": [
+                            ["Advert", "реклама"],
+                            ["Slogan", "слоган"],
+                            ["Brand", "марка"],
+                            ["Customer", "клиент"],
+                            ["Billboard", "билборд"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Shown every evening",
+                        "sentence": "Рекламата __ по телевизията всяка вечер.",
+                        "options": ["се показва", "показвам", "показаха"],
+                        "correct_option": 0,
+                        "explanation": "\"Рекламата се показва по телевизията всяка вечер.\" means \"The advert is shown on TV every evening.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Reklama",
+                        "sentence": "\"Реклама\" means an advertisement, while \"рекламация\" is a complaint.",
+                        "correct_option": true,
+                        "explanation": "Correct. The two look alike but mean very different things."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whose products",
+                        "sentence": "Това е марка, __ продукти се продават в цяла Европа.",
+                        "options": ["чийто", "чиито", "чиято"],
+                        "correct_option": 1,
+                        "explanation": "\"Това е марка, чиито продукти се продават в цяла Европа.\" means \"This is a brand whose products are sold all over Europe.\" Чиито agrees with the plural продукти."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "More people would watch",
+                        "sentence": "Ако рекламата беше по-кратка, повече хора __ да я гледат.",
+                        "options": ["ще искат", "искат", "биха искали"],
+                        "correct_option": 2,
+                        "explanation": "\"...повече хора биха искали да я гледат\" means \"...more people would want to watch it.\" An unreal condition takes бих in the main clause."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Skrita reklama",
+                        "sentence": "\"Скрита реклама\" is an advert that is clearly labelled.",
+                        "correct_option": false,
+                        "explanation": "\"Скрита реклама\" is hidden advertising, such as product placement."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the persuasion verbs",
+                        "pairs": [
+                            ["To advertise", "рекламирам"],
+                            ["To persuade", "убеждавам"],
+                            ["To buy", "купувам"],
+                            ["To compare", "сравнявам"],
+                            ["To trust", "вярвам на"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Adverts persuade us",
+                        "sentence": "Рекламите често ни __ да купуваме неща, които не ни трябват.",
+                        "options": ["убеждават", "убеждава", "убедиха"],
+                        "correct_option": 0,
+                        "explanation": "\"Рекламите често ни убеждават да купуваме неща, които не ни трябват.\" means \"Adverts often persuade us to buy things we do not need.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Promotsionalna tsena",
+                        "sentence": "\"Промоционална цена\" is a special reduced price.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is often shortened to \"промоция\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I do not trust online ads",
+                        "sentence": "Не вярвам __ рекламите в интернет.",
+                        "options": ["от", "на", "за"],
+                        "correct_option": 1,
+                        "explanation": "\"Не вярвам на рекламите в интернет.\" means \"I do not trust adverts on the internet.\" To trust someone or something is \"вярвам на\"."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "The News",
+            "description": "Newspapers, headlines and reporting what was said.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the news words",
+                        "pairs": [
+                            ["News", "новини"],
+                            ["Newspaper", "вестник"],
+                            ["Journalist", "журналист"],
+                            ["Headline", "заглавие"],
+                            ["Article", "статия"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Watching the news",
+                        "sentence": "Гледам __ всяка вечер в седем.",
+                        "options": ["новините", "новина", "новини"],
+                        "correct_option": 0,
+                        "explanation": "\"Гледам новините всяка вечер в седем.\" means \"I watch the news every evening at seven.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Novini plural",
+                        "sentence": "In Bulgarian, \"новини\" (news) is a plural noun.",
+                        "correct_option": true,
+                        "explanation": "Correct. A single piece of news is \"новина\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The minister resigned",
+                        "sentence": "Според вестника министърът __ оставка вчера.",
+                        "options": ["подава", "подаде", "ще подаде"],
+                        "correct_option": 1,
+                        "explanation": "\"Според вестника министърът подаде оставка вчера.\" means \"According to the newspaper, the minister resigned yesterday.\" To resign is \"подавам оставка\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whose article won",
+                        "sentence": "Това е журналистката, __ статия спечели наградата.",
+                        "options": ["чийто", "чието", "чиято"],
+                        "correct_option": 2,
+                        "explanation": "\"Това е журналистката, чиято статия спечели наградата.\" means \"This is the journalist whose article won the prize.\" Чиято agrees with статия."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Zaglavie",
+                        "sentence": "A \"заглавие\" is the last line of a newspaper article.",
+                        "correct_option": false,
+                        "explanation": "A заглавие is a headline or a title."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the media verbs",
+                        "pairs": [
+                            ["To report", "съобщавам"],
+                            ["To announce", "обявявам"],
+                            ["To interview", "интервюирам"],
+                            ["To publish", "публикувам"],
+                            ["To broadcast", "излъчвам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Published on Sunday",
+                        "sentence": "Статията беше __ в неделния брой.",
+                        "options": ["публикувана", "публикувал", "публикува"],
+                        "correct_option": 0,
+                        "explanation": "\"Статията беше публикувана в неделния брой.\" means \"The article was published in the Sunday edition.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Na zhivo",
+                        "sentence": "\"Излъчване на живо\" is a live broadcast.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"На живо\" means \"live\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Elections in October",
+                        "sentence": "Министърът обяви, че изборите __ през октомври.",
+                        "options": ["щяха", "ще бъдат", "бяха"],
+                        "correct_option": 1,
+                        "explanation": "\"Министърът обяви, че изборите ще бъдат през октомври.\" means \"The minister announced that the elections would be in October.\" Reported speech keeps the original tense."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Social Media",
+            "description": "Posts, comments and staying safe online.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the social media words",
+                        "pairs": [
+                            ["Post", "публикация"],
+                            ["Comment", "коментар"],
+                            ["Follower", "последовател"],
+                            ["Profile", "профил"],
+                            ["Share", "споделяне"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "On my profile",
+                        "sentence": "Качих снимки от почивката в __ си.",
+                        "options": ["профила", "профил", "профили"],
+                        "correct_option": 0,
+                        "explanation": "\"Качих снимки от почивката в профила си.\" means \"I uploaded holiday photos to my profile.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Haresvam online",
+                        "sentence": "\"Харесвам\" can also mean to \"like\" a post online.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Хареса ми снимката\" means \"I liked the photo\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "He comments on everything",
+                        "sentence": "Той __ всяка снимка, която публикувам.",
+                        "options": ["коментирам", "коментира", "коментират"],
+                        "correct_option": 1,
+                        "explanation": "\"Той коментира всяка снимка, която публикувам.\" means \"He comments on every photo I post.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Never share your password",
+                        "sentence": "Моля, никога не __ паролата си с никого!",
+                        "options": ["споделих", "сподели", "споделяй"],
+                        "correct_option": 2,
+                        "explanation": "\"Моля, никога не споделяй паролата си с никого!\" means \"Please never share your password with anyone!\" A negative command takes the imperfective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Posledovatel",
+                        "sentence": "A \"последовател\" on social media is someone who has blocked you.",
+                        "correct_option": false,
+                        "explanation": "A последовател is a follower."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the online verbs",
+                        "pairs": [
+                            ["To upload", "качвам"],
+                            ["To download", "свалям"],
+                            ["To log in", "влизам в профила си"],
+                            ["To search", "търся"],
+                            ["To delete", "изтривам"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "An offensive comment",
+                        "sentence": "Изтрих коментара, защото беше много __ и груб.",
+                        "options": ["обиден", "обидна", "обидно"],
+                        "correct_option": 0,
+                        "explanation": "\"Изтрих коментара, защото беше много обиден и груб.\" means \"I deleted the comment because it was very offensive and rude.\" Коментар is masculine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Svalyam",
+                        "sentence": "\"Свалям\" can mean to download a file.",
+                        "correct_option": true,
+                        "explanation": "Correct. It literally means \"to take down\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If you forget your password",
+                        "sentence": "Ако не __ паролата си, няма да можеш да влезеш.",
+                        "options": ["помня", "помниш", "помнят"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако не помниш паролата си, няма да можеш да влезеш.\" means \"If you do not remember your password, you will not be able to log in.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Money and Banking",
+            "description": "Accounts, loans and budgets.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the banking words",
+                        "pairs": [
+                            ["Bank account", "банкова сметка"],
+                            ["Loan", "заем"],
+                            ["Interest", "лихва"],
+                            ["Cash machine", "банкомат"],
+                            ["Bank transfer", "банков превод"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "From the cash machine",
+                        "sentence": "Изтеглих пари от __ на ъгъла.",
+                        "options": ["банкомата", "банкомат", "банкомати"],
+                        "correct_option": 0,
+                        "explanation": "\"Изтеглих пари от банкомата на ъгъла.\" means \"I took money out of the cash machine on the corner.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Lihva",
+                        "sentence": "\"Лихва\" is the interest you pay on a loan.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is also the interest a bank pays on savings."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Open an account",
+                        "sentence": "Искам да __ сметка в тази банка.",
+                        "options": ["откривам", "открия", "открих"],
+                        "correct_option": 1,
+                        "explanation": "\"Искам да открия сметка в тази банка.\" means \"I want to open an account at this bank.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My salary is paid in",
+                        "sentence": "Заплатата ми се __ по сметката всеки месец.",
+                        "options": ["превеждат", "превеждам", "превежда"],
+                        "correct_option": 2,
+                        "explanation": "\"Заплатата ми се превежда по сметката всеки месец.\" means \"My salary is paid into my account every month.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Bankomat",
+                        "sentence": "A \"банкомат\" is a bank manager.",
+                        "correct_option": false,
+                        "explanation": "A банкомат is a cash machine."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the budget phrases",
+                        "pairs": [
+                            ["To save money", "спестявам пари"],
+                            ["To pay bills", "плащам сметки"],
+                            ["To take out a loan", "тегля кредит"],
+                            ["Monthly budget", "месечен бюджет"],
+                            ["Debt", "дълг"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A loan for a car",
+                        "sentence": "Изтеглих __ за нова кола.",
+                        "options": ["кредит", "кредита", "кредити"],
+                        "correct_option": 0,
+                        "explanation": "\"Изтеглих кредит за нова кола.\" means \"I took out a loan for a new car.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Teglya kredit",
+                        "sentence": "\"Тегля кредит\" means to take out a loan.",
+                        "correct_option": true,
+                        "explanation": "Correct. Тегля literally means \"to pull\" or \"to withdraw\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If I spent less",
+                        "sentence": "Ако __ по-малко, щях да имам повече спестявания.",
+                        "options": ["харча", "харчех", "ще харча"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако харчех по-малко, щях да имам повече спестявания.\" means \"If I spent less, I would have more savings.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Formal Communication",
+            "description": "Official forms, formal letters and polite requests.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the official words",
+                        "pairs": [
+                            ["Application form", "заявление"],
+                            ["Certificate", "удостоверение"],
+                            ["Signature", "подпис"],
+                            ["Deadline", "краен срок"],
+                            ["Official", "официален"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "An application at the town hall",
+                        "sentence": "Трябва да подам __ в общината.",
+                        "options": ["заявление", "заявления", "заявлението"],
+                        "correct_option": 0,
+                        "explanation": "\"Трябва да подам заявление в общината.\" means \"I have to submit an application at the town hall.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Udostoverenie",
+                        "sentence": "An \"удостоверение\" is an official certificate.",
+                        "correct_option": true,
+                        "explanation": "Correct. For example, \"удостоверение за раждане\" is a birth certificate."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Signed by Friday",
+                        "sentence": "Документите трябва да бъдат __ до петък.",
+                        "options": ["подписан", "подписани", "подписана"],
+                        "correct_option": 1,
+                        "explanation": "\"Документите трябва да бъдат подписани до петък.\" means \"The documents must be signed by Friday.\" Документите is plural."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Could you send me",
+                        "sentence": "Бихте ли __ изпратили копие от договора?",
+                        "options": ["ме", "мен", "ми"],
+                        "correct_option": 2,
+                        "explanation": "\"Бихте ли ми изпратили копие от договора?\" means \"Could you send me a copy of the contract?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kraen srok",
+                        "sentence": "\"Краен срок\" means the start of a project.",
+                        "correct_option": false,
+                        "explanation": "A краен срок is a deadline, literally \"final term\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the letter phrases",
+                        "pairs": [
+                            ["To whom it may concern", "До всички заинтересовани"],
+                            ["I enclose", "Прилагам"],
+                            ["With reference to your letter", "Във връзка с писмото Ви"],
+                            ["I would be grateful", "Бих Ви бил благодарен"],
+                            ["Yours sincerely", "С уважение"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "With reference to your letter",
+                        "sentence": "__ с писмото Ви от 5 май Ви изпращам исканите документи.",
+                        "options": ["Във връзка", "Относно", "Според"],
+                        "correct_option": 0,
+                        "explanation": "\"Във връзка с писмото Ви от 5 май...\" means \"With reference to your letter of 5 May, I am sending you the documents requested.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Molba",
+                        "sentence": "A \"молба\" is a formal request or application.",
+                        "correct_option": true,
+                        "explanation": "Correct. It comes from моля, \"to ask\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If you reply by the end of the week",
+                        "sentence": "Ще Ви бъда благодарен, ако ми __ до края на седмицата.",
+                        "options": ["отговаряте", "отговорихте", "отговорите"],
+                        "correct_option": 2,
+                        "explanation": "\"Ще Ви бъда благодарен, ако ми отговорите до края на седмицата.\" means \"I would be grateful if you could reply by the end of the week.\""
+                    }
+                }
+            ]
+        }
+    ]
+}

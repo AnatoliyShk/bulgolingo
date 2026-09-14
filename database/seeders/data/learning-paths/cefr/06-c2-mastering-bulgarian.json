@@ -1,0 +1,756 @@
+{
+    "name": "Mastering Bulgarian",
+    "level": "C2",
+    "lessons": [
+        {
+            "name": "The Art of Conversation",
+            "description": "Paronyms: words that look alike but mean different things.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the paronyms",
+                        "pairs": [
+                            ["Economic (of the economy)", "икономически"],
+                            ["Economical (thrifty)", "икономичен"],
+                            ["Effective (gets results)", "ефективен"],
+                            ["Striking (makes an impression)", "ефектен"],
+                            ["Practical (useful)", "практичен"]
+                        ],
+                        "explanation": "Match each English meaning to the right Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "An economical car",
+                        "sentence": "Новата кола е много __ – харчи само четири литра на сто километра.",
+                        "options": ["икономическа", "икономична", "икономия"],
+                        "correct_option": 1,
+                        "explanation": "\"Новата кола е много икономична...\" means \"The new car is very economical...\" Икономически describes the economy itself, as in икономическа криза."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Efekten",
+                        "sentence": "\"Ефектен\" and \"ефективен\" are synonyms.",
+                        "correct_option": false,
+                        "explanation": "\"Ефектен\" means striking or showy, and \"ефективен\" means effective."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Striking but useless",
+                        "sentence": "Презентацията беше __ и впечатли всички, но не беше особено полезна.",
+                        "options": ["ефективна", "ефикасна", "ефектна"],
+                        "correct_option": 2,
+                        "explanation": "\"Презентацията беше ефектна...\" means \"The presentation was striking and impressed everyone, but was not very useful.\" An effective one would have been useful."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Abonat",
+                        "sentence": "\"Абонат\" is the subscriber, and \"абонамент\" is the subscription.",
+                        "correct_option": true,
+                        "explanation": "Correct. The two are often mixed up, even by native speakers."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more paronyms",
+                        "pairs": [
+                            ["Human", "човешки"],
+                            ["Humane", "човечен"],
+                            ["Sensitive", "чувствителен"],
+                            ["Sensual", "чувствен"],
+                            ["Paternal", "бащински"]
+                        ],
+                        "explanation": "Match each English meaning to the right Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A humane attitude",
+                        "sentence": "Отношението на лекаря към пациентите беше изключително __ и топло.",
+                        "options": ["човешко", "човечно", "човек"],
+                        "correct_option": 1,
+                        "explanation": "\"...беше изключително човечно и топло\" means \"...was exceptionally humane and warm.\" Човешки means \"of humans\", човечен means \"kind\"."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Voices of Literature",
+            "description": "Archaic and folk-poetic words, and the rules of the full article and \"ѝ\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match archaic and modern",
+                        "pairs": [
+                            ["чедо", "дете"],
+                            ["нозе", "крака"],
+                            ["десница", "дясна ръка"],
+                            ["рече", "каза"],
+                            ["мома", "девойка"]
+                        ],
+                        "explanation": "Match each archaic or folk-poetic word with its everyday equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The author is a poet",
+                        "sentence": "__ на книгата е известен поет.",
+                        "options": ["Автора", "Авторът", "Автор"],
+                        "correct_option": 1,
+                        "explanation": "\"Авторът на книгата е известен поет.\" means \"The author of the book is a famous poet.\" The subject takes the full article -ът."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Full article",
+                        "sentence": "In standard Bulgarian the full article marks a masculine subject: \"Авторът пише\", but \"Видях автора\".",
+                        "correct_option": true,
+                        "explanation": "Correct. As a rule of thumb, the full article -ът/-ят goes on the subject and the short -а/-я on everything else."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I gave her a book",
+                        "sentence": "Подарих __ книга за рождения ден.",
+                        "options": ["и", "й", "ѝ"],
+                        "correct_option": 2,
+                        "explanation": "\"Подарих ѝ книга за рождения ден.\" means \"I gave her a book for her birthday.\" The pronoun \"to her\" is written ѝ, with a grave accent."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Writing i",
+                        "sentence": "The pronoun \"ѝ\" (to her) may be written as plain \"и\", because context makes it clear.",
+                        "correct_option": false,
+                        "explanation": "The standard requires ѝ, which keeps the pronoun apart from the conjunction и (and)."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the literary terms",
+                        "pairs": [
+                            ["Metaphor", "метафора"],
+                            ["Epithet", "епитет"],
+                            ["Rhyme", "рима"],
+                            ["Stanza", "строфа"],
+                            ["Narrator", "разказвач"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "With his sister",
+                        "sentence": "Той говори __ сестра си всяка вечер.",
+                        "options": ["с", "със", "сред"],
+                        "correct_option": 1,
+                        "explanation": "\"Той говори със сестра си всяка вечер.\" means \"He talks to his sister every evening.\" Before a word starting with с or з, the preposition с becomes със."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Kinship in Detail",
+            "description": "The full range of in-law terms Bulgarian keeps apart.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the in-laws",
+                        "pairs": [
+                            ["Husband's sister", "зълва"],
+                            ["Wife's sister", "балдъза"],
+                            ["Wife's brother", "шурей"],
+                            ["Husband's brother", "девер"],
+                            ["Sister's husband", "зет"]
+                        ],
+                        "explanation": "Match each relationship to its Bulgarian term."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My husband's sister",
+                        "sentence": "Утре идва на гости моята __ – сестрата на мъжа ми.",
+                        "options": ["балдъза", "зълва", "етърва"],
+                        "correct_option": 1,
+                        "explanation": "\"Утре идва на гости моята зълва...\" means \"My sister-in-law, my husband's sister, is visiting tomorrow.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Etarva",
+                        "sentence": "\"Етърва\" is what two women married to brothers are to each other.",
+                        "correct_option": true,
+                        "explanation": "Correct. The husband's brother's wife is your етърва."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "My sister's husband",
+                        "sentence": "Мъжът на сестра ми, моят __ Петър, е лекар.",
+                        "options": ["девер", "шурей", "зет"],
+                        "correct_option": 2,
+                        "explanation": "\"Мъжът на сестра ми, моят зет Петър, е лекар.\" means \"My sister's husband, my brother-in-law Petar, is a doctor.\" Зет also means son-in-law."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Shurey",
+                        "sentence": "\"Шурей\" is the husband's brother.",
+                        "correct_option": false,
+                        "explanation": "A шурей is the wife's brother. The husband's brother is a девер."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more in-laws",
+                        "pairs": [
+                            ["Wife's father", "тъст"],
+                            ["Husband's father", "свекър"],
+                            ["Wife's mother", "тъща"],
+                            ["Best man (wedding sponsor)", "кум"],
+                            ["Daughter-in-law", "снаха"]
+                        ],
+                        "explanation": "Match each relationship to its Bulgarian term."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The best man signed",
+                        "sentence": "На сватбата __ и кумата подписаха като свидетели.",
+                        "options": ["кума", "кумът", "кум"],
+                        "correct_option": 1,
+                        "explanation": "\"На сватбата кумът и кумата подписаха като свидетели.\" means \"At the wedding the best man and the matron of honour signed as witnesses.\" The subject takes the full article."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Numbers and Precision",
+            "description": "Numerals for people, count forms and approximate numbers.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the counted phrases",
+                        "pairs": [
+                            ["Two men", "двама мъже"],
+                            ["Two women", "две жени"],
+                            ["Two chairs", "два стола"],
+                            ["Two children", "две деца"],
+                            ["Five brothers", "петима братя"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Three colleagues",
+                        "sentence": "На срещата дойдоха __ колеги.",
+                        "options": ["три", "трима", "третите"],
+                        "correct_option": 1,
+                        "explanation": "\"На срещата дойдоха трима колеги.\" means \"Three colleagues came to the meeting.\" Male or mixed groups of people are counted with двама, трима, четирима."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Count form",
+                        "sentence": "After a number, masculine nouns for things take the count form: \"два стола\", not \"два столове\".",
+                        "correct_option": true,
+                        "explanation": "Correct. The count form ends in -а/-я: два стола, три града."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "About fifty people",
+                        "sentence": "Събраха се __ души.",
+                        "options": ["петдесети", "петдесеторка", "петдесетина"],
+                        "correct_option": 2,
+                        "explanation": "\"Събраха се петдесетина души.\" means \"About fifty people gathered.\" The suffix -ина makes a number approximate, so adding \"около\" would say it twice."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dvama zheni",
+                        "sentence": "\"Двама жени\" is correct when counting women.",
+                        "correct_option": false,
+                        "explanation": "Двама is only for men or mixed groups. For women, say \"две жени\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the fractions",
+                        "pairs": [
+                            ["Half", "половина"],
+                            ["A third", "една трета"],
+                            ["A quarter", "една четвърт"],
+                            ["A pair", "чифт"],
+                            ["A dozen", "дузина"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "All three children",
+                        "sentence": "И __ деца учат в чужбина.",
+                        "options": ["тримата", "три", "трите"],
+                        "correct_option": 2,
+                        "explanation": "\"И трите деца учат в чужбина.\" means \"All three children study abroad.\" Деца is neuter, so it takes трите; тримата is only for men or mixed groups."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Property and the Law",
+            "description": "The notarial and legal vocabulary of owning a home.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the property law terms",
+                        "pairs": [
+                            ["Title deed", "нотариален акт"],
+                            ["Easement", "сервитут"],
+                            ["Co-ownership", "съсобственост"],
+                            ["Court-ordered seizure", "възбрана"],
+                            ["Cadastral map", "кадастрална карта"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Free of encumbrances",
+                        "sentence": "Имотът е __ от всякакви тежести.",
+                        "options": ["празен", "свободен", "отворен"],
+                        "correct_option": 1,
+                        "explanation": "\"Имотът е свободен от всякакви тежести.\" means \"The property is free of all encumbrances.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Servitut",
+                        "sentence": "A \"сервитут\" is a right to use part of someone else's property, for example to cross their land.",
+                        "correct_option": true,
+                        "explanation": "Correct. A right of way (право на преминаване) is the most common kind."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The seller undertakes",
+                        "sentence": "Продавачът се __ да прехвърли собствеността в срок от 30 дни.",
+                        "options": ["задължи", "длъжен", "задължава"],
+                        "correct_option": 2,
+                        "explanation": "\"Продавачът се задължава да прехвърли собствеността...\" means \"The seller undertakes to transfer ownership within 30 days.\" Contracts use the present imperfective for obligations."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sasobstvenost",
+                        "sentence": "\"Съсобственост\" means that the property belongs to the state.",
+                        "correct_option": false,
+                        "explanation": "It means the property is owned jointly by several people."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the property rights",
+                        "pairs": [
+                            ["Right of use", "вещно право на ползване"],
+                            ["Building right", "право на строеж"],
+                            ["Notary", "нотариус"],
+                            ["Power of attorney", "пълномощно"],
+                            ["Share of an inheritance", "наследствен дял"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A power of attorney",
+                        "sentence": "Дадох на брат си нотариално заверено __ да продаде апартамента от мое име.",
+                        "options": ["завещание", "пълномощно", "удостоверение"],
+                        "correct_option": 1,
+                        "explanation": "\"...нотариално заверено пълномощно да продаде апартамента от мое име\" means \"...a notarised power of attorney to sell the flat on my behalf.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Toasts and Wishes",
+            "description": "Wishes for every occasion, with \"да\", \"нека\" and \"дано\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the wishes",
+                        "pairs": [
+                            ["Wishing you long life and health", "Да си жив и здрав"],
+                            ["Many happy returns", "За много години"],
+                            ["May it bring you luck", "Да ти донесе късмет"],
+                            ["Congratulations on the baby", "Честита рожба"],
+                            ["May he rest in peace", "Бог да го прости"]
+                        ],
+                        "explanation": "Match each English meaning to the Bulgarian wish."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Let your dreams come true",
+                        "sentence": "Вдигам тост и __ се сбъднат всичките ви мечти!",
+                        "options": ["ако", "нека", "защото"],
+                        "correct_option": 1,
+                        "explanation": "\"Вдигам тост и нека се сбъднат всичките ви мечти!\" means \"I raise a toast, and may all your dreams come true!\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Bog da go prosti",
+                        "sentence": "\"Бог да го прости\" is said when speaking of someone who has died.",
+                        "correct_option": true,
+                        "explanation": "Correct. It means \"May God forgive him\" and is used much like \"may he rest in peace\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Get well soon",
+                        "sentence": "Дано __ скоро, липсваш ни в офиса!",
+                        "options": ["оздравяваш", "оздравя", "оздравееш"],
+                        "correct_option": 2,
+                        "explanation": "\"Дано оздравееш скоро, липсваш ни в офиса!\" means \"I hope you get well soon, we miss you at the office!\" Липсваш shows the wish is for \"ти\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Za mnogo godini",
+                        "sentence": "\"За много години\" is only said at funerals.",
+                        "correct_option": false,
+                        "explanation": "It is said on birthdays and name days, meaning \"for many years to come\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the wedding words",
+                        "pairs": [
+                            ["Toast", "наздравица"],
+                            ["Newlyweds", "младоженци"],
+                            ["Bride", "булка"],
+                            ["Groom", "младоженец"],
+                            ["Wedding sponsors", "кумове"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Live long and healthy",
+                        "sentence": "Да сте живи и __ и да се обичате!",
+                        "options": ["здрав", "здраво", "здрави"],
+                        "correct_option": 2,
+                        "explanation": "\"Да сте живи и здрави и да се обичате!\" means \"Wishing you long life and health, and may you love each other!\" \"Сте\" is plural, so the adjective is too."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Legal and Administrative Language",
+            "description": "The fixed phrases of contracts and official documents.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the legal phrases",
+                        "pairs": [
+                            ["Pursuant to", "съгласно"],
+                            ["In view of", "с оглед на"],
+                            ["In the event that", "в случай че"],
+                            ["Hereinafter referred to as", "наричан по-долу"],
+                            ["Null and void", "нищожен"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Pursuant to article 5",
+                        "sentence": "__ чл. 5 от договора наемателят заплаща консумативите.",
+                        "options": ["Относно", "Съгласно", "Спрямо"],
+                        "correct_option": 1,
+                        "explanation": "\"Съгласно чл. 5 от договора наемателят заплаща консумативите.\" means \"Pursuant to article 5 of the contract, the tenant pays the utilities.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: V sluchai che",
+                        "sentence": "\"В случай че\" is written without a comma between \"случай\" and \"че\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"В случай че\" is one conjunction, so no comma goes inside it."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Indefinite term",
+                        "sentence": "Договорът се сключва за __ срок.",
+                        "options": ["безкраен", "неограничен", "неопределен"],
+                        "correct_option": 2,
+                        "explanation": "\"Договорът се сключва за неопределен срок.\" means \"The contract is concluded for an indefinite term.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Nishtozhen",
+                        "sentence": "A \"нищожен договор\" is a contract of very small value.",
+                        "correct_option": false,
+                        "explanation": "In law, нищожен means void: the contract has no legal effect."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the court terms",
+                        "pairs": [
+                            ["Plaintiff", "ищец"],
+                            ["Defendant", "ответник"],
+                            ["Lawsuit", "иск"],
+                            ["Court ruling", "съдебно решение"],
+                            ["Appeal", "обжалване"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Subject to appeal",
+                        "sentence": "Решението подлежи на __ в 14-дневен срок.",
+                        "options": ["обжалва", "обжалване", "обжалван"],
+                        "correct_option": 1,
+                        "explanation": "\"Решението подлежи на обжалване в 14-дневен срок.\" means \"The ruling may be appealed within 14 days.\" Подлежи на takes a noun."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Philosophy and Ideas",
+            "description": "Abstract vocabulary, compound words and the prepositions that go with them.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the abstract words",
+                        "pairs": [
+                            ["Worldview", "мироглед"],
+                            ["Self-awareness", "самосъзнание"],
+                            ["Cause and effect", "причина и следствие"],
+                            ["Theory of knowledge", "теория на познанието"],
+                            ["Universe", "вселена"]
+                        ],
+                        "explanation": "Match each English term to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Indifferent to opinion",
+                        "sentence": "Той е безразличен __ чуждото мнение.",
+                        "options": ["за", "към", "от"],
+                        "correct_option": 1,
+                        "explanation": "\"Той е безразличен към чуждото мнение.\" means \"He is indifferent to other people's opinion.\" Безразличен takes към."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Mirogled",
+                        "sentence": "\"Мироглед\" is built from \"мир\" (world) and \"глед\" (view).",
+                        "correct_option": true,
+                        "explanation": "Correct. It is a compound, just like the German Weltanschauung."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The theory rests on",
+                        "sentence": "Теорията почива __ няколко недоказани допускания.",
+                        "options": ["от", "при", "върху"],
+                        "correct_option": 2,
+                        "explanation": "\"Теорията почива върху няколко недоказани допускания.\" means \"The theory rests on several unproven assumptions.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Samosaznanie",
+                        "sentence": "\"Самосъзнание\" and \"съзнание\" mean exactly the same thing.",
+                        "correct_option": false,
+                        "explanation": "\"Съзнание\" is consciousness, and \"самосъзнание\" is awareness of oneself."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the big ideas",
+                        "pairs": [
+                            ["Freedom", "свобода"],
+                            ["Responsibility", "отговорност"],
+                            ["Truth", "истина"],
+                            ["Doubt", "съмнение"],
+                            ["Meaning", "смисъл"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Responsible for decisions",
+                        "sentence": "Човек носи отговорност __ собствените си решения.",
+                        "options": ["към", "от", "за"],
+                        "correct_option": 2,
+                        "explanation": "\"Човек носи отговорност за собствените си решения.\" means \"A person is responsible for their own decisions.\" Отговорност за is for what you answer for; отговорност към is for whom."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Time in Language",
+            "description": "The names of the Bulgarian tenses and the fine points of counterfactuals.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the tense names",
+                        "pairs": [
+                            ["Aorist (past simple)", "минало свършено време"],
+                            ["Imperfect", "минало несвършено време"],
+                            ["Present perfect", "минало неопределено време"],
+                            ["Pluperfect", "минало предварително време"],
+                            ["Future in the past", "бъдеще време в миналото"]
+                        ],
+                        "explanation": "Match each English tense name to its Bulgarian term."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "If I had known your number",
+                        "sentence": "Щях да ти се обадя, ако __ номера ти.",
+                        "options": ["знам", "знаех", "зная"],
+                        "correct_option": 1,
+                        "explanation": "\"Щях да ти се обадя, ако знаех номера ти.\" means \"I would have called you if I had known your number.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Da beshe doshal",
+                        "sentence": "In \"Да беше дошъл по-рано!\", \"да\" with a past form expresses regret or an unreal wish.",
+                        "correct_option": true,
+                        "explanation": "Correct. It means \"If only you had come earlier!\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The film will have started",
+                        "sentence": "Когато стигнем, филмът вече ще е __ отдавна.",
+                        "options": ["започне", "започваше", "започнал"],
+                        "correct_option": 2,
+                        "explanation": "\"Когато стигнем, филмът вече ще е започнал отдавна.\" means \"By the time we arrive, the film will have started long ago.\" This is the future perfect."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Future perfect",
+                        "sentence": "Bulgarian has no future perfect tense.",
+                        "correct_option": false,
+                        "explanation": "It does: the бъдеще предварително време, as in \"ще съм започнал\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the other tense names",
+                        "pairs": [
+                            ["Present tense", "сегашно време"],
+                            ["Future tense", "бъдеще време"],
+                            ["Future perfect", "бъдеще предварително време"],
+                            ["Future perfect in the past", "бъдеще предварително време в миналото"],
+                            ["Renarrative mood", "преизказно наклонение"]
+                        ],
+                        "explanation": "Match each English name to its Bulgarian term."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I would have seen",
+                        "sentence": "Ако не бях закъснял, __ да видя началото на филма.",
+                        "options": ["ще", "щях", "бих"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако не бях закъснял, щях да видя началото на филма.\" means \"If I had not been late, I would have seen the start of the film.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Folklore and National Memory",
+            "description": "Classic writers, and proverbs every Bulgarian knows.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match writers and works",
+                        "pairs": [
+                            ["Ivan Vazov", "Под игото"],
+                            ["Hristo Botev", "Хаджи Димитър"],
+                            ["Aleko Konstantinov", "Бай Ганьо"],
+                            ["Elin Pelin", "Гераците"],
+                            ["Yordan Yovkov", "Старопланински легенди"]
+                        ],
+                        "explanation": "Match each writer with one of their best-known works."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Drop by drop",
+                        "sentence": "Капка по капка __ става.",
+                        "options": ["море", "вир", "река"],
+                        "correct_option": 1,
+                        "explanation": "\"Капка по капка вир става.\" means \"Drop by drop a pool forms\", so small efforts add up."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pod igoto",
+                        "sentence": "\"Под игото\" is a novel about the April Uprising of 1876.",
+                        "correct_option": true,
+                        "explanation": "Correct. Ivan Vazov's novel is set in the town of Byala Cherkva before and during the uprising."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Whoever digs a pit",
+                        "sentence": "Който другиму __ копае, сам пада в нея.",
+                        "options": ["гроб", "път", "яма"],
+                        "correct_option": 2,
+                        "explanation": "\"Който другиму яма копае, сам пада в нея.\" means \"Whoever digs a pit for another falls into it himself.\" The feminine \"в нея\" points back to яма."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Barzata rabota",
+                        "sentence": "The proverb \"Бързата работа – срам за майстора\" praises doing things quickly.",
+                        "correct_option": false,
+                        "explanation": "It warns against haste: rushed work shames the craftsman."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more writers",
+                        "pairs": [
+                            ["Peyo Yavorov", "Две хубави очи"],
+                            ["Dimcho Debelyanov", "Да се завърнеш в бащината къща"],
+                            ["Pencho Slaveykov", "Кървава песен"],
+                            ["Emilian Stanev", "Крадецът на праскови"],
+                            ["Dimitar Talev", "Железният светилник"]
+                        ],
+                        "explanation": "Match each writer with one of their best-known works."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A wolf changes its coat",
+                        "sentence": "Вълкът козината си мени, __ нрава си – не.",
+                        "options": ["и", "защото", "но"],
+                        "correct_option": 2,
+                        "explanation": "\"Вълкът козината си мени, но нрава си – не.\" means \"A wolf changes its coat but not its nature\": people do not really change."
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -113,8 +113,8 @@ test.describe('Learning path search', () => {
         await search(page, 'food');
 
         await expect(status(page)).toHaveText('2 paths match “food”.');
-        await expect(page).toHaveURL(`${BASE}/learning-paths?q=food`);
-        expect(seen).toEqual(['?q=food']);
+        await expect(page).toHaveURL(`${BASE}/learning-paths?q=food&sort=exercises_desc`);
+        expect(seen).toEqual(['?q=food&sort=exercises_desc']);
         await expect(page.locator('.nb-paths__grid-item')).toHaveCount(2);
         await expect(page.getByText('Food and drink')).toBeVisible();
         await expect(clearButton(page)).toBeVisible();
@@ -147,7 +147,7 @@ test.describe('Learning path search', () => {
         await search(page, '   food  ');
 
         await expect(status(page)).toHaveText('2 paths match “food”.');
-        expect(seen).toEqual(['?q=food']);
+        expect(seen).toEqual(['?q=food&sort=exercises_desc']);
     });
 
     // A blank field asks for the whole catalog, so the visit goes out with no
@@ -158,8 +158,8 @@ test.describe('Learning path search', () => {
 
         await search(page, '   ');
 
-        await expect.poll(() => seen).toEqual(['']);
-        await expect(page).toHaveURL(`${BASE}/learning-paths`);
+        await expect.poll(() => seen).toEqual(['?sort=exercises_desc']);
+        await expect(page).toHaveURL(`${BASE}/learning-paths?sort=exercises_desc`);
         await expect(status(page)).toHaveCount(0);
     });
 
@@ -188,11 +188,11 @@ test.describe('Learning path search', () => {
 
         await clearButton(page).click();
 
-        await expect(page).toHaveURL(`${BASE}/learning-paths`);
+        await expect(page).toHaveURL(`${BASE}/learning-paths?sort=exercises_desc`);
         await expect(field(page)).toHaveValue('');
         await expect(status(page)).toHaveCount(0);
         await expect(clearButton(page)).toHaveCount(0);
-        expect(seen).toEqual(['?q=food', '']);
+        expect(seen).toEqual(['?q=food&sort=exercises_desc', '?sort=exercises_desc']);
     });
 
     // The field follows the query the page was answered for, so stepping back
@@ -208,7 +208,7 @@ test.describe('Learning path search', () => {
 
         await page.goBack();
 
-        await expect(page).toHaveURL(`${BASE}/learning-paths?q=food`);
+        await expect(page).toHaveURL(`${BASE}/learning-paths?q=food&sort=exercises_desc`);
         await expect(field(page)).toHaveValue('food');
         await expect(status(page)).toHaveText('2 paths match “food”.');
     });

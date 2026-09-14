@@ -1,0 +1,1016 @@
+{
+    "name": "Getting Around Bulgaria",
+    "level": "A2",
+    "lessons": [
+        {
+            "name": "Buying a Ticket",
+            "description": "Trains and coaches: buy tickets, read the timetable and talk about departures.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the ticket words",
+                        "pairs": [
+                            ["Return ticket", "двупосочен билет"],
+                            ["One-way ticket", "еднопосочен билет"],
+                            ["Platform", "перон"],
+                            ["Timetable", "разписание"],
+                            ["Ticket office", "билетна каса"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A ticket for Plovdiv",
+                        "sentence": "Един билет __ Пловдив, моля.",
+                        "options": ["за", "при", "на"],
+                        "correct_option": 0,
+                        "explanation": "\"Един билет за Пловдив, моля.\" means \"One ticket to Plovdiv, please.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Peron",
+                        "sentence": "\"Перон\" is a railway platform.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Влакът тръгва от втори перон\" means \"The train leaves from platform two\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The train will leave",
+                        "sentence": "Влакът за Варна __ в осем и половина.",
+                        "options": ["тръгна", "ще тръгне", "тръгвах"],
+                        "correct_option": 1,
+                        "explanation": "\"Влакът за Варна ще тръгне в осем и половина.\" means \"The train to Varna will leave at half past eight.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I bought the tickets",
+                        "sentence": "Вчера __ билетите по интернет.",
+                        "options": ["купувам", "ще купя", "купих"],
+                        "correct_option": 2,
+                        "explanation": "\"Вчера купих билетите по интернет.\" means \"Yesterday I bought the tickets online.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Razpisanie",
+                        "sentence": "\"Разписание\" means \"receipt\".",
+                        "correct_option": false,
+                        "explanation": "An разписание is a timetable. A receipt is a \"касова бележка\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the journey words",
+                        "pairs": [
+                            ["Bus station", "автогара"],
+                            ["Carriage", "вагон"],
+                            ["Seat", "място"],
+                            ["Delay", "закъснение"],
+                            ["Departure", "заминаване"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A twenty-minute delay",
+                        "sentence": "Влакът има __ от двадесет минути.",
+                        "options": ["закъснение", "заминаване", "пристигане"],
+                        "correct_option": 0,
+                        "explanation": "\"Влакът има закъснение от двадесет минути.\" means \"The train is twenty minutes late.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Avtogara",
+                        "sentence": "The main bus station in a Bulgarian town is the \"автогара\".",
+                        "correct_option": true,
+                        "explanation": "Correct. It is the bus version of гара (station)."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Which carriage",
+                        "sentence": "В кой __ е мястото ми?",
+                        "options": ["вагона", "вагони", "вагон"],
+                        "correct_option": 2,
+                        "explanation": "\"В кой вагон е мястото ми?\" means \"Which carriage is my seat in?\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Verbs of Motion",
+            "description": "Going, coming and returning around town, in the present, past and future.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the motion verbs",
+                        "pairs": [
+                            ["To go (regularly)", "ходя"],
+                            ["To go (somewhere)", "отивам"],
+                            ["To come", "идвам"],
+                            ["To return", "връщам се"],
+                            ["To set off", "тръгвам"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I go to work by tram",
+                        "sentence": "Всеки ден __ на работа с трамвай.",
+                        "options": ["отида", "ходя", "дойда"],
+                        "correct_option": 1,
+                        "explanation": "\"Всеки ден ходя на работа с трамвай.\" means \"Every day I go to work by tram.\" A regular trip takes ходя."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Idvam and otivam",
+                        "sentence": "\"Идвам\" means coming towards the speaker, and \"отивам\" means going away from them.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Идваш ли?\" is \"Are you coming?\", and \"Отивам си\" is \"I am going home\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "When will you be back",
+                        "sentence": "Ти кога ще се __ от почивка?",
+                        "options": ["върна", "върнеш", "върнат"],
+                        "correct_option": 1,
+                        "explanation": "\"Ти кога ще се върнеш от почивка?\" means \"When will you be back from holiday?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We walked to the centre",
+                        "sentence": "Вчера __ пеша до центъра.",
+                        "options": ["отиваме", "ще отидем", "отидохме"],
+                        "correct_option": 2,
+                        "explanation": "\"Вчера отидохме пеша до центъра.\" means \"Yesterday we walked to the centre.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Tragvam",
+                        "sentence": "\"Тръгвам\" means \"to arrive\".",
+                        "correct_option": false,
+                        "explanation": "\"Тръгвам\" means \"to set off\". \"To arrive\" is \"пристигам\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the route words",
+                        "pairs": [
+                            ["Across, through", "през"],
+                            ["Along", "по"],
+                            ["Towards", "към"],
+                            ["Past, alongside", "покрай"],
+                            ["Around", "около"]
+                        ],
+                        "explanation": "Match each English preposition to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The tram comes often",
+                        "sentence": "Трамваят __ на всеки десет минути.",
+                        "options": ["минава", "мина", "ще мине"],
+                        "correct_option": 0,
+                        "explanation": "\"Трамваят минава на всеки десет минути.\" means \"The tram comes every ten minutes.\" A regular event takes the present."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Otivam pesha",
+                        "sentence": "\"Отивам пеша\" means \"I go on foot\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Пеша means \"on foot\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "How do I get to the station",
+                        "sentence": "Как да __ до гарата?",
+                        "options": ["стигна", "стигам", "стигнах"],
+                        "correct_option": 0,
+                        "explanation": "\"Как да стигна до гарата?\" means \"How do I get to the station?\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Taking a Taxi",
+            "description": "Rides, luggage and short pronouns for \"to me\" and \"to us\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the taxi words",
+                        "pairs": [
+                            ["Taxi rank", "стоянка за таксита"],
+                            ["Fare", "цена на курса"],
+                            ["Meter", "таксиметров апарат"],
+                            ["Ride", "курс"],
+                            ["Rates", "тарифа"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "He helped us",
+                        "sentence": "Шофьорът __ помогна с куфарите.",
+                        "options": ["ни", "нас", "ние"],
+                        "correct_option": 0,
+                        "explanation": "\"Шофьорът ни помогна с куфарите.\" means \"The driver helped us with the suitcases.\" Ни is the short form of \"us\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Stoyanka",
+                        "sentence": "\"Стоянка за таксита\" is a taxi rank.",
+                        "correct_option": true,
+                        "explanation": "Correct. Стоянка is a place where vehicles wait."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We took a taxi",
+                        "sentence": "Вчера __ такси до летището.",
+                        "options": ["вземаме", "взехме", "вземем"],
+                        "correct_option": 1,
+                        "explanation": "\"Вчера взехме такси до летището.\" means \"Yesterday we took a taxi to the airport.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A receipt for me",
+                        "sentence": "Може ли да __ дадете касова бележка?",
+                        "options": ["ме", "мен", "ми"],
+                        "correct_option": 2,
+                        "explanation": "\"Може ли да ми дадете касова бележка?\" means \"Could you give me a receipt?\" \"To me\" is ми."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Tarifa",
+                        "sentence": "\"Тарифа\" is the taxi driver's name tag.",
+                        "correct_option": false,
+                        "explanation": "A тарифа is the list of rates. Bulgarian taxis must show it on the window."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the luggage words",
+                        "pairs": [
+                            ["Suitcase", "куфар"],
+                            ["Luggage", "багаж"],
+                            ["Car boot", "багажник"],
+                            ["Seat belt", "колан"],
+                            ["Receipt", "касова бележка"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In the boot",
+                        "sentence": "Сложете куфара в __ на колата.",
+                        "options": ["багажника", "багаж", "багажник"],
+                        "correct_option": 0,
+                        "explanation": "\"Сложете куфара в багажника на колата.\" means \"Put the suitcase in the boot of the car.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kurs",
+                        "sentence": "A single taxi ride in Bulgarian is a \"курс\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Колко струва курсът?\" means \"How much is the ride?\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Your seat belt",
+                        "sentence": "Сложи си __ преди да тръгнем.",
+                        "options": ["колан", "колани", "колана"],
+                        "correct_option": 2,
+                        "explanation": "\"Сложи си колана преди да тръгнем.\" means \"Put on your seat belt before we set off.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "At the Exchange Office",
+            "description": "Change money, ask about rates and talk about spending and saving.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the money words",
+                        "pairs": [
+                            ["Exchange office", "обменно бюро"],
+                            ["Exchange rate", "курс"],
+                            ["Commission", "комисиона"],
+                            ["Banknote", "банкнота"],
+                            ["Coin", "монета"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I want to change dollars",
+                        "sentence": "Искам да __ сто долара в евро.",
+                        "options": ["обменя", "обменям", "обменях"],
+                        "correct_option": 0,
+                        "explanation": "\"Искам да обменя сто долара в евро.\" means \"I want to change a hundred dollars into euro.\" One exchange takes the perfective."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kurs meanings",
+                        "sentence": "\"Курс\" can mean an exchange rate and also a taxi ride.",
+                        "correct_option": true,
+                        "explanation": "Correct. It also means a course of study."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The dollar rate",
+                        "sentence": "Какъв е __ на долара днес?",
+                        "options": ["курса", "курсът", "курсове"],
+                        "correct_option": 1,
+                        "explanation": "\"Какъв е курсът на долара днес?\" means \"What is the dollar rate today?\" The subject takes the full article -ът."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two percent commission",
+                        "sentence": "Бюрото __ комисиона от два процента.",
+                        "options": ["вземам", "вземат", "взема"],
+                        "correct_option": 2,
+                        "explanation": "\"Бюрото взема комисиона от два процента.\" means \"The office charges a two percent commission.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Moneta",
+                        "sentence": "\"Монета\" is a banknote.",
+                        "correct_option": false,
+                        "explanation": "A монета is a coin. A banknote is a \"банкнота\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the money verbs",
+                        "pairs": [
+                            ["To pay", "плащам"],
+                            ["To save", "спестявам"],
+                            ["To spend", "харча"],
+                            ["To borrow", "вземам назаем"],
+                            ["To lend", "давам назаем"]
+                        ],
+                        "explanation": "Match each English verb to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "All my money",
+                        "sentence": "Похарчих всичките си __ за подаръци.",
+                        "options": ["пари", "пара", "парите"],
+                        "correct_option": 0,
+                        "explanation": "\"Похарчих всичките си пари за подаръци.\" means \"I spent all my money on presents.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pari",
+                        "sentence": "The word \"пари\" (money) is plural in Bulgarian.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Парите са в портфейла\" means \"The money is in the wallet\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Lend me ten euro",
+                        "sentence": "Можеш ли да ми __ десет евро до петък?",
+                        "options": ["вземеш назаем", "дадеш назаем", "платиш"],
+                        "correct_option": 1,
+                        "explanation": "\"Можеш ли да ми дадеш назаем десет евро до петък?\" means \"Can you lend me ten euro until Friday?\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Checking In at a Hotel",
+            "description": "Book a room, check in and sort out problems at reception.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the hotel words",
+                        "pairs": [
+                            ["Reception", "рецепция"],
+                            ["Room", "стая"],
+                            ["Key", "ключ"],
+                            ["Single room", "единична стая"],
+                            ["Double room", "двойна стая"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A booking for two nights",
+                        "sentence": "Имам __ за две нощувки.",
+                        "options": ["резервация", "резервации", "резервацията"],
+                        "correct_option": 0,
+                        "explanation": "\"Имам резервация за две нощувки.\" means \"I have a booking for two nights.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Noshtuvka",
+                        "sentence": "\"Нощувка\" means one night's stay.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Нощувка със закуска\" is bed and breakfast."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Breakfast is included",
+                        "sentence": "Закуската __ в цената.",
+                        "options": ["включвам", "е включена", "включи"],
+                        "correct_option": 1,
+                        "explanation": "\"Закуската е включена в цената.\" means \"Breakfast is included in the price.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Could you give me the key",
+                        "sentence": "Извинете, бихте ли ми __ ключа от стаята?",
+                        "options": ["дадете", "дам", "дали"],
+                        "correct_option": 2,
+                        "explanation": "\"Бихте ли ми дали ключа от стаята?\" means \"Could you give me the room key?\" Бихте ли is followed by the -л form."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Dvoyna staya",
+                        "sentence": "A \"двойна стая\" is a room for one person.",
+                        "correct_option": false,
+                        "explanation": "A двойна стая is a double room. A single room is an \"единична стая\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the hotel problems",
+                        "pairs": [
+                            ["The shower doesn't work", "Душът не работи"],
+                            ["There's no hot water", "Няма топла вода"],
+                            ["The room is noisy", "Стаята е шумна"],
+                            ["Can I change rooms?", "Може ли да сменя стаята?"],
+                            ["When must I leave the room?", "До колко часа трябва да освободя стаята?"]
+                        ],
+                        "explanation": "Match each English sentence to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The air conditioning is broken",
+                        "sentence": "Климатикът в стаята ни не __ от вчера.",
+                        "options": ["работи", "работят", "работя"],
+                        "correct_option": 0,
+                        "explanation": "\"Климатикът в стаята ни не работи от вчера.\" means \"The air conditioning in our room has not worked since yesterday.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Retseptsiya",
+                        "sentence": "At a hotel, the \"рецепция\" is where you check in.",
+                        "correct_option": true,
+                        "explanation": "Correct. The person there is the \"рецепционист\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We will leave the room",
+                        "sentence": "Ще __ стаята до 12 часа утре.",
+                        "options": ["освободихме", "освободим", "освобождаваме"],
+                        "correct_option": 1,
+                        "explanation": "\"Ще освободим стаята до 12 часа утре.\" means \"We will check out of the room by 12 tomorrow.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "A Trip to Veliko Tarnovo",
+            "description": "Plan a trip to the old capital with the future tense.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the trip words",
+                        "pairs": [
+                            ["Fortress", "крепост"],
+                            ["Old town", "старият град"],
+                            ["Bend in the river", "завой на реката"],
+                            ["Tour guide", "екскурзовод"],
+                            ["Day trip", "еднодневна екскурзия"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We will go on a trip",
+                        "sentence": "Утре __ на екскурзия до Велико Търново.",
+                        "options": ["ще отидем", "отидохме", "отидем"],
+                        "correct_option": 0,
+                        "explanation": "\"Утре ще отидем на екскурзия до Велико Търново.\" means \"Tomorrow we will go on a trip to Veliko Tarnovo.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Tsarevets",
+                        "sentence": "The Tsarevets fortress stands on a hill in Veliko Tarnovo.",
+                        "correct_option": true,
+                        "explanation": "Correct. It was the stronghold of the medieval Bulgarian tsars."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The guide will show us",
+                        "sentence": "Екскурзоводът ще ни __ крепостта.",
+                        "options": ["показва", "покаже", "показа"],
+                        "correct_option": 1,
+                        "explanation": "\"Екскурзоводът ще ни покаже крепостта.\" means \"The guide will show us the fortress.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The Yantra flows",
+                        "sentence": "Река Янтра __ през града.",
+                        "options": ["течем", "текат", "тече"],
+                        "correct_option": 2,
+                        "explanation": "\"Река Янтра тече през града.\" means \"The Yantra river flows through the town.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ekskurzovod",
+                        "sentence": "\"Екскурзовод\" means \"tour bus\".",
+                        "correct_option": false,
+                        "explanation": "An екскурзовод is a tour guide."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the future phrases",
+                        "pairs": [
+                            ["We'll see", "ще видим"],
+                            ["I won't come", "няма да дойда"],
+                            ["We'll meet", "ще се срещнем"],
+                            ["It will be nice", "ще бъде хубаво"],
+                            ["We'll stay the night", "ще пренощуваме"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We will not be late",
+                        "sentence": "Няма __ се върнем късно.",
+                        "options": ["да", "ще", "не"],
+                        "correct_option": 0,
+                        "explanation": "\"Няма да се върнем късно.\" means \"We will not be back late.\" The negative future is \"няма да\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sound and light",
+                        "sentence": "Tsarevets sometimes hosts an evening sound and light show.",
+                        "correct_option": true,
+                        "explanation": "Correct. The show \"Звук и светлина\" lights up the fortress in colour."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We will walk",
+                        "sentence": "Ако времето е хубаво, __ пеша до крепостта.",
+                        "options": ["вървяхме", "ще вървим", "вървяхте"],
+                        "correct_option": 1,
+                        "explanation": "\"Ако времето е хубаво, ще вървим пеша до крепостта.\" means \"If the weather is good, we will walk to the fortress.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Plovdiv's Old Town",
+            "description": "Revival houses, Roman ruins and the arts district, told in the past tense.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the old town words",
+                        "pairs": [
+                            ["Ancient", "древен"],
+                            ["Cobblestones", "калдъръм"],
+                            ["Revival-era house", "възрожденска къща"],
+                            ["Museum", "музей"],
+                            ["Gallery", "галерия"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Beautiful Revival houses",
+                        "sentence": "Старият град е пълен с красиви __ къщи.",
+                        "options": ["възрожденски", "възрожденска", "възрожденско"],
+                        "correct_option": 0,
+                        "explanation": "\"Старият град е пълен с красиви възрожденски къщи.\" means \"The old town is full of beautiful Revival-era houses.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Capital of Culture",
+                        "sentence": "Plovdiv was a European Capital of Culture in 2019.",
+                        "correct_option": true,
+                        "explanation": "Correct. It was the first Bulgarian city to hold the title."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We saw the theatre",
+                        "sentence": "Вчера __ Античния театър.",
+                        "options": ["разглеждаме", "разгледахме", "ще разгледаме"],
+                        "correct_option": 1,
+                        "explanation": "\"Вчера разгледахме Античния театър.\" means \"Yesterday we looked round the Ancient Theatre.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Cobbled streets",
+                        "sentence": "Улиците са покрити с __ и са стръмни.",
+                        "options": ["пясък", "сняг", "калдъръм"],
+                        "correct_option": 2,
+                        "explanation": "\"Улиците са покрити с калдъръм и са стръмни.\" means \"The streets are cobbled and steep.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kaldaram",
+                        "sentence": "\"Калдъръм\" is a type of Bulgarian cheese.",
+                        "correct_option": false,
+                        "explanation": "Калдъръм is cobblestone paving, typical of old towns."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the Plovdiv sights",
+                        "pairs": [
+                            ["Ancient theatre", "Античният театър"],
+                            ["Plovdiv's hills", "тепетата"],
+                            ["Old town", "Старият град"],
+                            ["Arts district", "Капана"],
+                            ["Main pedestrian street", "Главната"]
+                        ],
+                        "explanation": "Match each description to the Bulgarian name."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Seven hills",
+                        "sentence": "Според легендата Пловдив е построен на седем __ край реката.",
+                        "options": ["хълма", "хълм", "хълмове"],
+                        "correct_option": 0,
+                        "explanation": "\"...Пловдив е построен на седем хълма\" means \"...Plovdiv was built on seven hills.\" After a number, хълм becomes хълма."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kapana",
+                        "sentence": "\"Капана\" is an arts district of Plovdiv full of cafés and galleries.",
+                        "correct_option": true,
+                        "explanation": "Correct. Its name means \"the trap\", after its maze of little streets."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I will send you photos",
+                        "sentence": "Ще ти __ снимки от Пловдив.",
+                        "options": ["изпратих", "изпращам", "изпратя"],
+                        "correct_option": 2,
+                        "explanation": "\"Ще ти изпратя снимки от Пловдив.\" means \"I will send you photos from Plovdiv.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Sightseeing",
+            "description": "Museums, churches and monuments: opening hours, tickets and visits.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the sightseeing words",
+                        "pairs": [
+                            ["Sights", "забележителности"],
+                            ["Monument", "паметник"],
+                            ["Church", "църква"],
+                            ["Cathedral", "катедрала"],
+                            ["Tour", "обиколка"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Which sights",
+                        "sentence": "Кои __ видя в София?",
+                        "options": ["забележителности", "забележителност", "забележителността"],
+                        "correct_option": 0,
+                        "explanation": "\"Кои забележителности видя в София?\" means \"Which sights did you see in Sofia?\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Alexander Nevsky",
+                        "sentence": "The Alexander Nevsky Cathedral is in Sofia.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is one of the largest Orthodox cathedrals in the Balkans."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Closed on Mondays",
+                        "sentence": "Музеят __ в понеделник.",
+                        "options": ["затвори", "е затворен", "затварям"],
+                        "correct_option": 1,
+                        "explanation": "\"Музеят е затворен в понеделник.\" means \"The museum is closed on Mondays.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Taking photos",
+                        "sentence": "Може ли да се __ в църквата?",
+                        "options": ["снимам", "снимат", "снима"],
+                        "correct_option": 2,
+                        "explanation": "\"Може ли да се снима в църквата?\" means \"Is it allowed to take photos in the church?\" Се + third person makes an impersonal question."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pametnik",
+                        "sentence": "\"Паметник\" means \"museum\".",
+                        "correct_option": false,
+                        "explanation": "A паметник is a monument. A museum is a \"музей\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the visitor words",
+                        "pairs": [
+                            ["Entrance", "вход"],
+                            ["Exit", "изход"],
+                            ["Admission ticket", "входен билет"],
+                            ["Guided tour", "обиколка с екскурзовод"],
+                            ["Opening hours", "работно време"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Free entry",
+                        "sentence": "Входът за студенти е __ в сряда.",
+                        "options": ["безплатен", "безплатна", "безплатно"],
+                        "correct_option": 0,
+                        "explanation": "\"Входът за студенти е безплатен в сряда.\" means \"Entry for students is free on Wednesdays.\" Вход is masculine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Rabotno vreme",
+                        "sentence": "\"Работно време\" means opening hours.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"working time\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We visited the monastery",
+                        "sentence": "Миналата година __ Рилския манастир.",
+                        "options": ["посещаваме", "посетихме", "ще посетим"],
+                        "correct_option": 1,
+                        "explanation": "\"Миналата година посетихме Рилския манастир.\" means \"Last year we visited the Rila Monastery.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "A Seaside Holiday",
+            "description": "A holiday on the Black Sea, before, during and after.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the holiday words",
+                        "pairs": [
+                            ["Holiday", "почивка"],
+                            ["Sea view", "изглед към морето"],
+                            ["All inclusive", "ол инклузив"],
+                            ["Sunbed", "шезлонг"],
+                            ["Lifeguard", "спасител"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We will holiday in Sozopol",
+                        "sentence": "Това лято ние ще __ на море в Созопол.",
+                        "options": ["почивам", "почиваме", "почиваха"],
+                        "correct_option": 1,
+                        "explanation": "\"Това лято ние ще почиваме на море в Созопол.\" means \"This summer we will holiday by the sea in Sozopol.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Shezlong",
+                        "sentence": "A \"шезлонг\" is a sunbed on the beach.",
+                        "correct_option": true,
+                        "explanation": "Correct. It comes from the French \"chaise longue\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The water was warm",
+                        "sentence": "Миналото лято водата __ много топла.",
+                        "options": ["беше", "е", "ще бъде"],
+                        "correct_option": 0,
+                        "explanation": "\"Миналото лято водата беше много топла.\" means \"Last summer the water was very warm.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The lifeguard watches the beach",
+                        "sentence": "Спасителят __ плажа цял ден.",
+                        "options": ["пазя", "пазят", "пази"],
+                        "correct_option": 2,
+                        "explanation": "\"Спасителят пази плажа цял ден.\" means \"The lifeguard watches over the beach all day.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pochivka",
+                        "sentence": "\"Почивка\" means \"work\".",
+                        "correct_option": false,
+                        "explanation": "A почивка is a holiday or a rest."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the beach verbs",
+                        "pairs": [
+                            ["To sunbathe", "пека се на слънце"],
+                            ["To swim", "плувам"],
+                            ["To dive", "гмуркам се"],
+                            ["To get sunburnt", "изгарям"],
+                            ["To relax", "почивам си"]
+                        ],
+                        "explanation": "Match each English phrase to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I got sunburnt",
+                        "sentence": "Вчера __ на слънце и сега ме боли гърбът.",
+                        "options": ["изгорях", "изгарям", "ще изгоря"],
+                        "correct_option": 0,
+                        "explanation": "\"Вчера изгорях на слънце и сега ме боли гърбът.\" means \"Yesterday I got sunburnt and now my back hurts.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Na more",
+                        "sentence": "Bulgarians say \"отивам на море\" for going on a seaside holiday.",
+                        "correct_option": true,
+                        "explanation": "Correct. Note there is no article: на море, like на почивка."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The children swam",
+                        "sentence": "Вчера децата __ в морето цял следобед.",
+                        "options": ["плуват", "плуваха", "ще плуват"],
+                        "correct_option": 1,
+                        "explanation": "\"Вчера децата плуваха в морето цял следобед.\" means \"Yesterday the children swam in the sea all afternoon.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "When Things Go Wrong",
+            "description": "Lost passports, missed trains and asking for help.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the trouble words",
+                        "pairs": [
+                            ["Lost luggage", "изгубен багаж"],
+                            ["Stolen", "откраднат"],
+                            ["Police", "полиция"],
+                            ["Embassy", "посолство"],
+                            ["Help!", "Помощ!"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I lost my passport",
+                        "sentence": "Изгубих __ си на летището.",
+                        "options": ["паспорта", "паспорт", "паспорти"],
+                        "correct_option": 0,
+                        "explanation": "\"Изгубих паспорта си на летището.\" means \"I lost my passport at the airport.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: 112",
+                        "sentence": "The emergency number in Bulgaria is 112.",
+                        "correct_option": true,
+                        "explanation": "Correct. It works for police, ambulance and fire across the EU."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Someone stole my wallet",
+                        "sentence": "Някой __ портфейла ми!",
+                        "options": ["краде", "открадна", "открадне"],
+                        "correct_option": 1,
+                        "explanation": "\"Някой открадна портфейла ми!\" means \"Someone has stolen my wallet!\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The flight is delayed",
+                        "sentence": "Полетът ни е __ с три часа.",
+                        "options": ["отложена", "отложено", "отложен"],
+                        "correct_option": 2,
+                        "explanation": "\"Полетът ни е отложен с три часа.\" means \"Our flight is delayed by three hours.\" Полет is masculine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Posolstvo",
+                        "sentence": "\"Посолство\" means \"police station\".",
+                        "correct_option": false,
+                        "explanation": "A посолство is an embassy. A police station is a \"полицейско управление\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the emergency phrases",
+                        "pairs": [
+                            ["I'm lost", "Изгубих се"],
+                            ["I missed the train", "Изпуснах влака"],
+                            ["Call an ambulance", "Обадете се на бърза помощ"],
+                            ["Where is the police station?", "Къде е полицията?"],
+                            ["I need a doctor", "Трябва ми лекар"]
+                        ],
+                        "explanation": "Match each English sentence to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "I missed the train",
+                        "sentence": "Изпуснах __ и трябва да чакам следващия.",
+                        "options": ["влака", "влак", "влакът"],
+                        "correct_option": 0,
+                        "explanation": "\"Изпуснах влака и трябва да чакам следващия.\" means \"I missed the train and have to wait for the next one.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Barza pomosht",
+                        "sentence": "\"Бърза помощ\" is an ambulance.",
+                        "correct_option": true,
+                        "explanation": "Correct. Literally, \"quick help\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Help me find my hotel",
+                        "sentence": "Моля, помогнете __ да намеря хотела си.",
+                        "options": ["ме", "мен", "ми"],
+                        "correct_option": 2,
+                        "explanation": "\"Моля, помогнете ми да намеря хотела си.\" means \"Please help me find my hotel.\" Помагам takes \"to me\": ми."
+                    }
+                }
+            ]
+        }
+    ]
+}

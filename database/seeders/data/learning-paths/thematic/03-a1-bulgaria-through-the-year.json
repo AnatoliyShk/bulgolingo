@@ -1,0 +1,1016 @@
+{
+    "name": "Bulgaria Through the Year",
+    "level": "A1",
+    "lessons": [
+        {
+            "name": "Months and Seasons",
+            "description": "The calendar: months, seasons and the adjectives made from them.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the months",
+                        "pairs": [
+                            ["February", "февруари"],
+                            ["April", "април"],
+                            ["June", "юни"],
+                            ["August", "август"],
+                            ["November", "ноември"]
+                        ],
+                        "explanation": "Match each month to its Bulgarian name."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Summer begins",
+                        "sentence": "Лятото започва на 21 __ по календара.",
+                        "options": ["юли", "юни", "май"],
+                        "correct_option": 1,
+                        "explanation": "\"Лятото започва на 21 юни по календара.\" means \"Summer begins on 21 June by the calendar.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Esen",
+                        "sentence": "\"Есен\" is autumn.",
+                        "correct_option": true,
+                        "explanation": "Correct. The four seasons are пролет, лято, есен and зима."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In autumn",
+                        "sentence": "През __ листата падат.",
+                        "options": ["есен", "есени", "есента"],
+                        "correct_option": 2,
+                        "explanation": "\"През есента листата падат.\" means \"In autumn the leaves fall.\" After през the season takes the article."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Winter months",
+                        "sentence": "Декември, януари и февруари са __ месеци.",
+                        "options": ["зимни", "зимен", "зимна"],
+                        "correct_option": 0,
+                        "explanation": "\"Декември, януари и февруари са зимни месеци.\" means \"December, January and February are winter months.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Yuli",
+                        "sentence": "\"Юли\" is the month of June.",
+                        "correct_option": false,
+                        "explanation": "\"Юли\" is July. June is \"юни\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the season adjectives",
+                        "pairs": [
+                            ["Spring (adjective)", "пролетен"],
+                            ["Summer (adjective)", "летен"],
+                            ["Autumn (adjective)", "есенен"],
+                            ["Winter (adjective)", "зимен"],
+                            ["Yearly", "годишен"]
+                        ],
+                        "explanation": "Match each English adjective to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Four seasons",
+                        "sentence": "В годината има четири __ и дванадесет месеца.",
+                        "options": ["сезони", "сезона", "сезон"],
+                        "correct_option": 1,
+                        "explanation": "\"В годината има четири сезона и дванадесет месеца.\" means \"A year has four seasons and twelve months.\" After a number, сезон becomes сезона."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Small letters",
+                        "sentence": "Bulgarian month names are written with a small letter: \"май\", not \"Май\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Months and days of the week start with a small letter."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "We go to the seaside",
+                        "sentence": "През __ ходим на море.",
+                        "options": ["януари", "декември", "август"],
+                        "correct_option": 2,
+                        "explanation": "\"През август ходим на море.\" means \"In August we go to the seaside.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Weather Through the Year",
+            "description": "Rain, snow and sunshine, and sentences with no \"it\".",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the weather nouns",
+                        "pairs": [
+                            ["Rain", "дъжд"],
+                            ["Snow", "сняг"],
+                            ["Wind", "вятър"],
+                            ["Sun", "слънце"],
+                            ["Cloud", "облак"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Snow in winter",
+                        "sentence": "През зимата често __ сняг.",
+                        "options": ["вали", "духа", "грее"],
+                        "correct_option": 0,
+                        "explanation": "\"През зимата често вали сняг.\" means \"In winter it often snows.\" Rain and snow both \"fall\": вали."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Slantseto gree",
+                        "sentence": "\"Слънцето грее\" means \"The sun is shining\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Грея means \"to shine\" or \"to warm\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A strong wind",
+                        "sentence": "Днес __ силен вятър.",
+                        "options": ["вали", "духа", "грее"],
+                        "correct_option": 1,
+                        "explanation": "\"Днес духа силен вятър.\" means \"There is a strong wind today.\" The wind \"blows\": духа."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Hot and dry",
+                        "sentence": "През лятото е __ и сухо.",
+                        "options": ["студено", "мокро", "горещо"],
+                        "correct_option": 2,
+                        "explanation": "\"През лятото е горещо и сухо.\" means \"In summer it is hot and dry.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Oblachno",
+                        "sentence": "\"Облачно\" means \"sunny\".",
+                        "correct_option": false,
+                        "explanation": "\"Облачно\" means \"cloudy\". Sunny is \"слънчево\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the weather adjectives",
+                        "pairs": [
+                            ["Sunny", "слънчево"],
+                            ["Rainy", "дъждовно"],
+                            ["Snowy", "снежно"],
+                            ["Foggy", "мъгливо"],
+                            ["Windy", "ветровито"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Sunny tomorrow",
+                        "sentence": "Утре ще бъде __ и топло.",
+                        "options": ["слънчево", "слънчев", "слънчева"],
+                        "correct_option": 0,
+                        "explanation": "\"Утре ще бъде слънчево и топло.\" means \"Tomorrow it will be sunny and warm.\" Weather adjectives take the neuter -о."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: No it",
+                        "sentence": "Weather sentences like \"Студено е\" have no word for \"it\".",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Студено е\" is simply \"(It) is cold\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "How many degrees",
+                        "sentence": "Колко __ е навън?",
+                        "options": ["градус", "градуса", "градуси"],
+                        "correct_option": 1,
+                        "explanation": "\"Колко градуса е навън?\" means \"How many degrees is it outside?\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Winter Holidays",
+            "description": "Christmas, New Year and winter fun.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the winter holiday words",
+                        "pairs": [
+                            ["Christmas tree", "елха"],
+                            ["Father Christmas", "Дядо Коледа"],
+                            ["Present", "подарък"],
+                            ["Snowman", "снежен човек"],
+                            ["New Year's Eve", "новогодишна нощ"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Many presents",
+                        "sentence": "Дядо Коледа носи много __ на децата.",
+                        "options": ["подарък", "подаръци", "подаръка"],
+                        "correct_option": 1,
+                        "explanation": "\"Дядо Коледа носи много подаръци на децата.\" means \"Father Christmas brings the children lots of presents.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Christmas Day",
+                        "sentence": "Christmas Day in Bulgaria is on 25 December.",
+                        "correct_option": true,
+                        "explanation": "Correct. Christmas Eve, Бъдни вечер, is on 24 December."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Welcoming the New Year",
+                        "sentence": "На 31 декември посрещаме __ година с приятели.",
+                        "options": ["Новата", "Нова", "Новия"],
+                        "correct_option": 0,
+                        "explanation": "\"На 31 декември посрещаме Новата година с приятели.\" means \"On 31 December we see in the New Year with friends.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A snowman in the yard",
+                        "sentence": "Децата правят снежен __ в двора.",
+                        "options": ["хора", "човека", "човек"],
+                        "correct_option": 2,
+                        "explanation": "\"Децата правят снежен човек в двора.\" means \"The children are making a snowman in the yard.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Badni vecher dinner",
+                        "sentence": "The traditional Christmas Eve (Бъдни вечер) dinner is made with meat.",
+                        "correct_option": false,
+                        "explanation": "The Christmas Eve dinner is meatless: beans, stuffed peppers, sarmi and pumpkin pastry."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match more winter words",
+                        "pairs": [
+                            ["Sledge", "шейна"],
+                            ["Ice", "лед"],
+                            ["Fireplace", "камина"],
+                            ["Cold (noun)", "студ"],
+                            ["Carol singers", "коледари"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Songs for health",
+                        "sentence": "Коледарите пеят __ за здраве.",
+                        "options": ["песни", "песен", "песента"],
+                        "correct_option": 0,
+                        "explanation": "\"Коледарите пеят песни за здраве.\" means \"The carol singers sing songs for good health.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Koledari",
+                        "sentence": "\"Коледари\" are young men who sing from house to house at Christmas.",
+                        "correct_option": true,
+                        "explanation": "Correct. They wish each household health and a good harvest."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A new sledge",
+                        "sentence": "Имаме нова __ за снега.",
+                        "options": ["шейни", "шейна", "шейната"],
+                        "correct_option": 1,
+                        "explanation": "\"Имаме нова шейна за снега.\" means \"We have a new sledge for the snow.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Bulgarian Cities",
+            "description": "The capital, the big cities and what each is known for.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the city words",
+                        "pairs": [
+                            ["Capital", "столица"],
+                            ["Town", "град"],
+                            ["Village", "село"],
+                            ["Population", "население"],
+                            ["Centre", "център"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The capital of Bulgaria",
+                        "sentence": "София е __ на България.",
+                        "options": ["столицата", "столица", "столици"],
+                        "correct_option": 0,
+                        "explanation": "\"София е столицата на България.\" means \"Sofia is the capital of Bulgaria.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Plovdiv",
+                        "sentence": "Plovdiv is the second largest city in Bulgaria.",
+                        "correct_option": true,
+                        "explanation": "Correct. Plovdiv is also one of the oldest cities in Europe."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "On the Black Sea",
+                        "sentence": "Варна е на брега на __ море.",
+                        "options": ["Бяло", "Черно", "Червено"],
+                        "correct_option": 1,
+                        "explanation": "\"Варна е на брега на Черно море.\" means \"Varna is on the Black Sea coast.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A small village",
+                        "sentence": "Живея в малко __ близо до Русе.",
+                        "options": ["град", "столица", "село"],
+                        "correct_option": 2,
+                        "explanation": "\"Живея в малко село близо до Русе.\" means \"I live in a small village near Ruse.\" Малко is neuter, like село."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Ruse",
+                        "sentence": "Ruse is on the Black Sea coast.",
+                        "correct_option": false,
+                        "explanation": "Ruse is in the north, on the Danube."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the cities",
+                        "pairs": [
+                            ["The capital", "София"],
+                            ["City of the ancient Roman theatre", "Пловдив"],
+                            ["City on the Danube", "Русе"],
+                            ["Old capital with the Tsarevets fortress", "Велико Търново"],
+                            ["Home of Bulgarian humour", "Габрово"]
+                        ],
+                        "explanation": "Match each description to the Bulgarian city."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The city of humour",
+                        "sentence": "Габрово е градът на __ и сатирата.",
+                        "options": ["хумора", "хумор", "хуморът"],
+                        "correct_option": 0,
+                        "explanation": "\"Габрово е градът на хумора и сатирата.\" means \"Gabrovo is the city of humour and satire.\" After на the short article -а is used."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Veliko Tarnovo",
+                        "sentence": "Veliko Tarnovo was a capital of Bulgaria in the Middle Ages.",
+                        "correct_option": true,
+                        "explanation": "Correct. It was the capital of the Second Bulgarian Empire."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "An ancient theatre",
+                        "sentence": "В Пловдив има древен __ от римско време.",
+                        "options": ["театъра", "театри", "театър"],
+                        "correct_option": 2,
+                        "explanation": "\"В Пловдив има древен театър от римско време.\" means \"In Plovdiv there is an ancient theatre from Roman times.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Mountains, Rivers and the Sea",
+            "description": "The geography of Bulgaria and the four points of the compass.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the landscape",
+                        "pairs": [
+                            ["Mountain range", "планина"],
+                            ["Hill", "хълм"],
+                            ["Valley", "долина"],
+                            ["Coast", "бряг"],
+                            ["Island", "остров"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The highest mountain",
+                        "sentence": "Рила е най-високата __ в България.",
+                        "options": ["планина", "планини", "планината"],
+                        "correct_option": 0,
+                        "explanation": "\"Рила е най-високата планина в България.\" means \"Rila is the highest mountain range in Bulgaria.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Danube border",
+                        "sentence": "The Danube forms much of Bulgaria's northern border.",
+                        "correct_option": true,
+                        "explanation": "Correct. Across the river is Romania."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Through the middle",
+                        "sentence": "Стара планина минава през __ на страната.",
+                        "options": ["среда", "средата", "средите"],
+                        "correct_option": 1,
+                        "explanation": "\"Стара планина минава през средата на страната.\" means \"The Balkan range runs through the middle of the country.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Seven lakes",
+                        "sentence": "В Рила има седем __ едно над друго.",
+                        "options": ["езеро", "езерата", "езера"],
+                        "correct_option": 2,
+                        "explanation": "\"В Рила има седем езера едно над друго.\" means \"In Rila there are seven lakes, one above the other.\" The plural of езеро is езера."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: No coast",
+                        "sentence": "Bulgaria has no coastline.",
+                        "correct_option": false,
+                        "explanation": "Bulgaria has a long coast on the Black Sea, in the east."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the compass points",
+                        "pairs": [
+                            ["North", "север"],
+                            ["South", "юг"],
+                            ["East", "изток"],
+                            ["West", "запад"],
+                            ["Border", "граница"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Greece is to the south",
+                        "sentence": "Гърция е на __ от България.",
+                        "options": ["юг", "север", "изток"],
+                        "correct_option": 0,
+                        "explanation": "\"Гърция е на юг от България.\" means \"Greece is to the south of Bulgaria.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Iztok",
+                        "sentence": "\"Изток\" means \"east\".",
+                        "correct_option": true,
+                        "explanation": "Correct. The sun rises in the east: \"Слънцето изгрява от изток\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The longest river",
+                        "sentence": "Дунав е втората най-дълга __ в Европа.",
+                        "options": ["реки", "река", "реката"],
+                        "correct_option": 1,
+                        "explanation": "\"Дунав е втората най-дълга река в Европа.\" means \"The Danube is the second longest river in Europe.\" Only the Volga is longer."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Farm Animals",
+            "description": "Animals in the village yard and the sounds they make.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the animals",
+                        "pairs": [
+                            ["Dog", "куче"],
+                            ["Cat", "котка"],
+                            ["Horse", "кон"],
+                            ["Cow", "крава"],
+                            ["Sheep", "овца"]
+                        ],
+                        "explanation": "Match each animal to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The dog barks",
+                        "sentence": "Кучето __ в двора.",
+                        "options": ["лае", "лая", "лаят"],
+                        "correct_option": 0,
+                        "explanation": "\"Кучето лае в двора.\" means \"The dog is barking in the yard.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Krava",
+                        "sentence": "\"Крава\" is a cow.",
+                        "correct_option": true,
+                        "explanation": "Correct. Milk from a cow is \"краве мляко\"."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Two goats",
+                        "sentence": "Баба има две __ и една крава.",
+                        "options": ["коза", "кози", "козата"],
+                        "correct_option": 1,
+                        "explanation": "\"Баба има две кози и една крава.\" means \"Grandma has two goats and a cow.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The cat drinks milk",
+                        "sentence": "Котката __ мляко.",
+                        "options": ["пия", "пием", "пие"],
+                        "correct_option": 2,
+                        "explanation": "\"Котката пие мляко.\" means \"The cat drinks milk.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kon",
+                        "sentence": "\"Кон\" means \"cow\".",
+                        "correct_option": false,
+                        "explanation": "\"Кон\" means \"horse\". A cow is \"крава\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the farmyard",
+                        "pairs": [
+                            ["Hen", "кокошка"],
+                            ["Rooster", "петел"],
+                            ["Pig", "прасе"],
+                            ["Goat", "коза"],
+                            ["Duck", "патица"]
+                        ],
+                        "explanation": "Match each animal to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The rooster crows",
+                        "sentence": "Петелът __ рано сутрин.",
+                        "options": ["пее", "пея", "пеят"],
+                        "correct_option": 0,
+                        "explanation": "\"Петелът пее рано сутрин.\" means \"The rooster crows early in the morning.\" In Bulgarian the rooster \"sings\"."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kucheta",
+                        "sentence": "The plural of \"куче\" (dog) is \"кучета\".",
+                        "correct_option": true,
+                        "explanation": "Correct. Many neuter nouns ending in -е take -ета: куче, кучета; момче, момчета."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "One egg a day",
+                        "sentence": "Кокошката снася по едно __ на ден.",
+                        "options": ["яйца", "яйцето", "яйце"],
+                        "correct_option": 2,
+                        "explanation": "\"Кокошката снася по едно яйце на ден.\" means \"The hen lays one egg a day.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Wild Animals",
+            "description": "Animals of the Bulgarian forests and mountains.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the small wild animals",
+                        "pairs": [
+                            ["Hare", "заек"],
+                            ["Squirrel", "катерица"],
+                            ["Hedgehog", "таралеж"],
+                            ["Owl", "бухал"],
+                            ["Snake", "змия"]
+                        ],
+                        "explanation": "Match each animal to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Bears in the forests",
+                        "sentence": "Мечките живеят високо в __ на Рила.",
+                        "options": ["горите", "гора", "гори"],
+                        "correct_option": 0,
+                        "explanation": "\"Мечките живеят високо в горите на Рила.\" means \"Bears live high up in the forests of Rila.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Taralezh",
+                        "sentence": "\"Таралеж\" is a hedgehog.",
+                        "correct_option": true,
+                        "explanation": "Correct. You can often see one in a Bulgarian garden at night."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A clever animal",
+                        "sentence": "Лисицата е много __ животно.",
+                        "options": ["хитър", "хитро", "хитра"],
+                        "correct_option": 1,
+                        "explanation": "\"Лисицата е много хитро животно.\" means \"The fox is a very cunning animal.\" Животно is neuter."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Hares like carrots",
+                        "sentence": "Зайците обичат да ядат __ и зеле.",
+                        "options": ["морков", "моркова", "моркови"],
+                        "correct_option": 2,
+                        "explanation": "\"Зайците обичат да ядат моркови и зеле.\" means \"Hares like to eat carrots and cabbage.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Valk",
+                        "sentence": "\"Вълк\" means \"bear\".",
+                        "correct_option": false,
+                        "explanation": "\"Вълк\" means \"wolf\". A bear is \"мечка\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the big wild animals",
+                        "pairs": [
+                            ["Bear", "мечка"],
+                            ["Wolf", "вълк"],
+                            ["Fox", "лисица"],
+                            ["Deer", "елен"],
+                            ["Eagle", "орел"]
+                        ],
+                        "explanation": "Match each animal to its Bulgarian word."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "The eagle flies high",
+                        "sentence": "Орелът __ високо в небето.",
+                        "options": ["лети", "летя", "летят"],
+                        "correct_option": 0,
+                        "explanation": "\"Орелът лети високо в небето.\" means \"The eagle flies high in the sky.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Bears in Bulgaria",
+                        "sentence": "Brown bears live in the Bulgarian mountains.",
+                        "correct_option": true,
+                        "explanation": "Correct. They live in Rila, Pirin, the Rhodopes and the Balkan range."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Squirrels in the trees",
+                        "sentence": "В парка има много __ по дърветата.",
+                        "options": ["катерица", "катерици", "катерицата"],
+                        "correct_option": 1,
+                        "explanation": "\"В парка има много катерици по дърветата.\" means \"There are lots of squirrels in the trees in the park.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "At the Seaside",
+            "description": "A day on the beach by the Black Sea.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the beach words",
+                        "pairs": [
+                            ["Beach", "плаж"],
+                            ["Sand", "пясък"],
+                            ["Wave", "вълна"],
+                            ["Sun cream", "слънцезащитен крем"],
+                            ["Beach umbrella", "чадър"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Lying on the beach",
+                        "sentence": "Цял ден лежим на __ и четем.",
+                        "options": ["плажа", "плаж", "плажове"],
+                        "correct_option": 0,
+                        "explanation": "\"Цял ден лежим на плажа и четем.\" means \"We lie on the beach and read all day.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Valna",
+                        "sentence": "\"Вълна\" can mean a sea wave or wool.",
+                        "correct_option": true,
+                        "explanation": "Correct. \"Вълните са високи\" is about the sea, and \"пуловер от вълна\" is a wool jumper."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A castle of sand",
+                        "sentence": "Децата правят замък от __ на брега.",
+                        "options": ["пясъка", "пясък", "пясъци"],
+                        "correct_option": 1,
+                        "explanation": "\"Децата правят замък от пясък на брега.\" means \"The children are making a sandcastle on the shore.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Let's swim",
+                        "sentence": "Водата е топла, хайде да __ в морето.",
+                        "options": ["плувам", "плуват", "плуваме"],
+                        "correct_option": 2,
+                        "explanation": "\"Водата е топла, хайде да плуваме в морето.\" means \"The water is warm, let's swim in the sea.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pyasak",
+                        "sentence": "\"Пясък\" means \"shell\".",
+                        "correct_option": false,
+                        "explanation": "\"Пясък\" means \"sand\". A shell is \"мида\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the beach things",
+                        "pairs": [
+                            ["Swimsuit", "бански"],
+                            ["Sunglasses", "слънчеви очила"],
+                            ["Towel", "хавлия"],
+                            ["Shell", "мида"],
+                            ["Boat", "лодка"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Your swimsuit",
+                        "sentence": "Не забравяй __ си за плажа!",
+                        "options": ["банския", "бански", "банските"],
+                        "correct_option": 0,
+                        "explanation": "\"Не забравяй банския си за плажа!\" means \"Don't forget your swimsuit for the beach!\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Sozopol and Nesebar",
+                        "sentence": "Sozopol and Nesebar are towns on the Bulgarian Black Sea coast.",
+                        "correct_option": true,
+                        "explanation": "Correct. Both have old towns full of wooden houses and churches."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Put on sunglasses",
+                        "sentence": "Слънцето е силно, сложи си __ очила.",
+                        "options": ["слънчев", "слънчеви", "слънчево"],
+                        "correct_option": 1,
+                        "explanation": "\"Слънцето е силно, сложи си слънчеви очила.\" means \"The sun is strong, put on your sunglasses.\" Очила is plural."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "A Day in the Mountains",
+            "description": "Hiking, mountain huts and the peaks of Bulgaria.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the hiking words",
+                        "pairs": [
+                            ["Path", "пътека"],
+                            ["Mountain hut", "хижа"],
+                            ["Peak", "връх"],
+                            ["Backpack", "раница"],
+                            ["Map", "карта"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Sleeping in the hut",
+                        "sentence": "Спим в __ под върха.",
+                        "options": ["хижата", "хижа", "хижи"],
+                        "correct_option": 0,
+                        "explanation": "\"Спим в хижата под върха.\" means \"We sleep in the hut below the peak.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Hizha",
+                        "sentence": "A \"хижа\" is a mountain hut where hikers can sleep.",
+                        "correct_option": true,
+                        "explanation": "Correct. Bulgarian mountains have a whole network of huts."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Up Musala peak",
+                        "sentence": "Качваме се на __ Мусала.",
+                        "options": ["върха", "връх", "върхове"],
+                        "correct_option": 1,
+                        "explanation": "\"Качваме се на връх Мусала.\" means \"We are climbing Musala peak.\" Before a name the noun takes no article."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "In your backpack",
+                        "sentence": "Сложи водата в __ си и да тръгваме.",
+                        "options": ["раница", "раници", "раницата"],
+                        "correct_option": 2,
+                        "explanation": "\"Сложи водата в раницата си и да тръгваме.\" means \"Put the water in your backpack and let's go.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Pateka",
+                        "sentence": "\"Пътека\" means a road for cars.",
+                        "correct_option": false,
+                        "explanation": "A пътека is a path or a trail. A road for cars is a \"път\"."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the mountain words",
+                        "pairs": [
+                            ["To climb", "изкачвам се"],
+                            ["To go down", "слизам"],
+                            ["Steep", "стръмен"],
+                            ["Tired", "уморен"],
+                            ["High", "висок"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "A steep path",
+                        "sentence": "Пътеката е много __ и тясна.",
+                        "options": ["стръмна", "стръмен", "стръмно"],
+                        "correct_option": 0,
+                        "explanation": "\"Пътеката е много стръмна и тясна.\" means \"The path is very steep and narrow.\" Пътека is feminine."
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Vitosha",
+                        "sentence": "Vitosha is the mountain right next to Sofia.",
+                        "correct_option": true,
+                        "explanation": "Correct. You can reach it from the city by bus or on foot."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Cold at the top",
+                        "sentence": "Горе на върха е __ и духа вятър.",
+                        "options": ["студен", "студена", "студено"],
+                        "correct_option": 2,
+                        "explanation": "\"Горе на върха е студено и духа вятър.\" means \"Up on the peak it is cold and windy.\""
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Spring Customs",
+            "description": "Martenitsi, Easter and the spring holidays.",
+            "exercises": [
+                {
+                    "multiple_choice": {
+                        "name": "Match the spring words",
+                        "pairs": [
+                            ["Martenitsa", "мартеница"],
+                            ["Stork", "щъркел"],
+                            ["Blossom", "цвят"],
+                            ["Easter egg", "великденско яйце"],
+                            ["Easter bread", "козунак"]
+                        ],
+                        "explanation": "Match each English word to its Bulgarian equivalent."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Martenitsi for health",
+                        "sentence": "На първи март си подаряваме __ за здраве.",
+                        "options": ["мартеници", "мартеница", "мартениците"],
+                        "correct_option": 0,
+                        "explanation": "\"На първи март си подаряваме мартеници за здраве.\" means \"On 1 March we give each other martenitsi for good health.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Red and white",
+                        "sentence": "A martenitsa is made of red and white thread.",
+                        "correct_option": true,
+                        "explanation": "Correct. White stands for purity and red for health and life."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "When you see a stork",
+                        "sentence": "Свалям мартеницата, когато видя __ или цъфнало дърво.",
+                        "options": ["щъркела", "щъркел", "щъркели"],
+                        "correct_option": 1,
+                        "explanation": "\"Свалям мартеницата, когато видя щъркел или цъфнало дърво.\" means \"I take off my martenitsa when I see a stork or a tree in blossom.\""
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Easter bread",
+                        "sentence": "За Великден ядем __ и шарени яйца.",
+                        "options": ["торта", "баница", "козунак"],
+                        "correct_option": 2,
+                        "explanation": "\"За Великден ядем козунак и шарени яйца.\" means \"At Easter we eat sweet Easter bread and painted eggs.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Kozunak",
+                        "sentence": "\"Козунак\" is a Christmas drink.",
+                        "correct_option": false,
+                        "explanation": "A козунак is a sweet, plaited bread baked for Easter."
+                    }
+                },
+                {
+                    "multiple_choice": {
+                        "name": "Match the spring holidays",
+                        "pairs": [
+                            ["Grandmother March (1 March)", "Баба Марта"],
+                            ["Easter", "Великден"],
+                            ["Palm Sunday", "Цветница"],
+                            ["St George's Day", "Гергьовден"],
+                            ["Women's Day (8 March)", "Осми март"]
+                        ],
+                        "explanation": "Match each English name to the Bulgarian holiday."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Flowers on Women's Day",
+                        "sentence": "На Осми март подаряваме __ на жените.",
+                        "options": ["цветя", "цвете", "цветето"],
+                        "correct_option": 0,
+                        "explanation": "\"На Осми март подаряваме цветя на жените.\" means \"On 8 March we give flowers to women.\""
+                    }
+                },
+                {
+                    "true_false": {
+                        "name": "True or false: Gergyovden date",
+                        "sentence": "Гергьовден (St George's Day) is on 6 May.",
+                        "correct_option": true,
+                        "explanation": "Correct. It is also the day of the Bulgarian army."
+                    }
+                },
+                {
+                    "fill_in_the_blank": {
+                        "name": "Trees in blossom",
+                        "sentence": "През пролетта __ цъфтят в бяло и розово.",
+                        "options": ["дърво", "дърветата", "дървото"],
+                        "correct_option": 1,
+                        "explanation": "\"През пролетта дърветата цъфтят в бяло и розово.\" means \"In spring the trees blossom in white and pink.\""
+                    }
+                }
+            ]
+        }
+    ]
+}
