@@ -31,6 +31,7 @@ Thumbs.db
 # Local tooling artifacts (not part of the project)
 /ventoy-*
 /source.epub
+/RAG.md
 
 # Playwright
 node_modules/

@@ -17,6 +17,7 @@ Backend API: [bulgolingo-api](https://github.com/AnatoliyShk/bulgolingo-api)
 - Lesson and vocabulary browsing
 - Spaced-repetition practice sessions
 - User progress tracking
+- Semantic search over exercises and learning paths (RAG)
 
 ## Spaced repetition (FSRS)
 Scheduling uses FSRS-6. Every word a user has met carries two numbers:
@@ -27,6 +28,16 @@ Scheduling uses FSRS-6. Every word a user has met carries two numbers:
 Rather than asking the user to rate their own recall, the grade is inferred from how they answered: a wrong answer is `Again`, a hint is `Hard`, a correct answer under three seconds is `Easy`, anything else is `Good`. `GradeLexemeReview` hands that to the scheduler, which updates both numbers and inverts the forgetting curve to find the next due date at the user's target retention (0.9 by default). Intervals get a small random fuzz so reviews don't pile up on a single day.
 
 Every review is appended to `review_logs` with the memory state before and after it, so the 21 model parameters can be re-fitted against real answer history later.
+
+## Semantic search (RAG)
+Exercise and learning-path search is retrieval over embeddings, not keyword matching — no generation, just ranking existing content by meaning. Two features use it:
+
+- **Exercise search** — looks up exercises directly by meaning.
+- **Learning-path search** — the catalog page's search field narrows every section to the paths whose exercises are closest in meaning to the query, closest first.
+
+Each exercise's `clause` is turned into a labelled text summary (word pairs, sentence/options/answer, explanation — the shape depends on the exercise type) and embedded via Gemini's `gemini-embedding-2` (768 dimensions) in a queued job, stored in a pgvector column with an HNSW index. A search query is embedded once and compared against those vectors; a learning path ranks by its single closest-matching exercise rather than an average, so one strongly relevant lesson is enough to surface the whole path.
+
+Admins can turn search off or tune the similarity floor from the settings page. Turning it off hides the search UI, 404s the search endpoint, and stops every call to the embedding provider — including jobs already queued.
 
 ## Stack
 PHP 8.3 · Laravel 13 · Inertia 2 · Vue 3 · SCSS · Vite · PostgreSQL 18 · Redis · RabbitMQ · Docker
