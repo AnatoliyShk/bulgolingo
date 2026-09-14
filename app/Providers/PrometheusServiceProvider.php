@@ -34,7 +34,7 @@ class PrometheusServiceProvider extends ServiceProvider
      */
     private function storageOptions(): array
     {
-        $config = (new ConfigurationUrlParser)->parseConfiguration(
+        $config = new ConfigurationUrlParser()->parseConfiguration(
             config('database.redis.default', [])
         );
 

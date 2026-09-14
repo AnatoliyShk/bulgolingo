@@ -31,8 +31,8 @@ final class RunManifest
         public readonly string $id,
         public readonly string $tier,
         public readonly string $createdAt,
-        public array $blocks = [],
-        public array $counts = [],
+        public private(set) array $blocks = [],
+        public private(set) array $counts = [],
     ) {}
 
     public static function start(string $tier): self

@@ -117,7 +117,9 @@ class Exercise extends Model
      */
     private static function normalizeWord(string $word): string
     {
-        return trim(mb_strtolower(str_replace('.', '', $word)));
+        return str_replace('.', '', $word)
+            |> mb_strtolower(...)
+            |> mb_trim(...);
     }
 
     /**

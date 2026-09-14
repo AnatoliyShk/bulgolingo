@@ -192,9 +192,9 @@ class RunLoadTest extends Command
 
     private function lastStageFailed(): bool
     {
-        $last = end($this->stages);
+        $last = array_last($this->stages);
 
-        return $last === false || $last['status'] !== self::SUCCESS;
+        return $last === null || $last['status'] !== self::SUCCESS;
     }
 
     /**
@@ -207,8 +207,9 @@ class RunLoadTest extends Command
         $lines = [];
 
         foreach (explode("\n", $output) as $line) {
-            $frames = explode("\r", $line);
-            $lines[] = rtrim(preg_replace('/\e\[[0-9;]*[A-Za-z]/', '', end($frames)));
+            $lines[] = array_last(explode("\r", $line))
+                |> (fn (string $frame) => preg_replace('/\e\[[0-9;]*[A-Za-z]/', '', $frame))
+                |> rtrim(...);
         }
 
         return trim(implode("\n", $lines));

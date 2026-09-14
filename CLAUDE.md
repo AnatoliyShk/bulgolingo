@@ -44,8 +44,9 @@ The local database is stock Sail — user `sail`, password `password`, database
 cloud ones and do not authenticate against it.
 
 Tests that touch no database — those extending `PHPUnit\Framework\TestCase`
-rather than `Tests\TestCase` — run on the host directly, because `phpunit.xml`
-bootstraps only the autoloader and no app boots:
+rather than `Tests\TestCase` — can run on the host directly, because `phpunit.xml`
+bootstraps only the autoloader and no app boots. That needs PHP 8.5 on the host:
+Composer's platform check rejects anything older before a test loads.
 
 ```bash
 ./vendor/bin/phpunit tests/Unit/LoadTestGeneratorTest.php
@@ -60,6 +61,14 @@ host user cannot read. If `Admin\ExerciseTest` errors on
 ```bash
 ./vendor/bin/pint         # auto-fix PHP style (Laravel Pint)
 ```
+Pint has to run on PHP 8.5 — an older PHP stops with a parse error on 8.5
+syntax such as the pipe operator (`|>`). Without 8.5 on the host, run it in the
+container as the host user, since the container's `sail` user (UID 1337) cannot
+rewrite most project files:
+
+```bash
+docker compose exec -u "$(id -u):$(id -g)" laravel.test ./vendor/bin/pint --dirty
+```
 
 ### Migrations & DB
 ```bash
@@ -72,7 +81,7 @@ Image uploads are stored in `storage/app/public` and served via `storage:link`. 
 
 ## Architecture Overview
 
-**Stack:** Laravel 13 + Inertia.js + Vue 3 (Composition API) + Tailwind CSS. The app is a Bulgarian language-learning platform (Duolingo-style).
+**Stack:** PHP 8.5 + Laravel 13 + Inertia.js + Vue 3 (Composition API) + Tailwind CSS. The app is a Bulgarian language-learning platform (Duolingo-style).
 
 ### Request lifecycle
 Every page render goes through Inertia: Laravel returns `Inertia::render('PageName', [...props])`, Vite bundles the Vue SPA, and `HandleInertiaRequests` middleware injects shared props (`auth.user`, `auth.isAdmin`) available in every Vue page via `usePage()`.
@@ -134,7 +143,7 @@ When creating a Vue component always:
 - Do not use → symbol in UI at all.
 
 ### Infrastructure
-The Docker Compose setup (`compose.yaml`) uses Laravel Sail with **PostgreSQL 18** and **Redis**. The local dev default (without Docker) uses **SQLite** (`database/database.sqlite`). Queue driver defaults to `database`; jobs are dispatched for word count updates.
+The Docker Compose setup (`compose.yaml`) uses Laravel Sail's **PHP 8.5** runtime (`vendor/laravel/sail/runtimes/8.5`) with **PostgreSQL 18** and **Redis**. The NativePHP mobile build embeds PHP 8.5 too, pinned in `nativephp.lock`. The local dev default (without Docker) uses **SQLite** (`database/database.sqlite`). Queue driver defaults to `database`; jobs are dispatched for word count updates.
 
 ## Comments
 - No explanatory comments inside function bodies

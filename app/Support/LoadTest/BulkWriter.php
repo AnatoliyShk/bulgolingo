@@ -4,6 +4,7 @@ namespace App\Support\LoadTest;
 
 use Generator;
 use Illuminate\Database\Connection;
+use Pdo\Pgsql;
 
 /**
  * Streams generated rows into Postgres with COPY FROM STDIN.
@@ -30,8 +31,7 @@ final class BulkWriter
      */
     public function write(string $table, array $columns, iterable $rows, int $chunk = 5_000, ?callable $onFlush = null): int
     {
-        $pdo = $this->connection->getPdo();
-        $canCopy = $this->connection->getDriverName() === 'pgsql' && method_exists($pdo, 'pgsqlCopyFromArray');
+        $canCopy = $this->connection->getPdo() instanceof Pgsql;
 
         $written = 0;
         $buffer = [];
@@ -71,12 +71,10 @@ final class BulkWriter
     private function flush(string $table, array $columns, array $buffer, bool $canCopy): void
     {
         if ($canCopy) {
-            $this->connection->getPdo()->pgsqlCopyFromArray(
+            $this->connection->getPdo()->copyFromArray(
                 $table,
                 $buffer,
-                "\t",
-                '\\N',
-                implode(',', array_map(fn (string $c) => '"'.$c.'"', $columns)),
+                fields: implode(',', array_map(fn (string $c) => '"'.$c.'"', $columns)),
             );
 
             return;

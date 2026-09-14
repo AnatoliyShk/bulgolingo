@@ -7,6 +7,7 @@ use App\Models\LearningPath;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use NoDiscard;
 
 /**
  * The filters and sort that narrow and order the learning path catalog, read
@@ -63,6 +64,7 @@ final readonly class LearningPathFilters
      * @param  Collection<int, LearningPath>  $paths
      * @return Collection<int, LearningPath>
      */
+    #[NoDiscard('as the paths passed in are left as they were')]
     public function applyToCollection(Collection $paths): Collection
     {
         return $paths
@@ -80,6 +82,7 @@ final readonly class LearningPathFilters
      * @param  Collection<int, int>  $exerciseCounts
      * @return Collection<int, LearningPath>
      */
+    #[NoDiscard('as the paths passed in are left as they were')]
     public function applySort(Collection $paths, Collection $exerciseCounts, bool $searchIsOrdering): Collection
     {
         if ($searchIsOrdering) {

@@ -40,7 +40,7 @@ Each exercise's `clause` is turned into a labelled text summary (word pairs, sen
 Admins can turn search off or tune the similarity floor from the settings page. Turning it off hides the search UI, 404s the search endpoint, and stops every call to the embedding provider — including jobs already queued.
 
 ## Stack
-PHP 8.3 · Laravel 13 · Inertia 2 · Vue 3 · SCSS · Vite · PostgreSQL 18 · Redis · RabbitMQ · Docker
+PHP 8.5 · Laravel 13 · Inertia 2 · Vue 3 · SCSS · Vite · PostgreSQL 18 · Redis · RabbitMQ · Docker
 
 ## Running locally
 ```bash
@@ -50,11 +50,13 @@ cp .env.example .env
 docker compose up -d
 php artisan migrate --seed
 ```
+The app requires PHP 8.5. The Sail container in `compose.yaml` runs PHP 8.5, so if the host has an older PHP, run PHP commands (`artisan`, `composer`, `pint`, `phpunit`) inside it with `docker compose exec laravel.test …`.
 
 ## Running the mobile app locally
 The app also ships as a native iOS/Android build via [NativePHP for Mobile](https://nativephp.com/docs/mobile).
 
 **Prerequisites**
+- PHP 8.5 on the host — it must match the embedded runtime pinned in `nativephp.lock`, or `./native run` stops.
 - Android: [Android Studio](https://developer.android.com/studio) (SDK + a JDK) — Linux, macOS, or Windows. Not supported under WSL.
 - iOS: Xcode + CocoaPods — macOS only.
 
@@ -65,7 +67,7 @@ cp .env.example .env
 php artisan key:generate
 ./native install        # or: ./native install android / ./native install ios
 ```
-`native:install` prompts for a `NATIVEPHP_APP_ID` (written to `.env`) and downloads the embedded PHP runtime pinned in `nativephp.lock`.
+`native:install` prompts for a `NATIVEPHP_APP_ID` (written to `.env`) and downloads the embedded PHP runtime pinned in `nativephp.lock` (PHP 8.5), writing the exact patch release it installed back to the lock.
 
 **Run**
 ```bash

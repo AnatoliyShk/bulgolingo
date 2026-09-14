@@ -3,14 +3,13 @@
 namespace App\Support\Fsrs;
 
 use App\Enums\Rating;
+use NoDiscard;
 
 final class FsrsScheduler
 {
     private const S_MIN = 0.001;
 
-    public function __construct(protected readonly FsrsParameters $params = new FsrsParameters)
-    {
-    }
+    public function __construct(protected readonly FsrsParameters $params = new FsrsParameters) {}
 
     public function retrievability(float $stability, float $elapsedDays): float
     {
@@ -34,14 +33,14 @@ final class FsrsScheduler
         }
 
         $pct = match (true) {
-            $interval < 7  => 0.15,
+            $interval < 7 => 0.15,
             $interval < 20 => 0.10,
-            default        => 0.05,
+            default => 0.05,
         };
 
         $delta = max(1.0, $interval * $pct);
-        $min   = max(2, (int) round($interval - $delta));
-        $max   = min($maxInterval, (int) round($interval + $delta));
+        $min = max(2, (int) round($interval - $delta));
+        $max = min($maxInterval, (int) round($interval + $delta));
 
         return random_int($min, max($min, $max));
     }
@@ -55,12 +54,12 @@ final class FsrsScheduler
 
     private function nextDifficulty(float $difficulty, Rating $g): float
     {
-        $delta  = -$this->params->w[6] * ($g->value - 3);
+        $delta = -$this->params->w[6] * ($g->value - 3);
         $damped = $delta * (10.0 - $difficulty) / 9.0;   // FSRS-6: change shrinks as D nears 10
-        $next   = $difficulty + $damped;
+        $next = $difficulty + $damped;
 
         $target = $this->initialDifficulty(Rating::Easy);
-        $next   = $this->params->w[7] * $target + (1.0 - $this->params->w[7]) * $next;
+        $next = $this->params->w[7] * $target + (1.0 - $this->params->w[7]) * $next;
 
         return $this->clampD($next);
     }
@@ -74,7 +73,7 @@ final class FsrsScheduler
     private function stabilityOnRecall(float $difficulty, float $s, float $r, Rating $g): float
     {
         $hardPenalty = $g === Rating::Hard ? $this->params->w[15] : 1.0;  // 0 < w15 < 1
-        $easyBonus   = $g === Rating::Easy ? $this->params->w[16] : 1.0;  // 1 < w16 < 6
+        $easyBonus = $g === Rating::Easy ? $this->params->w[16] : 1.0;  // 1 < w16 < 6
 
         $sInc = exp($this->params->w[8])
             * (11.0 - $difficulty)                                  // harder card, smaller gain
@@ -111,11 +110,12 @@ final class FsrsScheduler
         return $s * $sInc;
     }
 
+    #[NoDiscard('as the new state is returned rather than written to $state')]
     public function review(?MemoryState $state, Rating $g, float $elapsedDays): MemoryState
     {
         if ($state === null) {
             return new MemoryState(
-                stability:  max(self::S_MIN, $this->params->w[$g->value - 1]),
+                stability: max(self::S_MIN, $this->params->w[$g->value - 1]),
                 difficulty: $this->initialDifficulty($g),
             );
         }

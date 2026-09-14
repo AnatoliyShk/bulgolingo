@@ -27,10 +27,7 @@ class LoadTestGeneratorTest extends TestCase
 {
     private function encoder(): ReflectionMethod
     {
-        $method = new ReflectionMethod(BulkWriter::class, 'encodeLine');
-        $method->setAccessible(true);
-
-        return $method;
+        return new ReflectionMethod(BulkWriter::class, 'encodeLine');
     }
 
     private function writer(): BulkWriter
@@ -191,10 +188,7 @@ class LoadTestGeneratorTest extends TestCase
 
     private function tidy(string $raw): string
     {
-        $method = new ReflectionMethod(RunLoadTest::class, 'tidy');
-        $method->setAccessible(true);
-
-        return $method->invoke(new RunLoadTest, $raw);
+        return new ReflectionMethod(RunLoadTest::class, 'tidy')->invoke(new RunLoadTest, $raw);
     }
 
     public function test_a_progress_bar_collapses_to_the_frame_that_survived_it(): void
