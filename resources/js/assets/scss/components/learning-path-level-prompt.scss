@@ -37,16 +37,24 @@
 .nb-level-prompt__options {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.6rem;
 }
 
+/* A fixed box regardless of row occupancy — flex-grow would otherwise stretch
+   whichever buttons land alone on the last row, and the label is just the
+   level code (the full name lives in aria-label/title) so none of them ever
+   wrap to a second line and grow taller than the rest. */
 .nb-level-prompt__option {
-    flex: 1 1 auto;
-    min-width: 6rem;
-    padding: 0.6rem 0.9rem;
+    flex: 0 0 auto;
+    width: 4.2rem;
+    height: 3.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Manrope', system-ui, sans-serif;
     font-weight: 800;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--ink, #14110b);
     background: var(--paper, #fffaf0);
     border: var(--border, 3px solid #14110b);

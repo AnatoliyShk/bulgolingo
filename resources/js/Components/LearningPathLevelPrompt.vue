@@ -55,10 +55,12 @@ function choose(level) {
                 :key="level.value"
                 type="button"
                 class="nb-level-prompt__option"
+                :aria-label="level.label"
+                :title="level.label"
                 :disabled="loading"
                 @click="choose(level.value)"
             >
-                {{ level.label }}
+                {{ level.value }}
             </button>
         </div>
     </dialog>
