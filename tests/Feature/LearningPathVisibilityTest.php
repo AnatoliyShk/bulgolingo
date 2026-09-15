@@ -95,7 +95,7 @@ class LearningPathVisibilityTest extends TestCase
     public function test_an_admin_sees_every_type_including_test(): void
     {
         $this->oneOfEachType();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
 
         $names = $this->catalogFor($admin);
 
@@ -157,7 +157,7 @@ class LearningPathVisibilityTest extends TestCase
 
     public function test_an_admin_can_set_the_type_through_the_admin_form(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
 
         $this->actingAs($admin)
             ->post(route('admin.learning-paths.store'), [
@@ -175,7 +175,7 @@ class LearningPathVisibilityTest extends TestCase
 
     public function test_an_unknown_type_is_rejected(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
 
         $this->actingAs($admin)
             ->post(route('admin.learning-paths.store'), [

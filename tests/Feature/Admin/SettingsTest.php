@@ -15,7 +15,7 @@ class SettingsTest extends TestCase
 
     private function admin(): User
     {
-        return User::factory()->create(['is_admin' => true]);
+        return User::factory()->admin()->create();
     }
 
     public function test_a_guest_is_sent_to_log_in(): void
@@ -25,7 +25,7 @@ class SettingsTest extends TestCase
 
     public function test_a_non_admin_is_forbidden_to_view_or_save(): void
     {
-        $user = User::factory()->create(['is_admin' => false]);
+        $user = User::factory()->create();
 
         $this->actingAs($user)->get(route('admin.settings.edit'))->assertForbidden();
         $this->actingAs($user)

@@ -13,12 +13,12 @@ class AdminVisitorTest extends TestCase
 
     private function visitor(): User
     {
-        return User::factory()->create(['is_admin' => false, 'is_admin_visitor' => true]);
+        return User::factory()->adminVisitor()->create();
     }
 
     public function test_a_plain_user_remains_forbidden_from_the_admin_panel(): void
     {
-        $user = User::factory()->create(['is_admin' => false, 'is_admin_visitor' => false]);
+        $user = User::factory()->create();
 
         $this->actingAs($user)->get(route('admin.index'))->assertForbidden();
     }
