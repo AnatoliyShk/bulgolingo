@@ -121,8 +121,8 @@ test.describe('Learning path sort filter', () => {
 
         await fewestButton(page).click();
 
-        await expect(page).toHaveURL(`${BASE}/learning-paths?sort=exercises_asc`);
-        expect(seen).toEqual(['?sort=exercises_asc']);
+        await expect(page).toHaveURL(`${BASE}/learning-paths?level=A2&sort=exercises_asc`);
+        expect(seen).toEqual(['?level=A2&sort=exercises_asc']);
         await expect(fewestButton(page)).toHaveAttribute('aria-pressed', 'true');
         await expect(mostButton(page)).toHaveAttribute('aria-pressed', 'false');
         await expect(cardNames(page)).toHaveText(['Fewest exercises', 'Most exercises']);
@@ -171,7 +171,7 @@ test.describe('Learning path sort filter', () => {
         await answerVisits(page, base);
 
         await fewestButton(page).click();
-        await expect(page).toHaveURL(`${BASE}/learning-paths?sort=exercises_asc`);
+        await expect(page).toHaveURL(`${BASE}/learning-paths?level=A2&sort=exercises_asc`);
 
         await page.goBack();
 
