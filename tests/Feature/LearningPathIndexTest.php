@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
+use App\Enums\LanguageLevel;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
@@ -67,7 +68,7 @@ class LearningPathIndexTest extends TestCase
 
     public function test_basic_fields_pass_through(): void
     {
-        $path = LearningPath::create(['name' => 'Bulgarian Basics', 'language' => 'bg']);
+        $path = LearningPath::create(['name' => 'Bulgarian Basics', 'language' => 'bg', 'level' => LanguageLevel::A2]);
         $this->lessonWith($path, 'L1', [ExerciseType::TRUE_FALSE]);
 
         $row = collect($this->pathsProp())->firstWhere('id', $path->id);
@@ -78,7 +79,7 @@ class LearningPathIndexTest extends TestCase
 
     public function test_exercise_types_are_deduplicated(): void
     {
-        $path = LearningPath::create(['name' => 'P', 'language' => 'bg']);
+        $path = LearningPath::create(['name' => 'P', 'language' => 'bg', 'level' => LanguageLevel::A2]);
         $this->lessonWith($path, 'L1', [ExerciseType::TRUE_FALSE, ExerciseType::TRUE_FALSE]);
 
         $row = collect($this->pathsProp())->firstWhere('id', $path->id);
@@ -88,7 +89,7 @@ class LearningPathIndexTest extends TestCase
 
     public function test_exercise_types_aggregate_across_lessons(): void
     {
-        $path = LearningPath::create(['name' => 'P', 'language' => 'bg']);
+        $path = LearningPath::create(['name' => 'P', 'language' => 'bg', 'level' => LanguageLevel::A2]);
         $this->lessonWith($path, 'L1', [ExerciseType::TRUE_FALSE]);
         $this->lessonWith($path, 'L2', [ExerciseType::FILL_IN_THE_BLANK]);
 
@@ -104,7 +105,7 @@ class LearningPathIndexTest extends TestCase
 
     public function test_path_with_no_lessons_has_no_exercise_types(): void
     {
-        $path = LearningPath::create(['name' => 'Empty', 'language' => 'bg']);
+        $path = LearningPath::create(['name' => 'Empty', 'language' => 'bg', 'level' => LanguageLevel::A2]);
 
         $row = collect($this->pathsProp())->firstWhere('id', $path->id);
 
@@ -113,7 +114,7 @@ class LearningPathIndexTest extends TestCase
 
     public function test_lesson_with_no_exercises_contributes_no_types(): void
     {
-        $path = LearningPath::create(['name' => 'P', 'language' => 'bg']);
+        $path = LearningPath::create(['name' => 'P', 'language' => 'bg', 'level' => LanguageLevel::A2]);
         $lesson = Lesson::create(['name' => 'Empty lesson', 'description' => 'D']);
         $path->lessons()->attach($lesson->id);
 
@@ -124,8 +125,8 @@ class LearningPathIndexTest extends TestCase
 
     public function test_every_enrolled_path_is_listed_regardless_of_user(): void
     {
-        $a = LearningPath::create(['name' => 'A', 'language' => 'bg']);
-        $b = LearningPath::create(['name' => 'B', 'language' => 'bg']);
+        $a = LearningPath::create(['name' => 'A', 'language' => 'bg', 'level' => LanguageLevel::A2]);
+        $b = LearningPath::create(['name' => 'B', 'language' => 'bg', 'level' => LanguageLevel::A2]);
 
         $ids = collect($this->pathsProp())->pluck('id')->all();
 
@@ -143,11 +144,11 @@ class LearningPathIndexTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $mine = LearningPath::create(['name' => 'Mine', 'language' => 'bg']);
+        $mine = LearningPath::create(['name' => 'Mine', 'language' => 'bg', 'level' => LanguageLevel::A2]);
         $mine->users()->attach($user->id);
         $this->lessonWith($mine, 'L1', [ExerciseType::TRUE_FALSE]);
 
-        $other = LearningPath::create(['name' => 'Untouched', 'language' => 'bg']);
+        $other = LearningPath::create(['name' => 'Untouched', 'language' => 'bg', 'level' => LanguageLevel::A2]);
 
         $ids = collect($this->pathsProp())->pluck('id')->all();
 
@@ -160,7 +161,7 @@ class LearningPathIndexTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $path = LearningPath::create(['name' => 'Mine', 'language' => 'bg']);
+        $path = LearningPath::create(['name' => 'Mine', 'language' => 'bg', 'level' => LanguageLevel::A2]);
         $path->users()->attach($user->id);
         $this->lessonWith($path, 'L1', [ExerciseType::TRUE_FALSE]);
 
@@ -180,7 +181,7 @@ class LearningPathIndexTest extends TestCase
     {
         $owner = User::factory()->create();
 
-        $enrolled = LearningPath::create(['name' => 'Someone elses', 'language' => 'bg']);
+        $enrolled = LearningPath::create(['name' => 'Someone elses', 'language' => 'bg', 'level' => LanguageLevel::A2]);
         $enrolled->users()->attach($owner->id);
 
         $ids = collect($this->pathsProp())->pluck('id')->all();

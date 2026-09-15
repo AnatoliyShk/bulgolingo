@@ -121,13 +121,14 @@ class LearningPathController extends Controller
 
     /**
      * The levels worth offering this viewer: those that at least one path they
-     * can see actually has, lowest first, so no choice leads to a guaranteed
-     * empty page. The active level is kept even when nothing has it, so the
-     * control still shows what is narrowing the page and how to undo it.
+     * can see actually has, lowest first, plus the active one even when
+     * nothing has it — there being no "every level" option, the control must
+     * always have a button pressed, and dropping an empty active level would
+     * leave it with none.
      *
      * @return array<int, array{value: string, label: string}>
      */
-    private function levelOptions(?User $user, ?LanguageLevel $active): array
+    private function levelOptions(?User $user, LanguageLevel $active): array
     {
         $present = LearningPath::visibleTo($user)
             ->whereNotNull('level')

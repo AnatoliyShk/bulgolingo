@@ -14,8 +14,9 @@ const active = computed(() => page.props.filters?.level ?? null)
 const loading = ref(false)
 
 // Switching level keeps the search and the other filters already narrowing
-// the page, so they combine instead of one silently dropping the rest. Picking
-// the level already active does nothing; "All" is how a level is taken off.
+// the page, so they combine instead of one silently dropping the rest.
+// Picking the level already active does nothing; there is no way to clear
+// the filter back to every level, since the catalog always defaults to A2.
 function choose(level) {
     if (level === active.value) {
         return
@@ -37,16 +38,6 @@ function choose(level) {
         aria-label="Filter learning paths by level"
     >
         <span class="nb-level-filter__label" aria-hidden="true">Level</span>
-        <button
-            type="button"
-            class="nb-level-filter__option"
-            :class="{ 'nb-level-filter__option--active': !active }"
-            :aria-pressed="!active"
-            :disabled="loading"
-            @click="choose(null)"
-        >
-            All
-        </button>
         <button
             v-for="level in levels"
             :key="level.value"

@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Ai\Embeddings;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class LearningPathLevelFilterTest extends TestCase
@@ -31,22 +32,28 @@ class LearningPathLevelFilterTest extends TestCase
         return collect($paths)->pluck('name')->sort()->values()->all();
     }
 
-    public function test_without_a_level_every_path_is_listed_and_none_is_active(): void
+    /**
+     * There is no "every level" option, so a visit with no ?level= defaults to
+     * A2 rather than showing everything.
+     */
+    public function test_without_a_level_the_page_defaults_to_a2(): void
     {
+        $this->path('A2 path', LanguageLevel::A2);
         $this->path('A1 path', LanguageLevel::A1);
         $this->path('No level', null);
 
         $this->get(route('learning-paths.index'))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->has('paths', 2)
-                ->where('filters.level', null));
+                ->has('paths', 1)
+                ->where('paths.0.name', 'A2 path')
+                ->where('filters.level', 'A2'));
     }
 
     /**
-     * Only levels some visible path has are offered, lowest first, so no
-     * choice leads to an empty page; a premium path's level is not offered to
-     * a guest who could never see that path.
+     * Only levels some visible path has are offered, lowest first, plus the
+     * requested level itself; a premium path's level is not offered to a
+     * guest who could never see that path.
      */
     public function test_only_the_levels_visible_paths_have_are_offered_in_order(): void
     {
@@ -56,7 +63,7 @@ class LearningPathLevelFilterTest extends TestCase
         $this->path('No level', null);
         $this->path('Premium C1', LanguageLevel::C1, LearningPathType::Premium);
 
-        $this->get(route('learning-paths.index'))
+        $this->get(route('learning-paths.index', ['level' => 'B2']))
             ->assertInertia(fn (Assert $page) => $page
                 ->where('levels', [
                     ['value' => 'A1', 'label' => 'A1 Beginner'],
@@ -64,12 +71,17 @@ class LearningPathLevelFilterTest extends TestCase
                 ]));
     }
 
-    public function test_no_levels_are_offered_when_no_path_has_one(): void
+    /**
+     * The default level is still offered as the active one even when no path
+     * has it, since the control always needs something pressed.
+     */
+    public function test_the_default_level_is_offered_even_when_no_path_has_it(): void
     {
         $this->path('No level', null);
 
         $this->get(route('learning-paths.index'))
-            ->assertInertia(fn (Assert $page) => $page->where('levels', []));
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('levels', [['value' => 'A2', 'label' => 'A2 Elementary']]));
     }
 
     public function test_a_level_keeps_only_paths_at_that_level(): void
@@ -133,17 +145,18 @@ class LearningPathLevelFilterTest extends TestCase
         ];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('unrecognisedLevels')]
-    public function test_an_unrecognised_level_is_ignored_rather_than_rejected(mixed $level): void
+    #[DataProvider('unrecognisedLevels')]
+    public function test_an_unrecognised_level_falls_back_to_a2_rather_than_being_rejected(mixed $level): void
     {
+        $this->path('A2 path', LanguageLevel::A2);
         $this->path('B1 path', LanguageLevel::B1);
-        $this->path('No level', null);
 
         $this->get(route('learning-paths.index', ['level' => $level]))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->has('paths', 2)
-                ->where('filters.level', null));
+                ->has('paths', 1)
+                ->where('paths.0.name', 'A2 path')
+                ->where('filters.level', 'A2'));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
+use App\Enums\LanguageLevel;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
@@ -46,7 +47,7 @@ class LearningPathSearchTest extends TestCase
      */
     private function pathWithExercise(string $name, ?array $vector): LearningPath
     {
-        $path = LearningPath::create(['name' => $name, 'language' => 'bg']);
+        $path = LearningPath::create(['name' => $name, 'language' => 'bg', 'level' => LanguageLevel::A2]);
         $lesson = Lesson::create(['name' => $name.' lesson', 'description' => 'D']);
         $path->lessons()->attach($lesson->id);
 
