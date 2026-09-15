@@ -1,14 +1,17 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import ThemeToggle from '@/Components/ThemeToggle.vue'
 
 const showingNavigationDropdown = ref(false);
+
+const page = usePage();
+const canAccessAdmin = computed(() => page.props.auth.isAdmin || page.props.auth.isAdminVisitor);
 </script>
 
 <template>
@@ -45,6 +48,13 @@ const showingNavigationDropdown = ref(false);
                                     :active="route().current('learning-paths.index')"
                                 >
                                     Learning Path
+                                </NavLink>
+                                <NavLink
+                                    v-if="canAccessAdmin"
+                                    :href="route('admin.index')"
+                                    :active="route().current('admin.*')"
+                                >
+                                    Admin
                                 </NavLink>
                             </div>
                         </div>
@@ -161,6 +171,13 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('learning-paths.index')"
                         >
                             Learning Path
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            v-if="canAccessAdmin"
+                            :href="route('admin.index')"
+                            :active="route().current('admin.*')"
+                        >
+                            Admin
                         </ResponsiveNavLink>
                     </div>
 

@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Middleware\EnsureIsAdmin;
+use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\HandleInertiaRequestsMiddleware;
 use App\Http\Middleware\RequestMetrics;
+use App\Http\Middleware\RestrictAdminVisitor;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,17 +19,18 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
-            \App\Http\Middleware\HandleInertiaRequests::class,
-            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            HandleInertiaRequests::class,
+            AddLinkHeadersForPreloadedAssets::class,
             RequestMetrics::class,
         ]);
 
         $middleware->web(append: [
-            \App\Http\Middleware\HandleInertiaRequestsMiddleware::class,
+            HandleInertiaRequestsMiddleware::class,
         ]);
 
         $middleware->alias([
-            'admin' => \App\Http\Middleware\EnsureIsAdmin::class,
+            'admin' => EnsureIsAdmin::class,
+            'admin.visitor-restrict' => RestrictAdminVisitor::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

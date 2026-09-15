@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['name', 'email', 'password', 'is_admin', 'experience', 'type'])]
+#[Fillable(['name', 'email', 'password', 'is_admin', 'is_admin_visitor', 'experience', 'type'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -42,6 +42,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'is_admin_visitor' => 'boolean',
             'experience' => 'integer',
             'streak_counter' => 'integer',
             'latest_exercise_at' => 'datetime',
@@ -93,6 +94,22 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return (bool) $this->is_admin;
+    }
+
+    public function isAdminVisitor(): bool
+    {
+        return (bool) $this->is_admin_visitor;
+    }
+
+    /**
+     * Whether this user may enter the admin panel at all, as a full admin or
+     * as a read-only visitor. Gates the `admin` route middleware; the visitor's
+     * further restrictions (no user records, no writes) are enforced separately
+     * by RestrictAdminVisitor.
+     */
+    public function canAccessAdminPanel(): bool
+    {
+        return $this->isAdmin() || $this->isAdminVisitor();
     }
 
     public function learningPaths()

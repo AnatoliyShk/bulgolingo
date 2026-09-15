@@ -95,7 +95,7 @@ Route::get('/profile/{user}', [ProfileController::class, 'publicShow'])
     ->whereNumber('user')
     ->name('profile.public');
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => Inertia::render('Admin/Index'))->name('index');
     Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('metrics/admin', [AdminMetricsController::class, 'adminRequests'])->name('metrics.admin');

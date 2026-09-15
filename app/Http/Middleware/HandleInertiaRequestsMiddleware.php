@@ -29,6 +29,7 @@ class HandleInertiaRequestsMiddleware extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'isAdmin' => $request->user()?->isAdmin() ?? false,
+                'isAdminVisitor' => $request->user()?->isAdminVisitor() ?? false,
             ],
         ]);
     }

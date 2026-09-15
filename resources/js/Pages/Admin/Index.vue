@@ -1,8 +1,12 @@
 <script setup>
 import '@/assets/scss/components/admin/panel.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+
+const page = usePage();
+const isAdminVisitor = computed(() => page.props.auth.isAdminVisitor);
 </script>
 
 <template>
@@ -13,6 +17,11 @@ import Breadcrumb from '@/Components/Breadcrumb.vue';
 
         <div class="admin-panel__body">
             <div class="admin-panel__container">
+
+                <p v-if="isAdminVisitor" class="admin-panel__notice">
+                    Read-only visitor access: you can browse admin pages, but user
+                    records are hidden and no changes can be saved.
+                </p>
 
                 <section>
                     <h2 class="admin-panel__section-label">Learning Path</h2>
@@ -50,7 +59,7 @@ import Breadcrumb from '@/Components/Breadcrumb.vue';
                     </div>
                 </section>
 
-                <section>
+                <section v-if="!isAdminVisitor">
                     <h2 class="admin-panel__section-label">Users</h2>
                     <div class="admin-panel__grid">
                         <Link :href="route('admin.users.index')" class="admin-panel__card">
