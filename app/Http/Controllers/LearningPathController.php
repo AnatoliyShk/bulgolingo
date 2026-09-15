@@ -11,6 +11,7 @@ use App\Services\SiteSettings;
 use App\Support\LearningPathFilters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -41,6 +42,13 @@ class LearningPathController extends Controller
      * The level filters every section the same way, on its own or together
      * with a search. The sort orders every section by exercise count instead,
      * unless a search is already ordering the page by relevance.
+     *
+     * The level has no hardcoded default. A ?level in the address wins; failing
+     * that, the level cookie from an earlier visit; failing that, there is no
+     * level at all, and the page prompts the visitor to choose one. Whatever a
+     * request resolves the level to is re-queued as that cookie, so a level
+     * picked once — by the query string, the filter, or the prompt — is still
+     * the default on a later visit whose address carries no ?level.
      */
     public function index(IndexLearningPathRequest $request, LearningPathSearch $search, SiteSettings $settings)
     {
@@ -50,6 +58,10 @@ class LearningPathController extends Controller
         $ranked = filled($query) ? $search->rankedPathIds($query) : null;
         $filters = LearningPathFilters::fromRequest($request);
         $exerciseCounts = $this->exerciseCounts();
+
+        if ($filters->level !== null) {
+            Cookie::queue(LearningPathFilters::LEVEL_COOKIE, $filters->level->value, 60 * 24 * 365);
+        }
 
         $enrolled = $user ? $user->enrolledPathsWithProgress() : collect();
         $enrolledIds = $enrolled->pluck('id')->all();
@@ -128,7 +140,7 @@ class LearningPathController extends Controller
      *
      * @return array<int, array{value: string, label: string}>
      */
-    private function levelOptions(?User $user, LanguageLevel $active): array
+    private function levelOptions(?User $user, ?LanguageLevel $active): array
     {
         $present = LearningPath::visibleTo($user)
             ->whereNotNull('level')

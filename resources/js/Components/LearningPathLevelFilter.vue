@@ -16,7 +16,8 @@ const loading = ref(false)
 // Switching level keeps the search and the other filters already narrowing
 // the page, so they combine instead of one silently dropping the rest.
 // Picking the level already active does nothing; there is no way to clear
-// the filter back to every level, since the catalog always defaults to A2.
+// the filter back to every level — that state only exists before the
+// visitor has ever chosen one, and LearningPathLevelPrompt is what asks.
 function choose(level) {
     if (level === active.value) {
         return
