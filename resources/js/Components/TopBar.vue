@@ -17,7 +17,7 @@ const page = usePage()
 
 const appName = computed(() => page.props.appName)
 const isAuthenticated = computed(() => !!page.props.auth?.user)
-const isAdmin = computed(() => !!page.props.auth?.isAdmin)
+const canAccessAdmin = computed(() => !!(page.props.auth?.isAdmin || page.props.auth?.isAdminVisitor))
 
 const mobileNavOpen = ref(false)
 const closeMobileNav = () => { mobileNavOpen.value = false }
@@ -33,7 +33,7 @@ const links = computed(() => isAuthenticated.value
         { label: 'Learning paths', href: '/learning-paths' },
         { label: 'Profile', href: '/profile' },
         { label: 'Stats', href: '/stats' },
-        ...(isAdmin.value ? [{ label: 'Admin', href: '/admin' }] : []),
+        ...(canAccessAdmin.value ? [{ label: 'Admin', href: '/admin' }] : []),
     ]
     : [
         { label: 'Learning paths', href: '/learning-paths' },

@@ -9,7 +9,7 @@ class EnsureIsAdmin
 {
     public function handle(Request $request, Closure $next)
     {
-        if (! $request->user()?->isAdmin()) {
+        if (! $request->user()?->canAccessAdminPanel()) {
             abort(403, 'Forbidden');
         }
 
