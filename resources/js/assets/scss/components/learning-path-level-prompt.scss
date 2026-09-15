@@ -1,0 +1,83 @@
+/* ══════════════ Learning-path level prompt ══════════════ */
+/* Blocks the catalog on a first visit, before any level has ever been
+   chosen, until the visitor picks one. Reads the neo-brutalist tokens from
+   its host (.nb-paths), with fallbacks so it still renders outside one. */
+
+.nb-level-prompt {
+    max-width: 26rem;
+    width: calc(100% - 2rem);
+    margin: auto;
+    padding: 1.75rem;
+    border: var(--border, 3px solid #14110b);
+    border-radius: var(--radius, 12px);
+    background: var(--paper, #fffaf0);
+    color: var(--ink, #14110b);
+    box-shadow: var(--shadow, 6px 6px 0 0 #14110b);
+    font-family: 'Manrope', system-ui, sans-serif;
+}
+
+.nb-level-prompt::backdrop {
+    background: rgba(20, 17, 11, 0.6);
+}
+
+.nb-level-prompt__title {
+    margin: 0 0 0.5rem;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+}
+
+.nb-level-prompt__sub {
+    margin: 0 0 1.25rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.nb-level-prompt__options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+/* A fixed box regardless of row occupancy — flex-grow would otherwise stretch
+   whichever buttons land alone on the last row, and the label is just the
+   level code (the full name lives in aria-label/title) so none of them ever
+   wrap to a second line and grow taller than the rest. */
+.nb-level-prompt__option {
+    flex: 0 0 auto;
+    width: 4.2rem;
+    height: 3.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--ink, #14110b);
+    background: var(--paper, #fffaf0);
+    border: var(--border, 3px solid #14110b);
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm, 4px 4px 0 0 #14110b);
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.nb-level-prompt__option:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 0 var(--ink, #14110b);
+}
+
+.nb-level-prompt__option:focus-visible {
+    outline: 3px solid var(--blue, #5b8def);
+    outline-offset: 3px;
+}
+
+.nb-level-prompt__option:disabled {
+    cursor: progress;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-level-prompt__option { transition: none; }
+}

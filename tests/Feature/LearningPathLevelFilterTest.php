@@ -9,6 +9,7 @@ use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
+use App\Support\LearningPathFilters;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Ai\Embeddings;
@@ -33,10 +34,11 @@ class LearningPathLevelFilterTest extends TestCase
     }
 
     /**
-     * There is no "every level" option, so a visit with no ?level= defaults to
-     * A2 rather than showing everything.
+     * With no ?level= and no cookie from an earlier visit, there is no level
+     * yet — every path is listed and none is active, which is what tells the
+     * page to prompt the visitor for one.
      */
-    public function test_without_a_level_the_page_defaults_to_a2(): void
+    public function test_without_a_level_or_cookie_every_path_is_listed_and_none_is_active(): void
     {
         $this->path('A2 path', LanguageLevel::A2);
         $this->path('A1 path', LanguageLevel::A1);
@@ -45,9 +47,68 @@ class LearningPathLevelFilterTest extends TestCase
         $this->get(route('learning-paths.index'))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
+                ->has('paths', 3)
+                ->where('filters.level', null));
+    }
+
+    /**
+     * A level remembered in the cookie from an earlier visit is used as the
+     * default once the address carries none of its own.
+     */
+    public function test_a_level_cookie_is_used_when_the_query_has_none(): void
+    {
+        $this->path('B1 path', LanguageLevel::B1);
+        $this->path('A1 path', LanguageLevel::A1);
+
+        $this->withCookie(LearningPathFilters::LEVEL_COOKIE, 'B1')
+            ->get(route('learning-paths.index'))
+            ->assertInertia(fn (Assert $page) => $page
                 ->has('paths', 1)
-                ->where('paths.0.name', 'A2 path')
-                ->where('filters.level', 'A2'));
+                ->where('paths.0.name', 'B1 path')
+                ->where('filters.level', 'B1'));
+    }
+
+    /**
+     * A ?level= in the address always wins over whatever the cookie
+     * remembers, the same way any other filter in the address bar would.
+     */
+    public function test_a_query_level_overrides_the_cookie(): void
+    {
+        $this->path('B1 path', LanguageLevel::B1);
+        $this->path('A1 path', LanguageLevel::A1);
+
+        $this->withCookie(LearningPathFilters::LEVEL_COOKIE, 'B1')
+            ->get(route('learning-paths.index', ['level' => 'A1']))
+            ->assertInertia(fn (Assert $page) => $page
+                ->has('paths', 1)
+                ->where('paths.0.name', 'A1 path')
+                ->where('filters.level', 'A1'));
+    }
+
+    /**
+     * Whatever level a request resolves to — from the query string here — is
+     * re-queued as the cookie, so it is still the default on a later visit.
+     */
+    public function test_a_resolved_level_is_remembered_in_a_cookie(): void
+    {
+        $this->path('B1 path', LanguageLevel::B1);
+
+        $response = $this->get(route('learning-paths.index', ['level' => 'B1']));
+
+        $response->assertCookie(LearningPathFilters::LEVEL_COOKIE, 'B1');
+    }
+
+    /**
+     * With no level to resolve — no query, no cookie — nothing is queued
+     * either; the prompt, not the server, is what will eventually set it.
+     */
+    public function test_no_cookie_is_queued_without_a_level_to_remember(): void
+    {
+        $this->path('A1 path', LanguageLevel::A1);
+
+        $response = $this->get(route('learning-paths.index'));
+
+        $response->assertCookieMissing(LearningPathFilters::LEVEL_COOKIE);
     }
 
     /**
@@ -72,16 +133,15 @@ class LearningPathLevelFilterTest extends TestCase
     }
 
     /**
-     * The default level is still offered as the active one even when no path
-     * has it, since the control always needs something pressed.
+     * With no path at any level, there is nothing to offer — including no
+     * active level to keep, since none is active yet either.
      */
-    public function test_the_default_level_is_offered_even_when_no_path_has_it(): void
+    public function test_no_levels_are_offered_when_no_path_has_one(): void
     {
         $this->path('No level', null);
 
         $this->get(route('learning-paths.index'))
-            ->assertInertia(fn (Assert $page) => $page
-                ->where('levels', [['value' => 'A2', 'label' => 'A2 Elementary']]));
+            ->assertInertia(fn (Assert $page) => $page->where('levels', []));
     }
 
     public function test_a_level_keeps_only_paths_at_that_level(): void
@@ -146,7 +206,7 @@ class LearningPathLevelFilterTest extends TestCase
     }
 
     #[DataProvider('unrecognisedLevels')]
-    public function test_an_unrecognised_level_falls_back_to_a2_rather_than_being_rejected(mixed $level): void
+    public function test_an_unrecognised_level_is_ignored_rather_than_rejected(mixed $level): void
     {
         $this->path('A2 path', LanguageLevel::A2);
         $this->path('B1 path', LanguageLevel::B1);
@@ -154,9 +214,8 @@ class LearningPathLevelFilterTest extends TestCase
         $this->get(route('learning-paths.index', ['level' => $level]))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->has('paths', 1)
-                ->where('paths.0.name', 'A2 path')
-                ->where('filters.level', 'A2'));
+                ->has('paths', 2)
+                ->where('filters.level', null));
     }
 
     /**

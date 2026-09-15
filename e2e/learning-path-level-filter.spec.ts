@@ -105,7 +105,7 @@ const a2Button = (page: Page) => filter(page).getByRole('button', { name: 'A2 El
 const b1Button = (page: Page) => filter(page).getByRole('button', { name: 'B1 Intermediate' });
 
 test.describe('Learning path level filter', () => {
-    test('defaults to A2 with no way to clear it back to every level', async ({ page }) => {
+    test('has no way to clear a chosen level back to every level', async ({ page }) => {
         await openCatalog(page);
 
         await expect(filter(page)).toBeVisible();
