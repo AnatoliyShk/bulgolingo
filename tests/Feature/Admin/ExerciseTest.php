@@ -73,7 +73,7 @@ class ExerciseTest extends TestCase
 
     public function test_admin_can_create_exercise(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $response = $this
@@ -107,7 +107,7 @@ class ExerciseTest extends TestCase
 
     public function test_exercise_creation_requires_valid_data(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $response = $this
@@ -144,7 +144,7 @@ class ExerciseTest extends TestCase
 
     public function test_non_admin_cannot_create_exercise(): void
     {
-        $user = User::factory()->create(['is_admin' => false]);
+        $user = User::factory()->create();
         $lesson = $this->lesson();
 
         $response = $this
@@ -168,7 +168,7 @@ class ExerciseTest extends TestCase
     {
         Storage::fake(Images::DISK);
 
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $response = $this
@@ -197,7 +197,7 @@ class ExerciseTest extends TestCase
 
     public function test_image_matching_exercise_requires_image(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $response = $this
@@ -221,7 +221,7 @@ class ExerciseTest extends TestCase
     {
         Storage::fake(Images::DISK);
 
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $exercise = $this->exerciseFor($lesson, [
@@ -259,7 +259,7 @@ class ExerciseTest extends TestCase
     {
         Storage::fake(Images::DISK);
 
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $exercise = $this->exerciseFor($lesson, [
@@ -294,7 +294,7 @@ class ExerciseTest extends TestCase
     {
         Storage::fake(Images::DISK);
 
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $exercise = $this->exerciseFor($lesson, [
@@ -326,7 +326,7 @@ class ExerciseTest extends TestCase
 
     public function test_admin_can_create_word_pair_exercise_with_the_minimum_pairs(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $response = $this
@@ -352,7 +352,7 @@ class ExerciseTest extends TestCase
 
     public function test_word_pair_exercise_rejects_fewer_than_the_minimum_pairs(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $response = $this
@@ -373,7 +373,7 @@ class ExerciseTest extends TestCase
 
     public function test_word_pair_exercise_rejects_a_repeated_word(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $pairs = $this->wordPairs();
@@ -397,7 +397,7 @@ class ExerciseTest extends TestCase
 
     public function test_word_pair_exercise_cannot_drop_below_the_minimum_on_update(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $exercise = $this->exerciseFor($lesson, [
@@ -428,7 +428,7 @@ class ExerciseTest extends TestCase
 
     public function test_word_pair_exercise_can_be_updated_with_enough_pairs(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $exercise = $this->exerciseFor($lesson, [
@@ -460,7 +460,7 @@ class ExerciseTest extends TestCase
 
     public function test_shuffled_column_order_is_stored_on_the_clause(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $response = $this
@@ -490,7 +490,7 @@ class ExerciseTest extends TestCase
      */
     public function test_clause_without_an_order_stays_without_one(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $this
@@ -517,7 +517,7 @@ class ExerciseTest extends TestCase
      */
     public function test_every_update_deals_the_columns_again(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $exercise = $this->wordPairExercise();
 
         $before = $exercise->clause['order'];
@@ -545,7 +545,7 @@ class ExerciseTest extends TestCase
 
     public function test_update_deals_an_order_to_a_clause_that_had_none(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $exercise = $this->wordPairExercise(withOrder: false);
 
         $this->assertArrayNotHasKey('order', $exercise->clause);
@@ -586,7 +586,7 @@ class ExerciseTest extends TestCase
 
     public function test_a_dealt_order_covers_a_pair_added_in_the_same_update(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $exercise = $this->wordPairExercise();
 
         $this
@@ -623,7 +623,7 @@ class ExerciseTest extends TestCase
 
     public function test_stored_order_drops_indices_no_pair_answers_to(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
         $lesson = $this->lesson();
 
         $exercise = $this->exerciseFor($lesson, [

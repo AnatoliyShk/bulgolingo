@@ -37,10 +37,10 @@ defineProps({
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                                     <span
-                                        v-if="user.is_admin"
+                                        v-if="user.role.name !== 'student'"
                                         class="inline-flex rounded-full bg-blue-100 px-2 text-xs font-semibold leading-5 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                                    >Admin</span>
-                                    <span v-else>User</span>
+                                    >{{ user.role.label }}</span>
+                                    <span v-else>{{ user.role.label }}</span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                                     <span

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleName;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -20,8 +22,7 @@ class AdminVisitorSeeder extends Seeder
             [
                 'name' => 'admin',
                 'password' => 'admin',
-                'is_admin' => false,
-                'is_admin_visitor' => true,
+                'role_id' => Role::named(RoleName::AdminVisitor)->id,
                 'email_verified_at' => now(),
             ]
         );
