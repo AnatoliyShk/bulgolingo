@@ -19,7 +19,7 @@ class LearningPathExerciseSortTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function path(string $name, int $exercises, LearningPathType $type = LearningPathType::Regular, ?LanguageLevel $level = null): LearningPath
+    private function path(string $name, int $exercises, LearningPathType $type = LearningPathType::Regular, LanguageLevel $level = LanguageLevel::A2): LearningPath
     {
         $path = LearningPath::create(['name' => $name, 'language' => 'bg', 'type' => $type, 'level' => $level]);
         $lesson = Lesson::create(['name' => "{$name} lesson", 'description' => 'D']);

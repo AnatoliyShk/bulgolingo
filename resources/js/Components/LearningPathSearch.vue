@@ -69,7 +69,7 @@ function clear() {
                 name="q"
                 class="nb-path-search__input"
                 :class="{ 'nb-path-search__input--invalid': error }"
-                placeholder="Search by topic, e.g. food or greetings"
+                placeholder="Search by topic, e.g. 'How to greet people'"
                 aria-label="Search learning paths by topic"
                 :aria-invalid="!!error"
                 :aria-describedby="error ? 'nb-path-search-error' : undefined"

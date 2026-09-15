@@ -26,17 +26,23 @@ final readonly class LearningPathFilters
     private const SORTS = ['exercises_asc', 'exercises_desc'];
 
     /**
+     * There is no "every level" option — a level always narrows the catalog —
+     * so a fresh visit needs a level to start from. A2 is it.
+     */
+    private const DEFAULT_LEVEL = LanguageLevel::A2;
+
+    /**
      * @param  'exercises_asc'|'exercises_desc'  $sort
      */
     public function __construct(
-        public ?LanguageLevel $level = null,
+        public LanguageLevel $level = self::DEFAULT_LEVEL,
         public string $sort = self::DEFAULT_SORT,
     ) {}
 
     /**
      * Read leniently, like any filter in the address bar: a value that does
-     * not match a known option falls back to the default rather than being
-     * rejected.
+     * not match a known level — including a missing one — falls back to the
+     * default (A2) rather than being rejected.
      */
     public static function fromRequest(Request $request): self
     {
@@ -44,7 +50,7 @@ final readonly class LearningPathFilters
         $sort = $request->query('sort');
 
         return new self(
-            is_string($level) ? LanguageLevel::tryFrom($level) : null,
+            (is_string($level) ? LanguageLevel::tryFrom($level) : null) ?? self::DEFAULT_LEVEL,
             is_string($sort) && in_array($sort, self::SORTS, true) ? $sort : self::DEFAULT_SORT,
         );
     }
@@ -55,7 +61,7 @@ final readonly class LearningPathFilters
      */
     public function applyToQuery(Builder $query): Builder
     {
-        return $query->when($this->level, fn (Builder $q) => $q->where('level', $this->level));
+        return $query->where('level', $this->level);
     }
 
     /**
@@ -68,7 +74,7 @@ final readonly class LearningPathFilters
     public function applyToCollection(Collection $paths): Collection
     {
         return $paths
-            ->filter(fn (LearningPath $path) => $this->level === null || $path->level === $this->level)
+            ->filter(fn (LearningPath $path) => $path->level === $this->level)
             ->values();
     }
 
@@ -95,12 +101,12 @@ final readonly class LearningPathFilters
     }
 
     /**
-     * @return array{level: ?string, sort: string}
+     * @return array{level: string, sort: string}
      */
     public function toArray(): array
     {
         return [
-            'level' => $this->level?->value,
+            'level' => $this->level->value,
             'sort' => $this->sort,
         ];
     }

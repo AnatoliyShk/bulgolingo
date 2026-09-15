@@ -14,7 +14,7 @@ const props = defineProps({
     unfinishedPaths: { type: Array, default: () => [] },
     finishedPaths: { type: Array, default: () => [] },
     search: { type: Object, default: () => ({ enabled: false, query: '', unavailable: false }) },
-    filters: { type: Object, default: () => ({ level: null, sort: 'exercises_desc' }) },
+    filters: { type: Object, default: () => ({ level: 'A2', sort: 'exercises_desc' }) },
 })
 
 const { theme } = useTheme()
@@ -22,15 +22,14 @@ const { theme } = useTheme()
 const hasEnrolled = computed(() => props.unfinishedPaths.length > 0 || props.finishedPaths.length > 0)
 const hasAny = computed(() => hasEnrolled.value || (props.paths?.length ?? 0) > 0)
 
-// While a search or a level narrows the page, an empty catalog means nothing
-// new matched rather than that the viewer has started every path, so the
-// section drops out. A search says so in its own status line; a level alone
-// has none, so the page says it when no section has anything left. The sort
+// A level always narrows the page now — there being no "every level" choice
+// — so an empty catalog section always means nothing at this level matched,
+// never that nothing exists to show. A search says so in its own status
+// line, so the level message is held back while one is in effect. The sort
 // only orders the page — it never empties it, so it plays no part here.
 const isSearching = computed(() => !!props.search.query && !props.search.unavailable)
-const isNarrowed = computed(() => isSearching.value || !!props.filters.level)
-const showCatalog = computed(() => !isNarrowed.value || (props.paths && props.paths.length > 0))
-const levelIsEmpty = computed(() => !!props.filters.level && !isSearching.value && !hasAny.value)
+const showCatalog = computed(() => (props.paths?.length ?? 0) > 0)
+const levelIsEmpty = computed(() => !isSearching.value && !hasAny.value)
 </script>
 
 <template>
@@ -73,7 +72,7 @@ const levelIsEmpty = computed(() => !!props.filters.level && !isSearching.value 
             <section v-if="showCatalog" class="nb-paths__section">
                 <h2 v-if="hasEnrolled" class="nb-paths__section-title">Not started yet</h2>
 
-                <div v-if="paths && paths.length" class="nb-paths__grid">
+                <div class="nb-paths__grid">
                     <div
                         v-for="(path, i) in paths"
                         :key="path.id"
@@ -83,10 +82,6 @@ const levelIsEmpty = computed(() => !!props.filters.level && !isSearching.value 
                         <LearningPathCardMini :path="path" />
                     </div>
                 </div>
-
-                <p v-else class="nb-paths__empty">
-                    {{ hasEnrolled ? "You've started every path we have. More are on the way." : 'No learning paths available yet.' }}
-                </p>
             </section>
 
             <section v-if="finishedPaths.length" class="nb-paths__section">

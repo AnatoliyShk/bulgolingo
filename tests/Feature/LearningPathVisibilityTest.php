@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\LanguageLevel;
 use App\Enums\LearningPathType;
 use App\Enums\UserType;
 use App\Models\LearningPath;
@@ -16,7 +17,8 @@ class LearningPathVisibilityTest extends TestCase
 
     /**
      * One path of each type, named after the type so an assertion can say which
-     * one leaked without holding on to ids.
+     * one leaked without holding on to ids. All share the catalog's default
+     * level so the level filter never confounds a type-visibility assertion.
      *
      * @return array<string, LearningPath>
      */
@@ -29,6 +31,7 @@ class LearningPathVisibilityTest extends TestCase
                 'name' => $type->value.' path',
                 'language' => 'bg',
                 'type' => $type->value,
+                'level' => LanguageLevel::A2,
             ]);
         }
 
