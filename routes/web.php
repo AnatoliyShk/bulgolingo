@@ -75,7 +75,7 @@ Route::post('/learning-paths/{learningPath}/restart', [LearningPathController::c
     ->name('learning-paths.restart');
 
 Route::get('/stats', [StatsController::class, 'show'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'throttle:stats-view'])
     ->name('stats.show');
 
 Route::middleware('auth')->group(function () {
@@ -118,7 +118,7 @@ Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')-
 
 Route::resource('exercise', ExerciseController::class);
 Route::post('exercise/{exercise}/complete', [ExerciseController::class, 'complete'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'throttle:exercise-completion'])
     ->name('exercise.complete');
 Route::post('lesson/{lesson}/restart', [LessonController::class, 'restart'])->middleware('auth')->name('lesson.restart');
 Route::get('lesson/{lesson}/complete', [LessonController::class, 'complete'])->middleware('auth')->name('lesson.complete');
