@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ExerciseType;
 use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LexemaReviewGrade;
+use App\Models\Concerns\HasUuidV7;
 use App\Observers\ExerciseObserver;
 use App\Services\CompletionCacheSync;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\DB;
 #[Hidden(['embedding'])]
 class Exercise extends Model
 {
+    use HasUuidV7;
+
     protected function casts(): array
     {
         return [

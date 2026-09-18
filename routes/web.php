@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BotController as AdminBotController;
 use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
 use App\Http\Controllers\Admin\LearningPathController as AdminLearningPathController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
+use App\Http\Controllers\Admin\MessengerController as AdminMessengerController;
 use App\Http\Controllers\Admin\MetricsController as AdminMetricsController;
 use App\Http\Controllers\Admin\ScriptedDialogueController as AdminScriptedDialogueController;
 use App\Http\Controllers\Admin\ScriptedLineController as AdminScriptedLineController;
@@ -114,6 +115,7 @@ Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')-
     Route::resource('bots', AdminBotController::class);
     Route::resource('scripted-dialogues', AdminScriptedDialogueController::class);
     Route::resource('scripted-lines', AdminScriptedLineController::class);
+    Route::resource('messengers', AdminMessengerController::class);
 });
 
 Route::resource('exercise', ExerciseController::class);

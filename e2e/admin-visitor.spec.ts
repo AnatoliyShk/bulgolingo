@@ -49,6 +49,11 @@ test.describe('Admin visitor role', () => {
             expect(response?.status()).toBe(403);
         });
 
+        test('cannot view the messengers list', async ({ page }) => {
+            const response = await page.goto(`${BASE}/admin/messengers`);
+            expect(response?.status()).toBe(403);
+        });
+
         test('can browse a read-only admin page, such as web vitals', async ({ page }) => {
             const response = await page.goto(`${BASE}/admin/vitals`);
             expect(response?.status()).toBe(200);
