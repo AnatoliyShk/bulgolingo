@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Enums\ExerciseType;
 use App\Enums\RoleName;
 use App\Enums\UserType;
+use App\Models\Concerns\HasUuidV7;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Storage;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasUuidV7, Notifiable;
 
     /**
      * Mirrors the database default so a freshly created user reads 0, not null.

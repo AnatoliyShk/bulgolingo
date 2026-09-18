@@ -3,9 +3,12 @@
 namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
+use App\Enums\RoleName;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
@@ -15,8 +18,9 @@ class UuidBackfillTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_creating_a_learning_path_lesson_and_exercise_stamps_a_v7_uuid(): void
+    public function test_creating_a_user_learning_path_lesson_and_exercise_stamps_a_v7_uuid(): void
     {
+        $user = User::factory()->create();
         $path = LearningPath::create(['name' => 'Greetings', 'language' => 'bg']);
         $lesson = Lesson::create(['name' => 'L', 'description' => 'D']);
         $exercise = Exercise::create([
@@ -29,7 +33,7 @@ class UuidBackfillTest extends TestCase
             ],
         ]);
 
-        foreach ([$path, $lesson, $exercise] as $model) {
+        foreach ([$user, $path, $lesson, $exercise] as $model) {
             $this->assertNotNull($model->uuid);
             $this->assertSame(7, Uuid::fromString($model->uuid)->getFields()->getVersion());
         }
@@ -42,6 +46,12 @@ class UuidBackfillTest extends TestCase
      */
     public function test_backfill_command_fills_rows_missing_a_uuid(): void
     {
+        $userId = DB::table('users')->insertGetId([
+            'name' => 'Legacy',
+            'email' => 'legacy-uuid@example.com',
+            'password' => 'hash',
+            'role_id' => Role::named(RoleName::Student)->id,
+        ]);
         $pathId = DB::table('learning_paths')->insertGetId(['name' => 'Legacy', 'language' => 'bg']);
         $lessonId = DB::table('lessons')->insertGetId(['name' => 'Legacy', 'description' => 'D']);
         $exerciseId = DB::table('exercises')->insertGetId([
@@ -56,11 +66,12 @@ class UuidBackfillTest extends TestCase
 
         $this->artisan('uuid:backfill')->assertSuccessful();
 
+        $user = DB::table('users')->find($userId);
         $path = DB::table('learning_paths')->find($pathId);
         $lesson = DB::table('lessons')->find($lessonId);
         $exercise = DB::table('exercises')->find($exerciseId);
 
-        foreach ([$path->uuid, $lesson->uuid, $exercise->uuid] as $uuid) {
+        foreach ([$user->uuid, $path->uuid, $lesson->uuid, $exercise->uuid] as $uuid) {
             $this->assertNotNull($uuid);
             $this->assertSame(7, Uuid::fromString($uuid)->getFields()->getVersion());
         }
