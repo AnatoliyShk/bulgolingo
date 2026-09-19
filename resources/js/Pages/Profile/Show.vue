@@ -158,11 +158,11 @@ const isPremium = computed(() => props.user?.type === 'premium')
                     <LearningPathCard :path="activeLearningPath" />
 
                     <div class="nb-prof__path-links">
-                        <Link :href="route('learning-paths.enrolled')" class="nb-prof__path-link">
+                        <Link :href="route('learning-paths.index', { is_finished: 0 })" class="nb-prof__path-link">
                             All enrolled
                             <span v-if="enrolledCount" class="nb-prof__path-link-count">{{ enrolledCount }}</span>
                         </Link>
-                        <Link :href="route('learning-paths.finished')" class="nb-prof__path-link">
+                        <Link :href="route('learning-paths.index', { is_finished: 1 })" class="nb-prof__path-link">
                             All finished
                             <span v-if="finishedCount" class="nb-prof__path-link-count">{{ finishedCount }}</span>
                         </Link>
@@ -174,7 +174,7 @@ const isPremium = computed(() => props.user?.type === 'premium')
                     <p class="nb-prof__empty-sub">{{ finishedCount > 0 ? 'You have finished all your paths. Browse new ones!' : "You haven't picked a learning path yet." }}</p>
                     <div class="nb-prof__empty-actions">
                         <Link :href="route('learning-paths.index')" class="nb-prof__empty-btn">{{ finishedCount > 0 ? 'Browse paths' : 'Choose a path' }} <font-awesome-icon icon="arrow-right-long" /></Link>
-                        <Link v-if="finishedCount > 0" :href="route('learning-paths.finished')" class="nb-prof__empty-btn nb-prof__empty-btn--secondary">All finished <font-awesome-icon icon="arrow-right-long" /></Link>
+                        <Link v-if="finishedCount > 0" :href="route('learning-paths.index', { is_finished: 1 })" class="nb-prof__empty-btn nb-prof__empty-btn--secondary">All finished <font-awesome-icon icon="arrow-right-long" /></Link>
                     </div>
                 </div>
             </section>

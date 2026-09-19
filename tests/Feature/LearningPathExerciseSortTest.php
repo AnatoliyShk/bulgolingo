@@ -132,15 +132,10 @@ class LearningPathExerciseSortTest extends TestCase
     }
 
     #[DataProvider('unrecognisedSorts')]
-    public function test_an_unrecognised_sort_falls_back_to_the_default_rather_than_being_rejected(mixed $sort): void
+    public function test_an_unrecognised_sort_is_rejected(mixed $sort): void
     {
-        $this->seedThreeSizes();
-
         $this->get(route('learning-paths.index', ['sort' => $sort]))
-            ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
-                ->has('paths', 3)
-                ->where('filters.sort', 'exercises_desc'));
+            ->assertSessionHasErrors('sort');
     }
 
     public function test_the_signed_in_viewers_own_paths_are_sorted_too(): void

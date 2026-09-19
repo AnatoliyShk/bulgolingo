@@ -206,16 +206,10 @@ class LearningPathLevelFilterTest extends TestCase
     }
 
     #[DataProvider('unrecognisedLevels')]
-    public function test_an_unrecognised_level_is_ignored_rather_than_rejected(mixed $level): void
+    public function test_an_unrecognised_level_is_rejected(mixed $level): void
     {
-        $this->path('A2 path', LanguageLevel::A2);
-        $this->path('B1 path', LanguageLevel::B1);
-
         $this->get(route('learning-paths.index', ['level' => $level]))
-            ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
-                ->has('paths', 2)
-                ->where('filters.level', null));
+            ->assertSessionHasErrors('level');
     }
 
     /**

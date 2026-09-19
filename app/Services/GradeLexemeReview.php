@@ -10,8 +10,10 @@ use App\Models\UserLexema;
 use App\Support\Fsrs\FsrsScheduler;
 use App\Support\Fsrs\MemoryState;
 use App\Support\Fsrs\OutcomeToRating;
+use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Facades\DB;
 
+#[Singleton]
 final class GradeLexemeReview
 {
     public function __construct(

@@ -13,13 +13,18 @@ use Illuminate\Console\Command;
 #[Description('Queue embedding generation for exercises that have none')]
 class GenerateExerciseEmbeddingsCommand extends Command
 {
+    public function __construct(private readonly SiteSettings $settings)
+    {
+        parent::__construct();
+    }
+
     /**
      * Refuses to queue anything while embedding search is turned off in the
      * admin settings, since each job would only skip itself when it ran.
      */
-    public function handle(SiteSettings $settings): int
+    public function handle(): int
     {
-        if (! $settings->embeddingSearchEnabled()) {
+        if (! $this->settings->embeddingSearchEnabled()) {
             $this->warn('Embedding search is turned off in the admin settings. Turn it on to generate embeddings.');
 
             return self::FAILURE;

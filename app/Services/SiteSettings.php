@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Setting;
+use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +14,12 @@ use Illuminate\Support\Facades\DB;
  * Every setting is read on the public catalog page, so all of them are read
  * in one query and cached until the next save rather than queried per request;
  * a save clears the cache, so a change applies from the next request on.
+ *
+ * A container singleton, so it must hold no values of its own: a long-lived
+ * queue worker keeps the one instance for its whole life, and only a read
+ * through the shared cache sees a save made by another process.
  */
+#[Singleton]
 class SiteSettings
 {
     public const EMBEDDING_SEARCH_ENABLED = 'embedding_search.enabled';

@@ -8,21 +8,105 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    services:
+      pgsql:
+        image: pgvector/pgvector:pg18
+        env:
+          POSTGRES_USER: sail
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sail -d e2e"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      APP_URL: http://localhost:8000
+      APP_ENV: local
+      APP_DEBUG: true
+      DB_CONNECTION: pgsql
+      DB_URL: ''
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: e2e
+      DB_USERNAME: sail
+      DB_PASSWORD: password
+      REDIS_CLIENT: phpredis
+      REDIS_URL: ''
+      REDIS_USERNAME: ''
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ''
+      MAIL_MAILER: log
+      PHP_CLI_SERVER_WORKERS: 4
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      TELESCOPE_ENABLED: false
+      GEMINI_API_KEY: ''
     steps:
     - uses: actions/checkout@v4
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.5'
+        extensions: pdo_pgsql, pgsql, redis
+        coverage: none
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
         cache: 'yarn'
-    - name: Install dependencies
+    - name: Install PHP dependencies
+      run: composer install --no-interaction --prefer-dist --no-progress
+    - name: Install JS dependencies
       run: yarn install --frozen-lockfile
+    - name: Build assets
+      run: yarn build
+    - name: Prepare app
+      run: |
+        cp .env.example .env
+        php artisan key:generate
+        php artisan migrate --force
+        php artisan db:seed --class=E2eSeeder --force
+        php artisan storage:link
+        php artisan e2e:fixture-env | tee -a "$GITHUB_ENV"
+    - name: Start app
+      run: |
+        php artisan serve --host=127.0.0.1 --port=8000 --no-reload > storage/logs/serve.log 2>&1 &
+        npx wait-on -t 60000 http://127.0.0.1:8000
     - name: Install Playwright Browsers
-      run: yarn playwright install --with-deps
-    - name: Run Playwright tests
-      run: yarn playwright test
+      run: yarn playwright install --with-deps chromium webkit
+    - name: Run Playwright tests (chromium)
+      run: yarn playwright test --project=chromium
+      env:
+        PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/chromium
+    - name: Reseed database
+      if: ${{ !cancelled() }}
+      run: |
+        php artisan migrate:fresh --force
+        php artisan cache:clear redis
+        php artisan db:seed --class=E2eSeeder --force
+        php artisan e2e:fixture-env | tee -a "$GITHUB_ENV"
+    - name: Run Playwright tests (webkit)
+      if: ${{ !cancelled() }}
+      run: yarn playwright test --project=webkit
+      env:
+        PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-report/webkit
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: playwright-report/
+        path: |
+          playwright-report/
+          storage/logs/
         retention-days: 30

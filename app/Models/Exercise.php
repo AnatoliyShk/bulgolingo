@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\ExerciseInterface;
 use App\Enums\ExerciseType;
 use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LexemaReviewGrade;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\DB;
 #[ObservedBy(ExerciseObserver::class)]
 #[Fillable(['name', 'clause', 'decision_type'])]
 #[Hidden(['embedding'])]
-class Exercise extends Model
+class Exercise extends Model implements ExerciseInterface
 {
     use HasUuidV7;
 

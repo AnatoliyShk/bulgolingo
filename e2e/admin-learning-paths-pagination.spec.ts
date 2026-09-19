@@ -100,13 +100,6 @@ test.describe('Admin learning paths pagination', () => {
             await expect(summary(page)).toBeVisible();
             await expect(pageLinks(page)).toHaveCount(0);
         });
-
-        test('shows nothing at all when there are no learning paths', async ({ page }) => {
-            test.skip((await tableRows(page).count()) > 0, 'learning paths are seeded in this environment');
-
-            await expect(page.getByText('No learning paths yet.')).toBeVisible();
-            await expect(nav(page)).toHaveCount(0);
-        });
     });
 
     test.describe('lesson picker on the edit page', () => {

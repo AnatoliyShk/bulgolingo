@@ -5,7 +5,6 @@ namespace App\Support;
 use App\Enums\LanguageLevel;
 use App\Models\LearningPath;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use NoDiscard;
 
@@ -21,9 +20,9 @@ final readonly class LearningPathFilters
      * The catalog defaults to its most substantial paths first, so it always
      * carries a sort rather than an unordered one being a third option.
      */
-    private const DEFAULT_SORT = 'exercises_desc';
+    public const DEFAULT_SORT = 'exercises_desc';
 
-    private const SORTS = ['exercises_asc', 'exercises_desc'];
+    public const SORTS = ['exercises_asc', 'exercises_desc'];
 
     /**
      * The cookie a chosen level is remembered in, so a level picked through
@@ -40,29 +39,6 @@ final readonly class LearningPathFilters
         public ?LanguageLevel $level = null,
         public string $sort = self::DEFAULT_SORT,
     ) {}
-
-    /**
-     * Read leniently, like any filter in the address bar: a query value that
-     * does not match a known level is ignored rather than rejected. Missing
-     * from the query, the level falls back to whichever one the visitor
-     * remembered from an earlier visit, in the cookie; with neither, there is
-     * no level yet, and the page must ask the visitor to choose one.
-     */
-    public static function fromRequest(Request $request): self
-    {
-        $level = $request->query('level');
-        $sort = $request->query('sort');
-
-        $level = is_string($level) ? LanguageLevel::tryFrom($level) : null;
-        $level ??= is_string($cookie = $request->cookie(self::LEVEL_COOKIE))
-            ? LanguageLevel::tryFrom($cookie)
-            : null;
-
-        return new self(
-            $level,
-            is_string($sort) && in_array($sort, self::SORTS, true) ? $sort : self::DEFAULT_SORT,
-        );
-    }
 
     /**
      * @param  Builder<LearningPath>  $query
