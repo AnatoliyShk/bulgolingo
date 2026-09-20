@@ -59,6 +59,13 @@ class AdminVisitorTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_an_admin_visitor_is_forbidden_from_the_messengers_list(): void
+    {
+        $this->actingAs($this->visitor())
+            ->get(route('admin.messengers.index'))
+            ->assertForbidden();
+    }
+
     public function test_an_admin_visitor_is_forbidden_from_saving_settings(): void
     {
         $this->actingAs($this->visitor())

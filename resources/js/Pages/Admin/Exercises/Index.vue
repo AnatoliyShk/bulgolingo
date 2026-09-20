@@ -99,6 +99,7 @@ function deleteExercise(id) {
                         <span class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Lesson</span>
                         <select
                             v-model="filterLesson"
+                            aria-label="Lesson"
                             class="w-56 rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
                         >
                             <option value="">All lessons</option>
@@ -109,6 +110,7 @@ function deleteExercise(id) {
                         <span class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Type</span>
                         <select
                             v-model="filterType"
+                            aria-label="Type"
                             class="w-56 rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
                         >
                             <option value="">All types</option>

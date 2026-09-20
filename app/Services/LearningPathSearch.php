@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Throwable;
 
+#[Singleton]
 class LearningPathSearch
 {
     public function __construct(private SiteSettings $settings) {}

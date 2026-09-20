@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\LanguageLevel;
 use App\Enums\LearningPathType;
+use App\Models\Concerns\HasUuidV7;
 use Database\Factories\LearningPathFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class LearningPath extends Model
 {
     /** @use HasFactory<LearningPathFactory> */
-    use HasFactory;
+    use HasFactory, HasUuidV7;
 
     protected function casts(): array
     {

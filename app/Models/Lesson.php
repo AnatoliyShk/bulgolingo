@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasUuidV7;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 #[Fillable(['name', 'description'])]
 class Lesson extends Model
 {
+    use HasUuidV7;
+
     /**
      * Ordered by the pivot's `order`, the sequence students complete them in.
      */

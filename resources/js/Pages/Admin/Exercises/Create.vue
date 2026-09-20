@@ -165,7 +165,7 @@ function submit() {
                                         {{ pairCount }} pairs · {{ pairCount * 2 }} words
                                     </span>
                                 </div>
-                                <div v-if="hasOrder" class="mt-3 rounded border border-gray-200 px-3 py-2 dark:border-gray-700">
+                                <div v-if="hasOrder" data-testid="student-order" class="mt-3 rounded border border-gray-200 px-3 py-2 dark:border-gray-700">
                                     <p class="mb-1 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
                                         Order the student sees
                                     </p>

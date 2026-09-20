@@ -12,6 +12,9 @@ class RestrictAdminVisitor
      * A visitor may browse every admin page except user records, and may
      * never submit a write request; both cases abort with a message
      * explaining the restriction rather than the generic "Forbidden".
+     * Messengers link a user to their identifier on an external messaging
+     * platform, so they carry the same PII sensitivity as the user list and
+     * are blocked alongside it.
      */
     public function handle(Request $request, Closure $next)
     {
@@ -21,7 +24,7 @@ class RestrictAdminVisitor
             return $next($request);
         }
 
-        if ($request->is('admin/users*')) {
+        if ($request->is('admin/users*') || $request->is('admin/messengers*')) {
             abort(403, 'Admin visitors cannot view user information.');
         }
 

@@ -5,15 +5,14 @@ namespace App\Support;
 use App\Enums\LanguageLevel;
 use App\Models\LearningPath;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use NoDiscard;
 
 /**
  * The filters and sort that narrow and order the learning path catalog, read
- * from the address bar. Each one applies alike to the catalog query and to
- * the viewer's own enrolled paths, so every section of the page is affected
- * the same way.
+ * from the address bar and, for the level, the visitor's own remembered
+ * choice. Each one applies alike to the catalog query and to the viewer's own
+ * enrolled paths, so every section of the page is affected the same way.
  */
 final readonly class LearningPathFilters
 {
@@ -21,39 +20,25 @@ final readonly class LearningPathFilters
      * The catalog defaults to its most substantial paths first, so it always
      * carries a sort rather than an unordered one being a third option.
      */
-    private const DEFAULT_SORT = 'exercises_desc';
+    public const DEFAULT_SORT = 'exercises_desc';
 
-    private const SORTS = ['exercises_asc', 'exercises_desc'];
+    public const SORTS = ['exercises_asc', 'exercises_desc'];
 
     /**
-     * There is no "every level" option — a level always narrows the catalog —
-     * so a fresh visit needs a level to start from. A2 is it.
+     * The cookie a chosen level is remembered in, so a level picked through
+     * the query string — by the level filter, or by the first-visit prompt —
+     * is still the default on a later visit whose address carries no ?level
+     * at all.
      */
-    private const DEFAULT_LEVEL = LanguageLevel::A2;
+    public const LEVEL_COOKIE = 'learning_path_level';
 
     /**
      * @param  'exercises_asc'|'exercises_desc'  $sort
      */
     public function __construct(
-        public LanguageLevel $level = self::DEFAULT_LEVEL,
+        public ?LanguageLevel $level = null,
         public string $sort = self::DEFAULT_SORT,
     ) {}
-
-    /**
-     * Read leniently, like any filter in the address bar: a value that does
-     * not match a known level — including a missing one — falls back to the
-     * default (A2) rather than being rejected.
-     */
-    public static function fromRequest(Request $request): self
-    {
-        $level = $request->query('level');
-        $sort = $request->query('sort');
-
-        return new self(
-            (is_string($level) ? LanguageLevel::tryFrom($level) : null) ?? self::DEFAULT_LEVEL,
-            is_string($sort) && in_array($sort, self::SORTS, true) ? $sort : self::DEFAULT_SORT,
-        );
-    }
 
     /**
      * @param  Builder<LearningPath>  $query
@@ -61,11 +46,12 @@ final readonly class LearningPathFilters
      */
     public function applyToQuery(Builder $query): Builder
     {
-        return $query->where('level', $this->level);
+        return $query->when($this->level, fn ($q) => $q->where('level', $this->level));
     }
 
     /**
-     * The same narrowing for paths already loaded.
+     * The same narrowing for paths already loaded. With no level chosen yet,
+     * nothing is narrowed away.
      *
      * @param  Collection<int, LearningPath>  $paths
      * @return Collection<int, LearningPath>
@@ -74,7 +60,7 @@ final readonly class LearningPathFilters
     public function applyToCollection(Collection $paths): Collection
     {
         return $paths
-            ->filter(fn (LearningPath $path) => $path->level === $this->level)
+            ->filter(fn (LearningPath $path) => $this->level === null || $path->level === $this->level)
             ->values();
     }
 
@@ -101,12 +87,12 @@ final readonly class LearningPathFilters
     }
 
     /**
-     * @return array{level: string, sort: string}
+     * @return array{level: ?string, sort: string}
      */
     public function toArray(): array
     {
         return [
-            'level' => $this->level->value,
+            'level' => $this->level?->value,
             'sort' => $this->sort,
         ];
     }

@@ -66,6 +66,10 @@ const isAdminVisitor = computed(() => page.props.auth.isAdminVisitor);
                             <h3 class="admin-panel__card-title">Users</h3>
                             <p class="admin-panel__card-desc">View all registered users.</p>
                         </Link>
+                        <Link :href="route('admin.messengers.index')" class="admin-panel__card">
+                            <h3 class="admin-panel__card-title">Messengers</h3>
+                            <p class="admin-panel__card-desc">Link user accounts to their messenger identifiers.</p>
+                        </Link>
                     </div>
                 </section>
 

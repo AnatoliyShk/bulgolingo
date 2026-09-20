@@ -125,6 +125,18 @@ There are two `ExerciseController` classes:
 - `vue-data-ui` is used for charts on the Stats page.
 - Ziggy is included for named route helpers (`route('name', params)`) in Vue via `@inertiajs/vue3`.
 
+## Playwright e2e tests
+Specs live in `e2e/`; CI (`.github/workflows/playwright.yml`) runs the suite on
+chromium and webkit against a fresh database seeded by `E2eSeeder`, with the
+fixture ids exported by `php artisan e2e:fixture-env`. Every failure so far has
+been a spec drifting behind the UI rather than a real regression, so:
+
+- Scope an assertion about shared chrome to its container — `page.locator('.nb-topbar').getByRole('link', { name: 'Profile' })`, never a bare `getByRole`. Role-name matching is substring and case-insensitive, so the leaderboard's "View profile" links match `Profile` and the profile card's "view your stats" link matches `Stats`, and either turns a passing assertion into a strict-mode violation. Use `exact: true` where no container fits.
+- Assert a page title by heading level or by its BEM class, not by copy that has to match verbatim — the text comes from the controller's Inertia props and is reworded there.
+- Grep for a class before locating by it. BEM names move in refactors (`.nb-path-list__path` became `.nb-path-list__path-wrapper`), and a locator matching nothing does not always fail.
+- A branch on `count() === 0` has to be reachable both ways. A stale locator pins it to the empty-state branch, and the test keeps passing while asserting nothing; check against the seeded data that the populated branch still runs.
+- Adding a section to a page means updating the specs that count its siblings — the `toHaveCount` on `.nb-stats__section` and every loop over that set. Give the newcomer its own class when it does not share the shape the loop expects.
+
 ## Styles
 - Never use <style> blocks in Vue components
 - All styles go in assets/scss/components/_component-name.scss

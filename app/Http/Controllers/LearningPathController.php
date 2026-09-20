@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\LanguageLevel;
-use App\Http\Requests\LearningPath\IndexLearningPathRequest;
+use App\Http\Requests\LearningPath\GetLearningPathRequest;
 use App\Models\LearningPath;
 use App\Models\User;
 use App\Services\LearningPathSearch;
@@ -11,45 +11,60 @@ use App\Services\SiteSettings;
 use App\Support\LearningPathFilters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class LearningPathController extends Controller
 {
+    public function __construct(private readonly SiteSettings $settings) {}
+
     /**
-     * The card only needs each path's distinct exercise types, so those are
-     * aggregated in SQL rather than hydrating every lesson and exercise a
-     * path contains just to collect their decision_type values in PHP.
+     * The user's own paths head the page, so the catalog below drops them, and
+     * it only shows path types this viewer may see.
      *
-     * The user's own paths head the page under their own progress headings, so
-     * the catalog below drops them: a path already in progress would otherwise
-     * appear twice on one screen, the second time offering to start it again.
+     * A search narrows every section to the semantically closest paths; if
+     * embedding fails the page renders unfiltered and flags search as
+     * unavailable. With search disabled in admin settings, q is ignored.
      *
-     * What is left is narrowed to the types this viewer may see, so the tier
-     * they have not paid for and the load-test tooling's generated paths are
-     * both absent rather than merely unstartable.
+     * The level resolves from ?level, then the level cookie, else the visitor
+     * is prompted to pick one; the resolved level is saved back to the cookie.
      *
-     * A search narrows every section to the paths whose exercises are closest
-     * in meaning to the text, each ordered closest first. When the embedding
-     * call fails the page renders unfiltered and says search is unavailable,
-     * rather than showing an empty result the viewer would take at its word.
-     *
-     * With embedding search turned off in the admin settings, q is ignored
-     * outright — nothing is embedded, so nothing reaches the provider — and
-     * the page is told to leave the search field out.
-     *
-     * The level filters every section the same way, on its own or together
-     * with a search. The sort orders every section by exercise count instead,
-     * unless a search is already ordering the page by relevance.
+     * With ?is_finished the page is instead the signed-in user's own finished
+     * (1) or in-progress (0) paths, one side per page so the profile's two
+     * links never lead to the same list; guests are sent to log in.
      */
-    public function index(IndexLearningPathRequest $request, LearningPathSearch $search, SiteSettings $settings)
+    public function index(GetLearningPathRequest $request, LearningPathSearch $search)
     {
         $user = $request->user();
-        $searchEnabled = $settings->embeddingSearchEnabled();
+        $isFinished = $request->isFinished();
+
+        if ($isFinished !== null) {
+            if ($user === null) {
+                return redirect()->guest(route('login'));
+            }
+
+            $own = $user->enrolledPathsWithProgress()->where('is_finished', $isFinished)->values();
+
+            return Inertia::render('LearningPath/List', [
+                'title' => $isFinished ? 'Finished' : 'In progress',
+                'unfinishedPaths' => $isFinished ? [] : $own,
+                'finishedPaths' => $isFinished ? $own : [],
+                'emptyMessage' => $isFinished
+                    ? "You haven't finished a learning path yet."
+                    : 'You have no learning paths in progress.',
+            ]);
+        }
+
+        $searchEnabled = $this->settings->embeddingSearchEnabled();
         $query = $searchEnabled ? $request->validated('q') : null;
         $ranked = filled($query) ? $search->rankedPathIds($query) : null;
-        $filters = LearningPathFilters::fromRequest($request);
+        $filters = $request->filters();
         $exerciseCounts = $this->exerciseCounts();
+
+        if ($filters->level !== null) {
+            Cookie::queue(LearningPathFilters::LEVEL_COOKIE, $filters->level->value, 60 * 24 * 365);
+        }
 
         $enrolled = $user ? $user->enrolledPathsWithProgress() : collect();
         $enrolledIds = $enrolled->pluck('id')->all();
@@ -128,7 +143,7 @@ class LearningPathController extends Controller
      *
      * @return array<int, array{value: string, label: string}>
      */
-    private function levelOptions(?User $user, LanguageLevel $active): array
+    private function levelOptions(?User $user, ?LanguageLevel $active): array
     {
         $present = LearningPath::visibleTo($user)
             ->whereNotNull('level')
@@ -176,48 +191,6 @@ class LearningPathController extends Controller
         $request->user()->learningPaths()->syncWithoutDetaching([$learningPath->id]);
 
         return redirect()->route('learning-paths.show', $learningPath);
-    }
-
-    /**
-     * The paths this user is still working through.
-     *
-     * Only the unfinished ones: the finished list is its own page, and sending
-     * both to each meant the two links from the profile led to identical pages.
-     * The empty message speaks of nothing in progress rather than nothing
-     * enrolled, because finishing everything empties this page too.
-     */
-    public function enrolled(Request $request)
-    {
-        return Inertia::render('LearningPath/List', [
-            'title' => 'In progress',
-            'unfinishedPaths' => $this->enrolledPathsByCompletion($request, false),
-            'finishedPaths' => [],
-            'emptyMessage' => 'You have no learning paths in progress.',
-        ]);
-    }
-
-    /**
-     * The paths this user has completed, and only those.
-     */
-    public function finished(Request $request)
-    {
-        return Inertia::render('LearningPath/List', [
-            'title' => 'Finished',
-            'unfinishedPaths' => [],
-            'finishedPaths' => $this->enrolledPathsByCompletion($request, true),
-            'emptyMessage' => "You haven't finished a learning path yet.",
-        ]);
-    }
-
-    /**
-     * One side of the enrolled/finished split, decorated with progress.
-     */
-    private function enrolledPathsByCompletion(Request $request, bool $isFinished): Collection
-    {
-        return $request->user()
-            ->enrolledPathsWithProgress()
-            ->where('is_finished', $isFinished)
-            ->values();
     }
 
     /**
