@@ -77,7 +77,7 @@ test.describe('Admin web vitals page', () => {
         });
 
         test('breadcrumb links back to the admin panel', async ({ page }) => {
-            await expect(page.getByRole('link', { name: 'Admin' })).toHaveAttribute('href', `${BASE}/admin`);
+            await expect(page.getByRole('banner').getByRole('link', { name: 'Admin' })).toHaveAttribute('href', `${BASE}/admin`);
             await expect(page.getByText('Web Vitals')).toBeVisible();
         });
 

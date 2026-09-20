@@ -133,7 +133,7 @@ function submit() {
                             <div v-if="lessons.total === 0 && lessonSearch.trim()" class="py-2 text-sm text-gray-400">No lessons match your search.</div>
                             <div v-else-if="lessons.total === 0" class="text-sm text-gray-400">No lessons available.</div>
                             <div v-else class="rounded-lg border border-gray-200 dark:border-gray-600">
-                                <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                                <ul class="divide-y divide-gray-100 dark:divide-gray-700" data-testid="lesson-picker">
                                     <li
                                         v-for="lesson in lessons.data"
                                         :key="lesson.id"

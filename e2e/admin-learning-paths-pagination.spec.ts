@@ -30,7 +30,7 @@ const pageLinks = (page: Page) => page.locator('.admin-pagination__link:not(.adm
 const disabledLinks = (page: Page) => page.locator('.admin-pagination__link--disabled');
 const currentLink = (page: Page) => page.locator('.admin-pagination__link--current');
 const tableRows = (page: Page) => page.locator('table tbody tr');
-const lessonRows = (page: Page) => page.locator('ul li');
+const lessonRows = (page: Page) => page.getByTestId('lesson-picker').locator('li');
 const selectedCount = (page: Page) => page.getByText(/^\d+ selected$/);
 
 // The total the summary reports, which is what decides whether a second page exists.

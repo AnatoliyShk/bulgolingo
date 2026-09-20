@@ -31,7 +31,7 @@ const addPair = (page: Page) => page.getByRole('button', { name: '+ Add pair' })
 const submit = (page: Page) => page.getByRole('button', { name: /Create Exercise/ });
 const counter = (page: Page) => page.getByText(/\d+ pairs · \d+ words/);
 const shuffle = (page: Page) => page.getByRole('button', { name: 'Shuffle' });
-const preview = (page: Page) => page.locator('div').filter({ hasText: /^Order the student sees/ }).last();
+const preview = (page: Page) => page.getByTestId('student-order');
 const previewColumns = (page: Page) => preview(page).locator('ol');
 
 // Fills every visible pair row with a distinct English/Bulgarian word.

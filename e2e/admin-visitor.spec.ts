@@ -20,6 +20,19 @@ async function login(page: Page, email: string, password: string): Promise<boole
 
 const loginAsVisitor = (page: Page) => login(page, VISITOR_EMAIL, VISITOR_PASSWORD);
 
+// The catalog meets anyone who has not picked a level with a modal that
+// swallows every click on the page behind it, so the prompt is answered
+// before the top bar can be used.
+async function chooseLevel(page: Page): Promise<void> {
+    const prompt = page.getByRole('dialog', { name: 'Choose your level' });
+    await prompt.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+
+    if (await prompt.isVisible()) {
+        await prompt.getByRole('button').first().click();
+        await expect(prompt).toBeHidden();
+    }
+}
+
 test.describe('Admin visitor role', () => {
     test.describe('when authenticated as an admin visitor', () => {
         test.beforeEach(async ({ page }) => {
@@ -30,6 +43,8 @@ test.describe('Admin visitor role', () => {
         // panel, so its Admin link must show for them and not only for full admins.
         test('sees the Admin link in the top bar and it leads to the panel', async ({ page }) => {
             await page.goto(`${BASE}/learning-paths`);
+            await chooseLevel(page);
+
             const adminLink = page.locator('.nb-topbar__link', { hasText: 'Admin' });
             await expect(adminLink).toBeVisible();
 

@@ -12,6 +12,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Seeds everything the Playwright specs look for: the admin, student,
@@ -48,6 +49,7 @@ class E2eSeeder extends Seeder
 
         $this->seedPaginationFillers();
         $this->finishFirstLesson($student);
+        $this->seedLogEntries();
     }
 
     /**
@@ -99,6 +101,18 @@ class E2eSeeder extends Seeder
                 ['language' => 'BG', 'type' => LearningPathType::Test],
             );
         }
+    }
+
+    /**
+     * The log viewer offers a severity only when the log file holds an entry
+     * of it, so the spec covering that filter needs one line of each. A fresh
+     * checkout has nothing but whatever the boot happened to write.
+     */
+    private function seedLogEntries(): void
+    {
+        Log::info('E2E fixture: info entry for the log viewer spec.');
+        Log::warning('E2E fixture: warning entry for the log viewer spec.');
+        Log::error('E2E fixture: error entry for the log viewer spec.');
     }
 
     /**

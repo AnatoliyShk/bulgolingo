@@ -76,8 +76,11 @@ async function answerSearches(
     return seen;
 }
 
+// A catalog with no level chosen puts a modal in front of the page, and the
+// level rides along with every search anyway, so the specs below start from
+// the one their expectations carry.
 async function openCatalog(page: Page): Promise<InertiaPage> {
-    await page.goto(`${BASE}/learning-paths`);
+    await page.goto(`${BASE}/learning-paths?level=A2`);
     await expect(page.getByRole('heading', { name: 'All learning paths' })).toBeVisible();
 
     return initialPage(page);
