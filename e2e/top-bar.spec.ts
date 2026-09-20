@@ -93,17 +93,19 @@ test.describe('Shared top bar', () => {
                 await page.setViewportSize({ width: 1280, height: 800 });
                 await page.goto(`${BASE}${path}`);
 
-                await expect(page.locator('.nb-topbar')).toBeVisible();
+                const bar = page.locator('.nb-topbar');
+
+                await expect(bar).toBeVisible();
                 await expect(page.locator('.nb-toggle')).toBeVisible();
 
-                await expect(page.getByRole('link', { name: 'Learning paths' })).toBeVisible();
-                await expect(page.locator('.nb-topbar').getByRole('link', { name: 'Profile' })).toBeVisible();
-                await expect(page.getByRole('link', { name: 'Stats' })).toBeVisible();
-                await expect(page.getByRole('button', { name: 'Log out' })).toBeVisible();
+                await expect(bar.getByRole('link', { name: 'Learning paths' })).toBeVisible();
+                await expect(bar.getByRole('link', { name: 'Profile' })).toBeVisible();
+                await expect(bar.getByRole('link', { name: 'Stats' })).toBeVisible();
+                await expect(bar.getByRole('button', { name: 'Log out' })).toBeVisible();
 
                 // Signed-in visitors are never offered the signed-out destinations.
-                await expect(page.locator('.nb-topbar').getByRole('link', { name: 'Login' })).toHaveCount(0);
-                await expect(page.locator('.nb-topbar').getByRole('link', { name: 'Register' })).toHaveCount(0);
+                await expect(bar.getByRole('link', { name: 'Login' })).toHaveCount(0);
+                await expect(bar.getByRole('link', { name: 'Register' })).toHaveCount(0);
             });
         }
 
@@ -111,9 +113,11 @@ test.describe('Shared top bar', () => {
             await page.setViewportSize({ width: 1280, height: 800 });
             await page.goto(`${BASE}/stats`);
 
-            await expect(page.getByRole('link', { name: 'Stats' }))
+            const bar = page.locator('.nb-topbar');
+
+            await expect(bar.getByRole('link', { name: 'Stats' }))
                 .toHaveAttribute('aria-current', 'page');
-            await expect(page.getByRole('link', { name: 'Profile' }))
+            await expect(bar.getByRole('link', { name: 'Profile' }))
                 .not.toHaveAttribute('aria-current', 'page');
         });
 

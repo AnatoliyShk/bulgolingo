@@ -51,15 +51,17 @@ test.describe('Stats page', () => {
         });
 
         test('shows the words and activity sections with a chart or empty state', async ({ page }) => {
-            const sections = page.locator('.nb-stats__section');
-            await expect(sections).toHaveCount(2);
+            // Three sections in all: the leaderboard, which carries no panel, then the two charted ones.
+            await expect(page.locator('.nb-stats__section')).toHaveCount(3);
 
             await expect(page.getByRole('heading', { name: "Words you've learned" })).toBeVisible();
             await expect(page.locator('.nb-stats__section-count')).toHaveText(/^\d+ unique$/);
             await expect(page.getByRole('heading', { name: 'Activity by exercise type' })).toBeVisible();
 
-            for (const section of await sections.all()) {
-                const panel = section.locator('.nb-stats__panel');
+            const panels = page.locator('.nb-stats__section .nb-stats__panel');
+            await expect(panels).toHaveCount(2);
+
+            for (const panel of await panels.all()) {
                 await expect(panel).toBeVisible();
 
                 const hasChart = (await panel.locator('svg').count()) > 0;
@@ -82,7 +84,7 @@ test.describe('Stats page', () => {
         });
 
         test('bar offers a way back to the dashboard', async ({ page }) => {
-            await expect(page.getByRole('link', { name: 'Profile' })).toHaveAttribute('href', '/profile');
+            await expect(page.locator('.nb-topbar').getByRole('link', { name: 'Profile' })).toHaveAttribute('href', '/profile');
         });
 
         test('leaderboard gives every entry a face', async ({ page }) => {

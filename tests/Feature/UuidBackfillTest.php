@@ -4,10 +4,13 @@ namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
 use App\Enums\RoleName;
+use App\Models\Bot;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\Role;
+use App\Models\ScriptedDialogue;
+use App\Models\ScriptedLine;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +21,7 @@ class UuidBackfillTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_creating_a_user_learning_path_lesson_and_exercise_stamps_a_v7_uuid(): void
+    public function test_creating_a_row_of_every_uuid_carrying_table_stamps_a_v7_uuid(): void
     {
         $user = User::factory()->create();
         $path = LearningPath::create(['name' => 'Greetings', 'language' => 'bg']);
@@ -33,7 +36,16 @@ class UuidBackfillTest extends TestCase
             ],
         ]);
 
-        foreach ([$user, $path, $lesson, $exercise] as $model) {
+        $dialogue = ScriptedDialogue::create([
+            'bot_id' => Bot::create(['name' => 'Ivan', 'description' => 'Shopkeeper'])->id,
+            'user_id' => $user->id,
+        ]);
+        $line = ScriptedLine::create([
+            'scripted_dialogue_id' => $dialogue->id,
+            'clause' => ['text' => 'Здравей!'],
+        ]);
+
+        foreach ([$user, $path, $lesson, $exercise, $dialogue, $line] as $model) {
             $this->assertNotNull($model->uuid);
             $this->assertSame(7, Uuid::fromString($model->uuid)->getFields()->getVersion());
         }
@@ -64,14 +76,26 @@ class UuidBackfillTest extends TestCase
             ]),
         ]);
 
+        $botId = DB::table('bots')->insertGetId(['name' => 'Legacy', 'description' => 'D']);
+        $dialogueId = DB::table('scripted_dialogues')->insertGetId([
+            'bot_id' => $botId,
+            'user_id' => $userId,
+        ]);
+        $lineId = DB::table('scripted_lines')->insertGetId([
+            'scripted_dialogue_id' => $dialogueId,
+            'clause' => json_encode(['text' => 'Здравей!']),
+        ]);
+
         $this->artisan('uuid:backfill')->assertSuccessful();
 
         $user = DB::table('users')->find($userId);
         $path = DB::table('learning_paths')->find($pathId);
         $lesson = DB::table('lessons')->find($lessonId);
         $exercise = DB::table('exercises')->find($exerciseId);
+        $dialogue = DB::table('scripted_dialogues')->find($dialogueId);
+        $line = DB::table('scripted_lines')->find($lineId);
 
-        foreach ([$user->uuid, $path->uuid, $lesson->uuid, $exercise->uuid] as $uuid) {
+        foreach ([$user->uuid, $path->uuid, $lesson->uuid, $exercise->uuid, $dialogue->uuid, $line->uuid] as $uuid) {
             $this->assertNotNull($uuid);
             $this->assertSame(7, Uuid::fromString($uuid)->getFields()->getVersion());
         }
