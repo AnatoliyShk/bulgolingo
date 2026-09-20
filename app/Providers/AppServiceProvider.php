@@ -48,6 +48,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('learning-path-search', static::learningPathSearchLimit(...));
+        RateLimiter::for('stats-view', static::statsViewLimit(...));
+        RateLimiter::for('exercise-completion', static::exerciseCompletionLimit(...));
     }
 
     /**
@@ -62,6 +64,28 @@ class AppServiceProvider extends ServiceProvider
         return filled($request->query('q')) && app(SiteSettings::class)->embeddingSearchEnabled()
             ? Limit::perMinute(20)->by('learning-path-search:'.($request->user()?->id ?? $request->ip()))
             : Limit::none();
+    }
+
+    /**
+     * The stats page rebuilds several aggregates per view (completed lesson
+     * counts, activity-by-day, the leaderboard) with no caching, so repeated
+     * views are capped per user. The route requires `auth`, so the user is
+     * always present and no IP fallback is needed.
+     */
+    private static function statsViewLimit(Request $request): Limit
+    {
+        return Limit::perMinute(30)->by('stats-view:'.$request->user()->id);
+    }
+
+    /**
+     * Completion sits on the hot path of doing exercises, so the cap stays
+     * loose enough for legitimate rapid-fire answering while still bounding a
+     * scripted client hammering the endpoint. The route requires `auth`, so
+     * the user is always present and no IP fallback is needed.
+     */
+    private static function exerciseCompletionLimit(Request $request): Limit
+    {
+        return Limit::perMinute(60)->by('exercise-completion:'.$request->user()->id);
     }
 
     /**

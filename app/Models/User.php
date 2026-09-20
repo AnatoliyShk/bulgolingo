@@ -4,23 +4,26 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\ExerciseType;
+use App\Enums\RoleName;
 use App\Enums\UserType;
+use App\Models\Concerns\HasUuidV7;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['name', 'email', 'password', 'is_admin', 'experience', 'type'])]
+#[Fillable(['name', 'email', 'password', 'role_id', 'experience', 'type'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasUuidV7, Notifiable;
 
     /**
      * Mirrors the database default so a freshly created user reads 0, not null.
@@ -32,6 +35,17 @@ class User extends Authenticatable
     ];
 
     /**
+     * A user created without a role is a student, so registration, factories
+     * and seeders only name a role when it is something more.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            $user->role_id ??= Role::named(RoleName::Student)->id;
+        });
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -41,7 +55,6 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_admin' => 'boolean',
             'experience' => 'integer',
             'streak_counter' => 'integer',
             'latest_exercise_at' => 'datetime',
@@ -90,9 +103,35 @@ class User extends Authenticatable
         return Storage::disk(Images::DISK)->temporaryUrl($this->avatar_path, now()->addHour());
     }
 
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasRole(RoleName $name): bool
+    {
+        return $this->role?->name === $name;
+    }
+
     public function isAdmin(): bool
     {
-        return (bool) $this->is_admin;
+        return $this->hasRole(RoleName::Admin);
+    }
+
+    public function isAdminVisitor(): bool
+    {
+        return $this->hasRole(RoleName::AdminVisitor);
+    }
+
+    /**
+     * Whether this user may enter the admin panel at all, as a full admin or
+     * as a read-only visitor. Gates the `admin` route middleware; the visitor's
+     * further restrictions (no user records, no writes) are enforced separately
+     * by RestrictAdminVisitor.
+     */
+    public function canAccessAdminPanel(): bool
+    {
+        return $this->isAdmin() || $this->isAdminVisitor();
     }
 
     public function learningPaths()

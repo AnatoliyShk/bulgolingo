@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BotController as AdminBotController;
 use App\Http\Controllers\Admin\ExerciseController as AdminExerciseController;
 use App\Http\Controllers\Admin\LearningPathController as AdminLearningPathController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
+use App\Http\Controllers\Admin\MessengerController as AdminMessengerController;
 use App\Http\Controllers\Admin\MetricsController as AdminMetricsController;
 use App\Http\Controllers\Admin\ScriptedDialogueController as AdminScriptedDialogueController;
 use App\Http\Controllers\Admin\ScriptedLineController as AdminScriptedLineController;
@@ -46,82 +47,102 @@ Route::get('/', function (Request $request) {
     ]);
 });
 
-Route::get('/profile', [ProfileController::class, 'show'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::prefix('profile')->controller(ProfileController::class)->group(function () {
+    Route::middleware('auth')->group(function () {
+        Route::get('/', 'show')->middleware('verified')->name('dashboard');
+        Route::patch('/', 'update')->name('profile.update');
+        Route::delete('/', 'destroy')->name('profile.destroy');
+        Route::get('/edit', 'edit')->name('profile.edit');
+        Route::post('/avatar', 'updateAvatar')->name('profile.avatar.update');
+        Route::delete('/avatar', 'destroyAvatar')->name('profile.avatar.destroy');
+    });
 
-Route::get('/learning-paths', [LearningPathController::class, 'index'])
-    ->middleware('throttle:learning-path-search')
-    ->name('learning-paths.index');
-
-Route::post('/learning-paths/{learningPath}/start', [LearningPathController::class, 'start'])
-    ->middleware(['auth', 'verified'])
-    ->name('learning-paths.start');
-
-Route::get('/learning-paths/enrolled', [LearningPathController::class, 'enrolled'])
-    ->middleware(['auth', 'verified'])
-    ->name('learning-paths.enrolled');
-
-Route::get('/learning-paths/finished', [LearningPathController::class, 'finished'])
-    ->middleware(['auth', 'verified'])
-    ->name('learning-paths.finished');
-
-Route::get('/learning-paths/{learningPath}', [LearningPathController::class, 'show'])
-    ->middleware(['auth', 'verified'])
-    ->name('learning-paths.show');
-
-Route::post('/learning-paths/{learningPath}/restart', [LearningPathController::class, 'restart'])
-    ->middleware(['auth', 'verified'])
-    ->name('learning-paths.restart');
-
-Route::get('/stats', [StatsController::class, 'show'])
-    ->middleware(['auth', 'verified'])
-    ->name('stats.show');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
-    Route::delete('/profile/avatar', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
+    /*
+     * Anyone's profile by id, with the owner-only blocks left off. Constrained to
+     * digits so it cannot swallow /profile/edit or /profile/avatar, whatever order
+     * the routes happen to be registered in.
+     */
+    Route::get('/{user}', 'publicShow')->whereNumber('user')->name('profile.public');
 });
 
-/*
- * Anyone's profile by id, with the owner-only blocks left off. Constrained to
- * digits so it cannot swallow /profile/edit or /profile/avatar, whatever order
- * the routes happen to be registered in.
- */
-Route::get('/profile/{user}', [ProfileController::class, 'publicShow'])
-    ->whereNumber('user')
-    ->name('profile.public');
+Route::prefix('learning-paths')->name('learning-paths.')->controller(LearningPathController::class)->group(function () {
+    Route::get('/', 'index')->middleware('throttle:learning-path-search')->name('index');
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/{learningPath}', 'show')->name('show');
+        Route::post('/{learningPath}/start', 'start')->name('start');
+        Route::post('/{learningPath}/restart', 'restart')->name('restart');
+    });
+});
+
+Route::get('/stats', [StatsController::class, 'show'])
+    ->middleware(['auth', 'verified', 'throttle:stats-view'])
+    ->name('stats.show');
+
+Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => Inertia::render('Admin/Index'))->name('index');
     Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
-    Route::get('metrics/admin', [AdminMetricsController::class, 'adminRequests'])->name('metrics.admin');
-    Route::get('metrics/user', [AdminMetricsController::class, 'userRequests'])->name('metrics.user');
     Route::get('vitals', [AdminVitalsController::class, 'index'])->name('vitals.index');
-    Route::get('settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
-    Route::put('settings', [AdminSettingsController::class, 'update'])->name('settings.update');
+
+    Route::prefix('metrics')->name('metrics.')->controller(AdminMetricsController::class)->group(function () {
+        Route::get('/admin', 'adminRequests')->name('admin');
+        Route::get('/user', 'userRequests')->name('user');
+    });
+
+    Route::prefix('settings')->name('settings.')->controller(AdminSettingsController::class)->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::put('/', 'update')->name('update');
+    });
+
     Route::resource('lessons', AdminLessonController::class);
     Route::resource('learning-paths', AdminLearningPathController::class);
-    Route::get('exercises', [AdminExerciseController::class, 'index'])->name('exercises.index');
-    Route::get('lessons/{lesson}/exercises/create', [AdminExerciseController::class, 'create'])->name('exercises.create');
-    Route::post('lessons/{lesson}/exercises', [AdminExerciseController::class, 'store'])->name('exercises.store');
-    Route::get('exercises/{exercise}/edit', [AdminExerciseController::class, 'edit'])->name('exercises.edit');
-    Route::put('exercises/{exercise}', [AdminExerciseController::class, 'update'])->name('exercises.update');
-    Route::delete('exercises/{exercise}', [AdminExerciseController::class, 'destroy'])->name('exercises.destroy');
+
+    Route::name('exercises.')->controller(AdminExerciseController::class)->group(function () {
+        Route::prefix('exercises')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{exercise}/edit', 'edit')->name('edit');
+            Route::put('/{exercise}', 'update')->name('update');
+            Route::delete('/{exercise}', 'destroy')->name('destroy');
+        });
+
+        Route::prefix('lessons/{lesson}/exercises')->group(function () {
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+        });
+    });
+
     Route::resource('bots', AdminBotController::class);
     Route::resource('scripted-dialogues', AdminScriptedDialogueController::class);
     Route::resource('scripted-lines', AdminScriptedLineController::class);
+    Route::resource('messengers', AdminMessengerController::class);
 });
 
-Route::resource('exercise', ExerciseController::class);
-Route::post('exercise/{exercise}/complete', [ExerciseController::class, 'complete'])
-    ->middleware(['auth'])
-    ->name('exercise.complete');
-Route::post('lesson/{lesson}/restart', [LessonController::class, 'restart'])->middleware('auth')->name('lesson.restart');
-Route::get('lesson/{lesson}/complete', [LessonController::class, 'complete'])->middleware('auth')->name('lesson.complete');
-Route::resource('lesson', LessonController::class);
+Route::prefix('exercise')->name('exercise.')->controller(ExerciseController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/', 'store')->name('store');
+    Route::get('/create', 'create')->name('create');
+    Route::get('/{exercise}', 'show')->name('show');
+    Route::match(['put', 'patch'], '/{exercise}', 'update')->name('update');
+    Route::delete('/{exercise}', 'destroy')->name('destroy');
+    Route::get('/{exercise}/edit', 'edit')->name('edit');
+    Route::post('/{exercise}/complete', 'complete')
+        ->middleware(['auth', 'throttle:exercise-completion'])
+        ->name('complete');
+});
+
+Route::prefix('lesson')->name('lesson.')->controller(LessonController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/', 'store')->name('store');
+    Route::get('/create', 'create')->name('create');
+    Route::get('/{lesson}', 'show')->name('show');
+    Route::match(['put', 'patch'], '/{lesson}', 'update')->name('update');
+    Route::delete('/{lesson}', 'destroy')->name('destroy');
+    Route::get('/{lesson}/edit', 'edit')->name('edit');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/{lesson}/complete', 'complete')->name('complete');
+        Route::post('/{lesson}/restart', 'restart')->name('restart');
+    });
+});
 
 require __DIR__.'/auth.php';

@@ -47,11 +47,11 @@ class LearningPathListTest extends TestCase
      * a test names the prop it is reading rather than assuming which of the two
      * the route populated.
      */
-    private function paths(string $route, string $prop = 'unfinishedPaths'): array
+    private function paths(bool $isFinished, string $prop = 'unfinishedPaths'): array
     {
         $props = null;
 
-        $this->get(route($route))->assertOk()->assertInertia(
+        $this->get(route('learning-paths.index', ['is_finished' => (int) $isFinished]))->assertOk()->assertInertia(
             function (Assert $page) use (&$props, $prop) {
                 $page->component('LearningPath/List');
                 $props = $page->toArray()['props'][$prop];
@@ -69,7 +69,7 @@ class LearningPathListTest extends TestCase
         $a = $this->pathWithLesson($user, 'A', 1);
         $b = $this->pathWithLesson($user, 'B', 1);
 
-        $ids = collect($this->paths('learning-paths.enrolled'))->pluck('id')->all();
+        $ids = collect($this->paths(false))->pluck('id')->all();
 
         $this->assertContains($a->id, $ids);
         $this->assertContains($b->id, $ids);
@@ -83,7 +83,7 @@ class LearningPathListTest extends TestCase
         $mine = $this->pathWithLesson($user, 'Mine', 1);
         LearningPath::create(['name' => 'Not mine', 'language' => 'bg']);
 
-        $ids = collect($this->paths('learning-paths.enrolled'))->pluck('id')->all();
+        $ids = collect($this->paths(false))->pluck('id')->all();
 
         $this->assertSame([$mine->id], $ids);
     }
@@ -96,7 +96,7 @@ class LearningPathListTest extends TestCase
         $done = $this->pathWithLesson($user, 'Done', 1, completeAll: true);
         $this->pathWithLesson($user, 'In progress', 1, completeAll: false);
 
-        $props = $this->paths('learning-paths.finished', 'finishedPaths');
+        $props = $this->paths(true, 'finishedPaths');
 
         $this->assertCount(1, $props);
         $this->assertSame($done->id, $props[0]['id']);
@@ -110,7 +110,7 @@ class LearningPathListTest extends TestCase
 
         $this->pathWithLesson($user, 'In progress', 1, completeAll: false);
 
-        $this->assertSame([], $this->paths('learning-paths.finished', 'finishedPaths'));
+        $this->assertSame([], $this->paths(true, 'finishedPaths'));
     }
 
     public function test_a_path_with_no_lessons_is_never_finished(): void
@@ -121,9 +121,9 @@ class LearningPathListTest extends TestCase
         $path = LearningPath::create(['name' => 'Empty', 'language' => 'bg']);
         $path->users()->attach($user->id);
 
-        $this->assertSame([], $this->paths('learning-paths.finished', 'finishedPaths'));
+        $this->assertSame([], $this->paths(true, 'finishedPaths'));
 
-        $ids = collect($this->paths('learning-paths.enrolled'))->pluck('id')->all();
+        $ids = collect($this->paths(false))->pluck('id')->all();
         $this->assertContains($path->id, $ids);
     }
 
@@ -141,8 +141,8 @@ class LearningPathListTest extends TestCase
         $this->pathWithLesson($user, 'Done', 1, completeAll: true);
         $this->pathWithLesson($user, 'Doing', 1);
 
-        $this->assertSame([], $this->paths('learning-paths.enrolled', 'finishedPaths'));
-        $this->assertCount(1, $this->paths('learning-paths.enrolled'));
+        $this->assertSame([], $this->paths(false, 'finishedPaths'));
+        $this->assertCount(1, $this->paths(false));
     }
 
     public function test_finished_carries_no_unfinished_paths(): void
@@ -153,8 +153,8 @@ class LearningPathListTest extends TestCase
         $this->pathWithLesson($user, 'Done', 1, completeAll: true);
         $this->pathWithLesson($user, 'Doing', 1);
 
-        $this->assertSame([], $this->paths('learning-paths.finished'));
-        $this->assertCount(1, $this->paths('learning-paths.finished', 'finishedPaths'));
+        $this->assertSame([], $this->paths(true));
+        $this->assertCount(1, $this->paths(true, 'finishedPaths'));
     }
 
     public function test_the_two_lists_do_not_show_the_same_paths(): void
@@ -165,8 +165,8 @@ class LearningPathListTest extends TestCase
         $done = $this->pathWithLesson($user, 'Done', 1, completeAll: true);
         $doing = $this->pathWithLesson($user, 'Doing', 1);
 
-        $enrolledIds = collect($this->paths('learning-paths.enrolled'))->pluck('id')->all();
-        $finishedIds = collect($this->paths('learning-paths.finished', 'finishedPaths'))->pluck('id')->all();
+        $enrolledIds = collect($this->paths(false))->pluck('id')->all();
+        $finishedIds = collect($this->paths(true, 'finishedPaths'))->pluck('id')->all();
 
         $this->assertSame([$doing->id], $enrolledIds);
         $this->assertSame([$done->id], $finishedIds);
@@ -175,7 +175,24 @@ class LearningPathListTest extends TestCase
 
     public function test_guest_cannot_view_enrolled_or_finished_paths(): void
     {
-        $this->get(route('learning-paths.enrolled'))->assertRedirect(route('login'));
-        $this->get(route('learning-paths.finished'))->assertRedirect(route('login'));
+        $this->get(route('learning-paths.index', ['is_finished' => 0]))->assertRedirect(route('login'));
+        $this->get(route('learning-paths.index', ['is_finished' => 1]))->assertRedirect(route('login'));
+    }
+
+    public function test_is_finished_must_be_a_boolean(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $this->get(route('learning-paths.index', ['is_finished' => 'maybe']))
+            ->assertSessionHasErrors('is_finished');
+    }
+
+    public function test_without_is_finished_the_catalog_renders(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $this->get(route('learning-paths.index'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('LearningPath/Index'));
     }
 }

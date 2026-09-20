@@ -34,10 +34,19 @@ const save = (page: Page) => page.getByRole('button', { name: 'Save' });
 
 // Saving for real would change the setting under every spec running in
 // parallel, the search spec among them, so a save that turns search off is
-// answered here instead: the payload is recorded and the browser is sent back
-// to the settings page, exactly as the real controller redirects.
-async function interceptSave(page: Page): Promise<Record<string, unknown>[]> {
+// answered here instead: the payload is recorded and the page the browser
+// already holds is handed straight back as the Inertia answer. The real
+// controller redirects, but WebKit refuses to fulfil a route with a 3xx, and
+// a rejected fulfilment lets the save through to the server — the very thing
+// this stands in the way of. `delayMs` holds the answer back to leave the
+// in-flight state observable.
+async function interceptSave(page: Page, delayMs = 0): Promise<Record<string, unknown>[]> {
     const payloads: Record<string, unknown>[] = [];
+    const body = await page.evaluate(() => {
+        const script = document.querySelector('script[data-page="app"]');
+
+        return script ? script.textContent : document.getElementById('app')?.dataset.page;
+    }) ?? '{}';
 
     await page.route(`${BASE}/admin/settings`, async (route: Route) => {
         if (route.request().method() !== 'PUT') {
@@ -45,7 +54,16 @@ async function interceptSave(page: Page): Promise<Record<string, unknown>[]> {
         }
 
         payloads.push(JSON.parse(route.request().postData() ?? '{}'));
-        await route.fulfill({ status: 303, headers: { Location: `${BASE}/admin/settings` } });
+
+        if (delayMs) {
+            await new Promise((resolve) => setTimeout(resolve, delayMs));
+        }
+
+        await route.fulfill({
+            status: 200,
+            headers: { 'Content-Type': 'application/json', 'X-Inertia': 'true', Vary: 'X-Inertia' },
+            body,
+        });
     });
 
     return payloads;
@@ -139,15 +157,7 @@ test.describe('Admin settings page', () => {
 
     test('disables the save button while saving', async ({ page }) => {
         await openSettings(page);
-
-        await page.route(`${BASE}/admin/settings`, async (route: Route) => {
-            if (route.request().method() !== 'PUT') {
-                return route.continue();
-            }
-
-            await new Promise((resolve) => setTimeout(resolve, 800));
-            await route.fulfill({ status: 303, headers: { Location: `${BASE}/admin/settings` } });
-        });
+        await interceptSave(page, 800);
 
         await save(page).click();
 

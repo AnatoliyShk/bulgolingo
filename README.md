@@ -52,6 +52,31 @@ php artisan migrate --seed
 ```
 The app requires PHP 8.5. The Sail container in `compose.yaml` runs PHP 8.5, so if the host has an older PHP, run PHP commands (`artisan`, `composer`, `pint`, `phpunit`) inside it with `docker compose exec laravel.test …`.
 
+## Admin panel roles
+The admin panel lives under `/admin` and is gated by the user's role. Each user belongs to exactly one row of the `roles` table (`users.role_id`); there are three to start with, and a new account is a `student`.
+
+- **Student** (`student`) — the default; no admin panel access.
+- **Full admin** (`admin`) — unrestricted: browsing and editing lessons, exercises, learning paths, bots, scripted dialogues, settings, and user records.
+- **Admin visitor** (`admin_visitor`) — a read-only demo role for letting people click through the admin panel without risking real data or exposing other users' accounts:
+  - Can browse every admin page (learning paths, lessons, exercises, bots, scripted dialogues/lines, settings, metrics, vitals, logs).
+  - **Cannot** view the Users section at all — it's hidden from the panel nav and the `/admin/users` route itself returns 403 for this role.
+  - **Cannot** make any change (create/update/delete, including settings) — any write request is blocked with a 403 explaining that the role is read-only.
+
+Seed the read-only demo account with:
+```bash
+php artisan db:seed --class=AdminVisitorSeeder
+```
+
+Demo credentials:
+
+| Field    | Value |
+|----------|-------|
+| Name     | `admin` |
+| Email    | `admin@admin.com` |
+| Password | `admin` |
+
+Log in with these credentials, then visit `/admin` to explore.
+
 ## Running the mobile app locally
 The app also ships as a native iOS/Android build via [NativePHP for Mobile](https://nativephp.com/docs/mobile).
 

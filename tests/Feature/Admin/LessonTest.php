@@ -12,7 +12,7 @@ class LessonTest extends TestCase
 
     public function test_admin_can_view_lesson_create_page(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
 
         $response = $this
             ->actingAs($admin)
@@ -23,7 +23,7 @@ class LessonTest extends TestCase
 
     public function test_admin_can_create_lesson(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
 
         $response = $this
             ->actingAs($admin)
@@ -44,7 +44,7 @@ class LessonTest extends TestCase
 
     public function test_lesson_creation_requires_valid_data(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->admin()->create();
 
         $response = $this
             ->actingAs($admin)
@@ -70,7 +70,7 @@ class LessonTest extends TestCase
 
     public function test_non_admin_cannot_create_lesson(): void
     {
-        $user = User::factory()->create(['is_admin' => false]);
+        $user = User::factory()->create();
 
         $response = $this
             ->actingAs($user)

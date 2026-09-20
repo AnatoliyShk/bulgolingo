@@ -8,9 +8,11 @@ use App\Models\Lesson;
 use App\Models\User;
 use App\Models\UserLexema;
 use Carbon\Carbon;
+use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
+#[Singleton]
 class StatsService
 {
     public function build(User $user): array

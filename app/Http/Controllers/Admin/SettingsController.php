@@ -9,19 +9,21 @@ use Inertia\Inertia;
 
 class SettingsController extends Controller
 {
-    public function edit(SiteSettings $settings)
+    public function __construct(private readonly SiteSettings $settings) {}
+
+    public function edit()
     {
         return Inertia::render('Admin/Settings/Edit', [
             'settings' => [
-                'embedding_search_enabled' => $settings->embeddingSearchEnabled(),
-                'embedding_min_similarity' => $settings->embeddingMinSimilarity(),
+                'embedding_search_enabled' => $this->settings->embeddingSearchEnabled(),
+                'embedding_min_similarity' => $this->settings->embeddingMinSimilarity(),
             ],
         ]);
     }
 
-    public function update(UpdateSettingsRequest $request, SiteSettings $settings)
+    public function update(UpdateSettingsRequest $request)
     {
-        $settings->update([
+        $this->settings->update([
             SiteSettings::EMBEDDING_SEARCH_ENABLED => $request->boolean('embedding_search_enabled'),
             SiteSettings::EMBEDDING_MIN_SIMILARITY => (float) $request->validated('embedding_min_similarity'),
         ]);

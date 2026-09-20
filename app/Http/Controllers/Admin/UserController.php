@@ -12,7 +12,8 @@ class UserController extends Controller
     public function index(): Response
     {
         return Inertia::render('Admin/Users/Index', [
-            'users' => User::select(['id', 'name', 'email', 'is_admin', 'email_verified_at', 'created_at'])
+            'users' => User::with('role:id,name')
+                ->select(['id', 'name', 'email', 'role_id', 'email_verified_at', 'created_at'])
                 ->latest()
                 ->get(),
         ]);

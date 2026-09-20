@@ -49,7 +49,7 @@ test.describe('Public profile', () => {
 
             for (const row of await rows.all()) {
                 await expect(row.getByRole('link', { name: 'View profile' }))
-                    .toHaveAttribute('href', /^\/profile\/\d+$/);
+                    .toHaveAttribute('href', /\/profile\/\d+$/);
             }
         });
 

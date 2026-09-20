@@ -7,6 +7,7 @@ import TopBar from '@/Components/TopBar.vue'
 import LearningPathCardMini from '@/Components/LearningPathCardMini.vue'
 import LearningPathSearch from '@/Components/LearningPathSearch.vue'
 import LearningPathLevelFilter from '@/Components/LearningPathLevelFilter.vue'
+import LearningPathLevelPrompt from '@/Components/LearningPathLevelPrompt.vue'
 import LearningPathSortFilter from '@/Components/LearningPathSortFilter.vue'
 
 const props = defineProps({
@@ -14,7 +15,7 @@ const props = defineProps({
     unfinishedPaths: { type: Array, default: () => [] },
     finishedPaths: { type: Array, default: () => [] },
     search: { type: Object, default: () => ({ enabled: false, query: '', unavailable: false }) },
-    filters: { type: Object, default: () => ({ level: 'A2', sort: 'exercises_desc' }) },
+    filters: { type: Object, default: () => ({ level: null, sort: 'exercises_desc' }) },
 })
 
 const { theme } = useTheme()
@@ -22,14 +23,16 @@ const { theme } = useTheme()
 const hasEnrolled = computed(() => props.unfinishedPaths.length > 0 || props.finishedPaths.length > 0)
 const hasAny = computed(() => hasEnrolled.value || (props.paths?.length ?? 0) > 0)
 
-// A level always narrows the page now — there being no "every level" choice
-// — so an empty catalog section always means nothing at this level matched,
-// never that nothing exists to show. A search says so in its own status
-// line, so the level message is held back while one is in effect. The sort
-// only orders the page — it never empties it, so it plays no part here.
+// Once a level narrows the page, an empty catalog section always means
+// nothing at that level matched, never that nothing exists to show — but
+// with no level chosen yet (the first visit, before the prompt is answered)
+// an empty section means only that, so the message stays out of its way. A
+// search says so in its own status line, so the level message is held back
+// while one is in effect. The sort only orders the page — it never empties
+// it, so it plays no part here.
 const isSearching = computed(() => !!props.search.query && !props.search.unavailable)
 const showCatalog = computed(() => (props.paths?.length ?? 0) > 0)
-const levelIsEmpty = computed(() => !isSearching.value && !hasAny.value)
+const levelIsEmpty = computed(() => !!props.filters.level && !isSearching.value && !hasAny.value)
 </script>
 
 <template>
@@ -42,6 +45,7 @@ const levelIsEmpty = computed(() => !isSearching.value && !hasAny.value)
 
     <div class="nb-paths" :class="theme">
         <TopBar />
+        <LearningPathLevelPrompt />
 
         <main class="nb-paths__main">
             <div class="nb-paths__head">

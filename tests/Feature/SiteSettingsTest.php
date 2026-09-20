@@ -3,7 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Setting;
+use App\Services\GradeLexemeReview;
+use App\Services\LearningPathSearch;
 use App\Services\SiteSettings;
+use App\Services\StatsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -11,6 +14,13 @@ use Tests\TestCase;
 class SiteSettingsTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_the_container_resolves_one_shared_instance(): void
+    {
+        foreach ([SiteSettings::class, LearningPathSearch::class, GradeLexemeReview::class, StatsService::class] as $service) {
+            $this->assertSame(app($service), app($service), $service);
+        }
+    }
 
     public function test_the_defaults_apply_until_something_is_saved(): void
     {

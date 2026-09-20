@@ -4,7 +4,9 @@ namespace App\Console\Commands\LoadTest;
 
 use App\Enums\ExerciseType;
 use App\Enums\LearningPathType;
+use App\Enums\RoleName;
 use App\Enums\UserType;
+use App\Models\Role;
 use App\Support\LoadTest\ActivityPlan;
 use App\Support\LoadTest\BulkWriter;
 use App\Support\LoadTest\RunManifest;
@@ -339,9 +341,9 @@ class SeedLoadTestData extends Command
     /**
      * Every generated user is typed `filler` and given an address on the
      * reserved .invalid domain, so they can never collide with a real account
-     * and stay recognisable even if the manifest is lost. One bcrypt hash is
-     * computed and reused: hashing per user would dominate the runtime and
-     * proves nothing about the database.
+     * and stay recognisable even if the manifest is lost. Each is a student.
+     * One bcrypt hash is computed and reused: hashing per user would dominate
+     * the runtime and proves nothing about the database.
      */
     private function generateUsers(Tier $tier): void
     {
@@ -352,14 +354,15 @@ class SeedLoadTestData extends Command
         $this->manifest->recordBlock('users', $this->userIdStart, $count);
 
         $password = Hash::make('load-test-password');
+        $studentRoleId = Role::named(RoleName::Student)->id;
         $now = now()->toDateTimeString();
         $start = $this->userIdStart;
         $run = $this->manifest->id;
         $bar = $this->output->createProgressBar($count);
 
         $written = $this->writer->write('users',
-            ['id', 'name', 'email', 'email_verified_at', 'password', 'is_admin', 'experience', 'type', 'created_at', 'updated_at'],
-            (function () use ($count, $start, $password, $now, $run): Generator {
+            ['id', 'name', 'email', 'email_verified_at', 'password', 'role_id', 'experience', 'type', 'created_at', 'updated_at'],
+            (function () use ($count, $start, $password, $studentRoleId, $now, $run): Generator {
                 for ($i = 0; $i < $count; $i++) {
                     yield [
                         $start + $i,
@@ -367,7 +370,7 @@ class SeedLoadTestData extends Command
                         'lt-'.$run.'-'.$i.'@'.RunManifest::EMAIL_DOMAIN,
                         $now,
                         $password,
-                        false,
+                        $studentRoleId,
                         $this->plan->completions[$i] * 10,
                         UserType::Filler->value,
                         $now,

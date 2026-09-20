@@ -105,7 +105,7 @@ const a2Button = (page: Page) => filter(page).getByRole('button', { name: 'A2 El
 const b1Button = (page: Page) => filter(page).getByRole('button', { name: 'B1 Intermediate' });
 
 test.describe('Learning path level filter', () => {
-    test('defaults to A2 with no way to clear it back to every level', async ({ page }) => {
+    test('has no way to clear a chosen level back to every level', async ({ page }) => {
         await openCatalog(page);
 
         await expect(filter(page)).toBeVisible();
@@ -120,8 +120,8 @@ test.describe('Learning path level filter', () => {
 
         await b1Button(page).click();
 
-        await expect(page).toHaveURL(`${BASE}/learning-paths?level=B1`);
-        expect(seen).toEqual(['?level=B1']);
+        await expect(page).toHaveURL(`${BASE}/learning-paths?level=B1&sort=exercises_desc`);
+        expect(seen).toEqual(['?level=B1&sort=exercises_desc']);
         await expect(b1Button(page)).toHaveAttribute('aria-pressed', 'true');
         await expect(a2Button(page)).toHaveAttribute('aria-pressed', 'false');
     });
@@ -175,7 +175,7 @@ test.describe('Learning path level filter', () => {
         await answerVisits(page, base);
 
         await b1Button(page).click();
-        await expect(page).toHaveURL(`${BASE}/learning-paths?level=B1`);
+        await expect(page).toHaveURL(`${BASE}/learning-paths?level=B1&sort=exercises_desc`);
 
         await page.goBack();
 

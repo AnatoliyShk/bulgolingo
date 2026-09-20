@@ -84,7 +84,7 @@ Image uploads are stored in `storage/app/public` and served via `storage:link`. 
 **Stack:** PHP 8.5 + Laravel 13 + Inertia.js + Vue 3 (Composition API) + Tailwind CSS. The app is a Bulgarian language-learning platform (Duolingo-style).
 
 ### Request lifecycle
-Every page render goes through Inertia: Laravel returns `Inertia::render('PageName', [...props])`, Vite bundles the Vue SPA, and `HandleInertiaRequests` middleware injects shared props (`auth.user`, `auth.isAdmin`) available in every Vue page via `usePage()`.
+Every page render goes through Inertia: Laravel returns `Inertia::render('PageName', [...props])`, Vite bundles the Vue SPA, and `HandleInertiaRequests` middleware injects shared props (`auth.user`, `auth.isAdmin`, `auth.isAdminVisitor` — both derived from the user's role) available in every Vue page via `usePage()`.
 
 ### Route structure
 - `/` — public welcome page
@@ -93,7 +93,7 @@ Every page render goes through Inertia: Laravel returns `Inertia::render('PageNa
 - `/exercise/{id}` — exercise player (student-facing)
 - `/lesson/{id}` — lesson view
 - `/stats` — stats dashboard (uses `vue-data-ui` charts)
-- `/admin/*` — admin panel (guarded by `EnsureIsAdmin` middleware; requires `is_admin = true` on the user)
+- `/admin/*` — admin panel (guarded by `EnsureIsAdmin` middleware; requires the `admin` or `admin_visitor` role; `RestrictAdminVisitor` keeps visitors read-only and out of `/admin/users`)
 
 ### Domain model
 ```
@@ -101,13 +101,16 @@ LearningPath ──< learning_path_lesson >── Lesson ──< Exercise
      │                                       │
      └──< learning_path_user >── User        └── (is_completed bool)
                 │
-                └──< user_learned_word >── Lexemas
+                ├──< user_learned_word >── Lexemas
+                │
+                └── Role (student | admin | admin_visitor)
 ```
 
 - **Exercise** is the core unit. Its `clause` column stores a JSON blob whose schema is determined by `decision_type` (an `ExerciseType` enum). The `Exercise` model validates `clause` against `ExerciseType::dataRules()` in a `saving` model hook.
 - **ExerciseType** enum (`app/Enums/ExerciseType.php`) defines five types: `multiple_choice`, `true_false`, `fill_in_the_blank`, `image_matching`, `bot_dialog`. Each type has its own `clause` shape and validation rules.
 - **Lesson** tracks aggregate completion (`refreshCompletionStatus()`) by checking whether all child exercises are completed.
 - **Images** are stored via a many-to-many pivot (`exercise_image`) so an exercise can have associated images. The admin controller handles upload/replace/delete of the physical file on the `public` storage disk.
+- **Role**: every user belongs to one row of `roles` via `users.role_id`. The rows are inserted by the migration that creates the table, one per `RoleName` enum case, and `Role::named(RoleName::Admin)` looks one up. A user created without a role becomes a `student` (a `creating` hook on `User`). Check roles with `$user->isAdmin()`, `$user->isAdminVisitor()` or `$user->hasRole(...)`; in tests use the `UserFactory` states `admin()` and `adminVisitor()`.
 - **Lexemas** are tracked per-user via a `user_lexema` pivot with an `reps_total` column. The `LearnedWordCountUpdate` job (currently a stub) is intended to update these counts.
 
 ### Admin vs student controllers
@@ -121,6 +124,18 @@ There are two `ExerciseController` classes:
 - The single composable `useTheme` (`resources/js/composables/useTheme.js`) manages a module-level `ref` for dark/light mode, persisted in `localStorage`. Default is `dark`.
 - `vue-data-ui` is used for charts on the Stats page.
 - Ziggy is included for named route helpers (`route('name', params)`) in Vue via `@inertiajs/vue3`.
+
+## Playwright e2e tests
+Specs live in `e2e/`; CI (`.github/workflows/playwright.yml`) runs the suite on
+chromium and webkit against a fresh database seeded by `E2eSeeder`, with the
+fixture ids exported by `php artisan e2e:fixture-env`. Every failure so far has
+been a spec drifting behind the UI rather than a real regression, so:
+
+- Scope an assertion about shared chrome to its container — `page.locator('.nb-topbar').getByRole('link', { name: 'Profile' })`, never a bare `getByRole`. Role-name matching is substring and case-insensitive, so the leaderboard's "View profile" links match `Profile` and the profile card's "view your stats" link matches `Stats`, and either turns a passing assertion into a strict-mode violation. Use `exact: true` where no container fits.
+- Assert a page title by heading level or by its BEM class, not by copy that has to match verbatim — the text comes from the controller's Inertia props and is reworded there.
+- Grep for a class before locating by it. BEM names move in refactors (`.nb-path-list__path` became `.nb-path-list__path-wrapper`), and a locator matching nothing does not always fail.
+- A branch on `count() === 0` has to be reachable both ways. A stale locator pins it to the empty-state branch, and the test keeps passing while asserting nothing; check against the seeded data that the populated branch still runs.
+- Adding a section to a page means updating the specs that count its siblings — the `toHaveCount` on `.nb-stats__section` and every loop over that set. Give the newcomer its own class when it does not share the shape the loop expects.
 
 ## Styles
 - Never use <style> blocks in Vue components

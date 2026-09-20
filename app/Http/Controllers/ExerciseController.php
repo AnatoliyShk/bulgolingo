@@ -15,6 +15,8 @@ use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {
+    public function __construct(private readonly SiteSettings $settings) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -146,14 +148,14 @@ class ExerciseController extends Controller
      * admin-set similarity floor as the learning path search. With embedding
      * search turned off the endpoint is a 404, before anything is embedded.
      */
-    public function search(SearchExerciseRequest $request, SiteSettings $settings): JsonResponse
+    public function search(SearchExerciseRequest $request): JsonResponse
     {
-        abort_unless($settings->embeddingSearchEnabled(), 404);
+        abort_unless($this->settings->embeddingSearchEnabled(), 404);
 
         $query = $request->validated('query');
 
         $exercises = Exercise::query()
-            ->whereVectorSimilarTo('embedding', $query, minSimilarity: $settings->embeddingMinSimilarity())
+            ->whereVectorSimilarTo('embedding', $query, minSimilarity: $this->settings->embeddingMinSimilarity())
             ->limit(5)
             ->get();
 
