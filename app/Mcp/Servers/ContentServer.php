@@ -2,7 +2,9 @@
 
 namespace App\Mcp\Servers;
 
+use App\Mcp\Tools\ListExercisesTool;
 use App\Mcp\Tools\ListLearningPathsTool;
+use App\Mcp\Tools\ListLessonsTool;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
@@ -15,6 +17,8 @@ class ContentServer extends Server
 {
     protected array $tools = [
         ListLearningPathsTool::class,
+        ListLessonsTool::class,
+        ListExercisesTool::class,
     ];
 
     protected array $resources = [
