@@ -12,6 +12,7 @@
         "laravel/ai": "^0.11.0",
         "laravel/framework": "^13.19",
         "laravel/horizon": "^5.47",
+        "laravel/mcp": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.22",
         "laravel/tinker": "^3.0",

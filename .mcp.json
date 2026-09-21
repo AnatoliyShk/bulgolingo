@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "bulgolingo-content": {
+      "type": "http",
+      "url": "http://localhost:350/mcp/content"
+    }
+  }
+}

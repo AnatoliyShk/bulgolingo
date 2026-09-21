@@ -61,7 +61,7 @@
             "Bash(git push --force:*)",
             "Bash(php artisan migrate:fresh:*)",
             "Bash(cat .env*)",
-            "Bash(cat:*env*)"
+            "Bash(cat*env*)"
         ]
     }
 }
