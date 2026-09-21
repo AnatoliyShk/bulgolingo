@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
 use App\Enums\RoleName;
+use App\Enums\UserType;
 use App\Models\Bot;
 use App\Models\Exercise;
 use App\Models\LearningPath;
@@ -12,6 +13,7 @@ use App\Models\Lexema;
 use App\Models\Role;
 use App\Models\ScriptedDialogue;
 use App\Models\ScriptedLine;
+use App\Models\Type;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
@@ -65,6 +67,7 @@ class UuidBackfillTest extends TestCase
             'email' => 'legacy-uuid@example.com',
             'password' => 'hash',
             'role_id' => Role::named(RoleName::Student)->id,
+            'type_id' => Type::named(UserType::Regular)->id,
         ]);
         $pathId = DB::table('learning_paths')->insertGetId(['name' => 'Legacy', 'language' => 'bg']);
         $lessonId = DB::table('lessons')->insertGetId(['name' => 'Legacy', 'description' => 'D']);

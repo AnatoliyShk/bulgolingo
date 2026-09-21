@@ -35,6 +35,7 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         $user = auth()->user();
+        $user->loadMissing('type:id,name');
 
         $paths = $user->enrolledPathsWithProgress();
 
@@ -67,9 +68,16 @@ class ProfileController extends Controller
      */
     public function publicShow(User $user): Response
     {
+        $user->loadMissing('type:id,name');
+
         return Inertia::render('Profile/Show', [
             'appName' => config('app.name'),
-            'user' => $user->only(['id', 'name', 'type', 'created_at']),
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'type' => $user->type,
+                'created_at' => $user->created_at,
+            ],
             'avatarUrl' => $user->avatarUrl(),
             'streakCounter' => (int) $user->streak_counter,
             'practisedToday' => (bool) $user->latest_exercise_at?->isToday(),

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\ExerciseType;
 use App\Enums\UserType;
 use App\Models\Lesson;
+use App\Models\Type;
 use App\Models\User;
 use App\Models\UserLexema;
 use Carbon\Carbon;
@@ -44,8 +45,12 @@ class StatsService
      */
     private function topUsersByExperience(User $user): array
     {
+        $excludedTypeIds = Type::query()
+            ->whereIn('name', [UserType::Playwright->value, UserType::Filler->value])
+            ->pluck('id');
+
         return User::query()
-            ->whereNotIn('type', [UserType::Playwright->value, UserType::Filler->value])
+            ->whereNotIn('type_id', $excludedTypeIds)
             ->orderByDesc('experience')
             ->orderBy('id')
             ->limit(5)

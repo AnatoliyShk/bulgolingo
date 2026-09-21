@@ -7,6 +7,7 @@ use App\Enums\LearningPathType;
 use App\Enums\RoleName;
 use App\Enums\UserType;
 use App\Models\Role;
+use App\Models\Type;
 use App\Support\LoadTest\ActivityPlan;
 use App\Support\LoadTest\BulkWriter;
 use App\Support\LoadTest\RunManifest;
@@ -355,14 +356,15 @@ class SeedLoadTestData extends Command
 
         $password = Hash::make('load-test-password');
         $studentRoleId = Role::named(RoleName::Student)->id;
+        $fillerTypeId = Type::named(UserType::Filler)->id;
         $now = now()->toDateTimeString();
         $start = $this->userIdStart;
         $run = $this->manifest->id;
         $bar = $this->output->createProgressBar($count);
 
         $written = $this->writer->write('users',
-            ['id', 'name', 'email', 'email_verified_at', 'password', 'role_id', 'experience', 'type', 'created_at', 'updated_at'],
-            (function () use ($count, $start, $password, $studentRoleId, $now, $run): Generator {
+            ['id', 'name', 'email', 'email_verified_at', 'password', 'role_id', 'experience', 'type_id', 'created_at', 'updated_at'],
+            (function () use ($count, $start, $password, $studentRoleId, $fillerTypeId, $now, $run): Generator {
                 for ($i = 0; $i < $count; $i++) {
                     yield [
                         $start + $i,
@@ -372,7 +374,7 @@ class SeedLoadTestData extends Command
                         $password,
                         $studentRoleId,
                         $this->plan->completions[$i] * 10,
-                        UserType::Filler->value,
+                        $fillerTypeId,
                         $now,
                         $now,
                     ];

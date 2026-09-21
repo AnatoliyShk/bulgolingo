@@ -3,6 +3,7 @@
 namespace App\Console\Commands\LoadTest;
 
 use App\Enums\UserType;
+use App\Models\Type;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -213,7 +214,7 @@ class LoadTestReport extends Command
     private function busiestUser(): int
     {
         return (int) (DB::table('users')
-            ->where('type', UserType::Filler->value)
+            ->where('type_id', Type::named(UserType::Filler)->id)
             ->orderByDesc('experience')
             ->value('id') ?? 0);
     }

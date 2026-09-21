@@ -18,7 +18,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['name', 'email', 'password', 'role_id', 'experience', 'type'])]
+#[Fillable(['name', 'email', 'password', 'role_id', 'experience', 'type_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -35,13 +35,15 @@ class User extends Authenticatable
     ];
 
     /**
-     * A user created without a role is a student, so registration, factories
-     * and seeders only name a role when it is something more.
+     * A user created without a role or type is a regular student, so
+     * registration, factories and seeders only name one when it is something
+     * more.
      */
     protected static function booted(): void
     {
         static::creating(function (User $user) {
             $user->role_id ??= Role::named(RoleName::Student)->id;
+            $user->type_id ??= Type::named(UserType::Regular)->id;
         });
     }
 
@@ -58,7 +60,6 @@ class User extends Authenticatable
             'experience' => 'integer',
             'streak_counter' => 'integer',
             'latest_exercise_at' => 'datetime',
-            'type' => UserType::class,
         ];
     }
 
@@ -108,9 +109,19 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class);
+    }
+
     public function hasRole(RoleName $name): bool
     {
         return $this->role?->name === $name;
+    }
+
+    public function hasType(UserType $name): bool
+    {
+        return $this->type?->name === $name;
     }
 
     public function isAdmin(): bool

@@ -39,7 +39,7 @@ enum LearningPathType: string
             return array_column(self::cases(), 'value');
         }
 
-        if ($user?->type === UserType::Premium) {
+        if ($user?->hasType(UserType::Premium)) {
             return [self::Regular->value, self::Premium->value];
         }
 

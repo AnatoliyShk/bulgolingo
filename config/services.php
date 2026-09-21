@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'balkanbuddy' => [
+        'mcp_url' => env('BALKANBUDDY_MCP_URL'),
+        'mcp_token' => env('BALKANBUDDY_MCP_TOKEN'),
+    ],
+
 ];

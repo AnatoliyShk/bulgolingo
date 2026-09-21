@@ -3,6 +3,7 @@
 namespace App\Console\Commands\LoadTest;
 
 use App\Enums\UserType;
+use App\Models\Type;
 use App\Support\LoadTest\RunManifest;
 use Closure;
 use Illuminate\Console\Command;
@@ -143,7 +144,8 @@ class TeardownLoadTestData extends Command
     {
         $this->info('Removing unmanifested load-test rows');
 
-        $fillers = fn ($q) => $q->select('id')->from('users')->where('type', UserType::Filler->value);
+        $fillerTypeId = Type::named(UserType::Filler)->id;
+        $fillers = fn ($q) => $q->select('id')->from('users')->where('type_id', $fillerTypeId);
         $named = fn (string $table) => fn ($q) => $q->select('id')->from($table)->where('name', 'like', RunManifest::NAME_PREFIX.'%');
 
         $steps = [
@@ -151,7 +153,7 @@ class TeardownLoadTestData extends Command
             ['user_lexema', 'id', fn ($q) => $q->whereIn('user_id', $fillers)],
             ['user_exercise_completions', 'user_id', fn ($q) => $q->whereIn('user_id', $fillers)],
             ['learning_path_user', 'user_id', fn ($q) => $q->whereIn('user_id', $fillers)],
-            ['users', 'id', fn ($q) => $q->where('type', UserType::Filler->value)],
+            ['users', 'id', fn ($q) => $q->where('type_id', $fillerTypeId)],
             ['lexemas', 'id', fn ($q) => $q->whereIn('exercise_id', $named('exercises'))],
             ['exercise_lesson', 'exercise_id', fn ($q) => $q->whereIn('exercise_id', $named('exercises'))],
             ['learning_path_lesson', 'lesson_id', fn ($q) => $q->whereIn('lesson_id', $named('lessons'))],
@@ -201,7 +203,7 @@ class TeardownLoadTestData extends Command
      */
     private function orphanCheck(): void
     {
-        $counts = ['users typed filler' => DB::table('users')->where('type', UserType::Filler->value)->count()];
+        $counts = ['users typed filler' => DB::table('users')->where('type_id', Type::named(UserType::Filler)->id)->count()];
 
         foreach (['exercises', 'lessons', 'learning_paths'] as $table) {
             $counts[$table.' named '.RunManifest::NAME_PREFIX] = DB::table($table)->where('name', 'like', RunManifest::NAME_PREFIX.'%')->count();
