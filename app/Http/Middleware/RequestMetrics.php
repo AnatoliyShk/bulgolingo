@@ -22,8 +22,21 @@ class RequestMetrics
         return $next($request);
     }
 
+    /**
+     * The query log is read once, for the slow-request record, and then dropped
+     * and switched off again: it retains every statement and its bindings for
+     * the life of the connection, so on a long-lived worker (Octane) leaving it
+     * on accumulates across requests until the worker's memory is exhausted.
+     * It is released before the early return as well, so the excluded paths do
+     * not leak what handle() turned on for them.
+     */
     public function terminate(Request $request, Response $response): void
     {
+        $queries = count(DB::getQueryLog());
+
+        DB::disableQueryLog();
+        DB::flushQueryLog();
+
         if ($request->is('metrics', 'up', 'health', 'telescope*', 'horizon*')) {
             return;
         }
@@ -39,7 +52,7 @@ class RequestMetrics
                 'http_request_duration_seconds',
                 'HTTP request duration',
                 ['method', 'route', 'status', 'area'],
-                [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1, 2, 5]
+                [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1, 2, 5, 10, 30]
             );
 
             $histogram->observe($duration, [
@@ -52,7 +65,7 @@ class RequestMetrics
             report($e);
         }
 
-        $this->warnIfSlowerThanP95($request, $response, $duration, $area);
+        $this->warnIfSlowerThanP95($request, $response, $duration, $area, $queries);
     }
 
     /**
@@ -71,17 +84,30 @@ class RequestMetrics
         return $request->is('admin', 'admin/*') ? 'admin' : 'user';
     }
 
-    private function warnIfSlowerThanP95(Request $request, Response $response, float $duration, string $area): void
+    /**
+     * Records a request that ran slower than the cached p95 for its area.
+     *
+     * Every Redis call here is inside the try: this runs on the terminating
+     * request, so an unreachable or slow cache would otherwise turn a merely
+     * slow request into a failed one, and the recording is bookkeeping that
+     * nothing downstream depends on. Note the self-reinforcing shape it
+     * guards — the slower a request is, the more likely it is to take this
+     * branch and so to pay for the extra reads and writes on top.
+     */
+    private function warnIfSlowerThanP95(Request $request, Response $response, float $duration, string $area, int $queries): void
     {
-        $p95 = Cache::store('redis')->get(self::p95CacheKey($area));
+        try {
+            $p95 = Cache::store('redis')->get(self::p95CacheKey($area));
 
-        if ($p95 !== null && $duration > $p95) {
+            if ($p95 === null || $duration <= $p95) {
+                return;
+            }
+
             $method = $request->method();
             $route = $request->route()?->uri() ?? 'unmatched';
             $status = $response->getStatusCode();
             $durationMs = round($duration * 1000, 1);
             $p95Ms = round($p95 * 1000, 1);
-            $queries = count(DB::getQueryLog());
             $memoryMb = round(memory_get_peak_usage(true) / 1048576, 1);
 
             Log::warning('Request duration exceeded p95 threshold', [
@@ -105,6 +131,8 @@ class RequestMetrics
                 'memoryMb' => $memoryMb,
                 'occurredAt' => now()->toDateTimeString(),
             ]);
+        } catch (\Throwable $e) {
+            report($e);
         }
     }
 }

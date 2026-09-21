@@ -10,7 +10,7 @@ class BackfillUuids extends Command
 {
     protected $signature = 'uuid:backfill';
 
-    protected $description = 'Fill the uuid column added to users, learning_paths, lessons, exercises, scripted_dialogues, and scripted_lines for every row that predates it';
+    protected $description = 'Fill the uuid column added to users, learning_paths, lessons, exercises, scripted_dialogues, scripted_lines, and lexemas for every row that predates it';
 
     /**
      * Writes through the query builder rather than loading Eloquent models:
@@ -21,7 +21,7 @@ class BackfillUuids extends Command
      */
     public function handle(): int
     {
-        foreach (['users', 'learning_paths', 'lessons', 'exercises', 'scripted_dialogues', 'scripted_lines'] as $table) {
+        foreach (['users', 'learning_paths', 'lessons', 'exercises', 'scripted_dialogues', 'scripted_lines', 'lexemas'] as $table) {
             $this->backfill($table);
         }
 

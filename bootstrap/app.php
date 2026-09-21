@@ -2,7 +2,6 @@
 
 use App\Http\Middleware\EnsureIsAdmin;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Middleware\HandleInertiaRequestsMiddleware;
 use App\Http\Middleware\RequestMetrics;
 use App\Http\Middleware\RestrictAdminVisitor;
 use Illuminate\Foundation\Application;
@@ -22,10 +21,6 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
             RequestMetrics::class,
-        ]);
-
-        $middleware->web(append: [
-            HandleInertiaRequestsMiddleware::class,
         ]);
 
         $middleware->alias([

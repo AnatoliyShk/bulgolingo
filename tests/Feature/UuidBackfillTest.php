@@ -8,6 +8,7 @@ use App\Models\Bot;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
+use App\Models\Lexema;
 use App\Models\Role;
 use App\Models\ScriptedDialogue;
 use App\Models\ScriptedLine;
@@ -44,8 +45,9 @@ class UuidBackfillTest extends TestCase
             'scripted_dialogue_id' => $dialogue->id,
             'clause' => ['text' => 'Здравей!'],
         ]);
+        $lexema = Lexema::create(['word' => 'здравей', 'exercise_id' => $exercise->id]);
 
-        foreach ([$user, $path, $lesson, $exercise, $dialogue, $line] as $model) {
+        foreach ([$user, $path, $lesson, $exercise, $dialogue, $line, $lexema] as $model) {
             $this->assertNotNull($model->uuid);
             $this->assertSame(7, Uuid::fromString($model->uuid)->getFields()->getVersion());
         }
@@ -85,6 +87,10 @@ class UuidBackfillTest extends TestCase
             'scripted_dialogue_id' => $dialogueId,
             'clause' => json_encode(['text' => 'Здравей!']),
         ]);
+        $lexemaId = DB::table('lexemas')->insertGetId([
+            'word' => 'легаси',
+            'exercise_id' => $exerciseId,
+        ]);
 
         $this->artisan('uuid:backfill')->assertSuccessful();
 
@@ -94,8 +100,9 @@ class UuidBackfillTest extends TestCase
         $exercise = DB::table('exercises')->find($exerciseId);
         $dialogue = DB::table('scripted_dialogues')->find($dialogueId);
         $line = DB::table('scripted_lines')->find($lineId);
+        $lexema = DB::table('lexemas')->find($lexemaId);
 
-        foreach ([$user->uuid, $path->uuid, $lesson->uuid, $exercise->uuid, $dialogue->uuid, $line->uuid] as $uuid) {
+        foreach ([$user->uuid, $path->uuid, $lesson->uuid, $exercise->uuid, $dialogue->uuid, $line->uuid, $lexema->uuid] as $uuid) {
             $this->assertNotNull($uuid);
             $this->assertSame(7, Uuid::fromString($uuid)->getFields()->getVersion());
         }

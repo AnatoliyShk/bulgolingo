@@ -78,8 +78,10 @@ class StatsService
 
     /**
      * 49 days back so the activity chart can bucket into 7 full weeks; the
-     * per-day cache below still keys on individual days, only the chart
-     * output groups them.
+     * cache below still holds a field per day, only the chart output groups
+     * them. This range is the one definition of the window — the database
+     * fallback reads its first day rather than counting back on its own, so
+     * the two cannot drift into a query narrower than the chart it fills.
      */
     private function activityDayRange(): Collection
     {
@@ -122,7 +124,7 @@ class StatsService
             ->join('exercises', 'exercises.id', '=', 'user_exercise_completions.exercise_id')
             ->selectRaw('exercises.decision_type, DATE(user_exercise_completions.created_at) as day, COUNT(*) as cnt')
             ->where('user_exercise_completions.user_id', $userId)
-            ->where('user_exercise_completions.created_at', '>=', now()->subDays(13)->startOfDay())
+            ->where('user_exercise_completions.created_at', '>=', Carbon::parse($days->first())->startOfDay())
             ->groupBy('exercises.decision_type', 'day')
             ->get()
             ->groupBy('decision_type');
