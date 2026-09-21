@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Mcp\Client;
+use Laravel\Mcp\Facades\Mcp;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,6 +52,9 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('learning-path-search', static::learningPathSearchLimit(...));
         RateLimiter::for('stats-view', static::statsViewLimit(...));
         RateLimiter::for('exercise-completion', static::exerciseCompletionLimit(...));
+
+        Mcp::registerClient('balkanbuddy', fn () => Client::web(config('services.balkanbuddy.mcp_url'))
+            ->withToken(config('services.balkanbuddy.mcp_token')));
     }
 
     /**

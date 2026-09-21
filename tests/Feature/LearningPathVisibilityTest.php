@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Enums\LanguageLevel;
 use App\Enums\LearningPathType;
-use App\Enums\UserType;
 use App\Models\LearningPath;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -76,7 +75,7 @@ class LearningPathVisibilityTest extends TestCase
     public function test_a_regular_user_sees_only_regular_paths(): void
     {
         $this->oneOfEachType();
-        $user = User::factory()->create(['type' => UserType::Regular]);
+        $user = User::factory()->create();
 
         $this->assertSame(['regular path'], $this->catalogFor($user));
     }
@@ -84,7 +83,7 @@ class LearningPathVisibilityTest extends TestCase
     public function test_a_premium_user_sees_regular_and_premium_paths(): void
     {
         $this->oneOfEachType();
-        $user = User::factory()->create(['type' => UserType::Premium]);
+        $user = User::factory()->premium()->create();
 
         $names = $this->catalogFor($user);
 
@@ -106,7 +105,7 @@ class LearningPathVisibilityTest extends TestCase
     public function test_a_hidden_path_cannot_be_opened_by_id(): void
     {
         $paths = $this->oneOfEachType();
-        $user = User::factory()->create(['type' => UserType::Regular]);
+        $user = User::factory()->create();
 
         $this->actingAs($user)
             ->get(route('learning-paths.show', $paths['test']))
@@ -124,7 +123,7 @@ class LearningPathVisibilityTest extends TestCase
     public function test_a_hidden_path_cannot_be_started_by_id(): void
     {
         $paths = $this->oneOfEachType();
-        $user = User::factory()->create(['type' => UserType::Regular]);
+        $user = User::factory()->create();
 
         $this->actingAs($user)
             ->post(route('learning-paths.start', $paths['premium']))
@@ -139,7 +138,7 @@ class LearningPathVisibilityTest extends TestCase
     public function test_a_premium_user_can_open_and_start_a_premium_path(): void
     {
         $paths = $this->oneOfEachType();
-        $user = User::factory()->create(['type' => UserType::Premium]);
+        $user = User::factory()->premium()->create();
 
         $this->actingAs($user)
             ->get(route('learning-paths.show', $paths['premium']))

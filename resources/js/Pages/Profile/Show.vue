@@ -71,7 +71,7 @@ const memberSince = computed(() => {
     return new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric' }).format(new Date(props.user.created_at))
 })
 
-const isPremium = computed(() => props.user?.type === 'premium')
+const isPremium = computed(() => props.user?.type?.name === 'premium')
 </script>
 
 <template>

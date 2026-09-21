@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Enums\RoleName;
+use App\Enums\UserType;
 use App\Models\Role;
+use App\Models\Type;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -106,12 +108,15 @@ class RoleTest extends TestCase
         $migration = require database_path('migrations/2026_09_15_000002_replace_admin_flags_with_role_on_users_table.php');
         $migration->down();
 
+        $typeId = Type::named(UserType::Regular)->id;
+
         $row = fn (string $email, bool $admin, bool $visitor) => [
             'name' => $email,
             'email' => $email,
             'password' => 'x',
             'is_admin' => $admin,
             'is_admin_visitor' => $visitor,
+            'type_id' => $typeId,
         ];
 
         DB::table('users')->insert([

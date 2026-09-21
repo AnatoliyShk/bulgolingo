@@ -6,6 +6,7 @@ use App\Enums\UserType;
 use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LexemaCountUpdate;
 use App\Models\Exercise;
+use App\Models\Type;
 use App\Models\User;
 use App\Support\LoadTest\RunManifest;
 use Illuminate\Console\Command;
@@ -115,7 +116,7 @@ class GenerateQueueLoad extends Command
     private function fillerUserIds(): array
     {
         return DB::table('users')
-            ->where('type', UserType::Filler->value)
+            ->where('type_id', Type::named(UserType::Filler)->id)
             ->inRandomOrder()
             ->limit(1000)
             ->pluck('id')
