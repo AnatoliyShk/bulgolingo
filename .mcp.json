@@ -1,8 +1,13 @@
 {
   "mcpServers": {
-    "bulgolingo-content": {
+    "balkanbuddy-content": {
       "type": "http",
       "url": "http://localhost:350/mcp/content"
+    },
+    "lesson-planner": {
+      "type": "http",
+      "url": "http://localhost:8765/mcp"
     }
   }
 }
+le
