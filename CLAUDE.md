@@ -57,18 +57,28 @@ host user cannot read. If `Admin\ExerciseTest` errors on
 `storage/framework/testing/disks`, that is the cause:
 `docker compose exec laravel.test chown -R sail:sail storage/framework/testing`.
 
+`WWWUSER`/`WWWGROUP` are now set, so the container's `sail` is **UID 1000** — the
+same as the host user, which is why `-u sail` writes host-readable files. Files
+left from the earlier UID 1337 default are *not* writable by the server and fail
+with "could not be opened in append mode"; `storage/` and `bootstrap/cache` were
+chowned to 1000 on 2026-09-23, but anything restored from an old backup needs the
+same treatment.
+
 ### Code style
 ```bash
 ./vendor/bin/pint         # auto-fix PHP style (Laravel Pint)
 ```
 Pint has to run on PHP 8.5 — an older PHP stops with a parse error on 8.5
 syntax such as the pipe operator (`|>`). Without 8.5 on the host, run it in the
-container as the host user, since the container's `sail` user (UID 1337) cannot
-rewrite most project files:
+container as `sail`, which shares the host user's UID and so can rewrite project
+files:
 
 ```bash
-docker compose exec -u "$(id -u):$(id -g)" laravel.test ./vendor/bin/pint --dirty
+docker compose exec -u sail laravel.test ./vendor/bin/pint --dirty
 ```
+
+The one exception is `config/telescope.php`, still owned by root; chown it to
+1000 before Pint can touch it.
 
 ### Migrations & DB
 ```bash

@@ -52,6 +52,30 @@ php artisan migrate --seed
 ```
 The app requires PHP 8.5. The Sail container in `compose.yaml` runs PHP 8.5, so if the host has an older PHP, run PHP commands (`artisan`, `composer`, `pint`, `phpunit`) inside it with `docker compose exec laravel.test …`.
 
+## Connecting an MCP client locally
+The app runs an MCP server at `/mcp/content`. Its tools list and search the course catalogue: learning paths, lessons, exercises and desired topics. The endpoint needs a Passport login (`auth:api`), and `.mcp.json` in the repo root already registers it with Claude Code. There are two ways to sign in, and you only need one.
+
+**OAuth (`balkanbuddy-content`).** This entry has no headers. The first time Claude Code connects, it opens a browser, you log in to the local app at `http://localhost:350`, and Claude Code keeps the token. Nothing needs to be set up beforehand.
+
+**Personal access token (`balkanbuddy-local`).** Use this where no browser can open, such as scripts or CI. Issue a token for a user:
+```bash
+docker compose exec -u sail laravel.test php artisan app:mcp-token you@example.com
+```
+The command creates the user as an MCP client if the email doesn't exist yet, then prints a token with the `mcp:use` scope. Export it in the shell you start Claude Code from:
+```bash
+export BALKANBUDDY_LOCAL_TOKEN=<token>
+claude
+```
+Claude Code reads `${BALKANBUDDY_LOCAL_TOKEN}` from its own environment, not from the app's `.env`.
+
+Both entries point at the same endpoint. With both enabled, every tool shows up twice, so disable the one you don't use in `/mcp`.
+
+Two more servers are in `.mcp.json`:
+- `lesson-planner` (`http://localhost:8765/mcp`) is the separate Lesson Planner app. It only connects while that app is running.
+- `balkanbuddy-cloud` is the production app. It reads `BALKANBUDDY_CLOUD_TOKEN`, and `BALKANBUDDY_CLOUD_URL` if you need a different URL.
+
+Run `/mcp` in Claude Code to see which servers connected.
+
 ## Admin panel roles
 The admin panel lives under `/admin` and is gated by the user's role. Each user belongs to exactly one row of the `roles` table (`users.role_id`); there are three to start with, and a new account is a `student`.
 

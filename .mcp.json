@@ -1,13 +1,22 @@
 {
   "mcpServers": {
-    "balkanbuddy-content": {
-      "type": "http",
-      "url": "http://localhost:350/mcp/content"
-    },
     "lesson-planner": {
       "type": "http",
       "url": "http://localhost:8765/mcp"
+    },
+    "balkanbuddy-local": {
+      "type": "http",
+      "url": "http://localhost:350/mcp/content",
+      "headers": {
+        "Authorization": "Bearer ${BALKANBUDDY_LOCAL_TOKEN}"
+      }
+    },
+    "balkanbuddy-cloud": {
+      "type": "http",
+      "url": "${BALKANBUDDY_CLOUD_URL:-https://balkanbuddy.laravel.cloud/mcp/content}",
+      "headers": {
+        "Authorization": "Bearer ${BALKANBUDDY_CLOUD_TOKEN}"
+      }
     }
   }
 }
-le
