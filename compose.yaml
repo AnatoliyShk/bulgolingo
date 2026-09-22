@@ -20,7 +20,10 @@ services:
         volumes:
             - '.:/var/www/html'
         networks:
-            - sail
+            sail:
+            shared:
+                aliases:
+                    - bulgolingo
         depends_on:
             pgsql:
                 condition: service_healthy
@@ -91,6 +94,12 @@ networks:
     sail:
         driver: bridge
         name: sail
+    # Shared with other projects on this machine (lesson-planner). External so
+    # neither project owns it and either can start alone, which means it has to
+    # exist first: docker network create shared
+    shared:
+        external: true
+        name: shared
 volumes:
     sail-mysql:
         driver: local
