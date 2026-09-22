@@ -106,7 +106,7 @@ class AppServiceProvider extends ServiceProvider
     private static function tutorBotLimit(Request $request): Limit
     {
         return app(SiteSettings::class)->tutorBotEnabled()
-            ? Limit::perMinute(8)->by('tutor-bot:'.($request->user()?->id ?? $request->ip()))
+            ? Limit::perMinute(3)->by('tutor-bot:'.($request->user()?->id ?? $request->ip()))
             : Limit::none();
     }
 
