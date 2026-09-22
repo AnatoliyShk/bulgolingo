@@ -18,13 +18,15 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Passport\Contracts\OAuthenticatable;
+use Laravel\Passport\HasApiTokens;
 
 #[Fillable(['name', 'email', 'password', 'role_id', 'experience', 'type_id'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements OAuthenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasUuidV7, Notifiable;
+    use HasApiTokens, HasFactory, HasUuidV7, Notifiable;
 
     /**
      * Mirrors the database default so a freshly created user reads 0, not null.

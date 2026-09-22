@@ -13,7 +13,7 @@ class McpToken extends Command
 {
     protected $signature = 'app:mcp-token {email}';
 
-    protected $description = 'Create an MCP API token for the given user';
+    protected $description = 'Create an MCP personal access token for the given user';
 
     public function handle(): void
     {
@@ -26,6 +26,6 @@ class McpToken extends Command
             ],
         );
 
-        $this->line($user->createToken('mcp')->plainTextToken);
+        $this->line($user->createToken('mcp', ['mcp:use'])->accessToken);
     }
 }

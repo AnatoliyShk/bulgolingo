@@ -10,7 +10,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Lists lessons, optionally narrowed to a single learning path.')]
+#[Description('BalkanBuddy course: lists lessons in the Bulgarian course catalogue with their exercise counts, optionally narrowed to a single learning path. Not for scheduled lessons from the planner.')]
 class ListLessonsTool extends Tool
 {
     /**

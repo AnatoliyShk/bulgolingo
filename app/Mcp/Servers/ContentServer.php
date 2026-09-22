@@ -15,9 +15,9 @@ use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
 use Laravel\Mcp\Server\Attributes\Version;
 
-#[Name('Content Server')]
+#[Name('BalkanBuddy Content')]
 #[Version('0.0.1')]
-#[Instructions('Instructions describing how to use the server and its features.')]
+#[Instructions('BalkanBuddy content: the Bulgarian course catalogue of learning paths, lessons and exercises. Use these tools for BalkanBuddy, course or learning-path lessons. They do not cover scheduled tutoring sessions; lessons from the planner or the schedule belong to the lesson-planner server.')]
 class ContentServer extends Server
 {
     protected array $tools = [

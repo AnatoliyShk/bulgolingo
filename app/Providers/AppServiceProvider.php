@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Mcp\Client;
 use Laravel\Mcp\Facades\Mcp;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -56,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
 
         Mcp::registerClient('balkanbuddy', fn () => Client::web(config('services.balkanbuddy.mcp_url'))
             ->withToken(config('services.balkanbuddy.mcp_token')));
+
+        Passport::authorizationView(fn (array $parameters) => view('mcp::authorize', $parameters));
     }
 
     /**
