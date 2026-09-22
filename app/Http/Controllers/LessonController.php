@@ -76,10 +76,9 @@ class LessonController extends Controller
     /**
      * The congrats screen shown right after a lesson's last exercise is
      * completed. $request carries the learning path the lesson was finished
-     * in (the same one ExerciseController::complete just marked done), which
-     * is what decides where the "continue" button on that screen goes: the
-     * next lesson's first exercise, or the path itself once there is no next
-     * lesson.
+     * in, which is what decides where the "continue" button on that screen
+     * goes: the next lesson's first exercise, or the path itself once there is
+     * no next lesson.
      */
     public function complete(Lesson $lesson, Request $request)
     {
@@ -109,14 +108,6 @@ class LessonController extends Controller
             ->where('user_id', auth()->id())
             ->whereIn('exercise_id', $exerciseIds)
             ->delete();
-
-        $learningPath = auth()->user()->learningPaths()
-            ->whereHas('lessons', fn ($q) => $q->where('lessons.id', $lesson->id))
-            ->first();
-
-        if ($learningPath) {
-            $learningPath->lessons()->updateExistingPivot($lesson->id, ['is_completed' => false]);
-        }
 
         $firstExercise = $lesson->exercises()->first();
 

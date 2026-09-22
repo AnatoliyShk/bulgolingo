@@ -16,6 +16,8 @@ use App\Http\Controllers\LearningPathController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\TutorController;
+use App\Services\SiteSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -44,8 +46,19 @@ Route::get('/', function (Request $request) {
     return Inertia::render('Welcome', [
         'appName' => config('app.name'),
         'continueLessonId' => $continueLessonId,
+        'tutorEnabled' => app(SiteSettings::class)->tutorBotEnabled(),
     ]);
 });
+
+/*
+ * The tutor is public because it answers visitors who have not signed up yet,
+ * which is the whole point of it sitting on the welcome page. What keeps it
+ * from being a way to spend the app's model budget is the per-viewer cap and
+ * the admin switch the controller checks before reaching a provider.
+ */
+Route::post('/tutor', [TutorController::class, 'ask'])
+    ->middleware('throttle:tutor-bot')
+    ->name('tutor.ask');
 
 Route::prefix('profile')->controller(ProfileController::class)->group(function () {
     Route::middleware('auth')->group(function () {

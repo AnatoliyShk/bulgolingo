@@ -129,6 +129,53 @@ class Lesson extends Model
     }
 
     /**
+     * Which of the path's lessons the user has finished, keyed by lesson id.
+     * A lesson counts as finished when it has exercises and the user has
+     * completed every one of them, matching the rule getCompletedLessonStats()
+     * uses; a guest has finished nothing, and a lesson with no exercises is
+     * never done. Derived rather than stored because completion belongs to a
+     * user and a lesson, and the path a lesson is reached through cannot
+     * change it.
+     *
+     * @return array<int, bool>
+     */
+    public static function completionMapFor(LearningPath $learningPath, ?User $user): array
+    {
+        $lessonIds = DB::table('learning_path_lesson')
+            ->where('learning_path_id', $learningPath->getKey())
+            ->pluck('lesson_id')
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $map = array_fill_keys($lessonIds, false);
+
+        if ($user === null || $map === []) {
+            return $map;
+        }
+
+        $rows = DB::table('exercise_lesson as el')
+            ->leftJoin('user_exercise_completions as uec', function ($join) use ($user) {
+                $join->on('uec.exercise_id', '=', 'el.exercise_id')
+                    ->where('uec.user_id', $user->getKey());
+            })
+            ->whereIn('el.lesson_id', $lessonIds)
+            ->groupBy('el.lesson_id')
+            ->select([
+                'el.lesson_id',
+                DB::raw('count(el.exercise_id) as total'),
+                DB::raw('count(uec.exercise_id) as completed'),
+            ])
+            ->get();
+
+        foreach ($rows as $row) {
+            $total = (int) $row->total;
+            $map[(int) $row->lesson_id] = $total > 0 && $total === (int) $row->completed;
+        }
+
+        return $map;
+    }
+
+    /**
      * The user's completion totals across enrolled paths. A lesson is complete
      * when all its exercises are, a path when all its lessons are; lessons
      * shared between paths count once, and empty paths never count.

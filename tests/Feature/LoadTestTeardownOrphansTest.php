@@ -55,7 +55,7 @@ class LoadTestTeardownOrphansTest extends TestCase
             ],
         ]);
 
-        $path->lessons()->attach($lesson, ['is_completed' => false]);
+        $path->lessons()->attach($lesson);
         $lesson->attachExerciseAtEnd($exercise);
 
         $lexema = Lexema::create(['word' => $prefix.'куче', 'exercise_id' => $exercise->id]);

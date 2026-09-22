@@ -36,9 +36,9 @@ onMounted(() => {
 })
 onBeforeUnmount(() => resizeObserver?.disconnect())
 
-// First lesson that isn't completed yet — that's where the player "is".
+// First lesson this viewer hasn't completed yet — that's where they "are".
 const currentIndex = computed(() =>
-    props.lessons.findIndex(l => !l.pivot?.is_completed)
+    props.lessons.findIndex(l => !l.is_completed)
 )
 
 const nodes = computed(() => {
@@ -56,7 +56,7 @@ const nodes = computed(() => {
         const y = TOP_PAD + i * ROW_GAP
 
         // Every lesson stays openable; status only drives the map's visuals.
-        const done   = !!lesson.pivot?.is_completed
+        const done   = !!lesson.is_completed
         const status = done ? 'done' : (currentIndex.value === i ? 'current' : 'upcoming')
         const side   = x < w / 2 ? 'right' : 'left'
 

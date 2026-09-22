@@ -10,7 +10,6 @@ use App\Models\Exercise;
 use App\Models\Lesson;
 use App\Services\SiteSettings;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ExerciseController extends Controller
@@ -129,13 +128,6 @@ class ExerciseController extends Controller
         $learningPath = $user->learningPaths()
             ->whereHas('lessons', fn ($q) => $q->where('lessons.id', $lessonId))
             ->first();
-
-        if ($learningPath) {
-            DB::table('learning_path_lesson')
-                ->where('learning_path_id', $learningPath->id)
-                ->where('lesson_id', $lessonId)
-                ->update(['is_completed' => true]);
-        }
 
         return redirect()->route('lesson.complete', array_filter([
             'lesson' => $lessonId,

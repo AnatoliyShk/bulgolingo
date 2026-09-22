@@ -28,6 +28,7 @@ class UpdateSettingsRequest extends FormRequest
         return [
             'embedding_search_enabled' => ['required', 'boolean'],
             'embedding_min_similarity' => ['required', 'numeric', 'between:0,1'],
+            'tutor_bot_enabled' => ['required', 'boolean'],
         ];
     }
 

@@ -10,8 +10,8 @@ use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\SiteSettings;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -50,6 +50,19 @@ class E2eSeeder extends Seeder
         $this->seedPaginationFillers();
         $this->finishFirstLesson($student);
         $this->seedLogEntries();
+        $this->enableTutorBot();
+    }
+
+    /**
+     * The tutor ships switched off, so the welcome page would not mount the
+     * widget for its spec to drive. Turning it on here reaches no provider:
+     * the spec fulfils the /tutor request itself, and nothing else on the
+     * welcome page talks to the bot. It goes through SiteSettings rather than
+     * the Setting model so the cached copy is dropped along with the write.
+     */
+    private function enableTutorBot(): void
+    {
+        app(SiteSettings::class)->update([SiteSettings::TUTOR_BOT_ENABLED => true]);
     }
 
     /**
@@ -74,6 +87,7 @@ class E2eSeeder extends Seeder
             'E2E_ADMIN_EMAIL' => self::ADMIN_EMAIL,
             'E2E_USER_EMAIL' => self::STUDENT_EMAIL,
             'E2E_UNVERIFIED_USER_EMAIL' => self::UNVERIFIED_EMAIL,
+            'E2E_FIRST_PATH_ID' => (string) self::firstPath()->id,
             'E2E_COMPLETED_LESSON_ID' => (string) $completed->id,
             'E2E_LESSON_ID' => (string) $otherLesson?->id,
             'E2E_WORD_PAIR_EXERCISE_ID' => (string) $wordPair?->id,
@@ -132,11 +146,6 @@ class E2eSeeder extends Seeder
         }
 
         $student->recordPractice();
-
-        DB::table('learning_path_lesson')
-            ->where('learning_path_id', $path->id)
-            ->where('lesson_id', $lesson->id)
-            ->update(['is_completed' => true]);
     }
 
     private static function firstPath(): LearningPath

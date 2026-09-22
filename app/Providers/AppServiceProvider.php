@@ -52,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('learning-path-search', static::learningPathSearchLimit(...));
         RateLimiter::for('stats-view', static::statsViewLimit(...));
         RateLimiter::for('exercise-completion', static::exerciseCompletionLimit(...));
+        RateLimiter::for('tutor-bot', static::tutorBotLimit(...));
 
         Mcp::registerClient('balkanbuddy', fn () => Client::web(config('services.balkanbuddy.mcp_url'))
             ->withToken(config('services.balkanbuddy.mcp_token')));
@@ -91,6 +92,22 @@ class AppServiceProvider extends ServiceProvider
     private static function exerciseCompletionLimit(Request $request): Limit
     {
         return Limit::perMinute(60)->by('exercise-completion:'.$request->user()->id);
+    }
+
+    /**
+     * The tutor answers anonymous visitors on the welcome page and every reply
+     * is a paid completion, so the cap is the tightest of the three: tight
+     * enough that a scripted client cannot run up a bill, loose enough for a
+     * real back-and-forth. It is keyed by the viewer — the user when signed
+     * in, the address otherwise — the way the catalog search is, and drops to
+     * no limit while the bot is switched off, since the controller then
+     * refuses before reaching a provider.
+     */
+    private static function tutorBotLimit(Request $request): Limit
+    {
+        return app(SiteSettings::class)->tutorBotEnabled()
+            ? Limit::perMinute(8)->by('tutor-bot:'.($request->user()?->id ?? $request->ip()))
+            : Limit::none();
     }
 
     /**
