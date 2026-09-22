@@ -26,15 +26,22 @@ class SiteSettings
 
     public const EMBEDDING_MIN_SIMILARITY = 'embedding_search.min_similarity';
 
+    public const TUTOR_BOT_ENABLED = 'tutor_bot.enabled';
+
     /**
      * Search stays on by default so a fresh database behaves as the app did
      * before it could be turned off. The similarity floor was measured against
      * gemini-embedding-2, where unrelated exercises still score about 0.5 and a
      * genuine match 0.6 and up.
+     *
+     * The tutor bot is the exception: it answers anonymous visitors and every
+     * reply is a paid completion, so it stays off until an admin turns it on
+     * deliberately rather than arriving switched on with a deployment.
      */
     public const DEFAULTS = [
         self::EMBEDDING_SEARCH_ENABLED => true,
         self::EMBEDDING_MIN_SIMILARITY => 0.6,
+        self::TUTOR_BOT_ENABLED => false,
     ];
 
     private const CACHE_KEY = 'site-settings';
@@ -57,6 +64,11 @@ class SiteSettings
     public function embeddingMinSimilarity(): float
     {
         return (float) $this->all()[self::EMBEDDING_MIN_SIMILARITY];
+    }
+
+    public function tutorBotEnabled(): bool
+    {
+        return (bool) $this->all()[self::TUTOR_BOT_ENABLED];
     }
 
     /**

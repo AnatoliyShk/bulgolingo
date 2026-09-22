@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\LanguageLevel;
 use App\Http\Requests\LearningPath\GetLearningPathRequest;
 use App\Models\LearningPath;
+use App\Models\Lesson;
 use App\Models\User;
 use App\Services\LearningPathSearch;
 use App\Services\SiteSettings;
@@ -196,21 +197,32 @@ class LearningPathController extends Controller
     /**
      * A path hidden from this viewer is a 404 rather than a 403: telling them
      * the id exists is itself more than the catalog was willing to show.
+     *
+     * Each lesson carries an is_completed the map draws its progress from,
+     * derived for this viewer alone from the exercises they have completed —
+     * a guest, or a student who has done nothing here, sees a fresh path.
      */
     public function show(Request $request, LearningPath $learningPath)
     {
         abort_unless($learningPath->isVisibleTo($request->user()), 404);
 
+        $completion = Lesson::completionMapFor($learningPath, $request->user());
+
+        $lessons = $learningPath->lessons->each(
+            fn (Lesson $lesson) => $lesson->setAttribute('is_completed', $completion[$lesson->id] ?? false)
+        );
+
         return Inertia::render('LearnPath/Show', [
             'learningPath' => $learningPath,
-            'lessons' => $learningPath->lessons,
+            'lessons' => $lessons,
         ]);
     }
 
     /**
-     * Wipes this user's progress on every lesson in the path: all of its
-     * exercises' completions and the lessons' completed pivots are reset,
-     * putting the map back to its starting state.
+     * Wipes this user's progress on every lesson in the path by deleting the
+     * completions of all its exercises, putting the map back to its starting
+     * state. Lesson completion is derived from those rows, so nothing else
+     * needs resetting.
      */
     public function restart(Request $request, LearningPath $learningPath)
     {
@@ -226,8 +238,6 @@ class LearningPathController extends Controller
             ->where('user_id', $request->user()->id)
             ->whereIn('exercise_id', $exerciseIds)
             ->delete();
-
-        $learningPath->lessons()->updateExistingPivot($lessonIds->all(), ['is_completed' => false]);
 
         return redirect()->route('learning-paths.show', $learningPath);
     }

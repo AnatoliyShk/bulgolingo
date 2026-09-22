@@ -51,6 +51,17 @@ class ExerciseCompletionOrderTest extends TestCase
         return $exercises;
     }
 
+    /**
+     * Whether the user has finished the lesson, read the way the path map
+     * reads it — derived from their own completions, not from a stored flag.
+     */
+    private function completionOf(Lesson $lesson, User $user): bool
+    {
+        $learningPath = $lesson->learningPath()->firstOrFail();
+
+        return Lesson::completionMapFor($learningPath, $user)[$lesson->id];
+    }
+
     public function test_completion_follows_pivot_order_not_exercise_id(): void
     {
         $user = User::factory()->create();
@@ -115,10 +126,7 @@ class ExerciseCompletionOrderTest extends TestCase
 
         $this->actingAs($user)->post(route('exercise.complete', $third));
 
-        $this->assertDatabaseHas('learning_path_lesson', [
-            'lesson_id' => $lesson->id,
-            'is_completed' => true,
-        ]);
+        $this->assertTrue($this->completionOf($lesson, $user));
     }
 
     public function test_finishing_a_lesson_advances_to_the_next_lessons_first_exercise(): void
@@ -186,9 +194,110 @@ class ExerciseCompletionOrderTest extends TestCase
 
         $this->actingAs($user)->post(route('exercise.complete', $third));
 
-        $this->assertDatabaseHas('learning_path_lesson', [
-            'lesson_id' => $lesson->id,
-            'is_completed' => false,
-        ]);
+        $this->assertFalse($this->completionOf($lesson, $user));
+    }
+
+    public function test_one_students_completion_leaves_the_lesson_open_for_another(): void
+    {
+        $finisher = User::factory()->create();
+        $lesson = $this->enrolledLesson($finisher);
+        $learningPath = $lesson->learningPath()->firstOrFail();
+
+        $bystander = User::factory()->create();
+        $learningPath->users()->attach($bystander->id);
+
+        [$a, $b] = $this->exercises($lesson, 2);
+
+        $finisher->completedExercises()->syncWithoutDetaching($a->id);
+        $this->actingAs($finisher)->post(route('exercise.complete', $b));
+
+        $this->assertTrue($this->completionOf($lesson, $finisher));
+        $this->assertFalse($this->completionOf($lesson, $bystander));
+    }
+
+    public function test_the_path_map_marks_lessons_done_for_the_viewer_only(): void
+    {
+        $finisher = User::factory()->create();
+        $lesson = $this->enrolledLesson($finisher);
+        $learningPath = $lesson->learningPath()->firstOrFail();
+
+        $bystander = User::factory()->create();
+        $learningPath->users()->attach($bystander->id);
+
+        [$a, $b] = $this->exercises($lesson, 2);
+        $finisher->completedExercises()->syncWithoutDetaching([$a->id, $b->id]);
+
+        $this->actingAs($finisher)
+            ->get(route('learning-paths.show', $learningPath))
+            ->assertInertia(fn ($page) => $page->where('lessons.0.is_completed', true));
+
+        $this->actingAs($bystander)
+            ->get(route('learning-paths.show', $learningPath))
+            ->assertInertia(fn ($page) => $page->where('lessons.0.is_completed', false));
+    }
+
+    public function test_restarting_a_lesson_reopens_it_for_that_student_alone(): void
+    {
+        $restarter = User::factory()->create();
+        $lesson = $this->enrolledLesson($restarter);
+        $learningPath = $lesson->learningPath()->firstOrFail();
+
+        $other = User::factory()->create();
+        $learningPath->users()->attach($other->id);
+
+        [$a, $b] = $this->exercises($lesson, 2);
+
+        foreach ([$restarter, $other] as $user) {
+            $user->completedExercises()->syncWithoutDetaching([$a->id, $b->id]);
+        }
+
+        $this->actingAs($restarter)->post(route('lesson.restart', $lesson));
+
+        $this->assertFalse($this->completionOf($lesson, $restarter));
+        $this->assertTrue($this->completionOf($lesson, $other));
+    }
+
+    public function test_restarting_a_path_reopens_it_for_that_student_alone(): void
+    {
+        $restarter = User::factory()->create();
+        $lesson = $this->enrolledLesson($restarter);
+        $learningPath = $lesson->learningPath()->firstOrFail();
+
+        $other = User::factory()->create();
+        $learningPath->users()->attach($other->id);
+
+        [$a, $b] = $this->exercises($lesson, 2);
+
+        foreach ([$restarter, $other] as $user) {
+            $user->completedExercises()->syncWithoutDetaching([$a->id, $b->id]);
+        }
+
+        $this->actingAs($restarter)->post(route('learning-paths.restart', $learningPath));
+
+        $this->assertFalse($this->completionOf($lesson, $restarter));
+        $this->assertTrue($this->completionOf($lesson, $other));
+    }
+
+    public function test_a_lesson_with_no_exercises_is_never_completed(): void
+    {
+        $user = User::factory()->create();
+        $lesson = $this->enrolledLesson($user);
+
+        $this->assertFalse($this->completionOf($lesson, $user));
+    }
+
+    public function test_a_guest_has_completed_nothing_on_the_path(): void
+    {
+        $user = User::factory()->create();
+        $lesson = $this->enrolledLesson($user);
+        $learningPath = $lesson->learningPath()->firstOrFail();
+
+        [$a, $b] = $this->exercises($lesson, 2);
+        $user->completedExercises()->syncWithoutDetaching([$a->id, $b->id]);
+
+        $this->assertSame(
+            [$lesson->id => false],
+            Lesson::completionMapFor($learningPath, null)
+        );
     }
 }

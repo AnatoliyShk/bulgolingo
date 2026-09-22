@@ -1,0 +1,330 @@
+/* ══════════════ Tutor bot — neo-brutalist floating widget ══════════════ */
+/*
+ * Sits inside .nb-page, so the ink/paper/accent tokens and the dark override
+ * defined in welcome.scss apply here without being redeclared.
+ */
+
+.nb-tutor {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+}
+
+/* ── Launcher ── */
+.nb-tutor__launcher {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.8rem 1.35rem;
+    background: var(--gold);
+    color: var(--on-accent);
+    border: var(--border);
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    font-family: 'Unbounded', 'Manrope', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.nb-tutor__launcher:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 0 var(--ink);
+}
+
+.nb-tutor__launcher:active {
+    transform: translate(2px, 2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.nb-tutor__launcher--open {
+    background: var(--pink);
+}
+
+.nb-tutor__launcher-en {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+}
+
+/* ── Panel ── */
+.nb-tutor__panel {
+    display: flex;
+    flex-direction: column;
+    width: min(22rem, calc(100vw - 2.5rem));
+    max-height: min(32rem, calc(100vh - 8rem));
+    background: var(--paper);
+    border: var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.nb-tutor__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: var(--cyan);
+    color: var(--on-accent);
+    border-bottom: var(--border);
+}
+
+.nb-tutor__avatar {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: none;
+    background: var(--paper);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    border-radius: 8px;
+    font-family: 'Unbounded', 'Manrope', system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 0.8rem;
+}
+
+.nb-tutor__heading {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    min-width: 0;
+}
+
+.nb-tutor__title {
+    margin: 0;
+    font-family: 'Unbounded', 'Manrope', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.nb-tutor__en {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.75;
+}
+
+.nb-tutor__close {
+    margin-left: auto;
+    width: 1.9rem;
+    height: 1.9rem;
+    flex: none;
+    background: var(--paper);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    border-radius: 7px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.nb-tutor__close:hover {
+    background: var(--pink);
+}
+
+/* ── Thread ── */
+.nb-tutor__thread {
+    flex: 1;
+    min-height: 8rem;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.nb-tutor__empty-text {
+    margin: 0 0 0.75rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    opacity: 0.8;
+}
+
+.nb-tutor__suggestions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.nb-tutor__suggestion {
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 0.7rem;
+    background: transparent;
+    color: var(--ink);
+    border: 2.5px dashed var(--ink);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.nb-tutor__suggestion:hover {
+    background: var(--gold);
+    border-style: solid;
+}
+
+.nb-tutor__turn {
+    margin: 0;
+    padding: 0.6rem 0.8rem;
+    max-width: 90%;
+    border: 2.5px solid var(--ink);
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.nb-tutor__turn--user {
+    align-self: flex-end;
+    background: var(--blue);
+    color: var(--on-accent);
+    border-bottom-right-radius: 3px;
+    font-weight: 600;
+}
+
+.nb-tutor__turn--assistant {
+    align-self: flex-start;
+    background: var(--paper);
+    border-bottom-left-radius: 3px;
+}
+
+/* Blinking block that marks where the next token lands. */
+.nb-tutor__caret {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.95rem;
+    margin-left: 0.15rem;
+    vertical-align: text-bottom;
+    background: var(--ink);
+    animation: nb-tutor-blink 1s steps(2, start) infinite;
+}
+
+@keyframes nb-tutor-blink {
+    to { visibility: hidden; }
+}
+
+.nb-tutor__error {
+    margin: 0;
+    padding: 0.55rem 0.75rem;
+    background: var(--flag-red);
+    color: #fffaf0;
+    border: 2.5px solid var(--ink);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+/* ── Composer ── */
+.nb-tutor__form {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-top: var(--border);
+    background: var(--bg);
+}
+
+.nb-tutor__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.nb-tutor__field {
+    flex: 1;
+    min-width: 0;
+    padding: 0.55rem 0.7rem;
+    background: var(--paper);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.88rem;
+}
+
+.nb-tutor__field:focus {
+    outline: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.nb-tutor__send {
+    flex: none;
+    padding: 0.55rem 1rem;
+    background: var(--green);
+    color: var(--on-accent);
+    border: 2.5px solid var(--ink);
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.nb-tutor__send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Transition ── */
+.nb-tutor-panel-enter-active,
+.nb-tutor-panel-leave-active {
+    transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.nb-tutor-panel-enter-from,
+.nb-tutor-panel-leave-to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-tutor__launcher,
+    .nb-tutor-panel-enter-active,
+    .nb-tutor-panel-leave-active {
+        transition: none;
+    }
+
+    .nb-tutor__caret {
+        animation: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .nb-tutor {
+        right: 1rem;
+        bottom: 1rem;
+        left: 1rem;
+        align-items: stretch;
+    }
+
+    .nb-tutor__panel {
+        width: 100%;
+        max-height: min(26rem, calc(100vh - 7rem));
+    }
+
+    .nb-tutor__launcher {
+        align-self: flex-end;
+    }
+}

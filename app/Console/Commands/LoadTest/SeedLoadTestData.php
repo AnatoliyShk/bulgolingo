@@ -232,10 +232,10 @@ class SeedLoadTestData extends Command
                 }
             })());
 
-        $this->writer->write('learning_path_lesson', ['learning_path_id', 'lesson_id', 'is_completed'],
+        $this->writer->write('learning_path_lesson', ['learning_path_id', 'lesson_id'],
             (function () use ($lessons, $lessonStart, $pathStart, $paths): Generator {
                 for ($i = 0; $i < $lessons; $i++) {
-                    yield [$pathStart + intdiv($i, max(1, intdiv($lessons, $paths))) % $paths, $lessonStart + $i, false];
+                    yield [$pathStart + intdiv($i, max(1, intdiv($lessons, $paths))) % $paths, $lessonStart + $i];
                 }
             })());
 

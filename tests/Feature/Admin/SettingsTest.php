@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Models\User;
 use App\Services\SiteSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -43,26 +44,33 @@ class SettingsTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Admin/Settings/Edit')
                 ->where('settings.embedding_search_enabled', true)
-                ->where('settings.embedding_min_similarity', 0.6));
+                ->where('settings.embedding_min_similarity', 0.6)
+                ->where('settings.tutor_bot_enabled', false));
     }
 
-    public function test_saving_stores_both_settings_and_the_page_reflects_them(): void
+    public function test_saving_stores_every_setting_and_the_page_reflects_them(): void
     {
         $admin = $this->admin();
 
         $this->actingAs($admin)
-            ->put(route('admin.settings.update'), ['embedding_search_enabled' => false, 'embedding_min_similarity' => 0.72])
+            ->put(route('admin.settings.update'), [
+                'embedding_search_enabled' => false,
+                'embedding_min_similarity' => 0.72,
+                'tutor_bot_enabled' => true,
+            ])
             ->assertRedirect(route('admin.settings.edit'));
 
         $settings = app(SiteSettings::class);
         $this->assertFalse($settings->embeddingSearchEnabled());
         $this->assertSame(0.72, $settings->embeddingMinSimilarity());
+        $this->assertTrue($settings->tutorBotEnabled());
 
         $this->actingAs($admin)
             ->get(route('admin.settings.edit'))
             ->assertInertia(fn (Assert $page) => $page
                 ->where('settings.embedding_search_enabled', false)
-                ->where('settings.embedding_min_similarity', 0.72));
+                ->where('settings.embedding_min_similarity', 0.72)
+                ->where('settings.tutor_bot_enabled', true));
     }
 
     /**
@@ -70,13 +78,17 @@ class SettingsTest extends TestCase
      */
     public static function invalidInput(): array
     {
+        $valid = ['embedding_search_enabled' => true, 'embedding_min_similarity' => 0.5, 'tutor_bot_enabled' => false];
+
         return [
-            'similarity above 1' => [['embedding_search_enabled' => true, 'embedding_min_similarity' => 1.5], 'embedding_min_similarity'],
-            'similarity below 0' => [['embedding_search_enabled' => true, 'embedding_min_similarity' => -0.1], 'embedding_min_similarity'],
-            'similarity not a number' => [['embedding_search_enabled' => true, 'embedding_min_similarity' => 'high'], 'embedding_min_similarity'],
-            'similarity missing' => [['embedding_search_enabled' => true], 'embedding_min_similarity'],
-            'toggle missing' => [['embedding_min_similarity' => 0.5], 'embedding_search_enabled'],
-            'toggle not a boolean' => [['embedding_search_enabled' => 'maybe', 'embedding_min_similarity' => 0.5], 'embedding_search_enabled'],
+            'similarity above 1' => [['embedding_min_similarity' => 1.5] + $valid, 'embedding_min_similarity'],
+            'similarity below 0' => [['embedding_min_similarity' => -0.1] + $valid, 'embedding_min_similarity'],
+            'similarity not a number' => [['embedding_min_similarity' => 'high'] + $valid, 'embedding_min_similarity'],
+            'similarity missing' => [Arr::except($valid, 'embedding_min_similarity'), 'embedding_min_similarity'],
+            'toggle missing' => [Arr::except($valid, 'embedding_search_enabled'), 'embedding_search_enabled'],
+            'toggle not a boolean' => [['embedding_search_enabled' => 'maybe'] + $valid, 'embedding_search_enabled'],
+            'tutor toggle missing' => [Arr::except($valid, 'tutor_bot_enabled'), 'tutor_bot_enabled'],
+            'tutor toggle not a boolean' => [['tutor_bot_enabled' => 'maybe'] + $valid, 'tutor_bot_enabled'],
         ];
     }
 

@@ -50,6 +50,6 @@ class LearningPath extends Model
 
     public function lessons(): BelongsToMany
     {
-        return $this->belongsToMany(Lesson::class, 'learning_path_lesson')->using(LearningPathLesson::class)->withPivot('is_completed');
+        return $this->belongsToMany(Lesson::class, 'learning_path_lesson')->using(LearningPathLesson::class);
     }
 }

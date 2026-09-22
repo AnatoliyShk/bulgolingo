@@ -4,10 +4,12 @@ import { Head, Link, usePage } from '@inertiajs/vue3'
 import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import TopBar from '@/Components/TopBar.vue'
+import TutorBot from '@/Components/TutorBot.vue'
 
 const page = usePage()
 const isAuthenticated = computed(() => !!page.props.auth.user)
 const appName = computed(() => page.props.appName)
+const tutorEnabled = computed(() => page.props.tutorEnabled ?? false)
 const continueLessonId = computed(() => page.props.continueLessonId ?? null)
 const continueHref = computed(() =>
     continueLessonId.value ? `/lesson/${continueLessonId.value}` : '/learning-paths'
@@ -263,6 +265,8 @@ onBeforeUnmount(() => {
                 </div>
             </div>
         </Transition>
+
+        <TutorBot v-if="tutorEnabled" />
 
     </div>
 </template>

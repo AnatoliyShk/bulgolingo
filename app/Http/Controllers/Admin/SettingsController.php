@@ -17,6 +17,7 @@ class SettingsController extends Controller
             'settings' => [
                 'embedding_search_enabled' => $this->settings->embeddingSearchEnabled(),
                 'embedding_min_similarity' => $this->settings->embeddingMinSimilarity(),
+                'tutor_bot_enabled' => $this->settings->tutorBotEnabled(),
             ],
         ]);
     }
@@ -26,6 +27,7 @@ class SettingsController extends Controller
         $this->settings->update([
             SiteSettings::EMBEDDING_SEARCH_ENABLED => $request->boolean('embedding_search_enabled'),
             SiteSettings::EMBEDDING_MIN_SIMILARITY => (float) $request->validated('embedding_min_similarity'),
+            SiteSettings::TUTOR_BOT_ENABLED => $request->boolean('tutor_bot_enabled'),
         ]);
 
         return redirect()->route('admin.settings.edit');
