@@ -16,6 +16,7 @@ use Generator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class SeedLoadTestData extends Command
 {
@@ -191,31 +192,32 @@ class SeedLoadTestData extends Command
         $now = now()->toDateTimeString();
         $prefix = RunManifest::NAME_PREFIX;
 
-        $this->writer->write('learning_paths', ['id', 'name', 'language', 'type', 'created_at', 'updated_at'],
+        $this->writer->write('learning_paths', ['id', 'uuid', 'name', 'language', 'type', 'created_at', 'updated_at'],
             (function () use ($paths, $pathStart, $now, $prefix): Generator {
                 $type = LearningPathType::Test->value;
 
                 for ($i = 0; $i < $paths; $i++) {
-                    yield [$pathStart + $i, $prefix.' Path '.($i + 1), 'bg', $type, $now, $now];
+                    yield [$pathStart + $i, (string) Str::uuid7(), $prefix.' Path '.($i + 1), 'bg', $type, $now, $now];
                 }
             })());
 
-        $this->writer->write('lessons', ['id', 'name', 'description', 'created_at', 'updated_at'],
+        $this->writer->write('lessons', ['id', 'uuid', 'name', 'description', 'created_at', 'updated_at'],
             (function () use ($lessons, $lessonStart, $now, $prefix): Generator {
                 for ($i = 0; $i < $lessons; $i++) {
-                    yield [$lessonStart + $i, $prefix.' Lesson '.($i + 1), 'Generated for load testing.', $now, $now];
+                    yield [$lessonStart + $i, (string) Str::uuid7(), $prefix.' Lesson '.($i + 1), 'Generated for load testing.', $now, $now];
                 }
             })());
 
         $types = ExerciseType::cases();
 
-        $this->writer->write('exercises', ['id', 'name', 'clause', 'decision_type', 'created_at', 'updated_at'],
+        $this->writer->write('exercises', ['id', 'uuid', 'name', 'clause', 'decision_type', 'created_at', 'updated_at'],
             (function () use ($exercises, $exerciseStart, $now, $prefix, $types): Generator {
                 for ($i = 0; $i < $exercises; $i++) {
                     $type = $types[$i % count($types)];
 
                     yield [
                         $exerciseStart + $i,
+                        (string) Str::uuid7(),
                         $prefix.' Exercise '.($i + 1),
                         json_encode($this->clauseFor($type, $i)),
                         $type->value,
@@ -246,12 +248,14 @@ class SeedLoadTestData extends Command
      * Attaches lexemas to the share of exercises that carry them in production —
      * a little under half — because the FSRS write path only fires for exercises
      * that have any, and inflating that ratio would overstate how much work a
-     * completion really does.
+     * completion really does. Each word carries the run id because lexemas.word
+     * is unique, and two runs seeded side by side would otherwise collide.
      */
     private function generateLexemas(int $exercises, int $exerciseStart): void
     {
         $words = ['ябълка', 'книга', 'вода', 'къща', 'дърво', 'море', 'слънце', 'хляб', 'приятел', 'град', 'път', 'ден'];
         $rows = [];
+        $run = $this->manifest->id;
 
         for ($i = 0; $i < $exercises; $i++) {
             if ($i % 100 >= (int) (Tier::EXERCISES_WITH_LEXEMAS * 100)) {
@@ -259,17 +263,17 @@ class SeedLoadTestData extends Command
             }
 
             for ($k = 0; $k < Tier::LEXEMAS_PER_EXERCISE; $k++) {
-                $rows[] = [$words[($i + $k) % count($words)].'-'.$i.'-'.$k, $exerciseStart + $i];
+                $rows[] = [$words[($i + $k) % count($words)].'-'.$run.'-'.$i.'-'.$k, $exerciseStart + $i];
             }
         }
 
         $before = $this->writer->sequenceValue('lexemas');
         $now = now()->toDateTimeString();
 
-        $this->writer->write('lexemas', ['word', 'exercise_id', 'created_at', 'updated_at'],
+        $this->writer->write('lexemas', ['uuid', 'word', 'exercise_id', 'created_at', 'updated_at'],
             (function () use ($rows, $now): Generator {
                 foreach ($rows as $row) {
-                    yield [$row[0], $row[1], $now, $now];
+                    yield [(string) Str::uuid7(), $row[0], $row[1], $now, $now];
                 }
             })());
 
@@ -363,11 +367,12 @@ class SeedLoadTestData extends Command
         $bar = $this->output->createProgressBar($count);
 
         $written = $this->writer->write('users',
-            ['id', 'name', 'email', 'email_verified_at', 'password', 'role_id', 'experience', 'type_id', 'created_at', 'updated_at'],
+            ['id', 'uuid', 'name', 'email', 'email_verified_at', 'password', 'role_id', 'experience', 'type_id', 'created_at', 'updated_at'],
             (function () use ($count, $start, $password, $studentRoleId, $fillerTypeId, $now, $run): Generator {
                 for ($i = 0; $i < $count; $i++) {
                     yield [
                         $start + $i,
+                        (string) Str::uuid7(),
                         'Load Test User '.($i + 1),
                         'lt-'.$run.'-'.$i.'@'.RunManifest::EMAIL_DOMAIN,
                         $now,

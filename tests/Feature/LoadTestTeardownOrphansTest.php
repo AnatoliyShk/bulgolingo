@@ -58,7 +58,7 @@ class LoadTestTeardownOrphansTest extends TestCase
         $path->lessons()->attach($lesson);
         $lesson->attachExerciseAtEnd($exercise);
 
-        $lexema = Lexema::create(['word' => $prefix.'куче', 'exercise_id' => $exercise->id]);
+        $lexema = Lexema::firstOrCreate(['word' => $prefix.'куче'], ['exercise_id' => $exercise->id]);
 
         $user->learningPaths()->attach($path);
         DB::table('user_exercise_completions')->insert(['user_id' => $user->id, 'exercise_id' => $exercise->id, 'created_at' => now()]);

@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
@@ -111,6 +112,7 @@ class RoleTest extends TestCase
         $typeId = Type::named(UserType::Regular)->id;
 
         $row = fn (string $email, bool $admin, bool $visitor) => [
+            'uuid' => (string) Str::uuid7(),
             'name' => $email,
             'email' => $email,
             'password' => 'x',

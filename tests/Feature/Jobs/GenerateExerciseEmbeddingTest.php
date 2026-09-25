@@ -11,6 +11,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Str;
 use Laravel\Ai\Embeddings;
 use Laravel\Ai\Prompts\EmbeddingsPrompt;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -184,6 +185,7 @@ class GenerateExerciseEmbeddingTest extends TestCase
         Embeddings::fake();
 
         $id = DB::table('exercises')->insertGetId([
+            'uuid' => (string) Str::uuid7(),
             'name' => 'Empty',
             'decision_type' => ExerciseType::IMAGE_MATCHING->value,
             'clause' => json_encode(['correct_option' => 1]),

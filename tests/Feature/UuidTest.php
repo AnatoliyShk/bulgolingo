@@ -15,12 +15,13 @@ use App\Models\ScriptedDialogue;
 use App\Models\ScriptedLine;
 use App\Models\Type;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
-class UuidBackfillTest extends TestCase
+class UuidTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -56,12 +57,17 @@ class UuidBackfillTest extends TestCase
     }
 
     /**
-     * Rows created directly through the query builder skip HasUuidV7's
-     * creating hook entirely, standing in for rows that existed before the
-     * column was added — exactly what the command is meant to backfill.
+     * Rolls the NOT NULL migration back so rows can be written without a uuid
+     * through the query builder, which skips HasUuidV7's creating hook the way
+     * rows predating the column did, then runs it forward and expects each of
+     * them stamped with a v7 uuid. Postgres runs the DDL inside the test's
+     * transaction, so the schema is restored when the test ends.
      */
-    public function test_backfill_command_fills_rows_missing_a_uuid(): void
+    public function test_the_not_null_migration_fills_rows_missing_a_uuid(): void
     {
+        $migration = require database_path('migrations/2026_09_25_000002_make_uuid_columns_not_null.php');
+        $migration->down();
+
         $userId = DB::table('users')->insertGetId([
             'name' => 'Legacy',
             'email' => 'legacy-uuid@example.com',
@@ -95,28 +101,40 @@ class UuidBackfillTest extends TestCase
             'exercise_id' => $exerciseId,
         ]);
 
-        $this->artisan('uuid:backfill')->assertSuccessful();
+        $migration->up();
 
-        $user = DB::table('users')->find($userId);
-        $path = DB::table('learning_paths')->find($pathId);
-        $lesson = DB::table('lessons')->find($lessonId);
-        $exercise = DB::table('exercises')->find($exerciseId);
-        $dialogue = DB::table('scripted_dialogues')->find($dialogueId);
-        $line = DB::table('scripted_lines')->find($lineId);
-        $lexema = DB::table('lexemas')->find($lexemaId);
+        $ids = [
+            'users' => $userId,
+            'learning_paths' => $pathId,
+            'lessons' => $lessonId,
+            'exercises' => $exerciseId,
+            'scripted_dialogues' => $dialogueId,
+            'scripted_lines' => $lineId,
+            'lexemas' => $lexemaId,
+        ];
 
-        foreach ([$user->uuid, $path->uuid, $lesson->uuid, $exercise->uuid, $dialogue->uuid, $line->uuid, $lexema->uuid] as $uuid) {
-            $this->assertNotNull($uuid);
+        foreach ($ids as $table => $id) {
+            $uuid = DB::table($table)->find($id)->uuid;
+            $this->assertNotNull($uuid, $table);
             $this->assertSame(7, Uuid::fromString($uuid)->getFields()->getVersion());
         }
     }
 
-    public function test_backfill_command_leaves_an_already_stamped_uuid_untouched(): void
+    public function test_the_not_null_migration_leaves_an_already_stamped_uuid_untouched(): void
     {
         $path = LearningPath::create(['name' => 'Fresh', 'language' => 'bg']);
 
-        $this->artisan('uuid:backfill')->assertSuccessful();
+        $migration = require database_path('migrations/2026_09_25_000002_make_uuid_columns_not_null.php');
+        $migration->down();
+        $migration->up();
 
         $this->assertSame($path->uuid, DB::table('learning_paths')->find($path->id)->uuid);
+    }
+
+    public function test_a_row_without_a_uuid_is_rejected(): void
+    {
+        $this->expectException(QueryException::class);
+
+        DB::table('lessons')->insert(['name' => 'No uuid', 'description' => 'D']);
     }
 }
