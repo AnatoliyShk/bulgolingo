@@ -81,25 +81,35 @@ class LexemasFromOptionsTest extends TestCase
         $this->assertSame(2, Lexema::count());
     }
 
-    public function test_a_created_lexema_belongs_to_the_exercise_that_introduced_it(): void
+    public function test_a_created_lexema_is_linked_to_the_exercise(): void
     {
         $exercise = $this->fillInBlankExercise(['Куче']);
 
         $lexema = Lexema::where('word', 'куче')->first();
 
-        $this->assertSame($exercise->id, $lexema->exercise_id);
         $this->assertTrue($exercise->lexemas->contains($lexema));
+        $this->assertTrue($lexema->exercises->contains($exercise));
     }
 
-    public function test_an_existing_lexemas_exercise_ownership_is_not_reassigned(): void
+    public function test_a_word_reused_by_a_later_exercise_is_linked_to_both(): void
     {
         $first = $this->fillInBlankExercise(['Куче']);
         $second = $this->fillInBlankExercise(['Куче', 'Котка']);
 
         $lexema = Lexema::where('word', 'куче')->first();
 
-        $this->assertSame($first->id, $lexema->exercise_id);
-        $this->assertFalse($second->lexemas->contains($lexema));
+        $this->assertEqualsCanonicalizing([$first->id, $second->id], $lexema->exercises->pluck('id')->all());
+        $this->assertEqualsCanonicalizing(['куче', 'котка'], $second->lexemas->pluck('word')->all());
+    }
+
+    public function test_editing_the_options_relinks_the_words_and_keeps_the_dropped_lexema(): void
+    {
+        $exercise = $this->fillInBlankExercise(['Куче', 'Котка']);
+
+        $exercise->update(['clause' => [...$exercise->clause, 'options' => ['Куче', 'Кон']]]);
+
+        $this->assertEqualsCanonicalizing(['куче', 'кон'], $exercise->fresh()->lexemas->pluck('word')->all());
+        $this->assertDatabaseHas('lexemas', ['word' => 'котка']);
     }
 
     public function test_backfill_command_creates_lexemas_for_existing_exercises(): void
@@ -113,5 +123,6 @@ class LexemasFromOptionsTest extends TestCase
 
         $this->assertDatabaseHas('lexemas', ['word' => 'куче']);
         $this->assertSame(1, Lexema::count());
+        $this->assertSame(['куче'], $exercise->lexemas()->pluck('word')->all());
     }
 }

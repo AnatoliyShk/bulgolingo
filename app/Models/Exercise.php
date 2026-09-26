@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\AsVector;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 #[ObservedBy(ExerciseObserver::class)]
@@ -51,9 +50,9 @@ class Exercise extends Model implements ExerciseInterface
         return $this->belongsToMany(Images::class, 'exercise_image', 'exercise_id', 'image_id');
     }
 
-    public function lexemas(): HasMany
+    public function lexemas(): BelongsToMany
     {
-        return $this->hasMany(Lexema::class);
+        return $this->belongsToMany(Lexema::class, 'exercise_lexema');
     }
 
     public function getClauseAttribute($value)
@@ -147,13 +146,17 @@ class Exercise extends Model implements ExerciseInterface
     }
 
     /**
-     * Creates missing lexemas for the option words. Existing ones keep their
-     * exercise_id, which marks the exercise that first introduced the word.
+     * Links the exercise to a lexema for each of its option words, creating the
+     * lexemas that do not exist yet, and unlinks words an edit removed. The
+     * lexemas themselves stay, since other exercises and users' review history
+     * may still point at them.
      */
     public function syncLexemasFromOptions(): void
     {
-        foreach ($this->cyrillicOptionWords() as $word) {
-            Lexema::firstOrCreate(['word' => $word], ['exercise_id' => $this->id]);
-        }
+        $this->lexemas()->sync(
+            collect($this->cyrillicOptionWords())
+                ->map(fn (string $word) => Lexema::firstOrCreate(['word' => $word])->id)
+                ->all()
+        );
     }
 }

@@ -22,8 +22,8 @@ class TeardownLoadTestData extends Command
     protected $description = 'Remove the data a load-test run created, using the id ranges it recorded or, with --orphans, its markers';
 
     /**
-     * Child-before-parent, and lexemas before exercises because that one foreign
-     * key is ON DELETE NO ACTION rather than CASCADE. Each entry names the table
+     * Child-before-parent; exercise_lexema needs no entry of its own because it
+     * cascades from both lexemas and exercises. Each entry names the table
      * and the column its recorded range applies to: rows the run owns outright
      * are cut by their own primary key, while rows keyed on a user are cut by
      * the contiguous user id block, which the completions primary key covers.
@@ -136,9 +136,11 @@ class TeardownLoadTestData extends Command
      * users, and content named with the run prefix — rather than by recorded
      * ranges. Children go first and in batches for the reason purge() gives,
      * and every user_id and content foreign key walked here is indexed, so each
-     * batch is an index lookup rather than a scan. Lexemas precede exercises
-     * because their foreign key is nullOnDelete: deleting the exercise first
-     * would detach them and leave nothing to find them by.
+     * batch is an index lookup rather than a scan. Lexemas are found through
+     * exercise_lexema, so they precede exercises, whose deletion cascades those
+     * links away and would leave nothing to find them by. A lexema also linked
+     * to a real exercise is shared vocabulary rather than generated data and is
+     * left in place.
      */
     private function purgeOrphans(): void
     {
@@ -154,7 +156,9 @@ class TeardownLoadTestData extends Command
             ['user_exercise_completions', 'user_id', fn ($q) => $q->whereIn('user_id', $fillers)],
             ['learning_path_user', 'user_id', fn ($q) => $q->whereIn('user_id', $fillers)],
             ['users', 'id', fn ($q) => $q->where('type_id', $fillerTypeId)],
-            ['lexemas', 'id', fn ($q) => $q->whereIn('exercise_id', $named('exercises'))],
+            ['lexemas', 'id', fn ($q) => $q
+                ->whereIn('id', fn ($links) => $links->select('lexema_id')->from('exercise_lexema')->whereIn('exercise_id', $named('exercises')))
+                ->whereNotIn('id', fn ($links) => $links->select('lexema_id')->from('exercise_lexema')->whereNotIn('exercise_id', $named('exercises')))],
             ['exercise_lesson', 'exercise_id', fn ($q) => $q->whereIn('exercise_id', $named('exercises'))],
             ['learning_path_lesson', 'lesson_id', fn ($q) => $q->whereIn('lesson_id', $named('lessons'))],
             ['exercises', 'id', fn ($q) => $q->where('name', 'like', RunManifest::NAME_PREFIX.'%')],

@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\AsVector;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-#[Fillable(['word', 'exercise_id'])]
+#[Fillable(['word'])]
 #[Hidden(['embedding'])]
 class Lexema extends Model
 {
@@ -25,8 +25,8 @@ class Lexema extends Model
         ];
     }
 
-    public function exercise(): BelongsTo
+    public function exercises(): BelongsToMany
     {
-        return $this->belongsTo(Exercise::class);
+        return $this->belongsToMany(Exercise::class, 'exercise_lexema');
     }
 }

@@ -73,6 +73,17 @@ class CompleteForGradesLexemasTest extends TestCase
         $this->assertSame(2, UserLexema::query()->where('user_id', $user->id)->count());
     }
 
+    public function test_a_word_first_introduced_by_another_exercise_is_still_graded(): void
+    {
+        $user = User::factory()->create();
+        $this->fillInBlankExercise(['Куче']);
+        $second = $this->fillInBlankExercise(['Куче', 'Котка']);
+
+        $this->grade($user, $second);
+
+        $this->assertSame(2, UserLexema::query()->where('user_id', $user->id)->count());
+    }
+
     public function test_grading_the_same_exercise_again_records_another_review(): void
     {
         $user = User::factory()->create();

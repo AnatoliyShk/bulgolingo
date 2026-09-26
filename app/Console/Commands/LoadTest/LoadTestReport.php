@@ -36,6 +36,7 @@ class LoadTestReport extends Command
         'exercise_lesson',
         'exercises',
         'lexemas',
+        'exercise_lexema',
     ];
 
     public function handle(): int

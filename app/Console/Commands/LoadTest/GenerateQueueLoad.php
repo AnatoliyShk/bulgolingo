@@ -133,7 +133,7 @@ class GenerateQueueLoad extends Command
     {
         $generated = DB::table('exercises')
             ->where('name', 'like', RunManifest::NAME_PREFIX.'%')
-            ->whereIn('id', fn ($q) => $q->select('exercise_id')->from('lexemas')->whereNotNull('exercise_id'))
+            ->whereIn('id', fn ($q) => $q->select('exercise_id')->from('exercise_lexema'))
             ->limit(500)
             ->pluck('id')
             ->all();

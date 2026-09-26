@@ -17,11 +17,12 @@ class ExerciseObserver
     }
 
     /**
-     * Handle the Exercise "updated" event.
+     * Relinks the lexemas after an edit, since the options may have changed.
+     * Eloquent fires this only when a column actually changed.
      */
     public function updated(Exercise $exercise): void
     {
-        //
+        $exercise->syncLexemasFromOptions();
     }
 
     /**

@@ -48,7 +48,7 @@ class UuidTest extends TestCase
             'scripted_dialogue_id' => $dialogue->id,
             'clause' => ['text' => 'Здравей!'],
         ]);
-        $lexema = Lexema::create(['word' => 'здравей', 'exercise_id' => $exercise->id]);
+        $lexema = Lexema::create(['word' => 'здравей']);
 
         foreach ([$user, $path, $lesson, $exercise, $dialogue, $line, $lexema] as $model) {
             $this->assertNotNull($model->uuid);
@@ -96,10 +96,7 @@ class UuidTest extends TestCase
             'scripted_dialogue_id' => $dialogueId,
             'clause' => json_encode(['text' => 'Здравей!']),
         ]);
-        $lexemaId = DB::table('lexemas')->insertGetId([
-            'word' => 'легаси',
-            'exercise_id' => $exerciseId,
-        ]);
+        $lexemaId = DB::table('lexemas')->insertGetId(['word' => 'легаси']);
 
         $migration->up();
 

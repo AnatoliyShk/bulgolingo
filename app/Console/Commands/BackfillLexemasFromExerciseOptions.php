@@ -9,7 +9,7 @@ class BackfillLexemasFromExerciseOptions extends Command
 {
     protected $signature = 'lexemas:backfill-from-options';
 
-    protected $description = 'Create a lexema for every Cyrillic word in every existing exercise\'s clause options';
+    protected $description = 'Create and link a lexema for every Cyrillic word in every existing exercise\'s clause options';
 
     public function handle(): int
     {

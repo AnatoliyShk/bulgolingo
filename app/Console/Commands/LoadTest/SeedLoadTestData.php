@@ -249,7 +249,11 @@ class SeedLoadTestData extends Command
      * a little under half — because the FSRS write path only fires for exercises
      * that have any, and inflating that ratio would overstate how much work a
      * completion really does. Each word carries the run id because lexemas.word
-     * is unique, and two runs seeded side by side would otherwise collide.
+     * is unique, and two runs seeded side by side would otherwise collide. The
+     * lexema ids are read back by word from the block the sequence just handed
+     * out, so the exercise_lexema links need no second pass over the generator.
+     * Those links are not recorded in the manifest: they cascade when either
+     * side is torn down.
      */
     private function generateLexemas(int $exercises, int $exerciseStart): void
     {
@@ -270,15 +274,24 @@ class SeedLoadTestData extends Command
         $before = $this->writer->sequenceValue('lexemas');
         $now = now()->toDateTimeString();
 
-        $this->writer->write('lexemas', ['uuid', 'word', 'exercise_id', 'created_at', 'updated_at'],
+        $this->writer->write('lexemas', ['uuid', 'word', 'created_at', 'updated_at'],
             (function () use ($rows, $now): Generator {
                 foreach ($rows as $row) {
-                    yield [(string) Str::uuid7(), $row[0], $row[1], $now, $now];
+                    yield [(string) Str::uuid7(), $row[0], $now, $now];
                 }
             })());
 
         $after = $this->writer->sequenceValue('lexemas');
         $this->manifest->recordBlock('lexemas', $before + 1, max(0, $after - $before));
+
+        $idByWord = DB::table('lexemas')->whereBetween('id', [$before + 1, $after])->pluck('id', 'word');
+
+        $this->writer->write('exercise_lexema', ['exercise_id', 'lexema_id'],
+            (function () use ($rows, $idByWord): Generator {
+                foreach ($rows as $row) {
+                    yield [$row[1], $idByWord[$row[0]]];
+                }
+            })());
     }
 
     /**
@@ -334,12 +347,12 @@ class SeedLoadTestData extends Command
         $this->exercisePool = $exercises->orderBy('id')->pluck('id')->all();
         $this->pathPool = $paths->orderBy('id')->pluck('id')->all();
 
-        $this->lexemasByExercise = DB::table('lexemas')
+        $this->lexemasByExercise = DB::table('exercise_lexema')
             ->whereIn('exercise_id', $this->exercisePool)
-            ->orderBy('id')
-            ->get(['id', 'exercise_id'])
+            ->orderBy('lexema_id')
+            ->get(['lexema_id', 'exercise_id'])
             ->groupBy('exercise_id')
-            ->map(fn ($rows) => $rows->pluck('id')->all())
+            ->map(fn ($rows) => $rows->pluck('lexema_id')->all())
             ->all();
     }
 
