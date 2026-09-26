@@ -177,8 +177,9 @@ class GenerateExerciseEmbeddingTest extends TestCase
     /**
      * Inserted directly because the model's validation would refuse a clause
      * with no text, which is exactly what a legacy or hand-written row can hold.
-     * Its correct_option points at an option that is not there, so the answer
-     * line has nothing to name either.
+     * The database's clause constraint only checks the shape, so a clause whose
+     * every string is blank still gets in, and its one option, which is
+     * also the answer, is empty.
      */
     public function test_a_clause_without_text_is_not_embedded(): void
     {
@@ -187,8 +188,8 @@ class GenerateExerciseEmbeddingTest extends TestCase
         $id = DB::table('exercises')->insertGetId([
             'uuid' => (string) Str::uuid7(),
             'name' => 'Empty',
-            'decision_type' => ExerciseType::IMAGE_MATCHING->value,
-            'clause' => json_encode(['correct_option' => 1]),
+            'decision_type' => ExerciseType::FILL_IN_THE_BLANK->value,
+            'clause' => json_encode(['sentence' => ' ', 'options' => [''], 'correct_option' => 0, 'explanation' => ' ']),
             'created_at' => now(),
             'updated_at' => now(),
         ]);

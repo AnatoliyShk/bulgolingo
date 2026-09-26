@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use App\Rules\OptionIndex;
+
 enum ExerciseType: string
 {
     /**
@@ -61,13 +63,13 @@ enum ExerciseType: string
             self::FILL_IN_THE_BLANK => [
                 'sentence' => ['required', 'string'],
                 'options' => ['required', 'array'],
-                'correct_option' => ['required', 'integer'],
+                'correct_option' => ['required', 'integer', new OptionIndex],
                 'explanation' => ['required', 'string'],
             ],
             self::IMAGE_MATCHING => [
                 'options' => ['required', 'array', 'min:2'],
                 'options.*' => ['required', 'string'],
-                'correct_option' => ['required', 'integer'],
+                'correct_option' => ['required', 'integer', new OptionIndex],
                 'explanation' => ['required', 'string'],
             ],
             default => [],

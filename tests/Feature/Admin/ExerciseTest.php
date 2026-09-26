@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ExerciseTest extends TestCase
@@ -424,6 +425,69 @@ class ExerciseTest extends TestCase
 
         $exercise->refresh();
         $this->assertCount(ExerciseType::MIN_WORD_PAIRS, $exercise->clause['pairs']);
+    }
+
+    public static function answersOutsideTheOptions(): array
+    {
+        return [
+            'past the last option' => [2],
+            'negative' => [-1],
+        ];
+    }
+
+    #[DataProvider('answersOutsideTheOptions')]
+    public function test_fill_in_the_blank_rejects_an_answer_outside_the_options(int $answer): void
+    {
+        $admin = User::factory()->admin()->create();
+        $lesson = $this->lesson();
+
+        $response = $this
+            ->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Pets',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::FILL_IN_THE_BLANK->value,
+                'clause' => [
+                    'sentence' => 'The ___ barks.',
+                    'options' => ['Куче', 'Котка'],
+                    'correct_option' => $answer,
+                    'explanation' => 'Dogs bark.',
+                ],
+            ]);
+
+        $response->assertSessionHasErrors(['clause.correct_option' => 'The correct answer must be one of the options.']);
+        $this->assertDatabaseCount('exercises', 0);
+    }
+
+    /**
+     * Removing the option the answer points at, without moving the answer, is
+     * the edit that would otherwise reach the database constraint.
+     */
+    public function test_fill_in_the_blank_rejects_dropping_the_chosen_option_on_update(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $clause = [
+            'sentence' => 'The ___ barks.',
+            'options' => ['Котка', 'Куче'],
+            'correct_option' => 1,
+            'explanation' => 'Dogs bark.',
+        ];
+        $exercise = $this->exerciseFor($this->lesson(), [
+            'name' => 'Pets',
+            'decision_type' => ExerciseType::FILL_IN_THE_BLANK->value,
+            'clause' => $clause,
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => $exercise->name,
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => [...$clause, 'options' => ['Котка']],
+            ]);
+
+        $response->assertSessionHasErrors(['clause.correct_option' => 'The correct answer must be one of the options.']);
+        $this->assertSame(['Котка', 'Куче'], $exercise->fresh()->clause['options']);
     }
 
     public function test_word_pair_exercise_can_be_updated_with_enough_pairs(): void
