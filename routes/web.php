@@ -132,12 +132,16 @@ Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')-
 
 Route::prefix('exercise')->name('exercise.')->controller(ExerciseController::class)->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::post('/', 'store')->name('store');
-    Route::get('/create', 'create')->name('create');
+
+    Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->group(function () {
+        Route::post('/', 'store')->name('store');
+        Route::get('/create', 'create')->name('create');
+        Route::match(['put', 'patch'], '/{exercise}', 'update')->name('update');
+        Route::delete('/{exercise}', 'destroy')->name('destroy');
+        Route::get('/{exercise}/edit', 'edit')->name('edit');
+    });
+
     Route::get('/{exercise}', 'show')->name('show');
-    Route::match(['put', 'patch'], '/{exercise}', 'update')->name('update');
-    Route::delete('/{exercise}', 'destroy')->name('destroy');
-    Route::get('/{exercise}/edit', 'edit')->name('edit');
     Route::post('/{exercise}/complete', 'complete')
         ->middleware(['auth', 'throttle:exercise-completion'])
         ->name('complete');
@@ -145,12 +149,16 @@ Route::prefix('exercise')->name('exercise.')->controller(ExerciseController::cla
 
 Route::prefix('lesson')->name('lesson.')->controller(LessonController::class)->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::post('/', 'store')->name('store');
-    Route::get('/create', 'create')->name('create');
+
+    Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->group(function () {
+        Route::post('/', 'store')->name('store');
+        Route::get('/create', 'create')->name('create');
+        Route::match(['put', 'patch'], '/{lesson}', 'update')->name('update');
+        Route::delete('/{lesson}', 'destroy')->name('destroy');
+        Route::get('/{lesson}/edit', 'edit')->name('edit');
+    });
+
     Route::get('/{lesson}', 'show')->name('show');
-    Route::match(['put', 'patch'], '/{lesson}', 'update')->name('update');
-    Route::delete('/{lesson}', 'destroy')->name('destroy');
-    Route::get('/{lesson}/edit', 'edit')->name('edit');
 
     Route::middleware('auth')->group(function () {
         Route::get('/{lesson}/complete', 'complete')->name('complete');
