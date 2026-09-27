@@ -28,18 +28,25 @@ class Lesson extends Model
 
     /**
      * Appends the exercise to the lesson's order; no-op if already attached.
+     * The lesson row is locked first, so two exercises appended at once cannot
+     * both read the same last position and trip the (lesson_id, order) unique
+     * index; the second waits and then reads the first one's position.
      */
     public function attachExerciseAtEnd(Exercise $exercise): void
     {
-        if ($this->exercises()->whereKey($exercise->getKey())->exists()) {
-            return;
-        }
+        DB::transaction(function () use ($exercise) {
+            static::query()->whereKey($this->getKey())->lockForUpdate()->first();
 
-        $lastOrder = DB::table('exercise_lesson')->where('lesson_id', $this->getKey())->max('order');
+            if ($this->exercises()->whereKey($exercise->getKey())->exists()) {
+                return;
+            }
 
-        $this->exercises()->attach($exercise->getKey(), [
-            'order' => $lastOrder === null ? 0 : $lastOrder + 1,
-        ]);
+            $lastOrder = DB::table('exercise_lesson')->where('lesson_id', $this->getKey())->max('order');
+
+            $this->exercises()->attach($exercise->getKey(), [
+                'order' => $lastOrder === null ? 0 : $lastOrder + 1,
+            ]);
+        });
     }
 
     /**

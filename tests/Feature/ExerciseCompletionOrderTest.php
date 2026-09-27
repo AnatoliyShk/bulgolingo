@@ -69,7 +69,7 @@ class ExerciseCompletionOrderTest extends TestCase
         [$first, $second, $third] = $this->exercises($lesson, 3);
 
         // Reverse the lesson order so id ordering and pivot ordering disagree.
-        $lesson->exercises()->updateExistingPivot($first->id, ['order' => 2]);
+        $lesson->exercises()->updateExistingPivot($first->id, ['order' => 3]);
         $lesson->exercises()->updateExistingPivot($third->id, ['order' => 0]);
 
         $response = $this->actingAs($user)->post(route('exercise.complete', $third));

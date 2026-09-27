@@ -44,7 +44,7 @@ function deleteMessenger(id) {
                         <tbody class="admin-table__body">
                             <tr v-for="messenger in messengers" :key="messenger.id">
                                 <td class="admin-table__td--strong">{{ messenger.user?.name }}</td>
-                                <td class="admin-table__td">{{ messenger.messenger_name }}</td>
+                                <td class="admin-table__td">{{ messenger.messenger_label }}</td>
                                 <td class="admin-table__td">{{ messenger.messenger_user_id }}</td>
                                 <td class="admin-table__td">{{ new Date(messenger.created_at).toLocaleDateString() }}</td>
                                 <td class="admin-table__td--actions">

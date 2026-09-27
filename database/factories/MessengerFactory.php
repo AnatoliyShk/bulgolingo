@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\MessengerName;
 use App\Models\Messenger;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,7 +21,7 @@ class MessengerFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'messenger_name' => fake()->randomElement(['Telegram', 'WhatsApp', 'Viber']),
+            'messenger_name' => fake()->randomElement(MessengerName::cases()),
             'messenger_user_id' => fake()->unique()->numerify('##########'),
         ];
     }

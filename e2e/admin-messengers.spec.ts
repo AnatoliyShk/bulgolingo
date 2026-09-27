@@ -45,7 +45,7 @@ test.describe('Admin messengers', () => {
 
         await page.goto(`${BASE}/admin/messengers/create`);
         await selectFirstUser(page);
-        await page.fill('#messenger_name', 'Telegram');
+        await page.locator('#messenger_name').selectOption('telegram');
         await page.fill('#messenger_user_id', messengerUserId);
         await page.click('button[type="submit"]');
 
@@ -53,7 +53,7 @@ test.describe('Admin messengers', () => {
         await expect(row(page, messengerUserId)).toContainText('Telegram');
 
         await row(page, messengerUserId).getByRole('link', { name: 'Edit' }).click();
-        await page.fill('#messenger_name', 'WhatsApp');
+        await page.locator('#messenger_name').selectOption('whatsapp');
         await page.click('button[type="submit"]');
 
         await page.waitForURL(`${BASE}/admin/messengers`);

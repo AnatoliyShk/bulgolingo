@@ -6,6 +6,7 @@ import Breadcrumb from '@/Components/Breadcrumb.vue';
 
 defineProps({
     users: Array,
+    messengerNames: { type: Array, required: true },
 });
 
 const form = useForm({
@@ -46,14 +47,10 @@ function submit() {
 
                         <div class="admin-form__field">
                             <label for="messenger_name" class="admin-form__label">Messenger Name</label>
-                            <input
-                                id="messenger_name"
-                                v-model="form.messenger_name"
-                                type="text"
-                                class="admin-form__input"
-                                placeholder="e.g. Telegram"
-                                autofocus
-                            />
+                            <select id="messenger_name" v-model="form.messenger_name" class="admin-form__select" autofocus>
+                                <option value="" disabled>Select a messenger</option>
+                                <option v-for="option in messengerNames" :key="option.value" :value="option.value">{{ option.label }}</option>
+                            </select>
                             <p v-if="form.errors.messenger_name" class="admin-form__error">{{ form.errors.messenger_name }}</p>
                         </div>
 

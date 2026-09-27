@@ -30,7 +30,7 @@ production database, not a test one. Always pass the overrides:
 
 ```bash
 docker compose exec -u sail \
-  -e DB_CONNECTION=pgsql -e DB_HOST=pgsql -e DB_DATABASE=testing -e DB_USERNAME=sail -e DB_PASSWORD=password \
+  -e DB_CONNECTION=pgsql -e DB_HOST=pgsql -e DB_DATABASE=testing \
   -e QUEUE_CONNECTION=sync -e CACHE_STORE=array -e SESSION_DRIVER=array -e TELESCOPE_ENABLED=false \
   laravel.test ./vendor/bin/phpunit --no-coverage
 
@@ -39,9 +39,12 @@ docker compose exec -u sail \
 #   laravel.test ./vendor/bin/phpunit --filter=TestName
 ```
 
-The local database is stock Sail — user `sail`, password `password`, database
-`testing` created by the image's init script. The `.env` credentials are the
-cloud ones and do not authenticate against it.
+The local Postgres volume was initialised from `.env`'s `DB_USERNAME` /
+`DB_PASSWORD` (role `laravel`), so the container's own env already
+authenticates and only the host, connection and database need overriding. Its
+`testing` database is created by Sail's init script. Inspect it with
+`docker compose exec pgsql psql -U laravel -d testing`. If the volume is ever
+recreated with other credentials, pass `-e DB_USERNAME=… -e DB_PASSWORD=…` too.
 
 Tests that touch no database — those extending `PHPUnit\Framework\TestCase`
 rather than `Tests\TestCase` — can run on the host directly, because `phpunit.xml`
@@ -87,7 +90,16 @@ php artisan migrate:fresh --seed   # wipe and reseed
 php artisan tinker
 ```
 
-Image uploads are stored in `storage/app/public` and served via `storage:link`. The public disk is used throughout — call `php artisan storage:link` after setup if images are missing.
+A migration that only adds a unique index to an existing table is named
+`add_unique_index_to_<table>`, e.g. `add_unique_index_to_messengers`. When the
+table already has one, or the index is on a single column, append that column:
+`add_unique_index_to_lexemas_word`. The migration first resolves any rows that
+would break the index (merge or renumber them), because Postgres refuses to
+build a unique index over existing duplicates.
+
+Exercise images and avatars are stored on the `bb_images` disk (`Images::DISK`),
+an S3-compatible bucket configured by the `AWS_*` env vars, and served through
+one-hour `temporaryUrl()`s — not from `storage/app/public`.
 
 ## Architecture Overview
 
@@ -107,21 +119,26 @@ Every page render goes through Inertia: Laravel returns `Inertia::render('PageNa
 
 ### Domain model
 ```
-LearningPath ──< learning_path_lesson >── Lesson ──< Exercise
-     │                                       │
-     └──< learning_path_user >── User        └── (is_completed bool)
-                │
-                ├──< user_learned_word >── Lexemas
-                │
-                └── Role (student | admin | admin_visitor)
+LearningPath ──< learning_path_lesson >── Lesson ──< exercise_lesson (order) >── Exercise ──< exercise_image >── Images
+     │                                                                            │
+     └──< learning_path_user >── User ──< user_exercise_completions >─────────────┤
+                                  │                                               │
+                                  ├──< user_lexema (FSRS state) >── Lexema ──< exercise_lexema
+                                  ├──< review_logs >── Lexema
+                                  ├──< messengers (messenger_name, messenger_user_id)
+                                  ├──< desired_topics
+                                  ├── Role (student | admin | admin_visitor)
+                                  └── Type
 ```
 
-- **Exercise** is the core unit. Its `clause` column stores a JSON blob whose schema is determined by `decision_type` (an `ExerciseType` enum). The `Exercise` model validates `clause` against `ExerciseType::dataRules()` in a `saving` model hook.
+- **Exercise** is the core unit. Its `clause` column stores a JSON blob whose schema is determined by `decision_type` (an `ExerciseType` enum). `ExerciseObserver` validates `clause` against `ExerciseType::dataRules()` on `creating`/`updating`, and on Postgres per-type CHECK constraints on `clause` back it up.
 - **ExerciseType** enum (`app/Enums/ExerciseType.php`) defines five types: `multiple_choice`, `true_false`, `fill_in_the_blank`, `image_matching`, `bot_dialog`. Each type has its own `clause` shape and validation rules.
-- **Lesson** tracks aggregate completion (`refreshCompletionStatus()`) by checking whether all child exercises are completed.
-- **Images** are stored via a many-to-many pivot (`exercise_image`) so an exercise can have associated images. The admin controller handles upload/replace/delete of the physical file on the `public` storage disk.
+- **Lesson ordering**: a lesson's exercises run in `exercise_lesson.order`, unique per lesson; append with `Lesson::attachExerciseAtEnd()`, which locks the lesson row. Lessons within a path run in lesson-id order.
+- **Completion** is per user, not a stored flag: a row in `user_exercise_completions` marks an exercise done, and a lesson is complete when every one of its exercises is (`Lesson::completionMapFor()`, `Lesson::getCompletedLessonStats()`). `Exercise::completeFor()` records the completion and queues `ExperienceCountUpdate` and `LexemaReviewGrade` on the `learning_path` queue.
+- **Images** are attached through the `exercise_image` pivot, unique per `(exercise_id, image_id)`. The admin controller uploads, replaces and deletes the files on the `bb_images` disk.
 - **Role**: every user belongs to one row of `roles` via `users.role_id`. The rows are inserted by the migration that creates the table, one per `RoleName` enum case, and `Role::named(RoleName::Admin)` looks one up. A user created without a role becomes a `student` (a `creating` hook on `User`). Check roles with `$user->isAdmin()`, `$user->isAdminVisitor()` or `$user->hasRole(...)`; in tests use the `UserFactory` states `admin()` and `adminVisitor()`.
-- **Lexemas** are tracked per-user via a `user_lexema` pivot with an `reps_total` column. The `LearnedWordCountUpdate` job (currently a stub) is intended to update these counts.
+- **Lexemas**: `ExerciseObserver` links each exercise to the lexemas of its Cyrillic option words (`Exercise::syncLexemasFromOptions()`, backfilled by `BackfillLexemasFromExerciseOptions`). Per user, `user_lexema` holds the FSRS memory state (`stability`, `difficulty`, `state`, `due_at`, `reps_total`, `lapses`), and each grading appends a `review_logs` row; the `LexemaReviewGrade` job writes both through `App\Services\GradeLexemeReview`.
+- **Messengers** link a user to an external chat account. `messenger_name` is a `MessengerName` enum (`telegram`, `whatsapp`, `viber`), held to that list by a Postgres CHECK, and `(messenger_name, messenger_user_id)` is unique.
 
 ### Admin vs student controllers
 There are two `ExerciseController` classes:

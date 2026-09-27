@@ -7,6 +7,7 @@ import Breadcrumb from '@/Components/Breadcrumb.vue';
 const props = defineProps({
     messenger: Object,
     users: Array,
+    messengerNames: { type: Array, required: true },
 });
 
 const form = useForm({
@@ -26,7 +27,7 @@ function submit() {
             <Breadcrumb :items="[
                 { label: 'Admin', href: route('admin.index') },
                 { label: 'Messengers', href: route('admin.messengers.index') },
-                { label: messenger.messenger_name },
+                { label: messenger.messenger_label },
             ]" />
         </template>
 
@@ -47,7 +48,9 @@ function submit() {
 
                         <div class="admin-form__field">
                             <label for="messenger_name" class="admin-form__label">Messenger Name</label>
-                            <input id="messenger_name" v-model="form.messenger_name" type="text" class="admin-form__input" />
+                            <select id="messenger_name" v-model="form.messenger_name" class="admin-form__select">
+                                <option v-for="option in messengerNames" :key="option.value" :value="option.value">{{ option.label }}</option>
+                            </select>
                             <p v-if="form.errors.messenger_name" class="admin-form__error">{{ form.errors.messenger_name }}</p>
                         </div>
 
