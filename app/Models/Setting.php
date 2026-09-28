@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Read and written through App\Services\SiteSettings, which owns the defaults
+ * Read and written through App\Services\SiteSettingsService, which owns the defaults
  * and the cache in front of this table.
  */
 #[Table('settings', key: 'key', keyType: 'string', incrementing: false)]

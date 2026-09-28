@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\GenerateExerciseEmbedding;
 use App\Models\Exercise;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -13,7 +13,7 @@ use Illuminate\Console\Command;
 #[Description('Queue embedding generation for exercises that have none')]
 class GenerateExerciseEmbeddingsCommand extends Command
 {
-    public function __construct(private readonly SiteSettings $settings)
+    public function __construct(private readonly SiteSettingsService $settings)
     {
         parent::__construct();
     }

@@ -70,12 +70,12 @@ class StatsService
      */
     private function completedLessonStats(User $user): array
     {
-        $stats = CompletedLessonStatsCache::get($user->id);
+        $stats = CompletedLessonStatsCacheService::get($user->id);
 
         if ($stats === null) {
             $stats = Lesson::getCompletedLessonStats($user);
 
-            CompletedLessonStatsCache::warm($user->id, $stats);
+            CompletedLessonStatsCacheService::warm($user->id, $stats);
         }
 
         return $stats;
@@ -109,12 +109,12 @@ class StatsService
      */
     private function exerciseActivityCounts(int $userId, Collection $days): Collection
     {
-        $counts = ExerciseActivityCache::get($userId, $days);
+        $counts = ExerciseActivityCacheService::get($userId, $days);
 
         if ($counts === null) {
             $counts = $this->exerciseActivityCountsFromDatabase($userId, $days);
 
-            ExerciseActivityCache::warm($userId, $days, $counts);
+            ExerciseActivityCacheService::warm($userId, $days, $counts);
         }
 
         return $counts;

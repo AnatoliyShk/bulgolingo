@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Models\UserExerciseCompletion;
 use App\Observers\UserExerciseCompletionObserver;
-use App\Services\CacheHitRateCache;
-use App\Services\SiteSettings;
+use App\Services\CacheHitRateCacheService;
+use App\Services\SiteSettingsService;
 use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Cache\Events\CacheMissed;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -40,13 +40,13 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(function (CacheHit $event) {
             if (static::isTrackedCacheEvent($event)) {
-                CacheHitRateCache::recordHit();
+                CacheHitRateCacheService::recordHit();
             }
         });
 
         Event::listen(function (CacheMissed $event) {
             if (static::isTrackedCacheEvent($event)) {
-                CacheHitRateCache::recordMiss();
+                CacheHitRateCacheService::recordMiss();
             }
         });
 
@@ -70,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private static function learningPathSearchLimit(Request $request): Limit
     {
-        return filled($request->query('q')) && app(SiteSettings::class)->embeddingSearchEnabled()
+        return filled($request->query('q')) && app(SiteSettingsService::class)->embeddingSearchEnabled()
             ? Limit::perMinute(20)->by('learning-path-search:'.($request->user()?->id ?? $request->ip()))
             : Limit::none();
     }
@@ -108,14 +108,14 @@ class AppServiceProvider extends ServiceProvider
      */
     private static function tutorBotLimit(Request $request): Limit
     {
-        return app(SiteSettings::class)->tutorBotEnabled()
+        return app(SiteSettingsService::class)->tutorBotEnabled()
             ? Limit::perMinute(3)->by('tutor-bot:'.($request->user()?->id ?? $request->ip()))
             : Limit::none();
     }
 
     /**
      * Scopes hit-rate tracking to the "redis" store, where the app's own data
-     * caching (CompletedLessonStatsCache, ExerciseActivityCache) lives, and
+     * caching (CompletedLessonStatsCacheService, ExerciseActivityCacheService) lives, and
      * excludes the metrics/vitals bookkeeping keys themselves — otherwise the
      * default store's framework-internal lookups (e.g. login throttling) and
      * the dashboard reading its own counters would dilute the signal.

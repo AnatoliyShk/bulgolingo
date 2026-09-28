@@ -1,0 +1,7 @@
+@import './shared';
+
+// ── Index filters ─────────────────────────────────────────────────────────────
+.admin-filter {
+    &__search { @apply w-56 rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200; }
+    &__select { @apply rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200; }
+}

@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/scss/components/admin/learning-paths.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -67,15 +68,15 @@ function deletePath(id) {
                     {{ filters.level === 'none' ? 'Every learning path has a level.' : filters.level ? 'No learning paths at this level.' : 'No learning paths yet.' }}
                 </div>
 
-                <div v-else class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+                <div v-else class="admin-table__wrap">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Language</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Level</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Lessons</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Created</th>
+                                <th class="admin-table__th">Name</th>
+                                <th class="admin-table__th">Language</th>
+                                <th class="admin-table__th">Level</th>
+                                <th class="admin-table__th">Lessons</th>
+                                <th class="admin-table__th">Created</th>
                                 <th class="px-6 py-3"></th>
                             </tr>
                         </thead>

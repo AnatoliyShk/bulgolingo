@@ -4,7 +4,7 @@ namespace App\Ai\Tools;
 
 use App\Models\Exercise;
 use App\Models\LearningPath;
-use App\Services\ExerciseSearch;
+use App\Services\ExerciseSearchService;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Ai\Contracts\Tool;
@@ -13,7 +13,7 @@ use Stringable;
 
 class SearchCatalog implements Tool
 {
-    public function __construct(private readonly ExerciseSearch $search) {}
+    public function __construct(private readonly ExerciseSearchService $search) {}
 
     public function description(): Stringable|string
     {

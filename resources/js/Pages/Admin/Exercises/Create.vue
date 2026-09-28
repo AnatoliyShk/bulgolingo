@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/scss/components/admin/exercises.scss';
 import { watch } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -87,7 +88,7 @@ function submit() {
 
         <div class="py-12">
             <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-                <section class="rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800">
+                <section class="admin-card">
                     <form @submit.prevent="submit" class="space-y-5">
 
                         <!-- Name -->
@@ -96,7 +97,7 @@ function submit() {
                             <input
                                 v-model="form.name"
                                 type="text"
-                                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                class="admin-form__input"
                                 placeholder="Exercise name"
                                 autofocus
                             />
@@ -108,7 +109,7 @@ function submit() {
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
                             <select
                                 v-model="form.decision_type"
-                                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                class="admin-form__input"
                             >
                                 <option value="" disabled>Select a type</option>
                                 <option v-for="type in exerciseTypes" :key="type.value" :value="type.value">
@@ -133,13 +134,13 @@ function submit() {
                                     <input
                                         v-model="pair[0]"
                                         type="text"
-                                        class="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                        class="admin-form__input--row"
                                         placeholder="Word"
                                     />
                                     <input
                                         v-model="pair[1]"
                                         type="text"
-                                        class="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                        class="admin-form__input--row"
                                         placeholder="Translation"
                                     />
                                     <button
@@ -147,7 +148,7 @@ function submit() {
                                         @click="removePair(index)"
                                         :disabled="!canRemovePair"
                                         :title="canRemovePair ? 'Remove this pair' : `At least ${MIN_PAIRS} pairs are required`"
-                                        class="text-xs text-red-500 hover:underline disabled:cursor-not-allowed disabled:text-gray-300 disabled:no-underline dark:text-red-400 dark:disabled:text-gray-600"
+                                        class="admin-btn--remove-sm"
                                     >Remove</button>
                                 </div>
                                 <div class="flex items-center gap-3">
@@ -193,7 +194,7 @@ function submit() {
                                 <textarea
                                     v-model="form.clause.explanation"
                                     rows="3"
-                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 resize-none"
+                                    class="admin-form__textarea"
                                     placeholder="Explain the correct answer"
                                 />
                                 <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
@@ -207,7 +208,7 @@ function submit() {
                                 <input
                                     v-model="form.clause.sentence"
                                     type="text"
-                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                    class="admin-form__input"
                                     placeholder="e.g. The sky is green."
                                 />
                                 <p v-if="form.errors['clause.sentence']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.sentence'] }}</p>
@@ -217,7 +218,7 @@ function submit() {
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correct answer</label>
                                 <select
                                     v-model="form.clause.correct_option"
-                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                    class="admin-form__input"
                                 >
                                     <option :value="true">True</option>
                                     <option :value="false">False</option>
@@ -230,7 +231,7 @@ function submit() {
                                 <textarea
                                     v-model="form.clause.explanation"
                                     rows="3"
-                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 resize-none"
+                                    class="admin-form__textarea"
                                     placeholder="Explain the correct answer"
                                 />
                                 <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
@@ -255,7 +256,7 @@ function submit() {
                                     <input
                                         v-model="form.clause.options[index]"
                                         type="text"
-                                        class="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                        class="admin-form__input--row"
                                         :placeholder="`Option ${index + 1}`"
                                     />
                                 </div>
@@ -269,7 +270,7 @@ function submit() {
                                     type="number"
                                     min="0"
                                     :max="form.clause.options.length - 1"
-                                    class="w-24 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                    class="admin-form__input--narrow"
                                 />
                                 <p v-if="form.errors['clause.correct_option']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.correct_option'] }}</p>
                             </div>
@@ -279,7 +280,7 @@ function submit() {
                                 <textarea
                                     v-model="form.clause.explanation"
                                     rows="3"
-                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 resize-none"
+                                    class="admin-form__textarea"
                                     placeholder="Explain the correct answer"
                                 />
                                 <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
@@ -293,7 +294,7 @@ function submit() {
                                 <input
                                     v-model="form.clause.sentence"
                                     type="text"
-                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                    class="admin-form__input"
                                     placeholder="e.g. The __ is on the table"
                                 />
                                 <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">Use <code class="font-mono">__</code> to mark the blank position in the sentence.</p>
@@ -311,7 +312,7 @@ function submit() {
                                     <input
                                         v-model="form.clause.options[index]"
                                         type="text"
-                                        class="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                        class="admin-form__input--row"
                                         :placeholder="`Option ${index + 1}`"
                                     />
                                 </div>
@@ -325,7 +326,7 @@ function submit() {
                                     type="number"
                                     min="0"
                                     :max="form.clause.options.length - 1"
-                                    class="w-24 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                    class="admin-form__input--narrow"
                                 />
                                 <p v-if="form.errors['clause.correct_option']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.correct_option'] }}</p>
                             </div>
@@ -335,7 +336,7 @@ function submit() {
                                 <textarea
                                     v-model="form.clause.explanation"
                                     rows="3"
-                                    class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 resize-none"
+                                    class="admin-form__textarea"
                                     placeholder="Explain the correct answer"
                                 />
                                 <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
@@ -351,7 +352,7 @@ function submit() {
                             <button
                                 type="submit"
                                 :disabled="form.processing || tooFewPairs"
-                                class="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 transition"
+                                class="admin-btn--primary"
                             >
                                 {{ form.processing ? 'Creating…' : 'Create Exercise' }}
                             </button>

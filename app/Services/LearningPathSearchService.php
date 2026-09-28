@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 #[Singleton]
-class LearningPathSearch
+class LearningPathSearchService
 {
     public function __construct(private readonly SemanticSearchService $semantic) {}
 

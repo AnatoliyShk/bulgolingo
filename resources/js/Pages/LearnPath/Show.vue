@@ -196,7 +196,7 @@ function labelStyle(node) {
                 </svg>
                 Restart Path
             </button>
-            <Link v-if="isAdmin" :href="route('lesson.create')" class="lp__create">+ Create Lesson</Link>
+            <Link v-if="isAdmin" :href="route('admin.lessons.create')" class="lp__create">+ Create Lesson</Link>
         </div>
     </div>
 </template>

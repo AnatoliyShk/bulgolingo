@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
  * themselves. Keeping the arithmetic in one place is what stops the two paths
  * from drifting apart.
  */
-class CompletionCacheSync
+class CompletionCacheSyncService
 {
     private static function ordersCountKey(int $userId): string
     {
@@ -30,7 +30,7 @@ class CompletionCacheSync
 
         static::adjustActivity($userId, $exerciseId, $day, increment: true, type: $type);
 
-        CompletedLessonStatsCache::forget($userId);
+        CompletedLessonStatsCacheService::forget($userId);
     }
 
     public static function removed(int $userId, int $exerciseId, string $day, ?string $type = null): void
@@ -43,7 +43,7 @@ class CompletionCacheSync
 
         static::adjustActivity($userId, $exerciseId, $day, increment: false, type: $type);
 
-        CompletedLessonStatsCache::forget($userId);
+        CompletedLessonStatsCacheService::forget($userId);
     }
 
     /**
@@ -60,9 +60,9 @@ class CompletionCacheSync
         }
 
         if ($increment) {
-            ExerciseActivityCache::increment($userId, $day, $type);
+            ExerciseActivityCacheService::increment($userId, $day, $type);
         } else {
-            ExerciseActivityCache::decrement($userId, $day, $type);
+            ExerciseActivityCacheService::decrement($userId, $day, $type);
         }
     }
 }

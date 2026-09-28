@@ -7,7 +7,7 @@ use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Collection;
 
 #[Singleton]
-class ExerciseSearch
+class ExerciseSearchService
 {
     /**
      * The semantic search core is public so a caller holding the search can

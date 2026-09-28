@@ -8,7 +8,7 @@ use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LexemaReviewGrade;
 use App\Models\Concerns\HasUuidV7;
 use App\Observers\ExerciseObserver;
-use App\Services\CompletionCacheSync;
+use App\Services\CompletionCacheSyncService;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -80,7 +80,7 @@ class Exercise extends Model implements ExerciseInterface
         ]);
 
         if ($recorded) {
-            CompletionCacheSync::recorded(
+            CompletionCacheSyncService::recorded(
                 $user->id,
                 $this->id,
                 $completedAt->toDateString(),

@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/scss/components/admin/exercises.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 import UpdateExerciseForm from '@/Components/Forms/UpdateExerciseForm.vue';
@@ -26,7 +27,7 @@ const lesson = computed(() => props.exercise.lessons?.[0] ?? null);
 
         <div class="py-12">
             <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-                <section class="rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800">
+                <section class="admin-card">
                     <UpdateExerciseForm
                         :exercise="exercise"
                         :exercise-types="exerciseTypes"

@@ -5,7 +5,7 @@ namespace Tests\Feature\Jobs;
 use App\Enums\ExerciseType;
 use App\Jobs\GenerateExerciseEmbedding;
 use App\Models\Exercise;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +64,7 @@ class GenerateExerciseEmbeddingTest extends TestCase
 
         $exercise = Exercise::create(['name' => 'Test', 'decision_type' => $type->value, 'clause' => $clause]);
 
-        (new GenerateExerciseEmbedding($exercise))->handle(app(SiteSettings::class));
+        (new GenerateExerciseEmbedding($exercise))->handle(app(SiteSettingsService::class));
 
         Embeddings::assertGenerated(fn (EmbeddingsPrompt $prompt) => $prompt->inputs === [$expected]);
         $this->assertSame($this->vector(), $exercise->fresh()->embedding);
@@ -88,7 +88,7 @@ class GenerateExerciseEmbeddingTest extends TestCase
             'clause' => ['sentence' => 'Котката лае.', 'correct_option' => false, 'explanation' => 'Cats meow.'],
         ]);
 
-        (new GenerateExerciseEmbedding($exercise))->handle(app(SiteSettings::class));
+        (new GenerateExerciseEmbedding($exercise))->handle(app(SiteSettingsService::class));
 
         Http::assertSent(fn (Request $request) => str_ends_with($request->url(), 'models/gemini-embedding-2:batchEmbedContents')
             && $request['requests'][0]['model'] === 'models/gemini-embedding-2'
@@ -113,7 +113,7 @@ class GenerateExerciseEmbeddingTest extends TestCase
             'clause' => ['pairs' => self::PAIRS, 'order' => $order, 'explanation' => 'Animals.'],
         ]);
 
-        (new GenerateExerciseEmbedding($exercise))->handle(app(SiteSettings::class));
+        (new GenerateExerciseEmbedding($exercise))->handle(app(SiteSettingsService::class));
 
         $stored = $exercise->fresh();
         $this->assertSame($this->vector(), $stored->embedding);
@@ -132,9 +132,9 @@ class GenerateExerciseEmbeddingTest extends TestCase
             'decision_type' => ExerciseType::TRUE_FALSE->value,
             'clause' => ['sentence' => 'Котката лае.', 'correct_option' => false, 'explanation' => 'Cats meow.'],
         ]);
-        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_SEARCH_ENABLED => false]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::EMBEDDING_SEARCH_ENABLED => false]);
 
-        (new GenerateExerciseEmbedding($exercise))->handle(app(SiteSettings::class));
+        (new GenerateExerciseEmbedding($exercise))->handle(app(SiteSettingsService::class));
 
         Embeddings::assertNothingGenerated();
         $this->assertNull($exercise->fresh()->embedding);
@@ -148,7 +148,7 @@ class GenerateExerciseEmbeddingTest extends TestCase
             'decision_type' => ExerciseType::TRUE_FALSE->value,
             'clause' => ['sentence' => 'Котката лае.', 'correct_option' => false, 'explanation' => 'Cats meow.'],
         ]);
-        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_SEARCH_ENABLED => false]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::EMBEDDING_SEARCH_ENABLED => false]);
 
         $this->artisan('app:generate-exercise-embeddings-command')
             ->expectsOutputToContain('Embedding search is turned off in the admin settings.')
@@ -194,7 +194,7 @@ class GenerateExerciseEmbeddingTest extends TestCase
             'updated_at' => now(),
         ]);
 
-        (new GenerateExerciseEmbedding(Exercise::findOrFail($id)))->handle(app(SiteSettings::class));
+        (new GenerateExerciseEmbedding(Exercise::findOrFail($id)))->handle(app(SiteSettingsService::class));
 
         Embeddings::assertNothingGenerated();
         $this->assertNull(Exercise::findOrFail($id)->embedding);

@@ -26,7 +26,7 @@ test.describe('Enrolled / finished learning path lists', () => {
         });
 
         test('enrolled page shows its title and, absent any enrollment, the empty state', async ({ page }) => {
-            await page.goto(`${BASE}/learning-paths?is_finished=0`);
+            await page.goto(`${BASE}/learning-paths/in-progress`);
 
             await expect(page.getByRole('heading', { level: 1, name: 'In progress' })).toBeVisible();
 
@@ -38,7 +38,7 @@ test.describe('Enrolled / finished learning path lists', () => {
         });
 
         test('finished page shows its title and, absent a finished path, the empty state', async ({ page }) => {
-            await page.goto(`${BASE}/learning-paths?is_finished=1`);
+            await page.goto(`${BASE}/learning-paths/finished`);
 
             await expect(page.getByRole('heading', { level: 1, name: 'Finished' })).toBeVisible();
 
@@ -51,23 +51,24 @@ test.describe('Enrolled / finished learning path lists', () => {
         test('dashboard links to both lists when an active path is shown', async ({ page }) => {
             await page.goto(`${BASE}/profile`);
 
-            const enrolledLink = page.getByRole('link', { name: /All enrolled/ });
+            const pathLinks = page.locator('.nb-prof__path-links');
+            const enrolledLink = pathLinks.getByRole('link', { name: /All enrolled/ });
             test.skip(!(await enrolledLink.isVisible().catch(() => false)), 'no active learning path on the dashboard in this environment');
 
             await enrolledLink.click();
-            await expect(page).toHaveURL(`${BASE}/learning-paths?is_finished=0`);
+            await expect(page).toHaveURL(`${BASE}/learning-paths/in-progress`);
 
             await page.goto(`${BASE}/profile`);
-            await page.getByRole('link', { name: /All finished/ }).click();
-            await expect(page).toHaveURL(`${BASE}/learning-paths?is_finished=1`);
+            await pathLinks.getByRole('link', { name: /All finished/ }).click();
+            await expect(page).toHaveURL(`${BASE}/learning-paths/finished`);
         });
     });
 
     test('guests are redirected to login', async ({ page }) => {
-        await page.goto(`${BASE}/learning-paths?is_finished=0`);
+        await page.goto(`${BASE}/learning-paths/in-progress`);
         await expect(page).toHaveURL(/\/login/);
 
-        await page.goto(`${BASE}/learning-paths?is_finished=1`);
+        await page.goto(`${BASE}/learning-paths/finished`);
         await expect(page).toHaveURL(/\/login/);
     });
 });

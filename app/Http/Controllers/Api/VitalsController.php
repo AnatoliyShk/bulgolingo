@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\VitalsCache;
+use App\Services\VitalsCacheService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -36,7 +36,7 @@ class VitalsController extends Controller
 
         $data = $validator->validated();
 
-        VitalsCache::record($data['name'], [
+        VitalsCacheService::record($data['name'], [
             ...$data,
             'recorded_at' => now()->toIso8601String(),
         ]);

@@ -5,7 +5,7 @@ namespace App\Jobs;
 use App\Enums\ExerciseType;
 use App\Enums\LanguageCode;
 use App\Models\Exercise;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -34,7 +34,7 @@ class GenerateExerciseEmbedding implements ShouldQueue
      * cards. Assigning the attribute also sidesteps mass assignment, which
      * would silently drop embedding since it is not fillable.
      */
-    public function handle(SiteSettings $settings): void
+    public function handle(SiteSettingsService $settings): void
     {
         if (! $settings->embeddingSearchEnabled()) {
             return;

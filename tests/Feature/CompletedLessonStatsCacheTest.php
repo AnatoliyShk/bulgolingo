@@ -7,7 +7,7 @@ use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
-use App\Services\CompletedLessonStatsCache;
+use App\Services\CompletedLessonStatsCacheService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -77,7 +77,7 @@ class CompletedLessonStatsCacheTest extends TestCase
 
         $this->assertSame(
             ['completed_lessons' => 1, 'total_exercises' => 1, 'completed_paths' => 1],
-            CompletedLessonStatsCache::get($user->id)
+            CompletedLessonStatsCacheService::get($user->id)
         );
     }
 
@@ -86,7 +86,7 @@ class CompletedLessonStatsCacheTest extends TestCase
         $user = User::factory()->create();
 
         // Real DB truth: nothing completed.
-        CompletedLessonStatsCache::warm($user->id, ['completed_lessons' => 5, 'total_exercises' => 9, 'completed_paths' => 3]);
+        CompletedLessonStatsCacheService::warm($user->id, ['completed_lessons' => 5, 'total_exercises' => 9, 'completed_paths' => 3]);
 
         $response = $this->actingAs($user)->get(route('stats.show'));
 
@@ -108,12 +108,12 @@ class CompletedLessonStatsCacheTest extends TestCase
 
         // Shape predating the `completed_paths` key.
         Cache::store('redis')->put(
-            CompletedLessonStatsCache::key($user->id),
+            CompletedLessonStatsCacheService::key($user->id),
             ['completed_lessons' => 5, 'total_exercises' => 9],
             now()->addDay()
         );
 
-        $this->assertNull(CompletedLessonStatsCache::get($user->id));
+        $this->assertNull(CompletedLessonStatsCacheService::get($user->id));
 
         $response = $this->actingAs($user)->get(route('stats.show'));
 
@@ -132,11 +132,11 @@ class CompletedLessonStatsCacheTest extends TestCase
         $lesson = $this->enrolledLesson($user);
         $exercise = $this->exercise($lesson);
 
-        CompletedLessonStatsCache::warm($user->id, ['completed_lessons' => 0, 'total_exercises' => 0, 'completed_paths' => 0]);
+        CompletedLessonStatsCacheService::warm($user->id, ['completed_lessons' => 0, 'total_exercises' => 0, 'completed_paths' => 0]);
 
         $this->actingAs($user)->post(route('exercise.complete', $exercise));
 
-        $this->assertNull(CompletedLessonStatsCache::get($user->id));
+        $this->assertNull(CompletedLessonStatsCacheService::get($user->id));
 
         $response = $this->actingAs($user)->get(route('stats.show'));
 

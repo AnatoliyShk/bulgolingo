@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\VitalsCache;
+use App\Services\VitalsCacheService;
 use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -25,7 +25,7 @@ class VitalsController extends Controller
     public function index(): Response
     {
         $metrics = collect(self::THRESHOLDS)->map(function (array $thresholds, string $name) {
-            $values = collect(VitalsCache::get($name))
+            $values = collect(VitalsCacheService::get($name))
                 ->pluck('value')
                 ->sort()
                 ->values();

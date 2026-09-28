@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/scss/components/admin/lessons.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
@@ -34,13 +35,13 @@ function deleteLesson(id) {
         <div class="py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div v-if="lessons.length === 0" class="text-gray-500">No lessons yet.</div>
-                <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+                <div class="admin-table__wrap">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Exercises</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Created</th>
+                            <th class="admin-table__th">Name</th>
+                            <th class="admin-table__th">Exercises</th>
+                            <th class="admin-table__th">Created</th>
                             <th class="px-6 py-3"></th>
                         </tr>
                         </thead>

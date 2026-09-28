@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
  * through the shared cache sees a save made by another process.
  */
 #[Singleton]
-class SiteSettings
+class SiteSettingsService
 {
     public const EMBEDDING_SEARCH_ENABLED = 'embedding_search.enabled';
 

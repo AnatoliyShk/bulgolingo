@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\DesiredTopic;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -28,7 +28,7 @@ class GenerateDesiredTopicEmbedding implements ShouldQueue
      * react to in storing a vector, and embedding is not fillable, so mass
      * assignment would drop it.
      */
-    public function handle(SiteSettings $settings): void
+    public function handle(SiteSettingsService $settings): void
     {
         if (! $settings->embeddingSearchEnabled()) {
             return;

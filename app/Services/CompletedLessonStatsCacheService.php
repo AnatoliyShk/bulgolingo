@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 
-class CompletedLessonStatsCache
+class CompletedLessonStatsCacheService
 {
     private const TTL_DAYS = 15;
 

@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/scss/components/admin/lessons.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
@@ -25,7 +26,7 @@ function submit() {
 
         <div class="py-12">
             <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-                <section class="rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800">
+                <section class="admin-card">
                     <h3 class="mb-4 text-base font-semibold text-gray-800 dark:text-gray-200">Lesson Details</h3>
 
                     <form @submit.prevent="submit" class="space-y-5">
@@ -39,7 +40,7 @@ function submit() {
                                 id="name"
                                 v-model="form.name"
                                 type="text"
-                                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                class="admin-form__input"
                                 placeholder="Lesson name"
                                 autofocus
                             />
@@ -55,7 +56,7 @@ function submit() {
                                 id="description"
                                 v-model="form.description"
                                 rows="4"
-                                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 resize-none"
+                                class="admin-form__textarea"
                                 placeholder="Lesson description"
                             />
                             <p v-if="form.errors.description" class="mt-1 text-xs text-red-500">{{ form.errors.description }}</p>
@@ -70,7 +71,7 @@ function submit() {
                             <button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 transition"
+                                class="admin-btn--primary"
                             >
                                 {{ form.processing ? 'Creating…' : 'Create Lesson' }}
                             </button>

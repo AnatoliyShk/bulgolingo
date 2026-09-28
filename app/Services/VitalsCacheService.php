@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 
-class VitalsCache
+class VitalsCacheService
 {
     private const TTL_DAYS = 7;
 

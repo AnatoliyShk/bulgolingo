@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\LanguageLevel;
 use App\Http\Requests\LearningPath\GetLearningPathRequest;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
-use App\Services\LearningPathSearch;
-use App\Services\SiteSettings;
+use App\Services\LearningPathCatalogService;
+use App\Services\LearningPathSearchService;
+use App\Services\SiteSettingsService;
 use App\Support\LearningPathFilters;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class LearningPathController extends Controller
 {
-    public function __construct(private readonly SiteSettings $settings) {}
+    public function __construct(private readonly SiteSettingsService $settings) {}
 
     /**
-     * The user's own paths head the page, so the catalog below drops them, and
-     * it only shows path types this viewer may see.
+     * The catalog: the user's own paths head the page and the rest follow,
+     * assembled by LearningPathCatalogService.
      *
      * A search narrows every section to the semantically closest paths; if
      * embedding fails the page renders unfiltered and flags search as
@@ -31,154 +30,72 @@ class LearningPathController extends Controller
      * The level resolves from ?level, then the level cookie, else the visitor
      * is prompted to pick one; the resolved level is saved back to the cookie.
      *
-     * With ?is_finished the page is instead the signed-in user's own finished
-     * (1) or in-progress (0) paths, one side per page so the profile's two
-     * links never lead to the same list; guests are sent to log in.
+     * The old ?is_finished=0|1 addresses of the user's own lists redirect
+     * permanently to their routes.
      */
-    public function index(GetLearningPathRequest $request, LearningPathSearch $search)
+    public function index(GetLearningPathRequest $request, LearningPathSearchService $search, LearningPathCatalogService $catalog)
     {
-        $user = $request->user();
         $isFinished = $request->isFinished();
 
         if ($isFinished !== null) {
-            if ($user === null) {
-                return redirect()->guest(route('login'));
-            }
-
-            $own = $user->enrolledPathsWithProgress()->where('is_finished', $isFinished)->values();
-
-            return Inertia::render('LearningPath/List', [
-                'title' => $isFinished ? 'Finished' : 'In progress',
-                'unfinishedPaths' => $isFinished ? [] : $own,
-                'finishedPaths' => $isFinished ? $own : [],
-                'emptyMessage' => $isFinished
-                    ? "You haven't finished a learning path yet."
-                    : 'You have no learning paths in progress.',
-            ]);
+            return redirect()->route($isFinished ? 'learning-paths.finished' : 'learning-paths.in-progress', status: 301);
         }
 
+        $user = $request->user();
+        $filters = $request->filters();
         $searchEnabled = $this->settings->embeddingSearchEnabled();
         $query = $searchEnabled ? $request->validated('q') : null;
         $ranked = filled($query) ? $search->rankedPathIds($query) : null;
-        $filters = $request->filters();
-        $exerciseCounts = $this->exerciseCounts();
 
         if ($filters->level !== null) {
             Cookie::queue(LearningPathFilters::LEVEL_COOKIE, $filters->level->value, 60 * 24 * 365);
         }
 
-        $enrolled = $user ? $user->enrolledPathsWithProgress() : collect();
-        $enrolledIds = $enrolled->pluck('id')->all();
-        $userPaths = $filters->applySort(
-            $filters->applyToCollection($this->narrowToSearch($enrolled, $ranked)),
-            $exerciseCounts,
-            $ranked !== null,
-        );
-
-        $paths = $filters->applySort(
-            $this->narrowToSearch(
-                $filters->applyToQuery(LearningPath::visibleTo($user))
-                    ->whereNotIn('id', $enrolledIds)
-                    ->when($ranked !== null, fn ($q) => $q->whereIn('id', $ranked))
-                    ->get(['id', 'name', 'language', 'type']),
-                $ranked,
-            ),
-            $exerciseCounts,
-            $ranked !== null,
-        );
-
-        $types = DB::table('learning_path_lesson as lpl')
-            ->join('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
-            ->join('exercises as e', 'e.id', '=', 'el.exercise_id')
-            ->select('lpl.learning_path_id', 'e.decision_type')
-            ->distinct()
-            ->get()
-            ->groupBy(fn ($row) => (int) $row->learning_path_id)
-            ->map(fn ($rows) => $rows->pluck('decision_type')->values());
-
-        $paths = $paths->map(fn (LearningPath $path) => [
-            'id' => $path->id,
-            'name' => $path->name,
-            'language' => $path->language,
-            'type' => $path->type->value,
-            'exercise_types' => $types->get($path->id) ?? collect(),
-            'exercise_count' => $exerciseCounts->get($path->id) ?? 0,
-        ]);
-
         return Inertia::render('LearningPath/Index', [
-            'paths' => $paths,
-            'unfinishedPaths' => $userPaths->where('is_finished', false)->values(),
-            'finishedPaths' => $userPaths->where('is_finished', true)->values(),
+            ...$catalog->sections($user, $filters, $ranked),
             'search' => [
                 'enabled' => $searchEnabled,
                 'query' => $query ?? '',
                 'unavailable' => filled($query) && $ranked === null,
             ],
-            'levels' => $this->levelOptions($user, $filters->level),
+            'levels' => $catalog->levelOptions($user, $filters->level),
             'filters' => $filters->toArray(),
         ]);
     }
 
     /**
-     * Every learning path's exercise count, keyed by id. A path with no
-     * lessons or no exercises is simply absent rather than zero.
-     *
-     * @return Collection<int, int>
+     * The signed-in user's enrolled paths they have not finished yet.
      */
-    private function exerciseCounts(): Collection
+    public function inProgress(Request $request)
     {
-        return DB::table('learning_path_lesson as lpl')
-            ->join('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
-            ->select('lpl.learning_path_id', DB::raw('count(distinct el.exercise_id) as exercise_count'))
-            ->groupBy('lpl.learning_path_id')
-            ->get()
-            ->mapWithKeys(fn ($row) => [(int) $row->learning_path_id => (int) $row->exercise_count]);
+        return $this->ownPaths($request->user(), false);
     }
 
     /**
-     * The levels worth offering this viewer: those that at least one path they
-     * can see actually has, lowest first, plus the active one even when
-     * nothing has it — there being no "every level" option, the control must
-     * always have a button pressed, and dropping an empty active level would
-     * leave it with none.
-     *
-     * @return array<int, array{value: string, label: string}>
+     * The signed-in user's finished paths.
      */
-    private function levelOptions(?User $user, ?LanguageLevel $active): array
+    public function finished(Request $request)
     {
-        $present = LearningPath::visibleTo($user)
-            ->whereNotNull('level')
-            ->distinct()
-            ->pluck('level')
-            ->map(fn ($level) => $level instanceof LanguageLevel ? $level : LanguageLevel::from($level));
-
-        return collect(LanguageLevel::cases())
-            ->filter(fn (LanguageLevel $level) => $level === $active || $present->contains($level))
-            ->map(fn (LanguageLevel $level) => ['value' => $level->value, 'label' => $level->label()])
-            ->values()
-            ->all();
+        return $this->ownPaths($request->user(), true);
     }
 
     /**
-     * Keeps only the paths in $ranked, in its order. No ranking — no search,
-     * or a search that could not run — leaves the paths as they came.
-     *
-     * @param  Collection<int, LearningPath>  $paths
-     * @param  Collection<int, int>|null  $ranked
-     * @return Collection<int, LearningPath>
+     * One side of the user's own paths, finished or in progress, per page, so
+     * the profile's two links never lead to the same list. The other side is
+     * sent empty, as the shared List page reads both.
      */
-    private function narrowToSearch(Collection $paths, ?Collection $ranked): Collection
+    private function ownPaths(User $user, bool $isFinished)
     {
-        if ($ranked === null) {
-            return $paths;
-        }
+        $own = $user->enrolledPathsWithProgress()->where('is_finished', $isFinished)->values();
 
-        $position = $ranked->flip();
-
-        return $paths
-            ->filter(fn (LearningPath $path) => $position->has($path->id))
-            ->sortBy(fn (LearningPath $path) => $position->get($path->id))
-            ->values();
+        return Inertia::render('LearningPath/List', [
+            'title' => $isFinished ? 'Finished' : 'In progress',
+            'unfinishedPaths' => $isFinished ? [] : $own,
+            'finishedPaths' => $isFinished ? $own : [],
+            'emptyMessage' => $isFinished
+                ? "You haven't finished a learning path yet."
+                : 'You have no learning paths in progress.',
+        ]);
     }
 
     /**

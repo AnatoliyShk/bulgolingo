@@ -3,7 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\User;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -33,7 +33,7 @@ class SettingsTest extends TestCase
             ->put(route('admin.settings.update'), ['embedding_search_enabled' => false, 'embedding_min_similarity' => 0.5])
             ->assertForbidden();
 
-        $this->assertTrue(app(SiteSettings::class)->embeddingSearchEnabled());
+        $this->assertTrue(app(SiteSettingsService::class)->embeddingSearchEnabled());
     }
 
     public function test_the_page_shows_the_defaults_before_anything_is_saved(): void
@@ -60,7 +60,7 @@ class SettingsTest extends TestCase
             ])
             ->assertRedirect(route('admin.settings.edit'));
 
-        $settings = app(SiteSettings::class);
+        $settings = app(SiteSettingsService::class);
         $this->assertFalse($settings->embeddingSearchEnabled());
         $this->assertSame(0.72, $settings->embeddingMinSimilarity());
         $this->assertTrue($settings->tutorBotEnabled());

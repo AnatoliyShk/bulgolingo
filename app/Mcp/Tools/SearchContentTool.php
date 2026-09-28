@@ -5,8 +5,8 @@ namespace App\Mcp\Tools;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
-use App\Services\ExerciseSearch;
-use App\Services\SiteSettings;
+use App\Services\ExerciseSearchService;
+use App\Services\SiteSettingsService;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -19,8 +19,8 @@ use Laravel\Mcp\Server\Tool;
 class SearchContentTool extends Tool
 {
     public function __construct(
-        private readonly SiteSettings $settings,
-        private readonly ExerciseSearch $search,
+        private readonly SiteSettingsService $settings,
+        private readonly ExerciseSearchService $search,
     ) {}
 
     /**

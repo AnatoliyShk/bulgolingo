@@ -7,7 +7,7 @@ use App\Models\Lexema;
 use App\Models\ReviewLog;
 use App\Models\User;
 use App\Models\UserLexema;
-use App\Services\GradeLexemeReview;
+use App\Services\GradeLexemeReviewService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -20,7 +20,7 @@ class GradeLexemeReviewTest extends TestCase
         $user = User::factory()->create();
         $lexema = Lexema::factory()->create(['word' => 'куче']);
 
-        app(GradeLexemeReview::class)->grade($user, $lexema, isCorrect: true, hintUsed: false, responseMs: 1200);
+        app(GradeLexemeReviewService::class)->grade($user, $lexema, isCorrect: true, hintUsed: false, responseMs: 1200);
 
         $row = UserLexema::query()
             ->where('user_id', $user->id)
@@ -46,7 +46,7 @@ class GradeLexemeReviewTest extends TestCase
         $user = User::factory()->create();
         $lexema = Lexema::factory()->create(['word' => 'котка']);
 
-        $service = app(GradeLexemeReview::class);
+        $service = app(GradeLexemeReviewService::class);
         $service->grade($user, $lexema, isCorrect: true, hintUsed: false, responseMs: 1000);
         $service->grade($user, $lexema, isCorrect: false, hintUsed: false, responseMs: 4000);
 

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\RequestMetrics;
-use App\Services\CacheHitRateCache;
-use App\Services\SlowRequestCache;
+use App\Services\CacheHitRateCacheService;
+use App\Services\SlowRequestCacheService;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -53,7 +53,7 @@ class MetricsController extends Controller
             Cache::store('redis')->forever(RequestMetrics::p95CacheKey($area), $p95Seconds);
         }
 
-        $cacheStats = CacheHitRateCache::get();
+        $cacheStats = CacheHitRateCacheService::get();
         $cacheTotal = $cacheStats['hits'] + $cacheStats['misses'];
 
         return [
@@ -61,7 +61,7 @@ class MetricsController extends Controller
             'totalRequests' => $totalRequests,
             'p95DurationMs' => round($p95Seconds * 1000, 1),
             'queues' => $this->queueStats($registry),
-            'slowRequests' => SlowRequestCache::get($area),
+            'slowRequests' => SlowRequestCacheService::get($area),
             'cacheHits' => $cacheStats['hits'],
             'cacheMisses' => $cacheStats['misses'],
             'cacheHitRate' => $cacheTotal > 0 ? round($cacheStats['hits'] / $cacheTotal * 100, 1) : null,

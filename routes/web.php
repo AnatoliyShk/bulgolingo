@@ -17,7 +17,7 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\TutorController;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -46,7 +46,7 @@ Route::get('/', function (Request $request) {
     return Inertia::render('Welcome', [
         'appName' => config('app.name'),
         'continueLessonId' => $continueLessonId,
-        'tutorEnabled' => app(SiteSettings::class)->tutorBotEnabled(),
+        'tutorEnabled' => app(SiteSettingsService::class)->tutorBotEnabled(),
     ]);
 });
 
@@ -81,10 +81,15 @@ Route::prefix('profile')->controller(ProfileController::class)->group(function (
 Route::prefix('learning-paths')->name('learning-paths.')->controller(LearningPathController::class)->group(function () {
     Route::get('/', 'index')->middleware('throttle:learning-path-search')->name('index');
 
+    Route::middleware('auth')->group(function () {
+        Route::get('/in-progress', 'inProgress')->name('in-progress');
+        Route::get('/finished', 'finished')->name('finished');
+    });
+
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/{learningPath}', 'show')->name('show');
-        Route::post('/{learningPath}/start', 'start')->name('start');
-        Route::post('/{learningPath}/restart', 'restart')->name('restart');
+        Route::get('/{learningPath}', 'show')->whereNumber('learningPath')->name('show');
+        Route::post('/{learningPath}/start', 'start')->whereNumber('learningPath')->name('start');
+        Route::post('/{learningPath}/restart', 'restart')->whereNumber('learningPath')->name('restart');
     });
 });
 
@@ -130,34 +135,14 @@ Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')-
     Route::resource('messengers', AdminMessengerController::class);
 });
 
-Route::prefix('exercise')->name('exercise.')->controller(ExerciseController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
-
-    Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->group(function () {
-        Route::post('/', 'store')->name('store');
-        Route::get('/create', 'create')->name('create');
-        Route::match(['put', 'patch'], '/{exercise}', 'update')->name('update');
-        Route::delete('/{exercise}', 'destroy')->name('destroy');
-        Route::get('/{exercise}/edit', 'edit')->name('edit');
-    });
-
+Route::prefix('exercise')->name('exercise.')->controller(ExerciseController::class)->where(['exercise' => '[0-9]+'])->group(function () {
     Route::get('/{exercise}', 'show')->name('show');
     Route::post('/{exercise}/complete', 'complete')
         ->middleware(['auth', 'throttle:exercise-completion'])
         ->name('complete');
 });
 
-Route::prefix('lesson')->name('lesson.')->controller(LessonController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
-
-    Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->group(function () {
-        Route::post('/', 'store')->name('store');
-        Route::get('/create', 'create')->name('create');
-        Route::match(['put', 'patch'], '/{lesson}', 'update')->name('update');
-        Route::delete('/{lesson}', 'destroy')->name('destroy');
-        Route::get('/{lesson}/edit', 'edit')->name('edit');
-    });
-
+Route::prefix('lesson')->name('lesson.')->controller(LessonController::class)->where(['lesson' => '[0-9]+'])->group(function () {
     Route::get('/{lesson}', 'show')->name('show');
 
     Route::middleware('auth')->group(function () {

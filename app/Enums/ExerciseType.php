@@ -40,6 +40,20 @@ enum ExerciseType: string
         };
     }
 
+    /**
+     * Value/label pairs for the exercise-type selects, built from the cases so
+     * a type added here reaches every form without a second edit.
+     *
+     * @return array<int, array{value: string, label: string}>
+     */
+    public static function options(): array
+    {
+        return array_map(
+            fn (self $type) => ['value' => $type->value, 'label' => $type->getDescription()],
+            self::cases()
+        );
+    }
+
     public function dataRules(): array
     {
         return match ($this) {

@@ -19,7 +19,7 @@ class ExerciseController extends Controller
     {
         return Inertia::render('Admin/Exercises/Index', [
             'exercises' => Exercise::with('lessons')->latest()->get(),
-            'exerciseTypes' => $this->exerciseTypes(),
+            'exerciseTypes' => ExerciseType::options(),
             'lessons' => Lesson::orderBy('name')->get(['id', 'name']),
         ]);
     }
@@ -28,7 +28,7 @@ class ExerciseController extends Controller
     {
         return Inertia::render('Admin/Exercises/Create', [
             'lesson' => $lesson,
-            'exerciseTypes' => $this->exerciseTypes(),
+            'exerciseTypes' => ExerciseType::options(),
         ]);
     }
 
@@ -47,7 +47,7 @@ class ExerciseController extends Controller
     {
         return Inertia::render('Admin/Exercises/Edit', [
             'exercise' => $exercise->load('lessons', 'images'),
-            'exerciseTypes' => $this->exerciseTypes(),
+            'exerciseTypes' => ExerciseType::options(),
         ]);
     }
 
@@ -87,13 +87,5 @@ class ExerciseController extends Controller
         $path = $request->file('image')->store('exercise-images', Images::DISK);
 
         $exercise->images()->attach(Images::create(['filepath' => $path]));
-    }
-
-    private function exerciseTypes(): array
-    {
-        return array_map(
-            fn (ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
-            ExerciseType::cases()
-        );
     }
 }

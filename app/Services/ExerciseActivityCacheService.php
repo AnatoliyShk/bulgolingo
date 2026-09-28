@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Cache;
  * hashes are outside its API, and the hit-rate metric is instead recorded once
  * per read, which is what the dashboard means by a hit anyway.
  */
-class ExerciseActivityCache
+class ExerciseActivityCacheService
 {
     private const TTL_DAYS = 15;
 
@@ -64,12 +64,12 @@ class ExerciseActivityCache
         $cached = array_values((array) static::connection()->hmget(static::prefixed($userId), $fields->all()));
 
         if (count($cached) !== $fields->count() || in_array(false, $cached, true) || in_array(null, $cached, true)) {
-            CacheHitRateCache::recordMiss();
+            CacheHitRateCacheService::recordMiss();
 
             return null;
         }
 
-        CacheHitRateCache::recordHit();
+        CacheHitRateCacheService::recordHit();
 
         $byField = $fields->values()->combine($cached);
 

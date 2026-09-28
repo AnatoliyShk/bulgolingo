@@ -12,7 +12,7 @@ return new class extends Migration
      * One row per setting, keyed by name, with the value stored as JSON so a
      * boolean stays a boolean and a float a float on the way back out. A row
      * only exists once an admin has saved that setting; until then the default
-     * declared in SiteSettings applies.
+     * declared in SiteSettingsService applies.
      */
     public function up(): void
     {

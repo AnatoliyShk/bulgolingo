@@ -33,10 +33,7 @@ class LessonController extends Controller
     {
         return Inertia::render('Admin/Lessons/Edit', [
             'lesson' => $lesson->load('exercises'),
-            'exerciseTypes' => array_map(
-                fn (ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
-                ExerciseType::cases()
-            ),
+            'exerciseTypes' => ExerciseType::options(),
         ]);
     }
 

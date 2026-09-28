@@ -51,7 +51,7 @@ class LearningPathListTest extends TestCase
     {
         $props = null;
 
-        $this->get(route('learning-paths.index', ['is_finished' => (int) $isFinished]))->assertOk()->assertInertia(
+        $this->get(route($isFinished ? 'learning-paths.finished' : 'learning-paths.in-progress'))->assertOk()->assertInertia(
             function (Assert $page) use (&$props, $prop) {
                 $page->component('LearningPath/List');
                 $props = $page->toArray()['props'][$prop];
@@ -175,8 +175,20 @@ class LearningPathListTest extends TestCase
 
     public function test_guest_cannot_view_enrolled_or_finished_paths(): void
     {
-        $this->get(route('learning-paths.index', ['is_finished' => 0]))->assertRedirect(route('login'));
-        $this->get(route('learning-paths.index', ['is_finished' => 1]))->assertRedirect(route('login'));
+        $this->get(route('learning-paths.in-progress'))->assertRedirect(route('login'));
+        $this->get(route('learning-paths.finished'))->assertRedirect(route('login'));
+    }
+
+    public function test_legacy_is_finished_urls_redirect_permanently(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $this->get(route('learning-paths.index', ['is_finished' => 0]))
+            ->assertStatus(301)
+            ->assertRedirect(route('learning-paths.in-progress'));
+        $this->get(route('learning-paths.index', ['is_finished' => 1]))
+            ->assertStatus(301)
+            ->assertRedirect(route('learning-paths.finished'));
     }
 
     public function test_is_finished_must_be_a_boolean(): void

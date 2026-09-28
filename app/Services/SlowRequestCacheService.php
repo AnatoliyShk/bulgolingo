@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 
-class SlowRequestCache
+class SlowRequestCacheService
 {
     private const TTL_DAYS = 7;
 

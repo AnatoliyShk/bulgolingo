@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/scss/components/admin/exercises.scss';
 import { computed, ref } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
@@ -74,7 +75,7 @@ function deleteExercise(id) {
                 <div class="flex items-center gap-2">
                     <select
                         v-model="selectedLesson"
-                        class="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                        class="admin-filter__select"
                     >
                         <option value="">Select lesson…</option>
                         <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">{{ lesson.name }}</option>
@@ -100,7 +101,7 @@ function deleteExercise(id) {
                         <select
                             v-model="filterLesson"
                             aria-label="Lesson"
-                            class="w-56 rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
+                            class="admin-filter__search"
                         >
                             <option value="">All lessons</option>
                             <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">{{ lesson.name }}</option>
@@ -111,7 +112,7 @@ function deleteExercise(id) {
                         <select
                             v-model="filterType"
                             aria-label="Type"
-                            class="w-56 rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
+                            class="admin-filter__search"
                         >
                             <option value="">All types</option>
                             <option v-for="type in exerciseTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
@@ -123,7 +124,7 @@ function deleteExercise(id) {
                             v-model="filterFrom"
                             type="date"
                             :max="filterTo || null"
-                            class="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
+                            class="admin-filter__select"
                         >
                     </label>
                     <label class="flex flex-col gap-1">
@@ -132,7 +133,7 @@ function deleteExercise(id) {
                             v-model="filterTo"
                             type="date"
                             :min="filterFrom || null"
-                            class="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200"
+                            class="admin-filter__select"
                         >
                     </label>
                     <button
@@ -149,14 +150,14 @@ function deleteExercise(id) {
                     {{ exercises.length === 0 ? 'No exercises yet.' : 'No exercises match the selected filters.' }}
                 </div>
 
-                <div v-else class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+                <div v-else class="admin-table__wrap">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Type</th>
-                                <th v-if="!filterLesson" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Lesson</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Created</th>
+                                <th class="admin-table__th">Name</th>
+                                <th class="admin-table__th">Type</th>
+                                <th v-if="!filterLesson" class="admin-table__th">Lesson</th>
+                                <th class="admin-table__th">Created</th>
                                 <th class="px-6 py-3"></th>
                             </tr>
                         </thead>

@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/scss/components/admin/lessons.scss';
 import { useForm, router, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
@@ -39,7 +40,7 @@ function deleteExercise(exerciseId) {
             <div class="mx-auto max-w-3xl space-y-8 px-4 sm:px-6 lg:px-8">
 
                 <!-- ── Lesson details ───────────────────────────────── -->
-                <section class="rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800">
+                <section class="admin-card">
                     <h3 class="mb-4 text-base font-semibold text-gray-800 dark:text-gray-200">Lesson Details</h3>
                     <form @submit.prevent="saveLesson" class="space-y-4">
                         <div>
@@ -47,7 +48,7 @@ function deleteExercise(exerciseId) {
                             <input
                                 v-model="lessonForm.name"
                                 type="text"
-                                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                class="admin-form__input"
                             />
                             <p v-if="lessonForm.errors.name" class="mt-1 text-xs text-red-500">{{ lessonForm.errors.name }}</p>
                         </div>
@@ -56,7 +57,7 @@ function deleteExercise(exerciseId) {
                             <textarea
                                 v-model="lessonForm.description"
                                 rows="3"
-                                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                class="admin-form__input"
                             />
                             <p v-if="lessonForm.errors.description" class="mt-1 text-xs text-red-500">{{ lessonForm.errors.description }}</p>
                         </div>
@@ -64,7 +65,7 @@ function deleteExercise(exerciseId) {
                             <button
                                 type="submit"
                                 :disabled="lessonForm.processing"
-                                class="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+                                class="admin-btn--primary"
                             >
                                 {{ lessonForm.processing ? 'Saving…' : 'Save' }}
                             </button>
@@ -73,7 +74,7 @@ function deleteExercise(exerciseId) {
                 </section>
 
                 <!-- ── Exercises ───────────────────────────────────── -->
-                <section class="rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800">
+                <section class="admin-card">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-base font-semibold text-gray-800 dark:text-gray-200">
                             Exercises

@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Exercise;
 use App\Models\User;
-use App\Services\GradeLexemeReview;
+use App\Services\GradeLexemeReviewService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
@@ -42,7 +42,7 @@ class LexemaReviewGrade implements ShouldQueue
      * dispatch and pickup leaves nothing to grade, which is a no-op rather than
      * a failure worth retrying.
      */
-    public function handle(GradeLexemeReview $grader): void
+    public function handle(GradeLexemeReviewService $grader): void
     {
         $user = User::query()->find($this->userId);
         $exercise = Exercise::query()->with('lexemas')->find($this->exerciseId);

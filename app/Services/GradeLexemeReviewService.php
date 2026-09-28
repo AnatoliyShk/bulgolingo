@@ -14,7 +14,7 @@ use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Facades\DB;
 
 #[Singleton]
-final class GradeLexemeReview
+final class GradeLexemeReviewService
 {
     public function __construct(
         private FsrsScheduler $fsrs,

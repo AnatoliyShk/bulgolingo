@@ -9,7 +9,7 @@ use App\Models\Lesson;
 use App\Models\ReviewLog;
 use App\Models\User;
 use App\Models\UserLexema;
-use App\Services\GradeLexemeReview;
+use App\Services\GradeLexemeReviewService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -40,7 +40,7 @@ class CompleteForGradesLexemasTest extends TestCase
 
     private function grade(User $user, Exercise $exercise): void
     {
-        (new LexemaReviewGrade($user->id, $exercise->id))->handle(app(GradeLexemeReview::class));
+        (new LexemaReviewGrade($user->id, $exercise->id))->handle(app(GradeLexemeReviewService::class));
     }
 
     /**
@@ -106,7 +106,7 @@ class CompleteForGradesLexemasTest extends TestCase
 
         $user->delete();
 
-        (new LexemaReviewGrade($userId, $exercise->id))->handle(app(GradeLexemeReview::class));
+        (new LexemaReviewGrade($userId, $exercise->id))->handle(app(GradeLexemeReviewService::class));
 
         $this->assertSame(0, ReviewLog::query()->count());
     }

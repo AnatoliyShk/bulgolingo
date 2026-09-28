@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ai\Agents\LanguageTutor;
 use App\Http\Requests\AskTutorRequest;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Http\StreamedEvent;
 use Laravel\Ai\Streaming\Events\TextDelta;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -12,7 +12,7 @@ use Throwable;
 
 class TutorController extends Controller
 {
-    public function __construct(private readonly SiteSettings $settings) {}
+    public function __construct(private readonly SiteSettingsService $settings) {}
 
     /**
      * Streams the tutor's answer to the welcome page a token at a time.

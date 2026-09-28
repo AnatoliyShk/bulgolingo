@@ -8,7 +8,7 @@ use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Ai\Embeddings;
@@ -179,7 +179,7 @@ class LearningPathSearchTest extends TestCase
         $exact = $this->pathWithExercise('Exact', $this->axis(0));
         $this->pathWithExercise('Halfway', $this->axis(0, 1));
 
-        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_MIN_SIMILARITY => 0.8]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::EMBEDDING_MIN_SIMILARITY => 0.8]);
 
         $this->get(route('learning-paths.index', ['q' => 'food']))
             ->assertInertia(fn (Assert $page) => $page
@@ -192,7 +192,7 @@ class LearningPathSearchTest extends TestCase
         Embeddings::fake();
         $this->pathWithExercise('Food', $this->axis(0));
         $this->pathWithExercise('Travel', $this->axis(1));
-        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_SEARCH_ENABLED => false]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::EMBEDDING_SEARCH_ENABLED => false]);
 
         $this->get(route('learning-paths.index', ['q' => 'food']))
             ->assertOk()
@@ -213,7 +213,7 @@ class LearningPathSearchTest extends TestCase
     public function test_with_search_turned_off_a_stale_q_is_neither_validated_nor_throttled(): void
     {
         Embeddings::fake();
-        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_SEARCH_ENABLED => false]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::EMBEDDING_SEARCH_ENABLED => false]);
 
         $this->get(route('learning-paths.index', ['q' => 'a']))
             ->assertOk()

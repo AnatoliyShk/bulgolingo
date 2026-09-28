@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 
-class CacheHitRateCache
+class CacheHitRateCacheService
 {
     private const HITS_KEY = 'metrics:cache_hits';
 

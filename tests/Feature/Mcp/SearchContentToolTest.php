@@ -9,7 +9,7 @@ use App\Mcp\Tools\SearchContentTool;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -182,7 +182,7 @@ class SearchContentToolTest extends TestCase
         $this->pathWithExercise('Exact', $this->axis(0));
         $this->pathWithExercise('Halfway', $this->axis(0, 1));
 
-        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_MIN_SIMILARITY => 0.8]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::EMBEDDING_MIN_SIMILARITY => 0.8]);
 
         $this->assertSame(['Exact exercise'], array_column($this->search(), 'name'));
     }
@@ -203,7 +203,7 @@ class SearchContentToolTest extends TestCase
     {
         Embeddings::fake();
         $this->pathWithExercise('Food', $this->axis(0));
-        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_SEARCH_ENABLED => false]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::EMBEDDING_SEARCH_ENABLED => false]);
 
         ContentServer::tool(SearchContentTool::class, ['query' => 'food'])
             ->assertHasErrors();

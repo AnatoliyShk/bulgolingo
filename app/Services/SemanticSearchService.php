@@ -17,7 +17,7 @@ use Throwable;
 #[Singleton]
 class SemanticSearchService
 {
-    public function __construct(private readonly SiteSettings $settings) {}
+    public function __construct(private readonly SiteSettingsService $settings) {}
 
     /**
      * The query's embedding, for handing to nearestExercises(). Each string

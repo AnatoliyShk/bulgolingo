@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\SlowRequestCache;
+use App\Services\SlowRequestCacheService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -121,7 +121,7 @@ class RequestMetrics
                 'memory_mb' => $memoryMb,
             ]);
 
-            SlowRequestCache::record($area, [
+            SlowRequestCacheService::record($area, [
                 'method' => $method,
                 'route' => $route,
                 'status' => $status,

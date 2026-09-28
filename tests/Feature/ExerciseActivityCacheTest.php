@@ -6,7 +6,7 @@ use App\Enums\ExerciseType;
 use App\Models\Exercise;
 use App\Models\Lesson;
 use App\Models\User;
-use App\Services\ExerciseActivityCache;
+use App\Services\ExerciseActivityCacheService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
@@ -103,7 +103,7 @@ class ExerciseActivityCacheTest extends TestCase
             })
         );
 
-        $cached = ExerciseActivityCache::get($user->id, $this->days());
+        $cached = ExerciseActivityCacheService::get($user->id, $this->days());
 
         $this->assertNotNull($cached);
         $this->assertSame(1, $cached['true_false']->last());
@@ -157,7 +157,7 @@ class ExerciseActivityCacheTest extends TestCase
         $countsByTypeAndDay = $this->zeroCounts($days);
         $countsByTypeAndDay['true_false'][$today] = 7;
 
-        ExerciseActivityCache::warm($user->id, $days, $countsByTypeAndDay);
+        ExerciseActivityCacheService::warm($user->id, $days, $countsByTypeAndDay);
 
         $response = $this->actingAs($user)->get(route('stats.show'));
 
@@ -178,11 +178,11 @@ class ExerciseActivityCacheTest extends TestCase
         $exercise = $this->exercise($lesson, ExerciseType::MULTIPLE_CHOICE);
 
         $days = $this->days();
-        ExerciseActivityCache::warm($user->id, $days, $this->zeroCounts($days));
+        ExerciseActivityCacheService::warm($user->id, $days, $this->zeroCounts($days));
 
         $this->actingAs($user)->post(route('exercise.complete', $exercise));
 
-        $this->assertSame(1, ExerciseActivityCache::get($user->id, $days)['multiple_choice']->last());
+        $this->assertSame(1, ExerciseActivityCacheService::get($user->id, $days)['multiple_choice']->last());
     }
 
     public function test_activity_cache_is_not_touched_when_not_previously_warmed(): void
@@ -193,9 +193,9 @@ class ExerciseActivityCacheTest extends TestCase
 
         $this->actingAs($user)->post(route('exercise.complete', $exercise));
 
-        $this->assertNull(ExerciseActivityCache::get($user->id, $this->days()));
+        $this->assertNull(ExerciseActivityCacheService::get($user->id, $this->days()));
         $this->assertSame(0, Cache::store('redis')->connection()->exists(
-            Cache::store('redis')->getStore()->getPrefix().ExerciseActivityCache::key($user->id)
+            Cache::store('redis')->getStore()->getPrefix().ExerciseActivityCacheService::key($user->id)
         ));
     }
 
@@ -208,12 +208,12 @@ class ExerciseActivityCacheTest extends TestCase
         $user = User::factory()->create();
 
         $days = $this->days();
-        ExerciseActivityCache::warm($user->id, $days, $this->zeroCounts($days));
+        ExerciseActivityCacheService::warm($user->id, $days, $this->zeroCounts($days));
 
         $later = $days->map(fn ($day) => Carbon::parse($day)->addDays(49)->toDateString());
-        ExerciseActivityCache::warm($user->id, $later, $this->zeroCounts($later));
+        ExerciseActivityCacheService::warm($user->id, $later, $this->zeroCounts($later));
 
-        $this->assertNull(ExerciseActivityCache::get($user->id, $days));
-        $this->assertNotNull(ExerciseActivityCache::get($user->id, $later));
+        $this->assertNull(ExerciseActivityCacheService::get($user->id, $days));
+        $this->assertNotNull(ExerciseActivityCacheService::get($user->id, $later));
     }
 }

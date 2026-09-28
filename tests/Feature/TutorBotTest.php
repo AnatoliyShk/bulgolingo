@@ -10,7 +10,7 @@ use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Ai\Embeddings;
@@ -26,7 +26,7 @@ class TutorBotTest extends TestCase
 
     private function enableTutor(): void
     {
-        app(SiteSettings::class)->update([SiteSettings::TUTOR_BOT_ENABLED => true]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::TUTOR_BOT_ENABLED => true]);
     }
 
     /**
@@ -65,7 +65,7 @@ class TutorBotTest extends TestCase
 
     public function test_it_is_off_until_an_admin_turns_it_on(): void
     {
-        $this->assertFalse(app(SiteSettings::class)->tutorBotEnabled());
+        $this->assertFalse(app(SiteSettingsService::class)->tutorBotEnabled());
 
         LanguageTutor::fake(['Здравей!']);
 
@@ -304,6 +304,6 @@ class TutorBotTest extends TestCase
             ])
             ->assertRedirect(route('admin.settings.edit'));
 
-        $this->assertTrue(app(SiteSettings::class)->tutorBotEnabled());
+        $this->assertTrue(app(SiteSettingsService::class)->tutorBotEnabled());
     }
 }

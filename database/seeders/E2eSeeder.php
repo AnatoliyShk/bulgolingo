@@ -10,7 +10,7 @@ use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\Role;
 use App\Models\User;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 
@@ -57,12 +57,12 @@ class E2eSeeder extends Seeder
      * The tutor ships switched off, so the welcome page would not mount the
      * widget for its spec to drive. Turning it on here reaches no provider:
      * the spec fulfils the /tutor request itself, and nothing else on the
-     * welcome page talks to the bot. It goes through SiteSettings rather than
+     * welcome page talks to the bot. It goes through SiteSettingsService rather than
      * the Setting model so the cached copy is dropped along with the write.
      */
     private function enableTutorBot(): void
     {
-        app(SiteSettings::class)->update([SiteSettings::TUTOR_BOT_ENABLED => true]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::TUTOR_BOT_ENABLED => true]);
     }
 
     /**

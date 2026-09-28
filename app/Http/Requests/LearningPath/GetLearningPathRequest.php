@@ -3,7 +3,7 @@
 namespace App\Http\Requests\LearningPath;
 
 use App\Enums\LanguageLevel;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use App\Support\LearningPathFilters;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class GetLearningPathRequest extends FormRequest
 {
-    public function __construct(private readonly SiteSettings $settings)
+    public function __construct(private readonly SiteSettingsService $settings)
     {
         parent::__construct();
     }

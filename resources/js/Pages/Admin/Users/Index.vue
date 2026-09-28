@@ -1,4 +1,5 @@
 <script setup>
+import '@/assets/scss/components/admin/users.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 
@@ -20,15 +21,15 @@ defineProps({
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div v-if="users.length === 0" class="text-gray-500 dark:text-gray-400">No users yet.</div>
 
-                <div v-else class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+                <div v-else class="admin-table__wrap">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Email</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Role</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Verified</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300">Joined</th>
+                                <th class="admin-table__th">Name</th>
+                                <th class="admin-table__th">Email</th>
+                                <th class="admin-table__th">Role</th>
+                                <th class="admin-table__th">Verified</th>
+                                <th class="admin-table__th">Joined</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">

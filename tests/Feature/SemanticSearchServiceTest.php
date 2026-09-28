@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
 use App\Services\SemanticSearchService;
-use App\Services\SiteSettings;
+use App\Services\SiteSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Exceptions;
 use Laravel\Ai\Embeddings;
@@ -98,7 +98,7 @@ class SemanticSearchServiceTest extends TestCase
         $this->exercise('Halfway', $this->axis(0, 1));
         $this->exercise('Exact', $this->axis(0));
 
-        app(SiteSettings::class)->update([SiteSettings::EMBEDDING_MIN_SIMILARITY => 0.8]);
+        app(SiteSettingsService::class)->update([SiteSettingsService::EMBEDDING_MIN_SIMILARITY => 0.8]);
 
         $results = $this->service()->nearestExercises($this->axis(0), ['id', 'name'])->limit(10)->get();
 

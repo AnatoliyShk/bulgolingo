@@ -9,7 +9,7 @@ use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\Lexema;
 use App\Models\User;
-use App\Services\GradeLexemeReview;
+use App\Services\GradeLexemeReviewService;
 use App\Support\LoadTest\RunManifest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +63,7 @@ class LoadTestTeardownOrphansTest extends TestCase
 
         $user->learningPaths()->attach($path);
         DB::table('user_exercise_completions')->insert(['user_id' => $user->id, 'exercise_id' => $exercise->id, 'created_at' => now()]);
-        app(GradeLexemeReview::class)->grade($user, $lexema, isCorrect: true, hintUsed: false, responseMs: 1000);
+        app(GradeLexemeReviewService::class)->grade($user, $lexema, isCorrect: true, hintUsed: false, responseMs: 1000);
 
         return compact('path', 'lesson', 'exercise', 'lexema');
     }

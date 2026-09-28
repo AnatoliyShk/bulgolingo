@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ExerciseType;
-use App\Http\Requests\Exercise\StoreExerciseRequest;
-use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\Lesson;
 use Inertia\Inertia;
@@ -12,79 +10,20 @@ use Inertia\Inertia;
 class ExerciseController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreExerciseRequest $request)
-    {
-        $lesson = Lesson::findOrFail($request->validated('lesson_id'));
-        $exercise = Exercise::create($request->safe()->except('lesson_id'));
-
-        $lesson->attachExerciseAtEnd($exercise);
-
-        return redirect()->route('lesson.show', $lesson)
-            ->with('success', 'Exercise added successfully');
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Exercise $exercise)
     {
         $user = auth()->user();
 
-        $exerciseTypes = array_map(
-            fn (ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
-            ExerciseType::cases()
-        );
-
         $progress = Lesson::progressFor($exercise, $user);
 
         return Inertia::render('Exercise/Show', [
             'exercise' => $exercise->load('images'),
-            'exerciseTypes' => $exerciseTypes,
+            'exerciseTypes' => ExerciseType::options(),
             'totalExercises' => $progress['total'],
             'completedCount' => $progress['completed'],
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Exercise $exercise)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateExerciseRequest $request, Exercise $exercise)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Exercise $exercise)
-    {
-        //
     }
 
     /**
