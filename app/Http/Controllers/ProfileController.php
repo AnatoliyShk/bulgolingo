@@ -6,6 +6,7 @@ use App\Http\Requests\Profile\UpdateAvatarRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Images;
 use App\Models\User;
+use App\Services\ProgressService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,8 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    public function __construct(private readonly ProgressService $progressService) {}
+
     /**
      * The page needs three numbers per path and nothing else, so the lessons
      * and exercises behind them are aggregated in SQL rather than hydrated.
@@ -37,7 +40,7 @@ class ProfileController extends Controller
         $user = auth()->user();
         $user->loadMissing('type:id,name');
 
-        $paths = $user->enrolledPathsWithProgress();
+        $paths = $this->progressService->enrolledPathsWithProgress($user);
 
         $unfinished = $paths->where('is_finished', false);
 

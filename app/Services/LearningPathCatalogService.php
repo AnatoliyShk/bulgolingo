@@ -10,6 +10,8 @@ use Illuminate\Support\Collection;
 
 class LearningPathCatalogService
 {
+    public function __construct(private readonly ProgressService $progressService) {}
+
     /**
      * The catalog page's three sections for this viewer. The user's own paths
      * head the page, split into unfinished and finished, so the catalog below
@@ -26,7 +28,7 @@ class LearningPathCatalogService
     {
         $exerciseCounts = LearningPath::exerciseCountsById();
 
-        $enrolled = $user ? $user->enrolledPathsWithProgress() : collect();
+        $enrolled = $user ? $this->progressService->enrolledPathsWithProgress($user) : collect();
         $userPaths = $filters->applySort(
             $filters->applyToCollection($this->narrowToSearch($enrolled, $ranked)),
             $exerciseCounts,

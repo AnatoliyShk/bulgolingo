@@ -7,6 +7,7 @@ use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
+use App\Services\ProgressService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -59,7 +60,7 @@ class ExerciseCompletionOrderTest extends TestCase
     {
         $learningPath = $lesson->learningPath()->firstOrFail();
 
-        return Lesson::completionMapFor($learningPath, $user)[$lesson->id];
+        return app(ProgressService::class)->lessonCompletionMap($learningPath, $user)[$lesson->id];
     }
 
     public function test_completion_follows_pivot_order_not_exercise_id(): void
@@ -297,7 +298,7 @@ class ExerciseCompletionOrderTest extends TestCase
 
         $this->assertSame(
             [$lesson->id => false],
-            Lesson::completionMapFor($learningPath, null)
+            app(ProgressService::class)->lessonCompletionMap($learningPath, null)
         );
     }
 }

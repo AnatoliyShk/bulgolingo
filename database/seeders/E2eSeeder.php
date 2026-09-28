@@ -13,6 +13,7 @@ use App\Models\Role;
 use App\Models\ScriptedDialogue;
 use App\Models\ScriptedLine;
 use App\Models\User;
+use App\Services\ProgressService;
 use App\Services\SiteSettingsService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
@@ -177,7 +178,7 @@ class E2eSeeder extends Seeder
             $exercise->completeFor($student, null);
         }
 
-        $student->recordPractice();
+        app(ProgressService::class)->recordPractice($student);
     }
 
     private static function scriptedDialogue(): ScriptedDialogue

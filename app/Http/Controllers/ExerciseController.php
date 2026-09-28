@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
-use App\Models\Lesson;
+use App\Services\ProgressService;
 use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {
+    public function __construct(private readonly ProgressService $progressService) {}
+
     /**
      * Display the specified resource.
      */
@@ -16,7 +18,7 @@ class ExerciseController extends Controller
     {
         $user = auth()->user();
 
-        $progress = Lesson::progressFor($exercise, $user);
+        $progress = $this->progressService->exerciseProgress($exercise, $user);
 
         return Inertia::render('Exercise/Show', [
             'exercise' => $exercise->load('images'),
@@ -47,7 +49,7 @@ class ExerciseController extends Controller
 
         $incompleteId = $exercise->completeFor($user, $lesson);
 
-        $user->recordPractice();
+        $this->progressService->recordPractice($user);
 
         if (! $lesson) {
             return redirect()->route('dashboard');

@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use App\Models\User;
 use App\Services\LearningPathCatalogService;
 use App\Services\LearningPathSearchService;
+use App\Services\ProgressService;
 use App\Services\SiteSettingsService;
 use App\Support\LearningPathFilters;
 use Illuminate\Http\Request;
@@ -17,7 +18,10 @@ use Inertia\Inertia;
 
 class LearningPathController extends Controller
 {
-    public function __construct(private readonly SiteSettingsService $settings) {}
+    public function __construct(
+        private readonly SiteSettingsService $settings,
+        private readonly ProgressService $progressService,
+    ) {}
 
     /**
      * The catalog: the user's own paths head the page and the rest follow,
@@ -86,7 +90,7 @@ class LearningPathController extends Controller
      */
     private function ownPaths(User $user, bool $isFinished)
     {
-        $own = $user->enrolledPathsWithProgress()->where('is_finished', $isFinished)->values();
+        $own = $this->progressService->enrolledPathsWithProgress($user)->where('is_finished', $isFinished)->values();
 
         return Inertia::render('LearningPath/List', [
             'title' => $isFinished ? 'Finished' : 'In progress',
@@ -123,7 +127,7 @@ class LearningPathController extends Controller
     {
         abort_unless($learningPath->isVisibleTo($request->user()), 404);
 
-        $completion = Lesson::completionMapFor($learningPath, $request->user());
+        $completion = $this->progressService->lessonCompletionMap($learningPath, $request->user());
 
         $lessons = $learningPath->lessons->each(
             fn (Lesson $lesson) => $lesson->setAttribute('is_completed', $completion[$lesson->id] ?? false)

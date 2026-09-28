@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Enums\ExerciseType;
 use App\Enums\UserType;
-use App\Models\Lesson;
 use App\Models\Type;
 use App\Models\User;
 use App\Models\UserLexema;
@@ -16,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 #[Singleton]
 class StatsService
 {
+    public function __construct(private readonly ProgressService $progressService) {}
+
     public function build(User $user): array
     {
         $completedLessonStats = $this->completedLessonStats($user);
@@ -73,7 +74,7 @@ class StatsService
         $stats = CompletedLessonStatsCacheService::get($user->id);
 
         if ($stats === null) {
-            $stats = Lesson::getCompletedLessonStats($user);
+            $stats = $this->progressService->completedLessonStats($user);
 
             CompletedLessonStatsCacheService::warm($user->id, $stats);
         }

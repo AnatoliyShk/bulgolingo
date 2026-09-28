@@ -410,7 +410,7 @@ class SeedLoadTestData extends Command
     /**
      * Enrols each user in the number of paths the plan drew for them, walking
      * consecutive ids from a per-user offset so the paths are distinct. Uneven
-     * enrolment matters because getCompletedLessonStats() fans out over
+     * enrolment matters because ProgressService::completedLessonStats() fans out over
      * learning_path_user, and a count every user shares is precisely the shape
      * that makes a per-user lookup look cheap when it is not.
      */
