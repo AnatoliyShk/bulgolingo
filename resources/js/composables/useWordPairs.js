@@ -3,11 +3,6 @@ import { computed } from 'vue'
 // Mirrors ExerciseType::MIN_WORD_PAIRS — 5 pairs is 10 words, 5 per language.
 export const MIN_PAIRS = 5
 
-// The empty grid a new word-pair exercise opens with.
-export function emptyPairs() {
-    return Array.from({ length: MIN_PAIRS }, () => ['', ''])
-}
-
 // Normalises stored pairs and tops them up so an exercise saved before the
 // minimum existed still opens with enough rows to fill in.
 export function padPairs(pairs) {

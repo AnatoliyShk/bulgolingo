@@ -5,40 +5,58 @@ import { Link, useForm } from '@inertiajs/vue3';
 import ImageUpload from '@/Components/Forms/ImageUpload.vue';
 import { MIN_PAIRS, padPairs, useWordPairs } from '@/composables/useWordPairs';
 
+// Without an exercise the form creates one for lessonId; with one it edits
+// it. The clause shape of every type comes from the server with
+// exerciseTypes, so nothing here restates what a clause holds.
 const props = defineProps({
-    exercise:     { type: Object, required: true },
-    exerciseTypes:{ type: Array,  required: true },
-    submitRoute:  { type: String, required: true },
-    cancelHref:   { type: String, default: null },
+    exercise:      { type: Object, default: null },
+    exerciseTypes: { type: Array,  required: true },
+    submitRoute:   { type: String, required: true },
+    lessonId:      { type: Number, default: null },
+    cancelHref:    { type: String, default: null },
 });
 
 const emit = defineEmits(['success', 'cancel']);
 
-function defaultClause(type, source = {}) {
-    if (type === 'true_false') {
-        return { sentence: source.sentence ?? '', correct_option: source.correct_option ?? true, explanation: source.explanation ?? '' };
+const isEditing = props.exercise !== null;
+
+// A type's clause as the form edits it: the blank clause the server sends
+// with the type, with each field the exercise already holds taking the blank
+// one's place. Stored pairs are padded so an exercise saved before the pair
+// minimum existed still opens with enough rows, and fields the blank clause
+// does not name, such as a stored column order, are left behind because
+// saving an edit deals a new order anyway. The result is a plain copy, so
+// editing it never writes through to the exercise prop.
+function clauseFor(type, stored = {}) {
+    const blank = props.exerciseTypes.find(t => t.value === type)?.clause ?? {};
+    const clause = Object.fromEntries(
+        Object.keys(blank).map(field => [field, stored[field] ?? blank[field]])
+    );
+
+    if ('pairs' in clause) {
+        clause.pairs = padPairs(clause.pairs);
     }
-    if (type === 'multiple_choice') {
-        return { pairs: padPairs(source.pairs), explanation: source.explanation ?? '' };
-    }
-    if (type === 'image_matching') {
-        return { options: source.options ?? ['', '', '', ''], correct_option: source.correct_option ?? 0, explanation: source.explanation ?? '' };
-    }
-    return { sentence: source.sentence ?? '', options: source.options ?? ['', '', '', ''], correct_option: source.correct_option ?? 0, explanation: source.explanation ?? '' };
+
+    return JSON.parse(JSON.stringify(clause));
 }
 
 const form = useForm({
-    name: props.exercise.name,
-    decision_type: props.exercise.decision_type,
-    clause: defaultClause(props.exercise.decision_type, props.exercise.clause ?? {}),
+    ...(props.lessonId !== null ? { lesson_id: props.lessonId } : {}),
+    name: props.exercise?.name ?? '',
+    decision_type: props.exercise?.decision_type ?? '',
+    clause: clauseFor(props.exercise?.decision_type ?? '', props.exercise?.clause ?? {}),
     image: null,
 });
 
-const existingImageUrl = computed(() => props.exercise.images?.[0]?.url ?? null);
+const existingImageUrl = computed(() => props.exercise?.images?.[0]?.url ?? null);
 
-watch(() => form.decision_type, (newType, oldType) => {
-    if (newType === oldType) return;
-    form.clause = defaultClause(newType);
+const submitLabel = computed(() => {
+    if (form.processing) return isEditing ? 'Saving…' : 'Creating…';
+    return isEditing ? 'Update Exercise' : 'Create Exercise';
+});
+
+watch(() => form.decision_type, (newType) => {
+    form.clause = clauseFor(newType);
     form.image = null;
 });
 
@@ -46,14 +64,17 @@ const {
     pairCount,
     canRemovePair,
     tooFewPairs,
+    hasOrder,
     pairErrors,
+    orderedColumns,
     addPair,
     removePair,
+    shuffleColumns,
 } = useWordPairs(form);
 
 function submit() {
     if (tooFewPairs.value) return;
-    form.put(props.submitRoute, {
+    form.submit(isEditing ? 'put' : 'post', props.submitRoute, {
         onSuccess: () => emit('success'),
     });
 }
@@ -82,6 +103,7 @@ function submit() {
                 v-model="form.decision_type"
                 class="admin-form__input"
             >
+                <option v-if="!isEditing" value="" disabled>Select a type</option>
                 <option v-for="type in exerciseTypes" :key="type.value" :value="type.value">
                     {{ type.label }}
                 </option>
@@ -136,28 +158,40 @@ function submit() {
                         @click="addPair"
                         class="text-xs font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400"
                     >+ Add pair</button>
+                    <button
+                        v-if="!isEditing"
+                        type="button"
+                        @click="shuffleColumns"
+                        class="text-xs font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400"
+                    >Shuffle</button>
                     <span class="text-xs text-gray-400 dark:text-gray-500">
                         {{ pairCount }} pairs · {{ pairCount * 2 }} words
                     </span>
                 </div>
-                <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
+                <div v-if="!isEditing && hasOrder" data-testid="student-order" class="mt-3 rounded border border-gray-200 px-3 py-2 dark:border-gray-700">
+                    <p class="mb-1 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                        Order the student sees
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <ol class="space-y-0.5 text-xs text-gray-500 dark:text-gray-400">
+                            <li v-for="(word, index) in orderedColumns.left" :key="`left-${index}`">
+                                {{ word || '—' }}
+                            </li>
+                        </ol>
+                        <ol class="space-y-0.5 text-xs text-gray-500 dark:text-gray-400">
+                            <li v-for="(word, index) in orderedColumns.right" :key="`right-${index}`">
+                                {{ word || '—' }}
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <p v-if="isEditing" class="mt-1 text-xs text-gray-400 dark:text-gray-500">
                     Saving deals a new order for both columns.
                 </p>
                 <p v-if="tooFewPairs" class="mt-1 text-xs text-red-500">
                     Add at least {{ MIN_PAIRS }} pairs before saving.
                 </p>
                 <p v-for="message in pairErrors" :key="message" class="mt-1 text-xs text-red-500">{{ message }}</p>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Explanation</label>
-                <textarea
-                    v-model="form.clause.explanation"
-                    rows="3"
-                    class="admin-form__textarea"
-                    placeholder="Explain the correct answer"
-                />
-                <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
             </div>
         </template>
 
@@ -184,17 +218,6 @@ function submit() {
                     <option :value="false">False</option>
                 </select>
                 <p v-if="form.errors['clause.correct_option']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.correct_option'] }}</p>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Explanation</label>
-                <textarea
-                    v-model="form.clause.explanation"
-                    rows="3"
-                    class="admin-form__textarea"
-                    placeholder="Explain the correct answer"
-                />
-                <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
             </div>
         </template>
 
@@ -228,17 +251,6 @@ function submit() {
                     class="admin-form__input--narrow"
                 />
                 <p v-if="form.errors['clause.correct_option']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.correct_option'] }}</p>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Explanation</label>
-                <textarea
-                    v-model="form.clause.explanation"
-                    rows="3"
-                    class="admin-form__textarea"
-                    placeholder="Explain the correct answer"
-                />
-                <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
             </div>
         </template>
 
@@ -284,18 +296,19 @@ function submit() {
                 <p v-if="form.errors['clause.options']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.options'] }}</p>
                 <p v-if="form.errors['clause.correct_option']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.correct_option'] }}</p>
             </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Explanation</label>
-                <textarea
-                    v-model="form.clause.explanation"
-                    rows="3"
-                    class="admin-form__textarea"
-                    placeholder="Explain the correct answer"
-                />
-                <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
-            </div>
         </template>
+
+        <!-- Explanation (every type) -->
+        <div v-if="form.decision_type">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Explanation</label>
+            <textarea
+                v-model="form.clause.explanation"
+                rows="3"
+                class="admin-form__textarea"
+                placeholder="Explain the correct answer"
+            />
+            <p v-if="form.errors['clause.explanation']" class="mt-1 text-xs text-red-500">{{ form.errors['clause.explanation'] }}</p>
+        </div>
 
         <!-- Actions -->
         <div class="flex items-center justify-end gap-3 pt-1">
@@ -315,7 +328,7 @@ function submit() {
                 :disabled="form.processing || tooFewPairs"
                 class="admin-btn--primary"
             >
-                {{ form.processing ? 'Saving…' : 'Update Exercise' }}
+                {{ submitLabel }}
             </button>
         </div>
     </form>

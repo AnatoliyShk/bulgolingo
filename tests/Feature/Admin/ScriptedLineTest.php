@@ -128,4 +128,21 @@ class ScriptedLineTest extends TestCase
                     ->etc());
         }
     }
+
+    // The dialogue page's "add a line" link names its dialogue in the query;
+    // a missing or non-numeric one leaves the picker empty.
+    public function test_the_create_form_starts_on_the_dialogue_named_in_the_query(): void
+    {
+        $this->actingAs($this->admin)
+            ->get(route('admin.scripted-lines.create', ['scripted_dialogue_id' => $this->dialogue->id]))
+            ->assertInertia(fn (Assert $page) => $page->where('selectedDialogueId', $this->dialogue->id)->etc());
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.scripted-lines.create'))
+            ->assertInertia(fn (Assert $page) => $page->where('selectedDialogueId', null)->etc());
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.scripted-lines.create', ['scripted_dialogue_id' => 'abc']))
+            ->assertInertia(fn (Assert $page) => $page->where('selectedDialogueId', null)->etc());
+    }
 }

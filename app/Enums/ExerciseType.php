@@ -42,16 +42,57 @@ enum ExerciseType: string
 
     /**
      * Value/label pairs for the exercise-type selects, built from the cases so
-     * a type added here reaches every form without a second edit.
+     * a type added here reaches every form without a second edit. Each also
+     * carries the type's blank clause, which the admin exercise form starts a
+     * new exercise from and fills an old one's missing fields with, so the
+     * frontend never restates a clause shape of its own.
      *
-     * @return array<int, array{value: string, label: string}>
+     * @return array<int, array{value: string, label: string, clause: array<string, mixed>}>
      */
     public static function options(): array
     {
         return array_map(
-            fn (self $type) => ['value' => $type->value, 'label' => $type->getDescription()],
+            fn (self $type) => [
+                'value' => $type->value,
+                'label' => $type->getDescription(),
+                'clause' => $type->defaultClause(),
+            ],
             self::cases()
         );
+    }
+
+    /**
+     * The empty clause an admin fills in: one entry per field dataRules()
+     * requires, with the answer set to a valid choice and the lists sized for
+     * the form. A word-pair clause opens at the minimum pair count and without
+     * an order, which leaves the columns to be shuffled later.
+     *
+     * @return array<string, mixed>
+     */
+    public function defaultClause(): array
+    {
+        return match ($this) {
+            self::MULTIPLE_CHOICE => [
+                'pairs' => array_fill(0, self::MIN_WORD_PAIRS, ['', '']),
+                'explanation' => '',
+            ],
+            self::TRUE_FALSE => [
+                'sentence' => '',
+                'correct_option' => true,
+                'explanation' => '',
+            ],
+            self::FILL_IN_THE_BLANK => [
+                'sentence' => '',
+                'options' => ['', '', '', ''],
+                'correct_option' => 0,
+                'explanation' => '',
+            ],
+            self::IMAGE_MATCHING => [
+                'options' => ['', '', '', ''],
+                'correct_option' => 0,
+                'explanation' => '',
+            ],
+        };
     }
 
     public function dataRules(): array

@@ -3,7 +3,7 @@ import '@/assets/scss/components/exercise/player.scss'
 import { ref, computed, watch } from 'vue'
 import { Head, usePage, router, Link } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
-import UpdateExerciseForm from '@/Components/Forms/UpdateExerciseForm.vue'
+import ExerciseForm from '@/Components/Forms/ExerciseForm.vue'
 import FillInTheBlank from './FillInTheBlank.vue'
 import ImageMatching from './ImageMatching.vue'
 import MultipleChoice from './MultipleChoice.vue'
@@ -102,7 +102,7 @@ function onComplete() {
                 <button class="nb-ex__edit-btn" @click="showForm = !showForm">
                     {{ showForm ? 'Cancel' : 'Edit Exercise' }}
                 </button>
-                <UpdateExerciseForm
+                <ExerciseForm
                     v-if="showForm"
                     :exercise="exercise"
                     :exercise-types="exerciseTypes"

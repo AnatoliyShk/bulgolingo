@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ScriptedLineRequest;
 use App\Models\ScriptedDialogue;
 use App\Models\ScriptedLine;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ScriptedLineController extends Controller
@@ -17,9 +18,17 @@ class ScriptedLineController extends Controller
         ]);
     }
 
-    public function create()
+    /**
+     * A dialogue's "add a line" link names it in ?scripted_dialogue_id, which
+     * comes back as the dialogue the form starts on. Anything that is not a
+     * positive id leaves the picker empty.
+     */
+    public function create(Request $request)
     {
-        return Inertia::render('Admin/ScriptedLines/Create', $this->formOptions());
+        return Inertia::render('Admin/ScriptedLines/Create', [
+            'selectedDialogueId' => $request->integer('scripted_dialogue_id') ?: null,
+            ...$this->formOptions(),
+        ]);
     }
 
     public function store(ScriptedLineRequest $request)

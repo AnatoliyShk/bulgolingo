@@ -5,10 +5,13 @@ namespace Database\Seeders;
 use App\Enums\ExerciseType;
 use App\Enums\LearningPathType;
 use App\Enums\RoleName;
+use App\Models\Bot;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\Role;
+use App\Models\ScriptedDialogue;
+use App\Models\ScriptedLine;
 use App\Models\User;
 use App\Services\SiteSettingsService;
 use Illuminate\Database\Seeder;
@@ -21,7 +24,8 @@ use Illuminate\Support\Facades\Log;
  * student — enrolled in the first path with its first lesson finished, which
  * also earns experience and a streak. Filler paths of the test tier push the
  * admin index past one page, which only admins can see, so the student
- * catalog is unchanged. Idempotent, so it can be re-run
+ * catalog is unchanged. A bot with one scripted dialogue and line gives the
+ * scripted line form something to pick and to edit. Idempotent, so it can be re-run
  * against an existing e2e database. fixtureEnv() names the rows the specs
  * take ids of.
  */
@@ -35,9 +39,11 @@ class E2eSeeder extends Seeder
 
     public const PAGINATION_FILLER_PATHS = 10;
 
+    public const BOT_NAME = 'E2E Bot';
+
     public function run(): void
     {
-        $this->seedUser(self::ADMIN_EMAIL, 'E2E Admin', RoleName::Admin);
+        $admin = $this->seedUser(self::ADMIN_EMAIL, 'E2E Admin', RoleName::Admin);
         $student = $this->seedUser(self::STUDENT_EMAIL, 'E2E Student', RoleName::Student);
         $this->seedUser(self::UNVERIFIED_EMAIL, 'E2E Unverified', RoleName::Student, verified: false);
 
@@ -51,6 +57,7 @@ class E2eSeeder extends Seeder
         $this->finishFirstLesson($student);
         $this->seedLogEntries();
         $this->enableTutorBot();
+        $this->seedScriptedLine($admin);
     }
 
     /**
@@ -91,7 +98,32 @@ class E2eSeeder extends Seeder
             'E2E_COMPLETED_LESSON_ID' => (string) $completed->id,
             'E2E_LESSON_ID' => (string) $otherLesson?->id,
             'E2E_WORD_PAIR_EXERCISE_ID' => (string) $wordPair?->id,
+            'E2E_SCRIPTED_DIALOGUE_ID' => (string) self::scriptedDialogue()->id,
+            'E2E_SCRIPTED_LINE_ID' => (string) self::scriptedDialogue()->lines()->orderBy('id')->firstOrFail()->id,
         ];
+    }
+
+    /**
+     * One bot with one dialogue holding one line, so the scripted line form
+     * has a dialogue to pick when creating and a line to open when editing.
+     * The line is only created when the dialogue has none, so a re-run keeps
+     * whatever an earlier edit spec saved to it.
+     */
+    private function seedScriptedLine(User $admin): void
+    {
+        $bot = Bot::firstOrCreate(['name' => self::BOT_NAME], ['description' => 'Scripted dialogues for the e2e specs']);
+        $dialogue = ScriptedDialogue::firstOrCreate(['bot_id' => $bot->id, 'user_id' => $admin->id]);
+
+        if (! $dialogue->lines()->exists()) {
+            ScriptedLine::create([
+                'scripted_dialogue_id' => $dialogue->id,
+                'clause' => [
+                    'line_text' => 'Добър ден! Какво ще желаете?',
+                    'options' => ['Едно кафе, моля.', 'Лека нощ.', 'Довиждане.'],
+                    'correct_option' => 0,
+                ],
+            ]);
+        }
     }
 
     private function seedUser(string $email, string $name, RoleName $role, bool $verified = true): User
@@ -146,6 +178,11 @@ class E2eSeeder extends Seeder
         }
 
         $student->recordPractice();
+    }
+
+    private static function scriptedDialogue(): ScriptedDialogue
+    {
+        return ScriptedDialogue::whereRelation('bot', 'name', self::BOT_NAME)->orderBy('id')->firstOrFail();
     }
 
     private static function firstPath(): LearningPath

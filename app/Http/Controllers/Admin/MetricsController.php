@@ -70,36 +70,40 @@ class MetricsController extends Controller
 
     /**
      * Queue depth isn't attributable to admin vs. user traffic (jobs are
-     * dispatched by both), so it's shown as-is on both pages.
+     * dispatched by both), so it's shown as-is on both pages. Both gauges are
+     * read in one pass, each sample filed under its queue label; a queue seen
+     * in only one of them reports 0 for the other.
      */
     private function queueStats(CollectorRegistry $registry): array
     {
-        $queueDepths = [];
-        $queueWaitSeconds = [];
+        $gauges = [
+            'laravel_queue_depth' => 'depth',
+            'laravel_queue_oldest_wait_seconds' => 'wait',
+        ];
+        $values = ['depth' => [], 'wait' => []];
 
         foreach ($registry->getMetricFamilySamples() as $family) {
-            if ($family->getName() === 'laravel_queue_depth') {
-                foreach ($family->getSamples() as $sample) {
-                    $labels = array_combine($family->getLabelNames(), $sample->getLabelValues());
-                    $queueDepths[$labels['queue']] = $sample->getValue();
-                }
-            } elseif ($family->getName() === 'laravel_queue_oldest_wait_seconds') {
-                foreach ($family->getSamples() as $sample) {
-                    $labels = array_combine($family->getLabelNames(), $sample->getLabelValues());
-                    $queueWaitSeconds[$labels['queue']] = $sample->getValue();
-                }
+            $gauge = $gauges[$family->getName()] ?? null;
+
+            if ($gauge === null) {
+                continue;
+            }
+
+            foreach ($family->getSamples() as $sample) {
+                $labels = array_combine($family->getLabelNames(), $sample->getLabelValues());
+                $values[$gauge][$labels['queue']] = $sample->getValue();
             }
         }
 
-        return collect(array_keys($queueDepths))
-            ->merge(array_keys($queueWaitSeconds))
+        return collect(array_keys($values['depth']))
+            ->merge(array_keys($values['wait']))
             ->unique()
             ->sort()
             ->values()
             ->map(fn ($name) => [
                 'name' => $name,
-                'depth' => (int) ($queueDepths[$name] ?? 0),
-                'oldestWaitSeconds' => round($queueWaitSeconds[$name] ?? 0, 1),
+                'depth' => (int) ($values['depth'][$name] ?? 0),
+                'oldestWaitSeconds' => round($values['wait'][$name] ?? 0, 1),
             ])
             ->all();
     }
