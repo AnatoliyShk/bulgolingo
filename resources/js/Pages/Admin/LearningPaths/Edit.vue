@@ -129,7 +129,7 @@ function submit() {
                                 v-model="lessonSearch"
                                 type="text"
                                 placeholder="Search lessons…"
-                                class="w-full mb-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                                class="admin-path__lesson-search"
                             />
                             <div v-if="lessons.total === 0 && lessonSearch.trim()" class="py-2 text-sm text-gray-400">No lessons match your search.</div>
                             <div v-else-if="lessons.total === 0" class="text-sm text-gray-400">No lessons available.</div>

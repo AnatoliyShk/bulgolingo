@@ -95,7 +95,7 @@ function deleteExercise(id) {
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
 
                 <!-- Filter bar -->
-                <div class="flex flex-wrap items-end gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="admin-filter-bar">
                     <label class="flex flex-col gap-1">
                         <span class="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">Lesson</span>
                         <select
@@ -179,7 +179,7 @@ function deleteExercise(id) {
                                     <div class="flex items-center justify-end gap-2">
                                         <Link
                                             :href="route('admin.exercises.edit', exercise.id)"
-                                            class="inline-flex items-center justify-center w-8 h-8 rounded-md text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/30 transition-colors"
+                                            class="admin-icon-btn admin-icon-btn--edit"
                                             title="Edit"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -188,7 +188,7 @@ function deleteExercise(id) {
                                         </Link>
                                         <button
                                             @click="deleteExercise(exercise.id)"
-                                            class="inline-flex items-center justify-center w-8 h-8 rounded-md text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors"
+                                            class="admin-icon-btn admin-icon-btn--delete"
                                             title="Delete"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

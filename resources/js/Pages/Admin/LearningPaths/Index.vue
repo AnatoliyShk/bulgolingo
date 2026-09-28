@@ -55,7 +55,7 @@ function deletePath(id) {
                     <select
                         id="learning-path-level-filter"
                         v-model="level"
-                        class="rounded-lg border border-gray-300 px-3 py-1.5 pr-8 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+                        class="admin-path__level-select"
                         @change="filterByLevel"
                     >
                         <option value="">All levels</option>

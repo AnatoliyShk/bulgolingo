@@ -39,18 +39,18 @@ defineProps({
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                                     <span
                                         v-if="user.role.name !== 'student'"
-                                        class="inline-flex rounded-full bg-blue-100 px-2 text-xs font-semibold leading-5 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                                        class="admin-badge admin-badge--role"
                                     >{{ user.role.label }}</span>
                                     <span v-else>{{ user.role.label }}</span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                                     <span
                                         v-if="user.email_verified_at"
-                                        class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800 dark:bg-green-900 dark:text-green-200"
+                                        class="admin-badge admin-badge--verified"
                                     >Verified</span>
                                     <span
                                         v-else
-                                        class="inline-flex rounded-full bg-gray-100 px-2 text-xs font-semibold leading-5 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                                        class="admin-badge admin-badge--unverified"
                                     >Unverified</span>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ new Date(user.created_at).toLocaleDateString() }}</td>
