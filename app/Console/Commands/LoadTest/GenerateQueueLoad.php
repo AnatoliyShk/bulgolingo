@@ -77,7 +77,7 @@ class GenerateQueueLoad extends Command
     }
 
     /**
-     * Pushes the same jobs Exercise::completeFor() does. Worth knowing when
+     * Pushes the same jobs ProgressService::completeExercise() does. Worth knowing when
      * reading the throughput number: LexemaCountUpdate still carries models, so
      * SerializesModels re-selects its User and its Exercise — once as the
      * RabbitMQ driver unserializes the payload to publish it, once more when

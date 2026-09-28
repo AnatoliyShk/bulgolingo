@@ -27,7 +27,7 @@ class LexemaReviewGrade implements ShouldQueue
     /**
      * Grades every lexema on the exercise as one spaced-repetition review.
      *
-     * This is the work that used to run inline in Exercise::completeFor(): one
+     * This is the work that used to run inline on completion: one
      * locked transaction per lexema, each writing a user_lexema row and a
      * review log, all of it on the request that answered a question. FSRS
      * scheduling does not have to be current the instant the answer is

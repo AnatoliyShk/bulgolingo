@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use App\Enums\ExerciseType;
+use App\Jobs\ExperienceCountUpdate;
+use App\Jobs\LexemaReviewGrade;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\User;
+use App\Models\UserExerciseCompletion;
 use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -154,6 +157,23 @@ class ProgressService
                 ->orderByRaw("coalesce(learning_path_user.created_at, '1970-01-01') desc")
                 ->get()
         );
+    }
+
+    /**
+     * Everything that follows the user answering $exercise correctly: the
+     * completion row, the queued XP award and lexema grading, and the day
+     * streak. XP and grading run on every answer, repeats included; only the
+     * first completion counts toward the stats caches. Grading already covers
+     * reps_total, so LexemaCountUpdate is not dispatched.
+     */
+    public function completeExercise(User $user, Exercise $exercise): void
+    {
+        UserExerciseCompletion::record($user, $exercise);
+
+        ExperienceCountUpdate::dispatch($user->id, $exercise->id)->onQueue('learning_path');
+        LexemaReviewGrade::dispatch($user->id, $exercise->id)->onQueue('learning_path');
+
+        $this->recordPractice($user);
     }
 
     /**

@@ -29,36 +29,27 @@ class ExerciseController extends Controller
     }
 
     /**
-     * Mark the exercise as completed and refresh the parent lesson's status.
-     *
-     * The student is moved forward through the lesson's `order` first, so a
-     * correct answer never sends them back to a question they skipped. Once
-     * nothing is left ahead of them, the scan restarts from the top of the
-     * lesson to pick up those gaps — only when that also comes back empty is
-     * the lesson actually finished and its pivot marked completed.
-     *
-     * That last write is a direct update rather than updateExistingPivot: the
-     * custom LearningPathLesson pivot makes Eloquent read the row back before
-     * writing it, and nothing observes that pivot for the extra read to be
-     * worth anything.
+     * Completes the exercise for the student and sends them on: to the lesson's
+     * next incomplete exercise (Lesson::nextIncompleteExerciseId), to the
+     * lesson-complete page once none is left, or to the dashboard when the
+     * exercise belongs to no lesson.
      */
     public function complete(Exercise $exercise)
     {
         $user = auth()->user();
         $lesson = $exercise->lessons()->first();
 
-        $incompleteId = $exercise->completeFor($user, $lesson);
-
-        $this->progressService->recordPractice($user);
+        $this->progressService->completeExercise($user, $exercise);
 
         if (! $lesson) {
             return redirect()->route('dashboard');
         }
 
         $lessonId = $lesson->id;
+        $nextId = $lesson->nextIncompleteExerciseId($user, (int) $lesson->pivot->order);
 
-        if ($incompleteId) {
-            return redirect()->route('exercise.show', $incompleteId);
+        if ($nextId) {
+            return redirect()->route('exercise.show', $nextId);
         }
 
         $learningPath = $user->learningPaths()

@@ -175,10 +175,8 @@ class E2eSeeder extends Seeder
         $student->learningPaths()->syncWithoutDetaching([$path->id]);
 
         foreach ($lesson->exercises as $exercise) {
-            $exercise->completeFor($student, null);
+            app(ProgressService::class)->completeExercise($student, $exercise);
         }
-
-        app(ProgressService::class)->recordPractice($student);
     }
 
     private static function scriptedDialogue(): ScriptedDialogue

@@ -3,18 +3,21 @@
 namespace Tests\Feature\Exercise;
 
 use App\Enums\ExerciseType;
+use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LexemaReviewGrade;
 use App\Models\Exercise;
 use App\Models\Lesson;
 use App\Models\ReviewLog;
 use App\Models\User;
+use App\Models\UserExerciseCompletion;
 use App\Models\UserLexema;
 use App\Services\GradeLexemeReviewService;
+use App\Services\ProgressService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
-class CompleteForGradesLexemasTest extends TestCase
+class CompleteExerciseGradesLexemasTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -45,7 +48,7 @@ class CompleteForGradesLexemasTest extends TestCase
 
     /**
      * The queue is faked so nothing runs inline, which is the point: with the
-     * test connection set to sync, a grader left in completeFor() would still
+     * test connection set to sync, a grader left in completeExercise() would still
      * write the same rows and this suite would not notice it had moved back.
      */
     public function test_completing_an_exercise_queues_the_grading_rather_than_running_it(): void
@@ -55,11 +58,47 @@ class CompleteForGradesLexemasTest extends TestCase
         $user = User::factory()->create();
         $exercise = $this->fillInBlankExercise(['Куче', 'Котка']);
 
-        $exercise->completeFor($user, $exercise->lessons()->first());
+        app(ProgressService::class)->completeExercise($user, $exercise);
 
         Queue::assertPushedOn('learning_path', LexemaReviewGrade::class);
         $this->assertSame(0, ReviewLog::query()->count());
         $this->assertSame(0, UserLexema::query()->count());
+    }
+
+    public function test_completing_queues_experience_and_grading_on_the_learning_path_queue(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $exercise = $this->fillInBlankExercise(['Куче']);
+
+        app(ProgressService::class)->completeExercise($user, $exercise);
+
+        Queue::assertPushedOn('learning_path', ExperienceCountUpdate::class);
+        Queue::assertPushedOn('learning_path', LexemaReviewGrade::class);
+        $this->assertTrue(UserExerciseCompletion::query()
+            ->where('user_id', $user->id)
+            ->where('exercise_id', $exercise->id)
+            ->exists());
+    }
+
+    /**
+     * A repeat answer is still practice, so XP and grading are queued again,
+     * while the unique completion row is written only once.
+     */
+    public function test_completing_again_queues_the_jobs_but_records_one_row(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $exercise = $this->fillInBlankExercise(['Куче']);
+
+        app(ProgressService::class)->completeExercise($user, $exercise);
+        app(ProgressService::class)->completeExercise($user, $exercise);
+
+        Queue::assertPushed(ExperienceCountUpdate::class, 2);
+        Queue::assertPushed(LexemaReviewGrade::class, 2);
+        $this->assertSame(1, UserExerciseCompletion::query()->where('user_id', $user->id)->count());
     }
 
     public function test_the_queued_job_grades_every_one_of_the_exercise_lexemas(): void

@@ -70,6 +70,19 @@ class Lesson extends Model
     }
 
     /**
+     * Where the user goes after answering the exercise at $afterOrder. They
+     * move forward through the lesson's `order` first, so a correct answer
+     * never sends them back to a question they skipped. Once nothing is left
+     * ahead of them, the scan restarts from the top to pick up those gaps;
+     * null means the lesson is finished.
+     */
+    public function nextIncompleteExerciseId(User $user, int $afterOrder): ?int
+    {
+        return $this->firstIncompleteExerciseId($user, $afterOrder)
+            ?? $this->firstIncompleteExerciseId($user);
+    }
+
+    /**
      * The next lesson in the path, or null when this is the last. Lessons in a
      * path run in lesson-id order.
      */
