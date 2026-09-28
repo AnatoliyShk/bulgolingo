@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Setting;
 use App\Services\GradeLexemeReview;
 use App\Services\LearningPathSearch;
+use App\Services\SemanticSearchService;
 use App\Services\SiteSettings;
 use App\Services\StatsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,7 +18,7 @@ class SiteSettingsTest extends TestCase
 
     public function test_the_container_resolves_one_shared_instance(): void
     {
-        foreach ([SiteSettings::class, LearningPathSearch::class, GradeLexemeReview::class, StatsService::class] as $service) {
+        foreach ([SiteSettings::class, SemanticSearchService::class, LearningPathSearch::class, GradeLexemeReview::class, StatsService::class] as $service) {
             $this->assertSame(app($service), app($service), $service);
         }
     }

@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\ExerciseType;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Lesson\StoreLessonRequest;
+use App\Http\Requests\Admin\LessonRequest;
 use App\Models\Lesson;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class LessonController extends Controller
@@ -23,10 +22,9 @@ class LessonController extends Controller
         return Inertia::render('Admin/Lessons/Create');
     }
 
-    public function store(StoreLessonRequest $request)
+    public function store(LessonRequest $request)
     {
-        $validated = $request->validated();
-        $lesson = Lesson::create(array_merge($validated, ['user_id' => $request->user()->id]));
+        Lesson::create($request->validated());
 
         return redirect()->route('admin.lessons.index')->with('success', 'Lesson created.');
     }
@@ -36,20 +34,15 @@ class LessonController extends Controller
         return Inertia::render('Admin/Lessons/Edit', [
             'lesson' => $lesson->load('exercises'),
             'exerciseTypes' => array_map(
-                fn(ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
+                fn (ExerciseType $type) => ['value' => $type->value, 'label' => $type->getDescription()],
                 ExerciseType::cases()
             ),
         ]);
     }
 
-    public function update(Request $request, Lesson $lesson)
+    public function update(LessonRequest $request, Lesson $lesson)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-        ]);
-
-        $lesson->update($validated);
+        $lesson->update($request->validated());
 
         return redirect()->route('admin.lessons.index')->with('success', 'Lesson updated.');
     }

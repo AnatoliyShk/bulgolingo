@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ScriptedLineRequest;
 use App\Models\ScriptedDialogue;
 use App\Models\ScriptedLine;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ScriptedLineController extends Controller
@@ -19,29 +19,12 @@ class ScriptedLineController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/ScriptedLines/Create', [
-            'dialogues' => ScriptedDialogue::with('bot')->orderBy('id')->get(['id', 'bot_id']),
-        ]);
+        return Inertia::render('Admin/ScriptedLines/Create', $this->formOptions());
     }
 
-    public function store(Request $request)
+    public function store(ScriptedLineRequest $request)
     {
-        $validated = $request->validate([
-            'scripted_dialogue_id' => ['required', 'integer', 'exists:scripted_dialogues,id'],
-            'line_text'            => ['required', 'string', 'max:1000'],
-            'options'              => ['required', 'array', 'size:3'],
-            'options.*'            => ['required', 'string', 'max:500'],
-            'correct_option'       => ['required', 'integer', 'min:0', 'max:2'],
-        ]);
-
-        ScriptedLine::create([
-            'scripted_dialogue_id' => $validated['scripted_dialogue_id'],
-            'clause' => [
-                'line_text'      => $validated['line_text'],
-                'options'        => $validated['options'],
-                'correct_option' => (int) $validated['correct_option'],
-            ],
-        ]);
+        ScriptedLine::create($request->lineAttributes());
 
         return redirect()->route('admin.scripted-lines.index')->with('success', 'Line created.');
     }
@@ -49,29 +32,14 @@ class ScriptedLineController extends Controller
     public function edit(ScriptedLine $scriptedLine)
     {
         return Inertia::render('Admin/ScriptedLines/Edit', [
-            'line'      => $scriptedLine,
-            'dialogues' => ScriptedDialogue::with('bot')->orderBy('id')->get(['id', 'bot_id']),
+            'line' => $scriptedLine,
+            ...$this->formOptions(),
         ]);
     }
 
-    public function update(Request $request, ScriptedLine $scriptedLine)
+    public function update(ScriptedLineRequest $request, ScriptedLine $scriptedLine)
     {
-        $validated = $request->validate([
-            'scripted_dialogue_id' => ['required', 'integer', 'exists:scripted_dialogues,id'],
-            'line_text'            => ['required', 'string', 'max:1000'],
-            'options'              => ['required', 'array', 'size:3'],
-            'options.*'            => ['required', 'string', 'max:500'],
-            'correct_option'       => ['required', 'integer', 'min:0', 'max:2'],
-        ]);
-
-        $scriptedLine->update([
-            'scripted_dialogue_id' => $validated['scripted_dialogue_id'],
-            'clause' => [
-                'line_text'      => $validated['line_text'],
-                'options'        => $validated['options'],
-                'correct_option' => (int) $validated['correct_option'],
-            ],
-        ]);
+        $scriptedLine->update($request->lineAttributes());
 
         return redirect()->route('admin.scripted-lines.index')->with('success', 'Line updated.');
     }
@@ -81,5 +49,17 @@ class ScriptedLineController extends Controller
         $scriptedLine->delete();
 
         return redirect()->route('admin.scripted-lines.index')->with('success', 'Line deleted.');
+    }
+
+    /**
+     * The picker lists the create and edit forms share.
+     *
+     * @return array<string, mixed>
+     */
+    private function formOptions(): array
+    {
+        return [
+            'dialogues' => ScriptedDialogue::pickerOptions(),
+        ];
     }
 }

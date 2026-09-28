@@ -13,7 +13,7 @@ class BotController extends Controller
      */
     public function index()
     {
-        //
+        // TODO: unrouted scaffold; the admin CRUD lives in Admin\BotController. Implement a student-facing action and route it, or delete this controller.
     }
 
     /**
@@ -21,7 +21,7 @@ class BotController extends Controller
      */
     public function create()
     {
-        //
+        // TODO: unrouted scaffold; the admin CRUD lives in Admin\BotController. Implement a student-facing action and route it, or delete this controller.
     }
 
     /**
@@ -29,7 +29,7 @@ class BotController extends Controller
      */
     public function store(StoreBotRequest $request)
     {
-        //
+        // TODO: unrouted scaffold; the admin CRUD lives in Admin\BotController. Implement a student-facing action and route it, or delete this controller.
     }
 
     /**
@@ -37,7 +37,7 @@ class BotController extends Controller
      */
     public function show(Bot $bot)
     {
-        //
+        // TODO: unrouted scaffold; the admin CRUD lives in Admin\BotController. Implement a student-facing action and route it, or delete this controller.
     }
 
     /**
@@ -45,7 +45,7 @@ class BotController extends Controller
      */
     public function edit(Bot $bot)
     {
-        //
+        // TODO: unrouted scaffold; the admin CRUD lives in Admin\BotController. Implement a student-facing action and route it, or delete this controller.
     }
 
     /**
@@ -53,7 +53,7 @@ class BotController extends Controller
      */
     public function update(UpdateBotRequest $request, Bot $bot)
     {
-        //
+        // TODO: unrouted scaffold; the admin CRUD lives in Admin\BotController. Implement a student-facing action and route it, or delete this controller.
     }
 
     /**
@@ -61,6 +61,6 @@ class BotController extends Controller
      */
     public function destroy(Bot $bot)
     {
-        //
+        // TODO: unrouted scaffold; the admin CRUD lives in Admin\BotController. Implement a student-facing action and route it, or delete this controller.
     }
 }

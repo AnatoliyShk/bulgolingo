@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\LanguageLevel;
 use App\Enums\LearningPathType;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\LearningPathRequest;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class LearningPathController extends Controller
@@ -49,20 +49,9 @@ class LearningPathController extends Controller
         ]);
     }
 
-    /**
-     * The level is optional: a path can be saved before anyone has judged its
-     * level, and the form's "Not set" sends null for that.
-     */
-    public function store(Request $request)
+    public function store(LearningPathRequest $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'language' => ['required', 'string', 'max:255'],
-            'type' => ['required', Rule::enum(LearningPathType::class)],
-            'level' => ['nullable', Rule::enum(LanguageLevel::class)],
-        ]);
-
-        LearningPath::create($validated);
+        LearningPath::create($request->pathAttributes());
 
         return redirect()->route('admin.learning-paths.index')->with('success', 'Learning path created.');
     }
@@ -94,25 +83,11 @@ class LearningPathController extends Controller
      * Sending a null level clears it, so an admin can take back a level that
      * was set by mistake.
      */
-    public function update(Request $request, LearningPath $learningPath)
+    public function update(LearningPathRequest $request, LearningPath $learningPath)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'language' => ['required', 'string', 'max:255'],
-            'type' => ['required', Rule::enum(LearningPathType::class)],
-            'level' => ['nullable', Rule::enum(LanguageLevel::class)],
-            'lesson_ids' => ['nullable', 'array'],
-            'lesson_ids.*' => ['integer', 'exists:lessons,id'],
-        ]);
+        $learningPath->update($request->pathAttributes());
 
-        $learningPath->update([
-            'name' => $validated['name'],
-            'language' => $validated['language'],
-            'type' => $validated['type'],
-            'level' => $validated['level'] ?? null,
-        ]);
-
-        $learningPath->lessons()->sync($validated['lesson_ids'] ?? []);
+        $learningPath->lessons()->sync($request->validated('lesson_ids') ?? []);
 
         return redirect()->route('admin.learning-paths.index')->with('success', 'Learning path updated.');
     }

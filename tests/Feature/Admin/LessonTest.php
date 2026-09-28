@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -81,5 +82,38 @@ class LessonTest extends TestCase
 
         $response->assertForbidden();
         $this->assertDatabaseCount('lessons', 0);
+    }
+
+    public function test_admin_can_update_lesson(): void
+    {
+        $lesson = Lesson::create(['name' => 'Greetings', 'description' => 'Basic greetings']);
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->put(route('admin.lessons.update', $lesson), ['name' => 'Farewells', 'description' => 'Saying goodbye'])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('admin.lessons.index'));
+
+        $this->assertDatabaseHas('lessons', ['id' => $lesson->id, 'name' => 'Farewells', 'description' => 'Saying goodbye']);
+    }
+
+    // The description is a NOT NULL varchar(255), so clearing it on edit or
+    // sending more than 255 characters has to be a form error on both routes
+    // instead of a failed write.
+    public function test_store_and_update_reject_an_empty_or_overlong_description(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $lesson = Lesson::create(['name' => 'Greetings', 'description' => 'Basic greetings']);
+
+        foreach (['', str_repeat('a', 256)] as $description) {
+            $this->actingAs($admin)
+                ->post(route('admin.lessons.store'), ['name' => 'New', 'description' => $description])
+                ->assertSessionHasErrors('description');
+            $this->actingAs($admin)
+                ->put(route('admin.lessons.update', $lesson), ['name' => 'Renamed', 'description' => $description])
+                ->assertSessionHasErrors('description');
+        }
+
+        $this->assertDatabaseCount('lessons', 1);
+        $this->assertSame('Basic greetings', $lesson->fresh()->description);
     }
 }

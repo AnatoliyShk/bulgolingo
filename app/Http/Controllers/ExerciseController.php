@@ -3,19 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ExerciseType;
-use App\Http\Requests\Exercise\SearchExerciseRequest;
 use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\Lesson;
-use App\Services\SiteSettings;
-use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {
-    public function __construct(private readonly SiteSettings $settings) {}
-
     /**
      * Display a listing of the resource.
      */
@@ -133,27 +128,5 @@ class ExerciseController extends Controller
             'lesson' => $lessonId,
             'learningPath' => $learningPath?->id,
         ]));
-    }
-
-    /**
-     * The five exercises closest in meaning to the query, using the same
-     * admin-set similarity floor as the learning path search. With embedding
-     * search turned off the endpoint is a 404, before anything is embedded.
-     */
-    public function search(SearchExerciseRequest $request): JsonResponse
-    {
-        abort_unless($this->settings->embeddingSearchEnabled(), 404);
-
-        $query = $request->validated('query');
-
-        $exercises = Exercise::query()
-            ->whereVectorSimilarTo('embedding', $query, minSimilarity: $this->settings->embeddingMinSimilarity())
-            ->limit(5)
-            ->get();
-
-        return response()->json([
-            'search_term' => $query,
-            'results' => $exercises,
-        ]);
     }
 }

@@ -13,7 +13,7 @@ class ImagesController extends Controller
      */
     public function index()
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -21,7 +21,7 @@ class ImagesController extends Controller
      */
     public function create()
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -29,7 +29,7 @@ class ImagesController extends Controller
      */
     public function store(StoreImagesRequest $request)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -37,7 +37,7 @@ class ImagesController extends Controller
      */
     public function show(Images $images)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -45,7 +45,7 @@ class ImagesController extends Controller
      */
     public function edit(Images $images)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -53,7 +53,7 @@ class ImagesController extends Controller
      */
     public function update(UpdateImagesRequest $request, Images $images)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -61,6 +61,6 @@ class ImagesController extends Controller
      */
     public function destroy(Images $images)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 }

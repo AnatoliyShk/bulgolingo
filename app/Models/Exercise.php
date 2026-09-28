@@ -28,14 +28,8 @@ class Exercise extends Model implements ExerciseInterface
     {
         return [
             'decision_type' => ExerciseType::class,
-            'clause' => 'array',
             'embedding' => AsVector::class,
         ];
-    }
-
-    public function __construct()
-    {
-        parent::__construct();
     }
 
     public function lessons(): BelongsToMany

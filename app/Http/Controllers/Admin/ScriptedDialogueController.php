@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ScriptedDialogueRequest;
 use App\Models\Bot;
 use App\Models\ScriptedDialogue;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ScriptedDialogueController extends Controller
@@ -20,20 +20,12 @@ class ScriptedDialogueController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/ScriptedDialogues/Create', [
-            'bots'  => Bot::orderBy('name')->get(['id', 'name']),
-            'users' => User::orderBy('name')->get(['id', 'name']),
-        ]);
+        return Inertia::render('Admin/ScriptedDialogues/Create', $this->formOptions());
     }
 
-    public function store(Request $request)
+    public function store(ScriptedDialogueRequest $request)
     {
-        $validated = $request->validate([
-            'bot_id'  => ['required', 'integer', 'exists:bots,id'],
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-        ]);
-
-        ScriptedDialogue::create($validated);
+        ScriptedDialogue::create($request->validated());
 
         return redirect()->route('admin.scripted-dialogues.index')->with('success', 'Dialogue created.');
     }
@@ -42,19 +34,13 @@ class ScriptedDialogueController extends Controller
     {
         return Inertia::render('Admin/ScriptedDialogues/Edit', [
             'dialogue' => $scriptedDialogue->load('lines', 'bot'),
-            'bots'     => Bot::orderBy('name')->get(['id', 'name']),
-            'users'    => User::orderBy('name')->get(['id', 'name']),
+            ...$this->formOptions(),
         ]);
     }
 
-    public function update(Request $request, ScriptedDialogue $scriptedDialogue)
+    public function update(ScriptedDialogueRequest $request, ScriptedDialogue $scriptedDialogue)
     {
-        $validated = $request->validate([
-            'bot_id'  => ['required', 'integer', 'exists:bots,id'],
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-        ]);
-
-        $scriptedDialogue->update($validated);
+        $scriptedDialogue->update($request->validated());
 
         return redirect()->route('admin.scripted-dialogues.index')->with('success', 'Dialogue updated.');
     }
@@ -64,5 +50,18 @@ class ScriptedDialogueController extends Controller
         $scriptedDialogue->delete();
 
         return redirect()->route('admin.scripted-dialogues.index')->with('success', 'Dialogue deleted.');
+    }
+
+    /**
+     * The picker lists the create and edit forms share.
+     *
+     * @return array<string, mixed>
+     */
+    private function formOptions(): array
+    {
+        return [
+            'bots' => Bot::pickerOptions(),
+            'users' => User::pickerOptions(),
+        ];
     }
 }

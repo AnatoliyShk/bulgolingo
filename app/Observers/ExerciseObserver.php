@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class ExerciseObserver
@@ -111,8 +112,11 @@ class ExerciseObserver
         )->validate();
     }
 
-    public function saved(Exercise $exercise)
+    /**
+     * Bumps this exercise's version counter, v:exercise:{id}, on every save.
+     */
+    public function saved(Exercise $exercise): void
     {
-        \Cache::increment('v:exercise:{$exercise->id}');
+        Cache::increment("v:exercise:{$exercise->id}");
     }
 }

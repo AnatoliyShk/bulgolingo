@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ExerciseType;
-use App\Http\Requests\Lesson\StoreLessonRequest;
+use App\Http\Requests\Admin\LessonRequest;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
@@ -37,15 +37,16 @@ class LessonController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created lesson. A lesson has no owner, so only its name
+     * and description are saved. It starts with no exercises, which makes
+     * lesson.show bounce straight back, so the admin lands on the lesson's
+     * edit page to add them instead.
      */
-    public function store(StoreLessonRequest $request)
+    public function store(LessonRequest $request)
     {
-        $validated = $request->validated();
-        $lesson = Lesson::create(array_merge($validated, ['user_id' => $request->user()->id]));
-        $lesson->users()->attach($request->user()->id);
+        $lesson = Lesson::create($request->validated());
 
-        return redirect()->route('lesson.show', $lesson)->with('success', 'Lesson created successfully');
+        return redirect()->route('admin.lessons.edit', $lesson)->with('success', 'Lesson created successfully');
     }
 
     /**

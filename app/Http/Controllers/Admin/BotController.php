@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\BotRequest;
 use App\Models\Bot;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class BotController extends Controller
@@ -21,14 +21,9 @@ class BotController extends Controller
         return Inertia::render('Admin/Bots/Create');
     }
 
-    public function store(Request $request)
+    public function store(BotRequest $request)
     {
-        $validated = $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-        ]);
-
-        Bot::create($validated);
+        Bot::create($request->validated());
 
         return redirect()->route('admin.bots.index')->with('success', 'Bot created.');
     }
@@ -40,14 +35,9 @@ class BotController extends Controller
         ]);
     }
 
-    public function update(Request $request, Bot $bot)
+    public function update(BotRequest $request, Bot $bot)
     {
-        $validated = $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-        ]);
-
-        $bot->update($validated);
+        $bot->update($request->validated());
 
         return redirect()->route('admin.bots.index')->with('success', 'Bot updated.');
     }

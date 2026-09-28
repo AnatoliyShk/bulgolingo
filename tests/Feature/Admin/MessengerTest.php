@@ -2,12 +2,14 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Enums\MessengerName;
 use App\Models\Messenger;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class MessengerTest extends TestCase
@@ -318,5 +320,33 @@ class MessengerTest extends TestCase
 
         $response->assertForbidden();
         $this->assertDatabaseCount('messengers', 0);
+    }
+
+    // Both forms get the same pickers: users alphabetical with only their id
+    // and name, and every messenger the enum allows.
+    public function test_the_create_and_edit_forms_share_the_user_and_messenger_pickers(): void
+    {
+        $admin = User::factory()->admin()->create(['name' => 'Mila']);
+        User::factory()->create(['name' => 'Zora']);
+        User::factory()->create(['name' => 'Anna']);
+        $messenger = Messenger::factory()->create(['user_id' => $admin->id]);
+
+        $pages = [
+            'Admin/Messengers/Create' => route('admin.messengers.create'),
+            'Admin/Messengers/Edit' => route('admin.messengers.edit', $messenger),
+        ];
+
+        foreach ($pages as $component => $url) {
+            $this->actingAs($admin)->get($url)
+                ->assertOk()
+                ->assertInertia(fn (Assert $page) => $page
+                    ->component($component)
+                    ->has('users', 3)
+                    ->has('users.0', fn (Assert $user) => $user->where('name', 'Anna')->has('id'))
+                    ->where('users.1.name', 'Mila')
+                    ->where('users.2.name', 'Zora')
+                    ->has('messengerNames', count(MessengerName::cases()))
+                    ->etc());
+        }
     }
 }

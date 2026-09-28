@@ -5,13 +5,11 @@ namespace App\Services;
 use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Throwable;
 
 #[Singleton]
 class LearningPathSearch
 {
-    public function __construct(private SiteSettings $settings) {}
+    public function __construct(private readonly SemanticSearchService $semantic) {}
 
     /**
      * How many nearest exercises are gathered before they are grouped into
@@ -26,33 +24,24 @@ class LearningPathSearch
      * Learning path ids related to $query, closest first, ranked by their
      * best-matching exercise. A path is only as relevant as the nearest of its
      * exercises: averaging would bury a path that covers the topic in one
-     * lesson among many unrelated ones. What counts as related is the
-     * admin-set similarity floor, shared with ExerciseController::search().
+     * lesson among many unrelated ones. The embedding and the similarity floor
+     * come from SemanticSearchService, so a path is related exactly when one
+     * of its exercises would turn up in an exercise search.
      *
-     * The query is embedded once and the vector reused, since each string
-     * handed to the vector helpers is embedded again on its own. Null means the
-     * embedding call itself failed — a missing key or an unreachable provider —
-     * which the caller reports as search being unavailable rather than as an
-     * empty result, and which is reported here so it is not lost.
+     * Null means the embedding call itself failed, which the caller reports
+     * as search being unavailable rather than as an empty result.
      *
      * @return Collection<int, int>|null
      */
     public function rankedPathIds(string $query): ?Collection
     {
-        try {
-            $vector = Str::of($query)->toEmbeddings(cache: true);
-        } catch (Throwable $e) {
-            report($e);
+        $vector = $this->semantic->embed($query);
 
+        if ($vector === null) {
             return null;
         }
 
-        $nearest = DB::table('exercises')
-            ->select('id')
-            ->selectVectorDistance('embedding', $vector, 'distance')
-            ->whereNotNull('embedding')
-            ->whereVectorSimilarTo('embedding', $vector, $this->settings->embeddingMinSimilarity())
-            ->limit(self::NEAREST_EXERCISES);
+        $nearest = $this->semantic->nearestExercises($vector, ['id'])->limit(self::NEAREST_EXERCISES);
 
         return DB::query()
             ->fromSub($nearest, 'nearest')

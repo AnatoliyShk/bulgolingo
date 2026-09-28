@@ -51,6 +51,17 @@ class User extends Authenticatable implements OAuthenticatable
     }
 
     /**
+     * Every user as {id, name}, alphabetical, for the admin forms' user
+     * pickers.
+     *
+     * @return Collection<int, User>
+     */
+    public static function pickerOptions(): Collection
+    {
+        return static::orderBy('name')->get(['id', 'name']);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

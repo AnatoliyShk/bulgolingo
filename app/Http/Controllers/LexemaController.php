@@ -13,7 +13,7 @@ class LexemaController extends Controller
      */
     public function index()
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -21,7 +21,7 @@ class LexemaController extends Controller
      */
     public function create()
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -29,7 +29,7 @@ class LexemaController extends Controller
      */
     public function store(StoreLexemaRequest $request)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -37,7 +37,7 @@ class LexemaController extends Controller
      */
     public function show(Lexema $lexema)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -45,7 +45,7 @@ class LexemaController extends Controller
      */
     public function edit(Lexema $lexema)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -53,7 +53,7 @@ class LexemaController extends Controller
      */
     public function update(UpdateLexemaRequest $request, Lexema $lexema)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 
     /**
@@ -61,6 +61,6 @@ class LexemaController extends Controller
      */
     public function destroy(Lexema $lexema)
     {
-        //
+        // TODO: unrouted scaffold with no admin counterpart. Implement this action and route it, or delete this controller.
     }
 }

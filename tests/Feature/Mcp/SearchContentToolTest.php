@@ -11,8 +11,11 @@ use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Services\SiteSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Ai\Embeddings;
+use Laravel\Mcp\Server\Testing\TestListResponse;
+use PHPUnit\Framework\Assert;
 use RuntimeException;
 use Tests\TestCase;
 
@@ -232,8 +235,18 @@ class SearchContentToolTest extends TestCase
         Embeddings::assertNothingGenerated();
     }
 
+    // assertRegistered() news the tool up bare just to read its name, which a
+    // tool with constructor dependencies cannot survive, so the listed names
+    // are checked against one the container builds, the way the server's own
+    // tools/list resolves it.
     public function test_the_tool_is_registered_on_the_content_server(): void
     {
-        ContentServer::tools()->assertRegistered(SearchContentTool::class);
+        TestListResponse::macro('assertListsTool', function (string $name) {
+            Assert::assertContains($name, Arr::pluck($this->items, 'name'));
+
+            return $this;
+        });
+
+        ContentServer::tools()->assertListsTool(app(SearchContentTool::class)->name());
     }
 }

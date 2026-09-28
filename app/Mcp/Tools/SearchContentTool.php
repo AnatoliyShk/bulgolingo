@@ -18,6 +18,11 @@ use Laravel\Mcp\Server\Tool;
 #[Description('Finds exercises by meaning rather than by keyword, with the lessons and learning paths each match belongs to.')]
 class SearchContentTool extends Tool
 {
+    public function __construct(
+        private readonly SiteSettings $settings,
+        private readonly ExerciseSearch $search,
+    ) {}
+
     /**
      * Ranks exercises against the query's embedding, closest first, with the
      * lessons and paths holding each match so a caller can carry those uuids
@@ -27,13 +32,10 @@ class SearchContentTool extends Tool
      * A failed embedding call is reported as an error, not as nothing matched.
      * The clause stays out for the reason ListExercisesTool leaves it out: it
      * holds the answers.
-     *
-     * Dependencies arrive by method injection because a constructor
-     * dependency would break the listing, which news tools up bare.
      */
-    public function handle(Request $request, SiteSettings $settings, ExerciseSearch $search): Response|ResponseFactory
+    public function handle(Request $request): Response|ResponseFactory
     {
-        if (! $settings->embeddingSearchEnabled()) {
+        if (! $this->settings->embeddingSearchEnabled()) {
             return Response::error('Search is turned off in the site settings.');
         }
 
@@ -42,7 +44,7 @@ class SearchContentTool extends Tool
             'limit' => ['sometimes', 'integer', 'min:1', 'max:50'],
         ]);
 
-        $exercises = $search->search($arguments['query'], $arguments['limit'] ?? 10);
+        $exercises = $this->search->search($arguments['query'], $arguments['limit'] ?? 10);
 
         if ($exercises === null) {
             return Response::error('Search is unavailable: the query could not be embedded.');
@@ -54,7 +56,7 @@ class SearchContentTool extends Tool
                 'uuid' => $exercise->uuid,
                 'name' => $exercise->name,
                 'type' => $exercise->decision_type->value,
-                'similarity' => $search->similarity($exercise),
+                'similarity' => $this->search->semantic->similarity($exercise),
                 'lessons' => $exercise->lessons
                     ->map(fn (Lesson $lesson) => [
                         'uuid' => $lesson->uuid,

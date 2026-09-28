@@ -95,4 +95,15 @@ class LessonExerciseWriteRoutesTest extends TestCase
 
         $this->assertModelMissing($this->lesson);
     }
+
+    public function test_an_admin_can_create_a_lesson(): void
+    {
+        $response = $this->actingAs(User::factory()->admin()->create())
+            ->post(route('lesson.store'), ['name' => 'Numbers', 'description' => 'Counting to ten']);
+
+        $lesson = Lesson::where('name', 'Numbers')->sole();
+
+        $response->assertRedirect(route('admin.lessons.edit', $lesson));
+        $this->assertSame('Counting to ten', $lesson->description);
+    }
 }

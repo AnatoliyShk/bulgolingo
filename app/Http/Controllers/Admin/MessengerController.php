@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\MessengerName;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\MessengerRequest;
 use App\Models\Messenger;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Unique;
 use Inertia\Inertia;
 
 class MessengerController extends Controller
@@ -22,23 +20,12 @@ class MessengerController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/Messengers/Create', [
-            'users' => User::orderBy('name')->get(['id', 'name']),
-            'messengerNames' => MessengerName::options(),
-        ]);
+        return Inertia::render('Admin/Messengers/Create', $this->formOptions());
     }
 
-    public function store(Request $request)
+    public function store(MessengerRequest $request)
     {
-        $validated = $request->validate([
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-            'messenger_name' => ['required', Rule::enum(MessengerName::class)],
-            'messenger_user_id' => ['required', 'string', 'max:255', $this->uniqueAccount($request)],
-        ], [
-            'messenger_user_id.unique' => 'This messenger account is already linked to a user.',
-        ]);
-
-        Messenger::create($validated);
+        Messenger::create($request->validated());
 
         return redirect()->route('admin.messengers.index')->with('success', 'Messenger created.');
     }
@@ -47,22 +34,13 @@ class MessengerController extends Controller
     {
         return Inertia::render('Admin/Messengers/Edit', [
             'messenger' => $messenger,
-            'users' => User::orderBy('name')->get(['id', 'name']),
-            'messengerNames' => MessengerName::options(),
+            ...$this->formOptions(),
         ]);
     }
 
-    public function update(Request $request, Messenger $messenger)
+    public function update(MessengerRequest $request, Messenger $messenger)
     {
-        $validated = $request->validate([
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-            'messenger_name' => ['required', Rule::enum(MessengerName::class)],
-            'messenger_user_id' => ['required', 'string', 'max:255', $this->uniqueAccount($request)->ignore($messenger)],
-        ], [
-            'messenger_user_id.unique' => 'This messenger account is already linked to a user.',
-        ]);
-
-        $messenger->update($validated);
+        $messenger->update($request->validated());
 
         return redirect()->route('admin.messengers.index')->with('success', 'Messenger updated.');
     }
@@ -75,13 +53,15 @@ class MessengerController extends Controller
     }
 
     /**
-     * Mirrors the (messenger_name, messenger_user_id) unique index, so linking
-     * an account that is already linked shows a form error instead of failing
-     * the insert.
+     * The picker lists the create and edit forms share.
+     *
+     * @return array<string, mixed>
      */
-    private function uniqueAccount(Request $request): Unique
+    private function formOptions(): array
     {
-        return Rule::unique('messengers')
-            ->where('messenger_name', $request->string('messenger_name')->value());
+        return [
+            'users' => User::pickerOptions(),
+            'messengerNames' => MessengerName::options(),
+        ];
     }
 }
