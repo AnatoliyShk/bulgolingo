@@ -1,8 +1,15 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\HorizonServiceProvider;
+use App\Providers\LangfuseServiceProvider;
+use App\Providers\PrometheusServiceProvider;
+use App\Providers\TelescopeServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\HorizonServiceProvider::class,
-    App\Providers\PrometheusServiceProvider::class,
-    App\Providers\TelescopeServiceProvider::class,
+    AppServiceProvider::class,
+    HorizonServiceProvider::class,
+    LangfuseServiceProvider::class,
+    PrometheusServiceProvider::class,
+    TelescopeServiceProvider::class,
 ];

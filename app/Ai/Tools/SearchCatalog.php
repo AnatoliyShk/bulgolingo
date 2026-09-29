@@ -2,6 +2,7 @@
 
 namespace App\Ai\Tools;
 
+use App\Ai\Tracing\TraceAs;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Services\ExerciseSearchService;
@@ -11,6 +12,7 @@ use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
+#[TraceAs('retriever')]
 class SearchCatalog implements Tool
 {
     public function __construct(private readonly ExerciseSearchService $search) {}

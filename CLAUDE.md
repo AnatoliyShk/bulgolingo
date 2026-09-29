@@ -140,6 +140,9 @@ LearningPath ──< learning_path_lesson >── Lesson ──< exercise_lesson
 - **Lexemas**: `ExerciseObserver` links each exercise to the lexemas of its Cyrillic option words (`Exercise::syncLexemasFromOptions()`, backfilled by `BackfillLexemasFromExerciseOptions`). Per user, `user_lexema` holds the FSRS memory state (`stability`, `difficulty`, `state`, `due_at`, `reps_total`, `lapses`), and each grading appends a `review_logs` row; the `LexemaReviewGrade` job writes both through `App\Services\GradeLexemeReviewService`.
 - **Messengers** link a user to an external chat account. `messenger_name` is a `MessengerName` enum (`telegram`, `whatsapp`, `viber`), held to that list by a Postgres CHECK, and `(messenger_name, messenger_user_id)` is unique.
 
+### LLM tracing (Langfuse)
+Every Laravel AI SDK run is traced to Langfuse over OpenTelemetry (OTLP/JSON to `/api/public/otel`). `App\Ai\Tracing\LangfuseTracer` listens to the SDK's events: an agent run is an `agent` observation, each model step a `generation`, each tool call a sibling `tool`, and embeddings are `embedding` observations. `LangfuseServiceProvider` exports after the response and after each queue job, and only when `LANGFUSE_PUBLIC_KEY`/`LANGFUSE_SECRET_KEY` are set; `phpunit.xml` sets `LANGFUSE_ENABLED=false`. New agents and tools are traced without extra code; mark a tool with `#[TraceAs('retriever')]` (or another Langfuse type) when `tool` is too generic. Emails and phone numbers in inputs/outputs are masked (`LANGFUSE_MASK_PII`).
+
 ### Admin vs student controllers
 There are two `ExerciseController` classes:
 - `App\Http\Controllers\Admin\ExerciseController` — CRUD for admins, including image management.

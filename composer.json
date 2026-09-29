@@ -20,6 +20,8 @@
         "league/flysystem-aws-s3-v3": "^3.35",
         "nativephp/mobile": "^3.3",
         "opcodesio/log-viewer": "^3.24",
+        "open-telemetry/exporter-otlp": "^1.4",
+        "open-telemetry/sdk": "^1.15",
         "promphp/prometheus_client_php": "^2.15",
         "tightenco/ziggy": "^2.0",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^15.0"
