@@ -14,7 +14,6 @@ use App\Support\LearningPathFilters;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class LearningPathController extends Controller
@@ -141,24 +140,15 @@ class LearningPathController extends Controller
     }
 
     /**
-     * Wipes this user's progress on every lesson in the path by deleting the
-     * completions of all its exercises, putting the map back to its starting
-     * state. Lesson completion is derived from those rows, so nothing else
-     * needs resetting. A path hidden from this viewer is a 404, as in `show`.
+     * Wipes this user's progress on every lesson in the path, putting the map
+     * back to its starting state; ProgressService::resetLearningPath() removes
+     * the completions and keeps the stats caches in step with them. A path
+     * hidden from this viewer is a 404, as in `show`.
      */
     #[Authorize('view', 'learningPath')]
     public function restart(Request $request, LearningPath $learningPath)
     {
-        $lessonIds = $learningPath->lessons()->pluck('lessons.id');
-
-        $exerciseIds = DB::table('exercise_lesson')
-            ->whereIn('lesson_id', $lessonIds)
-            ->pluck('exercise_id');
-
-        DB::table('user_exercise_completions')
-            ->where('user_id', $request->user()->id)
-            ->whereIn('exercise_id', $exerciseIds)
-            ->delete();
+        $this->progressService->resetLearningPath($request->user(), $learningPath);
 
         return redirect()->route('learning-paths.show', $learningPath);
     }

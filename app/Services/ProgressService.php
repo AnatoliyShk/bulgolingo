@@ -7,6 +7,7 @@ use App\Jobs\ExperienceCountUpdate;
 use App\Jobs\LexemaReviewGrade;
 use App\Models\Exercise;
 use App\Models\LearningPath;
+use App\Models\Lesson;
 use App\Models\User;
 use App\Models\UserExerciseCompletion;
 use Illuminate\Container\Attributes\Singleton;
@@ -174,6 +175,33 @@ class ProgressService
         LexemaReviewGrade::dispatch($user->id, $exercise->id)->onQueue('learning_path');
 
         $this->recordPractice($user);
+    }
+
+    /**
+     * Puts $lesson back to its starting state for $user alone by removing
+     * their completions of its exercises, with the stats caches synced for
+     * each. Returns how many completions were removed.
+     */
+    public function resetLesson(User $user, Lesson $lesson): int
+    {
+        return UserExerciseCompletion::clear($user, $lesson->exercises()->pluck('exercises.id'));
+    }
+
+    /**
+     * Puts every lesson of $learningPath back to its starting state for $user
+     * alone, as resetLesson() does for one. An exercise the path shares with
+     * another path is reset there too, since completion belongs to the
+     * exercise rather than the path it was reached through.
+     */
+    public function resetLearningPath(User $user, LearningPath $learningPath): int
+    {
+        $exerciseIds = DB::table('learning_path_lesson as lpl')
+            ->join('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
+            ->where('lpl.learning_path_id', $learningPath->getKey())
+            ->distinct()
+            ->pluck('el.exercise_id');
+
+        return UserExerciseCompletion::clear($user, $exerciseIds);
     }
 
     /**

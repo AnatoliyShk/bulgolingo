@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningPath;
 use App\Models\Lesson;
+use App\Services\ProgressService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -62,14 +63,14 @@ class LessonController extends Controller
         ]);
     }
 
-    public function restart(Lesson $lesson)
+    /**
+     * Wipes this user's progress on the lesson and sends them to its first
+     * exercise; ProgressService::resetLesson() removes the completions and
+     * keeps the stats caches in step with them.
+     */
+    public function restart(Request $request, Lesson $lesson, ProgressService $progressService)
     {
-        $exerciseIds = $lesson->exercises()->pluck('exercises.id');
-
-        DB::table('user_exercise_completions')
-            ->where('user_id', auth()->id())
-            ->whereIn('exercise_id', $exerciseIds)
-            ->delete();
+        $progressService->resetLesson($request->user(), $lesson);
 
         $firstExercise = $lesson->exercises()->first();
 
