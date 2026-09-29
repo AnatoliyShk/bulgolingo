@@ -178,6 +178,19 @@ class ProgressService
     }
 
     /**
+     * Where the "continue" button goes once $lesson is finished inside
+     * $learningPath: the first exercise of the path's next lesson. Null when
+     * no path is known, when this was the path's last lesson, or when the next
+     * lesson has no exercises, and the button then leads back to the path.
+     */
+    public function nextExerciseIdAfterLesson(Lesson $lesson, ?LearningPath $learningPath): ?int
+    {
+        $nextLessonId = $learningPath ? $lesson->nextLessonId($learningPath) : null;
+
+        return $nextLessonId ? Lesson::firstExerciseIdIn($nextLessonId) : null;
+    }
+
+    /**
      * Puts $lesson back to its starting state for $user alone by removing
      * their completions of its exercises, with the stats caches synced for
      * each. Returns how many completions were removed.
