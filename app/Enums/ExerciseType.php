@@ -3,6 +3,7 @@
 namespace App\Enums;
 
 use App\Rules\OptionIndex;
+use App\Support\ClauseField;
 
 enum ExerciseType: string
 {
@@ -62,73 +63,79 @@ enum ExerciseType: string
     }
 
     /**
-     * The empty clause an admin fills in: one entry per field dataRules()
-     * requires, with the answer set to a valid choice and the lists sized for
-     * the form. A word-pair clause opens at the minimum pair count and without
-     * an order, which leaves the columns to be shuffled later.
+     * The one definition of every type's clause: each key with its validation
+     * rules, and each field an admin fills in with the value a blank clause
+     * starts it at. dataRules() and defaultClause() are both read from here,
+     * so changing a shape is a single edit.
+     *
+     * Answers start as a valid choice and lists at the size the form needs; a
+     * word-pair clause opens at the minimum pair count and without an order,
+     * which leaves the columns to be shuffled later.
+     *
+     * @return array<string, ClauseField>
+     */
+    private function clauseFields(): array
+    {
+        $explanation = ClauseField::withDefault('', ['required', 'string']);
+
+        return match ($this) {
+            self::MULTIPLE_CHOICE => [
+                'pairs' => ClauseField::withDefault(
+                    array_fill(0, self::MIN_WORD_PAIRS, ['', '']),
+                    ['required', 'array', 'min:'.self::MIN_WORD_PAIRS],
+                ),
+                'pairs.*' => ClauseField::rulesOnly(['required', 'array', 'size:2']),
+                'pairs.*.0' => ClauseField::rulesOnly(['required', 'string', 'distinct:ignore_case']),
+                'pairs.*.1' => ClauseField::rulesOnly(['required', 'string', 'distinct:ignore_case']),
+                'order' => ClauseField::rulesOnly(['sometimes', 'array:left,right']),
+                'order.left' => ClauseField::rulesOnly(['sometimes', 'array']),
+                'order.left.*' => ClauseField::rulesOnly(['integer', 'min:0', 'distinct']),
+                'order.right' => ClauseField::rulesOnly(['sometimes', 'array']),
+                'order.right.*' => ClauseField::rulesOnly(['integer', 'min:0', 'distinct']),
+                'explanation' => $explanation,
+            ],
+            self::TRUE_FALSE => [
+                'sentence' => ClauseField::withDefault('', ['required', 'string']),
+                'correct_option' => ClauseField::withDefault(true, ['required', 'boolean']),
+                'explanation' => $explanation,
+            ],
+            self::FILL_IN_THE_BLANK => [
+                'sentence' => ClauseField::withDefault('', ['required', 'string']),
+                'options' => ClauseField::withDefault(['', '', '', ''], ['required', 'array']),
+                'correct_option' => ClauseField::withDefault(0, ['required', 'integer', new OptionIndex]),
+                'explanation' => $explanation,
+            ],
+            self::IMAGE_MATCHING => [
+                'options' => ClauseField::withDefault(['', '', '', ''], ['required', 'array', 'min:2']),
+                'options.*' => ClauseField::rulesOnly(['required', 'string']),
+                'correct_option' => ClauseField::withDefault(0, ['required', 'integer', new OptionIndex]),
+                'explanation' => $explanation,
+            ],
+        };
+    }
+
+    /**
+     * The empty clause an admin fills in: every field clauseFields() gives a
+     * blank value, in declaration order.
      *
      * @return array<string, mixed>
      */
     public function defaultClause(): array
     {
-        return match ($this) {
-            self::MULTIPLE_CHOICE => [
-                'pairs' => array_fill(0, self::MIN_WORD_PAIRS, ['', '']),
-                'explanation' => '',
-            ],
-            self::TRUE_FALSE => [
-                'sentence' => '',
-                'correct_option' => true,
-                'explanation' => '',
-            ],
-            self::FILL_IN_THE_BLANK => [
-                'sentence' => '',
-                'options' => ['', '', '', ''],
-                'correct_option' => 0,
-                'explanation' => '',
-            ],
-            self::IMAGE_MATCHING => [
-                'options' => ['', '', '', ''],
-                'correct_option' => 0,
-                'explanation' => '',
-            ],
-        };
+        return array_map(
+            fn (ClauseField $field) => $field->default,
+            array_filter($this->clauseFields(), fn (ClauseField $field) => $field->inBlankClause),
+        );
     }
 
+    /**
+     * The clause's validation rules, keyed as in clauseFields().
+     *
+     * @return array<string, array<int, mixed>>
+     */
     public function dataRules(): array
     {
-        return match ($this) {
-            self::MULTIPLE_CHOICE => [
-                'pairs' => ['required', 'array', 'min:'.self::MIN_WORD_PAIRS],
-                'pairs.*' => ['required', 'array', 'size:2'],
-                'pairs.*.0' => ['required', 'string', 'distinct:ignore_case'],
-                'pairs.*.1' => ['required', 'string', 'distinct:ignore_case'],
-                'order' => ['sometimes', 'array:left,right'],
-                'order.left' => ['sometimes', 'array'],
-                'order.left.*' => ['integer', 'min:0', 'distinct'],
-                'order.right' => ['sometimes', 'array'],
-                'order.right.*' => ['integer', 'min:0', 'distinct'],
-                'explanation' => ['required', 'string'],
-            ],
-            self::TRUE_FALSE => [
-                'sentence' => ['required', 'string'],
-                'correct_option' => ['required', 'boolean'],
-                'explanation' => ['required', 'string'],
-            ],
-            self::FILL_IN_THE_BLANK => [
-                'sentence' => ['required', 'string'],
-                'options' => ['required', 'array'],
-                'correct_option' => ['required', 'integer', new OptionIndex],
-                'explanation' => ['required', 'string'],
-            ],
-            self::IMAGE_MATCHING => [
-                'options' => ['required', 'array', 'min:2'],
-                'options.*' => ['required', 'string'],
-                'correct_option' => ['required', 'integer', new OptionIndex],
-                'explanation' => ['required', 'string'],
-            ],
-            default => [],
-        };
+        return array_map(fn (ClauseField $field) => $field->rules, $this->clauseFields());
     }
 
     /**

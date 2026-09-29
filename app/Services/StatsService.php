@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\DB;
 #[Singleton]
 class StatsService
 {
-    public function __construct(private readonly ProgressService $progressService) {}
+    public function __construct(
+        private readonly ProgressService $progressService,
+        private readonly CompletedLessonStatsCacheService $lessonStatsCache,
+        private readonly ExerciseActivityCacheService $activityCache,
+    ) {}
 
     public function build(User $user): array
     {
@@ -71,12 +75,12 @@ class StatsService
      */
     private function completedLessonStats(User $user): array
     {
-        $stats = CompletedLessonStatsCacheService::get($user->id);
+        $stats = $this->lessonStatsCache->get($user->id);
 
         if ($stats === null) {
             $stats = $this->progressService->completedLessonStats($user);
 
-            CompletedLessonStatsCacheService::warm($user->id, $stats);
+            $this->lessonStatsCache->warm($user->id, $stats);
         }
 
         return $stats;
@@ -110,12 +114,12 @@ class StatsService
      */
     private function exerciseActivityCounts(int $userId, Collection $days): Collection
     {
-        $counts = ExerciseActivityCacheService::get($userId, $days);
+        $counts = $this->activityCache->get($userId, $days);
 
         if ($counts === null) {
             $counts = $this->exerciseActivityCountsFromDatabase($userId, $days);
 
-            ExerciseActivityCacheService::warm($userId, $days, $counts);
+            $this->activityCache->warm($userId, $days, $counts);
         }
 
         return $counts;

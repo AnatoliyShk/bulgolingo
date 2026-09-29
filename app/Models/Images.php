@@ -28,6 +28,28 @@ class Images extends Model
     }
 
     /**
+     * Deletes one object from the bucket. Avatars live on this disk too but
+     * have no row of their own, so they are deleted by path through here.
+     */
+    public static function deleteFile(string $path): void
+    {
+        Storage::disk(self::DISK)->delete($path);
+    }
+
+    /**
+     * Deletes the image's object and then its row; the row's `exercise_image`
+     * links go with it through the cascade. The object goes first, so a failed
+     * bucket delete leaves the row in place to retry from instead of an object
+     * nothing points to any more.
+     */
+    public function deleteWithFile(): void
+    {
+        static::deleteFile($this->filepath);
+
+        $this->delete();
+    }
+
+    /**
      * One-hour signed URL, as the bucket is private.
      */
     public function getUrlAttribute(): string

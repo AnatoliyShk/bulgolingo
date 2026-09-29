@@ -88,6 +88,25 @@ class User extends Authenticatable implements OAuthenticatable
         return Storage::disk(Images::DISK)->temporaryUrl($this->avatar_path, now()->addHour());
     }
 
+    /**
+     * Points the avatar at $path, or clears it with null, and deletes the
+     * object it pointed at before. The old object is removed rather than left
+     * behind, because nothing else ever refers to it once the column moves
+     * on: keeping it would grow the bucket by one orphan per change with no
+     * way to find them again. It goes only after the column is saved, so a
+     * failed save never leaves the user pointing at a deleted picture.
+     */
+    public function replaceAvatar(?string $path): void
+    {
+        $previous = $this->avatar_path;
+
+        $this->forceFill(['avatar_path' => $path])->save();
+
+        if ($previous) {
+            Images::deleteFile($previous);
+        }
+    }
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);

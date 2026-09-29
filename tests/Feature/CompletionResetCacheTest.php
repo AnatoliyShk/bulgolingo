@@ -101,7 +101,7 @@ class CompletionResetCacheTest extends TestCase
         $multipleChoice = $this->exercise(ExerciseType::MULTIPLE_CHOICE);
 
         $days = $this->days();
-        ExerciseActivityCacheService::warm($user->id, $days, collect(ExerciseType::cases())->mapWithKeys(
+        app(ExerciseActivityCacheService::class)->warm($user->id, $days, collect(ExerciseType::cases())->mapWithKeys(
             fn ($type) => [$type->value => $days->mapWithKeys(fn ($d) => [$d => 0])]
         ));
 
@@ -110,14 +110,14 @@ class CompletionResetCacheTest extends TestCase
         $this->travelBack();
         UserExerciseCompletion::record($user, $multipleChoice);
 
-        CompletedLessonStatsCacheService::warm($user->id, ['completed_lessons' => 1, 'total_exercises' => 2, 'completed_paths' => 1]);
+        app(CompletedLessonStatsCacheService::class)->warm($user->id, ['completed_lessons' => 1, 'total_exercises' => 2, 'completed_paths' => 1]);
 
         return $user;
     }
 
     private function activityTotal(User $user): int
     {
-        return ExerciseActivityCacheService::get($user->id, $this->days())
+        return app(ExerciseActivityCacheService::class)->get($user->id, $this->days())
             ->sum(fn (Collection $perDay) => $perDay->sum());
     }
 
@@ -145,7 +145,7 @@ class CompletionResetCacheTest extends TestCase
         $user = $this->learnerWithWarmCaches();
         $days = $this->days()->values();
 
-        $before = ExerciseActivityCacheService::get($user->id, $days);
+        $before = app(ExerciseActivityCacheService::class)->get($user->id, $days);
         $this->assertSame(1, $before['true_false']->values()[$days->count() - 2]);
         $this->assertSame(1, $before['multiple_choice']->last());
 
@@ -153,7 +153,7 @@ class CompletionResetCacheTest extends TestCase
 
         $this->assertDatabaseMissing('user_exercise_completions', ['user_id' => $user->id]);
         $this->assertSame(0, $this->activityTotal($user));
-        $this->assertNull(CompletedLessonStatsCacheService::get($user->id));
+        $this->assertNull(app(CompletedLessonStatsCacheService::class)->get($user->id));
 
         $this->actingAs($user)->get(route('stats.show'))->assertInertia(fn (Assert $page) => $page
             ->where('completedExercises', 0)
@@ -193,7 +193,7 @@ class CompletionResetCacheTest extends TestCase
         $this->assertSame(2, $this->activityTotal($other));
         $this->assertSame(
             ['completed_lessons' => 1, 'total_exercises' => 2, 'completed_paths' => 1],
-            CompletedLessonStatsCacheService::get($other->id)
+            app(CompletedLessonStatsCacheService::class)->get($other->id)
         );
     }
 }

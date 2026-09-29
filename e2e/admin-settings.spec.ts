@@ -30,7 +30,10 @@ async function openSettings(page: Page): Promise<void> {
 
 const toggle = (page: Page) => page.getByRole('switch', { name: 'Search learning paths by meaning' });
 const similarity = (page: Page) => page.getByLabel('Minimum similarity');
-const save = (page: Page) => page.getByRole('button', { name: 'Save' });
+// The running-line form shares the page and has its own Save button, status
+// and Saving… state, so every locator for this form's controls is held to it.
+const settingsForm = (page: Page) => page.locator('form').filter({ has: page.getByRole('heading', { name: 'Embedding search' }) });
+const save = (page: Page) => settingsForm(page).getByRole('button', { name: 'Save', exact: true });
 
 // Saving for real would change the setting under every spec running in
 // parallel, the search spec among them, so a save that turns search off is
@@ -120,7 +123,7 @@ test.describe('Admin settings page', () => {
         await similarity(page).fill('0.65');
         await save(page).click();
 
-        await expect(page.getByRole('status')).toHaveText('Saved.');
+        await expect(settingsForm(page).getByRole('status')).toHaveText('Saved.');
         expect(payloads).toHaveLength(1);
         expect(payloads[0]).toMatchObject({ embedding_min_similarity: 0.65 });
         expect(typeof payloads[0].embedding_search_enabled).toBe('boolean');
@@ -136,7 +139,7 @@ test.describe('Admin settings page', () => {
         await save(page).click();
 
         expect(await similarity(page).evaluate((input: HTMLInputElement) => input.validity.rangeOverflow)).toBe(true);
-        await expect(page.getByRole('status')).toHaveCount(0);
+        await expect(settingsForm(page).getByRole('status')).toHaveCount(0);
         expect(payloads).toHaveLength(0);
     });
 
@@ -152,7 +155,7 @@ test.describe('Admin settings page', () => {
 
         await expect(page.getByText('The minimum similarity must be between 0 and 1.')).toBeVisible();
         await expect(similarity(page)).toHaveAttribute('aria-invalid', 'true');
-        await expect(page.getByRole('status')).toHaveCount(0);
+        await expect(settingsForm(page).getByRole('status')).toHaveCount(0);
     });
 
     test('disables the save button while saving', async ({ page }) => {
@@ -161,7 +164,7 @@ test.describe('Admin settings page', () => {
 
         await save(page).click();
 
-        await expect(page.getByRole('button', { name: 'Saving…' })).toBeDisabled();
+        await expect(settingsForm(page).getByRole('button', { name: 'Saving…' })).toBeDisabled();
         await expect(save(page)).toBeEnabled();
     });
 });

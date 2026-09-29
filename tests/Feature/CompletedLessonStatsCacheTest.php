@@ -77,7 +77,7 @@ class CompletedLessonStatsCacheTest extends TestCase
 
         $this->assertSame(
             ['completed_lessons' => 1, 'total_exercises' => 1, 'completed_paths' => 1],
-            CompletedLessonStatsCacheService::get($user->id)
+            app(CompletedLessonStatsCacheService::class)->get($user->id)
         );
     }
 
@@ -86,7 +86,7 @@ class CompletedLessonStatsCacheTest extends TestCase
         $user = User::factory()->create();
 
         // Real DB truth: nothing completed.
-        CompletedLessonStatsCacheService::warm($user->id, ['completed_lessons' => 5, 'total_exercises' => 9, 'completed_paths' => 3]);
+        app(CompletedLessonStatsCacheService::class)->warm($user->id, ['completed_lessons' => 5, 'total_exercises' => 9, 'completed_paths' => 3]);
 
         $response = $this->actingAs($user)->get(route('stats.show'));
 
@@ -113,7 +113,7 @@ class CompletedLessonStatsCacheTest extends TestCase
             now()->addDay()
         );
 
-        $this->assertNull(CompletedLessonStatsCacheService::get($user->id));
+        $this->assertNull(app(CompletedLessonStatsCacheService::class)->get($user->id));
 
         $response = $this->actingAs($user)->get(route('stats.show'));
 
@@ -132,11 +132,11 @@ class CompletedLessonStatsCacheTest extends TestCase
         $lesson = $this->enrolledLesson($user);
         $exercise = $this->exercise($lesson);
 
-        CompletedLessonStatsCacheService::warm($user->id, ['completed_lessons' => 0, 'total_exercises' => 0, 'completed_paths' => 0]);
+        app(CompletedLessonStatsCacheService::class)->warm($user->id, ['completed_lessons' => 0, 'total_exercises' => 0, 'completed_paths' => 0]);
 
         $this->actingAs($user)->post(route('exercise.complete', $exercise));
 
-        $this->assertNull(CompletedLessonStatsCacheService::get($user->id));
+        $this->assertNull(app(CompletedLessonStatsCacheService::class)->get($user->id));
 
         $response = $this->actingAs($user)->get(route('stats.show'));
 

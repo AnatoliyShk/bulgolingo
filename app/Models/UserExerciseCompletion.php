@@ -33,7 +33,7 @@ class UserExerciseCompletion extends Pivot
         ]) > 0;
 
         if ($recorded) {
-            CompletionCacheSyncService::recorded(
+            app(CompletionCacheSyncService::class)->recorded(
                 $user->getKey(),
                 $exercise->getKey(),
                 $completedAt->toDateString(),
@@ -80,8 +80,10 @@ class UserExerciseCompletion extends Pivot
             ->whereIn('id', $removed->pluck('exercise_id'))
             ->pluck('decision_type', 'id');
 
+        $sync = app(CompletionCacheSyncService::class);
+
         foreach ($removed as $row) {
-            CompletionCacheSyncService::removed(
+            $sync->removed(
                 $user->getKey(),
                 $row->exercise_id,
                 Carbon::parse($row->created_at)->toDateString(),

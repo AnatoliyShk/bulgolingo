@@ -10,6 +10,7 @@ use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
 use App\Models\UserExerciseCompletion;
+use Closure;
 use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -31,23 +32,25 @@ class ProgressService
      */
     public function exerciseProgress(Exercise $exercise, User $user): array
     {
-        $row = DB::table('exercise_lesson as el')
-            ->leftJoin('user_exercise_completions as uec', function ($join) use ($user) {
-                $join->on('uec.exercise_id', '=', 'el.exercise_id')
-                    ->where('uec.user_id', $user->getKey());
-            })
-            ->where('el.lesson_id', function ($q) use ($exercise) {
-                $q->selectRaw('min(lesson_id)')
-                    ->from('exercise_lesson')
-                    ->where('exercise_id', $exercise->getKey());
-            })
-            ->selectRaw('count(el.exercise_id) as total, count(uec.exercise_id) as completed')
-            ->first();
+        $count = $this->lessonCounts($user, fn ($q) => $q
+            ->selectRaw('min(lesson_id)')
+            ->from('exercise_lesson')
+            ->where('exercise_id', $exercise->getKey())
+        )->first();
 
         return [
-            'total' => (int) $row->total,
-            'completed' => (int) $row->completed,
+            'total' => $count->total ?? 0,
+            'completed' => $count->completed ?? 0,
         ];
+    }
+
+    /**
+     * Whether the user has finished $lesson. A guest has finished nothing.
+     */
+    public function isLessonComplete(Lesson $lesson, ?User $user): bool
+    {
+        return $user !== null
+            && self::isComplete($this->lessonCounts($user, [$lesson->getKey()])->get($lesson->getKey()));
     }
 
     /**
@@ -60,38 +63,15 @@ class ProgressService
      */
     public function lessonCompletionMap(LearningPath $learningPath, ?User $user): array
     {
-        $lessonIds = DB::table('learning_path_lesson')
-            ->where('learning_path_id', $learningPath->getKey())
-            ->pluck('lesson_id')
-            ->map(fn ($id) => (int) $id)
-            ->all();
+        $lessonIds = $this->lessonIdsByPath([$learningPath->getKey()])->get($learningPath->getKey(), collect());
 
-        $map = array_fill_keys($lessonIds, false);
-
-        if ($user === null || $map === []) {
-            return $map;
+        if ($user === null || $lessonIds->isEmpty()) {
+            return $lessonIds->mapWithKeys(fn (int $id) => [$id => false])->all();
         }
 
-        $rows = DB::table('exercise_lesson as el')
-            ->leftJoin('user_exercise_completions as uec', function ($join) use ($user) {
-                $join->on('uec.exercise_id', '=', 'el.exercise_id')
-                    ->where('uec.user_id', $user->getKey());
-            })
-            ->whereIn('el.lesson_id', $lessonIds)
-            ->groupBy('el.lesson_id')
-            ->select([
-                'el.lesson_id',
-                DB::raw('count(el.exercise_id) as total'),
-                DB::raw('count(uec.exercise_id) as completed'),
-            ])
-            ->get();
+        $counts = $this->lessonCounts($user, $lessonIds->all());
 
-        foreach ($rows as $row) {
-            $total = (int) $row->total;
-            $map[(int) $row->lesson_id] = $total > 0 && $total === (int) $row->completed;
-        }
-
-        return $map;
+        return $lessonIds->mapWithKeys(fn (int $id) => [$id => self::isComplete($counts->get($id))])->all();
     }
 
     /**
@@ -103,42 +83,19 @@ class ProgressService
      */
     public function completedLessonStats(User $user): array
     {
-        $rows = DB::table('learning_path_user as lpu')
-            ->join('learning_path_lesson as lpl', 'lpl.learning_path_id', '=', 'lpu.learning_path_id')
-            ->leftJoin('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
-            ->leftJoin('user_exercise_completions as uec', function ($join) use ($user) {
-                $join->on('uec.exercise_id', '=', 'el.exercise_id')
-                    ->where('uec.user_id', $user->getKey());
-            })
-            ->where('lpu.user_id', $user->getKey())
-            ->groupBy('lpu.learning_path_id', 'lpl.lesson_id')
-            ->select([
-                'lpu.learning_path_id',
-                'lpl.lesson_id',
-                DB::raw('count(el.exercise_id) as total'),
-                DB::raw('count(uec.exercise_id) as completed'),
-            ])
-            ->get();
+        $lessonIdsByPath = $this->lessonIdsByPath(
+            DB::table('learning_path_user')->where('user_id', $user->getKey())->pluck('learning_path_id')->all()
+        );
 
-        $exercisesInCompletedLesson = [];
-        $pathIsComplete = [];
-
-        foreach ($rows as $row) {
-            $total = (int) $row->total;
-            $lessonIsComplete = $total > 0 && $total === (int) $row->completed;
-            $pathId = (int) $row->learning_path_id;
-
-            $pathIsComplete[$pathId] = ($pathIsComplete[$pathId] ?? true) && $lessonIsComplete;
-
-            if ($lessonIsComplete) {
-                $exercisesInCompletedLesson[(int) $row->lesson_id] = $total;
-            }
-        }
+        $completedLessons = $this->lessonCounts($user, $lessonIdsByPath->flatten()->unique()->values()->all())
+            ->filter(fn (object $count) => self::isComplete($count));
 
         return [
-            'completed_lessons' => count($exercisesInCompletedLesson),
-            'total_exercises' => array_sum($exercisesInCompletedLesson),
-            'completed_paths' => count(array_filter($pathIsComplete)),
+            'completed_lessons' => $completedLessons->count(),
+            'total_exercises' => $completedLessons->sum('total'),
+            'completed_paths' => $lessonIdsByPath
+                ->filter(fn (Collection $lessonIds) => $lessonIds->every(fn (int $id) => $completedLessons->has($id)))
+                ->count(),
         ];
     }
 
@@ -158,6 +115,23 @@ class ProgressService
                 ->orderByRaw("coalesce(learning_path_user.created_at, '1970-01-01') desc")
                 ->get()
         );
+    }
+
+    /**
+     * The lesson the welcome page's "continue" button resumes: the first
+     * unfinished lesson of the user's most recently enrolled unfinished path,
+     * the same path the profile shows as active. Null for a guest, or when
+     * every enrolled path is finished.
+     */
+    public function continueLessonId(?User $user): ?int
+    {
+        if ($user === null) {
+            return null;
+        }
+
+        return $this->enrolledPathsWithProgress($user)
+            ->firstWhere('is_finished', false)
+            ?->continue_lesson_id;
     }
 
     /**
@@ -276,52 +250,83 @@ class ProgressService
 
     /**
      * Per path: its lessons in order, each flagged complete for the user, and
-     * the exercise types it covers.
+     * the exercise types it covers. A path with no lessons is absent.
      *
      * @param  array<int, int>  $pathIds
      * @return Collection<int, object> keyed by learning path id
      */
     private function lessonProgress(User $user, array $pathIds): Collection
     {
-        return DB::table('learning_path_lesson as lpl')
-            ->leftJoin('exercise_lesson as el', 'el.lesson_id', '=', 'lpl.lesson_id')
-            ->leftJoin('exercises as e', 'e.id', '=', 'el.exercise_id')
+        $lessonIdsByPath = $this->lessonIdsByPath($pathIds);
+        $counts = $this->lessonCounts($user, $lessonIdsByPath->flatten()->unique()->values()->all());
+        $typesByPath = LearningPath::exerciseTypesById($pathIds);
+
+        return $lessonIdsByPath->map(fn (Collection $lessonIds, int $pathId) => (object) [
+            'lessons' => $lessonIds->map(fn (int $id) => (object) [
+                'lesson_id' => $id,
+                'is_complete' => self::isComplete($counts->get($id)),
+            ]),
+            'exercise_types' => $typesByPath->get($pathId, collect())
+                ->map(fn (string $type) => ExerciseType::tryFrom($type))
+                ->filter()
+                ->values(),
+        ]);
+    }
+
+    /**
+     * The lesson ids of each of $pathIds in lesson-id order, the order a path
+     * runs in, keyed by path id. A path with no lessons is absent.
+     *
+     * @param  array<int, int>  $pathIds
+     * @return Collection<int, Collection<int, int>>
+     */
+    private function lessonIdsByPath(array $pathIds): Collection
+    {
+        return DB::table('learning_path_lesson')
+            ->whereIn('learning_path_id', $pathIds)
+            ->orderBy('lesson_id')
+            ->get(['learning_path_id', 'lesson_id'])
+            ->groupBy(fn ($row) => (int) $row->learning_path_id)
+            ->map(fn (Collection $rows) => $rows->map(fn ($row) => (int) $row->lesson_id)->values());
+    }
+
+    /**
+     * Each lesson's exercise count and how many of those the user has
+     * completed, keyed by lesson id: the one query every completion check in
+     * this service goes through. $lessonIds is an id list or a subquery that
+     * selects them. A lesson with no exercises has no entry.
+     *
+     * @param  array<int, int>|Closure  $lessonIds
+     * @return Collection<int, object{total: int, completed: int}>
+     */
+    private function lessonCounts(User $user, array|Closure $lessonIds): Collection
+    {
+        return DB::table('exercise_lesson as el')
             ->leftJoin('user_exercise_completions as uec', function ($join) use ($user) {
                 $join->on('uec.exercise_id', '=', 'el.exercise_id')
                     ->where('uec.user_id', $user->getKey());
             })
-            ->whereIn('lpl.learning_path_id', $pathIds)
-            ->groupBy('lpl.learning_path_id', 'lpl.lesson_id', 'e.decision_type')
-            ->orderBy('lpl.lesson_id')
+            ->whereIn('el.lesson_id', $lessonIds)
+            ->groupBy('el.lesson_id')
             ->select([
-                'lpl.learning_path_id',
-                'lpl.lesson_id',
-                'e.decision_type',
+                'el.lesson_id',
                 DB::raw('count(el.exercise_id) as total'),
                 DB::raw('count(uec.exercise_id) as completed'),
             ])
             ->get()
-            ->groupBy(fn ($row) => (int) $row->learning_path_id)
-            ->map(fn ($rows) => (object) [
-                'lessons' => $rows
-                    ->groupBy(fn ($row) => (int) $row->lesson_id)
-                    ->map(function ($lessonRows, $lessonId) {
-                        $total = $lessonRows->sum(fn ($row) => (int) $row->total);
-                        $completed = $lessonRows->sum(fn ($row) => (int) $row->completed);
+            ->mapWithKeys(fn ($row) => [(int) $row->lesson_id => (object) [
+                'total' => (int) $row->total,
+                'completed' => (int) $row->completed,
+            ]]);
+    }
 
-                        return (object) [
-                            'lesson_id' => (int) $lessonId,
-                            'is_complete' => $total > 0 && $total === $completed,
-                        ];
-                    })
-                    ->values(),
-                'exercise_types' => $rows
-                    ->pluck('decision_type')
-                    ->filter()
-                    ->unique()
-                    ->map(fn ($type) => ExerciseType::tryFrom($type))
-                    ->filter()
-                    ->values(),
-            ]);
+    /**
+     * The completion rule, given a lesson's entry from lessonCounts(): a lesson
+     * is complete when it has exercises and the user has completed every one
+     * of them. A lesson with no entry has no exercises, so it is never done.
+     */
+    private static function isComplete(?object $count): bool
+    {
+        return $count !== null && $count->total > 0 && $count->completed === $count->total;
     }
 }

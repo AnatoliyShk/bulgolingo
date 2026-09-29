@@ -17,8 +17,7 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\TutorController;
-use App\Services\SiteSettingsService;
-use Illuminate\Http\Request;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Prometheus\CollectorRegistry;
@@ -31,25 +30,7 @@ Route::get('/metrics', function (CollectorRegistry $registry) {
         ->header('Content-Type', RenderTextFormat::MIME_TYPE);
 });
 
-Route::get('/', function (Request $request) {
-    $continueLessonId = null;
-    if (auth()->check()) {
-        $path = auth()->user()->learningPaths()
-            ->with(['lessons' => fn ($q) => $q->orderBy('lessons.id')])
-            ->first();
-        if ($path) {
-            $firstUncompleted = $path->lessons->first(fn ($l) => ! $l->pivot->is_completed);
-            $continueLessonId = $firstUncompleted?->id;
-        }
-    }
-
-    return Inertia::render('Welcome', [
-        'appName' => config('app.name'),
-        'continueLessonId' => $continueLessonId,
-        'tutorEnabled' => app(SiteSettingsService::class)->tutorBotEnabled(),
-        'ticker' => app(SiteSettingsService::class)->marqueeWords(),
-    ]);
-});
+Route::get('/', WelcomeController::class);
 
 /*
  * The tutor is public because it answers visitors who have not signed up yet,

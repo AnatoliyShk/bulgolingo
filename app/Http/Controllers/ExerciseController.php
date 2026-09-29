@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
 use App\Services\ProgressService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ExerciseController extends Controller
@@ -14,9 +15,9 @@ class ExerciseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Exercise $exercise)
+    public function show(Request $request, Exercise $exercise)
     {
-        $user = auth()->user();
+        $user = $request->user();
 
         $progress = $this->progressService->exerciseProgress($exercise, $user);
 
@@ -34,9 +35,9 @@ class ExerciseController extends Controller
      * lesson-complete page once none is left, or to the dashboard when the
      * exercise belongs to no lesson.
      */
-    public function complete(Exercise $exercise)
+    public function complete(Request $request, Exercise $exercise)
     {
-        $user = auth()->user();
+        $user = $request->user();
         $lesson = $exercise->lessons()->first();
 
         $this->progressService->completeExercise($user, $exercise);

@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Enums\ExerciseType;
+use Illuminate\Container\Attributes\Singleton;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * Per-type/day completion counts for the stats page's activity chart, held as
@@ -18,8 +19,11 @@ use Illuminate\Support\Facades\Cache;
  *
  * The connection is used directly rather than through the cache repository:
  * hashes are outside its API, and the hit-rate metric is instead recorded once
- * per read, which is what the dashboard means by a hit anyway.
+ * per read, which is what the dashboard means by a hit anyway. That makes this
+ * the one cache service whose injected store has to be backed by Redis; the
+ * binding in AppServiceProvider gives it the `redis` store.
  */
+#[Singleton]
 class ExerciseActivityCacheService
 {
     private const TTL_DAYS = 15;
@@ -38,6 +42,11 @@ class ExerciseActivityCacheService
         return n
         LUA;
 
+    public function __construct(
+        private readonly Repository $store,
+        private readonly CacheHitRateCacheService $hitRate,
+    ) {}
+
     public static function key(int $userId): string
     {
         return "user:{$userId}:activity";
@@ -54,22 +63,22 @@ class ExerciseActivityCacheService
      *
      * @return Collection<string, Collection<int, int>>|null keyed by ExerciseType value, one count per day (same order as $days)
      */
-    public static function get(int $userId, Collection $days): ?Collection
+    public function get(int $userId, Collection $days): ?Collection
     {
         $types = ExerciseType::cases();
 
         $fields = collect($types)->crossJoin($days)
             ->map(fn ($pair) => static::field($pair[1], $pair[0]->value));
 
-        $cached = array_values((array) static::connection()->hmget(static::prefixed($userId), $fields->all()));
+        $cached = array_values((array) $this->connection()->hmget($this->prefixed($userId), $fields->all()));
 
         if (count($cached) !== $fields->count() || in_array(false, $cached, true) || in_array(null, $cached, true)) {
-            CacheHitRateCacheService::recordMiss();
+            $this->hitRate->recordMiss();
 
             return null;
         }
 
-        CacheHitRateCacheService::recordHit();
+        $this->hitRate->recordHit();
 
         $byField = $fields->values()->combine($cached);
 
@@ -86,7 +95,7 @@ class ExerciseActivityCacheService
      *
      * @param  Collection<string, Collection<string, int>>  $countsByTypeAndDay  keyed by ExerciseType value, then by day
      */
-    public static function warm(int $userId, Collection $days, Collection $countsByTypeAndDay): void
+    public function warm(int $userId, Collection $days, Collection $countsByTypeAndDay): void
     {
         $values = collect(ExerciseType::cases())->crossJoin($days)
             ->mapWithKeys(function ($pair) use ($countsByTypeAndDay) {
@@ -98,23 +107,23 @@ class ExerciseActivityCacheService
             })
             ->all();
 
-        $key = static::prefixed($userId);
+        $key = $this->prefixed($userId);
 
-        static::connection()->transaction(function ($tx) use ($key, $values) {
+        $this->connection()->transaction(function ($tx) use ($key, $values) {
             $tx->del($key);
             $tx->hmset($key, $values);
             $tx->expire($key, self::TTL_DAYS * 86400);
         });
     }
 
-    public static function increment(int $userId, string $day, string $type): void
+    public function increment(int $userId, string $day, string $type): void
     {
-        static::adjust($userId, $day, $type, 1);
+        $this->adjust($userId, $day, $type, 1);
     }
 
-    public static function decrement(int $userId, string $day, string $type): void
+    public function decrement(int $userId, string $day, string $type): void
     {
-        static::adjust($userId, $day, $type, -1);
+        $this->adjust($userId, $day, $type, -1);
     }
 
     /**
@@ -122,19 +131,14 @@ class ExerciseActivityCacheService
      * completion would publish a hash that reads as a full, mostly-zero
      * window, and the next stats view would trust it over the database.
      */
-    private static function adjust(int $userId, string $day, string $type, int $by): void
+    private function adjust(int $userId, string $day, string $type, int $by): void
     {
-        static::connection()->eval(static::ADJUST_SCRIPT, 1, static::prefixed($userId), static::field($day, $type), $by);
+        $this->connection()->eval(static::ADJUST_SCRIPT, 1, $this->prefixed($userId), static::field($day, $type), $by);
     }
 
-    private static function connection()
+    private function connection()
     {
-        return static::store()->getStore()->connection();
-    }
-
-    private static function store()
-    {
-        return Cache::store('redis');
+        return $this->store->getStore()->connection();
     }
 
     /**
@@ -142,8 +146,8 @@ class ExerciseActivityCacheService
      * so these keys stay in the same namespace as the rest of the app's cache
      * and are cleared along with it.
      */
-    private static function prefixed(int $userId): string
+    private function prefixed(int $userId): string
     {
-        return static::store()->getStore()->getPrefix().static::key($userId);
+        return $this->store->getStore()->getPrefix().static::key($userId);
     }
 }

@@ -22,10 +22,10 @@ class VitalsController extends Controller
         'TTFB' => ['label' => 'Time to First Byte', 'unit' => 'ms', 'good' => 800, 'poor' => 1800],
     ];
 
-    public function index(): Response
+    public function index(VitalsCacheService $vitals): Response
     {
-        $metrics = collect(self::THRESHOLDS)->map(function (array $thresholds, string $name) {
-            $values = collect(VitalsCacheService::get($name))
+        $metrics = collect(self::THRESHOLDS)->map(function (array $thresholds, string $name) use ($vitals) {
+            $values = collect($vitals->get($name))
                 ->pluck('value')
                 ->sort()
                 ->values();

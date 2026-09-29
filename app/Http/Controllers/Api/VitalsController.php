@@ -15,7 +15,7 @@ class VitalsController extends Controller
      * navigator.sendBeacon() posts the JSON body as text/plain, so Laravel
      * never parses it into the request bag — decode it by hand instead.
      */
-    public function store(Request $request): Response
+    public function store(Request $request, VitalsCacheService $vitals): Response
     {
         $payload = json_decode($request->getContent(), true) ?? [];
 
@@ -36,7 +36,7 @@ class VitalsController extends Controller
 
         $data = $validator->validated();
 
-        VitalsCacheService::record($data['name'], [
+        $vitals->record($data['name'], [
             ...$data,
             'recorded_at' => now()->toIso8601String(),
         ]);

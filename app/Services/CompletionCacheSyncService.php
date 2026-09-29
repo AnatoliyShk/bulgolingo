@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Container\Attributes\Singleton;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -12,38 +13,48 @@ use Illuminate\Support\Facades\DB;
  * write the table directly — a raw insert skips model events entirely — call it
  * themselves. Keeping the arithmetic in one place is what stops the two paths
  * from drifting apart.
+ *
+ * The orders count lives on the default cache store, which $cache is; the two
+ * stats caches bring their own Redis store.
  */
+#[Singleton]
 class CompletionCacheSyncService
 {
+    public function __construct(
+        private readonly Repository $cache,
+        private readonly CompletedLessonStatsCacheService $lessonStats,
+        private readonly ExerciseActivityCacheService $activity,
+    ) {}
+
     private static function ordersCountKey(int $userId): string
     {
         return "user:{$userId}:orders_count";
     }
 
-    public static function recorded(int $userId, int $exerciseId, string $day, ?string $type = null): void
+    public function recorded(int $userId, int $exerciseId, string $day, ?string $type = null): void
     {
         $key = static::ordersCountKey($userId);
 
-        if (Cache::has($key)) {
-            Cache::increment($key);
+        if ($this->cache->has($key)) {
+            $this->cache->increment($key);
         }
 
-        static::adjustActivity($userId, $exerciseId, $day, increment: true, type: $type);
+        $this->adjustActivity($userId, $exerciseId, $day, increment: true, type: $type);
 
-        CompletedLessonStatsCacheService::forget($userId);
+        $this->lessonStats->forget($userId);
     }
 
-    public static function removed(int $userId, int $exerciseId, string $day, ?string $type = null): void
+    public function removed(int $userId, int $exerciseId, string $day, ?string $type = null): void
     {
         $key = static::ordersCountKey($userId);
 
-        if (Cache::has($key)) {
-            Cache::decrement($key);
+        if ($this->cache->has($key)) {
+            $this->cache->decrement($key);
         }
 
-        static::adjustActivity($userId, $exerciseId, $day, increment: false, type: $type);
+        $this->adjustActivity($userId, $exerciseId, $day, increment: false, type: $type);
 
-        CompletedLessonStatsCacheService::forget($userId);
+        $this->lessonStats->forget($userId);
     }
 
     /**
@@ -51,7 +62,7 @@ class CompletionCacheSyncService
      * could not supply it — a caller holding the Exercise already knows it,
      * and that lookup is otherwise a query per completion.
      */
-    private static function adjustActivity(int $userId, int $exerciseId, string $day, bool $increment, ?string $type = null): void
+    private function adjustActivity(int $userId, int $exerciseId, string $day, bool $increment, ?string $type = null): void
     {
         $type ??= DB::table('exercises')->where('id', $exerciseId)->value('decision_type');
 
@@ -60,9 +71,9 @@ class CompletionCacheSyncService
         }
 
         if ($increment) {
-            ExerciseActivityCacheService::increment($userId, $day, $type);
+            $this->activity->increment($userId, $day, $type);
         } else {
-            ExerciseActivityCacheService::decrement($userId, $day, $type);
+            $this->activity->decrement($userId, $day, $type);
         }
     }
 }

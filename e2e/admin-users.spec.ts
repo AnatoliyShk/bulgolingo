@@ -74,9 +74,9 @@ test.describe('Admin users list', () => {
     test('badges staff roles and leaves students as plain text', async ({ page }) => {
         await openUsers(page);
 
-        await expect(roleCell(page, 'Ada Admin').locator('span.rounded-full')).toHaveText('Admin');
-        await expect(roleCell(page, 'Vic Visitor').locator('span.rounded-full')).toHaveText('Admin visitor');
-        await expect(roleCell(page, 'Stu Student').locator('span.rounded-full')).toHaveCount(0);
+        await expect(roleCell(page, 'Ada Admin').locator('.admin-badge--role')).toHaveText('Admin');
+        await expect(roleCell(page, 'Vic Visitor').locator('.admin-badge--role')).toHaveText('Admin visitor');
+        await expect(roleCell(page, 'Stu Student').locator('.admin-badge--role')).toHaveCount(0);
     });
 
     test('says so when there are no users', async ({ page }) => {

@@ -12,7 +12,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -37,7 +36,7 @@ class ProfileController extends Controller
      */
     public function show(Request $request)
     {
-        $user = auth()->user();
+        $user = $request->user();
         $user->loadMissing('type:id,name');
 
         $paths = $this->progressService->enrolledPathsWithProgress($user);
@@ -138,26 +137,15 @@ class ProfileController extends Controller
     }
 
     /**
-     * Replaces the user's avatar, deleting whatever it replaced.
-     *
-     * The old object is removed rather than left behind, because nothing else
-     * ever refers to it once the column moves on: keeping it would grow the
-     * bucket by one orphan per change with no way to find them again. The
-     * delete runs after the upload succeeds, so a failed upload leaves the
-     * existing picture in place.
+     * Replaces the user's avatar, deleting whatever it replaced
+     * (User::replaceAvatar()). The old object is deleted only after the
+     * upload succeeds, so a failed upload leaves the existing picture in place.
      */
     public function updateAvatar(UpdateAvatarRequest $request): RedirectResponse
     {
-        $user = $request->user();
-        $previous = $user->avatar_path;
-
         $path = $request->file('avatar')->store('avatars', Images::DISK);
 
-        $user->forceFill(['avatar_path' => $path])->save();
-
-        if ($previous) {
-            Storage::disk(Images::DISK)->delete($previous);
-        }
+        $request->user()->replaceAvatar($path);
 
         return Redirect::route('profile.edit')->with('status', 'avatar-updated');
     }
@@ -175,9 +163,7 @@ class ProfileController extends Controller
             return Redirect::route('profile.edit');
         }
 
-        Storage::disk(Images::DISK)->delete($user->avatar_path);
-
-        $user->forceFill(['avatar_path' => null])->save();
+        $user->replaceAvatar(null);
 
         return Redirect::route('profile.edit')->with('status', 'avatar-removed');
     }

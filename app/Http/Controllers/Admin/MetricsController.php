@@ -13,6 +13,11 @@ use Prometheus\CollectorRegistry;
 
 class MetricsController extends Controller
 {
+    public function __construct(
+        private readonly CacheHitRateCacheService $hitRate,
+        private readonly SlowRequestCacheService $slowRequests,
+    ) {}
+
     public function adminRequests(CollectorRegistry $registry): Response
     {
         return Inertia::render('Admin/Metrics/AdminRequests', $this->pageProps($registry, 'admin'));
@@ -53,7 +58,7 @@ class MetricsController extends Controller
             Cache::store('redis')->forever(RequestMetrics::p95CacheKey($area), $p95Seconds);
         }
 
-        $cacheStats = CacheHitRateCacheService::get();
+        $cacheStats = $this->hitRate->get();
         $cacheTotal = $cacheStats['hits'] + $cacheStats['misses'];
 
         return [
@@ -61,7 +66,7 @@ class MetricsController extends Controller
             'totalRequests' => $totalRequests,
             'p95DurationMs' => round($p95Seconds * 1000, 1),
             'queues' => $this->queueStats($registry),
-            'slowRequests' => SlowRequestCacheService::get($area),
+            'slowRequests' => $this->slowRequests->get($area),
             'cacheHits' => $cacheStats['hits'],
             'cacheMisses' => $cacheStats['misses'],
             'cacheHitRate' => $cacheTotal > 0 ? round($cacheStats['hits'] / $cacheTotal * 100, 1) : null,

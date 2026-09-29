@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\HasUuidV7;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,17 @@ use Illuminate\Support\Facades\DB;
 class Lesson extends Model
 {
     use HasUuidV7;
+
+    /**
+     * Every lesson as {id, name}, alphabetical, for the admin exercise list's
+     * lesson pickers.
+     *
+     * @return Collection<int, Lesson>
+     */
+    public static function pickerOptions(): Collection
+    {
+        return static::orderBy('name')->get(['id', 'name']);
+    }
 
     /**
      * Ordered by the pivot's `order`, the sequence students complete them in.

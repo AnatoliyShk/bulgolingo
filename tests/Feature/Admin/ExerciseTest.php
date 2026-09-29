@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -250,10 +251,54 @@ class ExerciseTest extends TestCase
         $response->assertSessionHasNoErrors();
 
         Storage::disk(Images::DISK)->assertMissing($oldPath);
+        $this->assertDatabaseMissing('images', ['filepath' => $oldPath]);
 
         $exercise->refresh();
         $this->assertCount(1, $exercise->images);
         Storage::disk(Images::DISK)->assertExists($exercise->images->first()->filepath);
+    }
+
+    public function test_the_index_offers_every_lesson_by_name_as_id_and_name_only(): void
+    {
+        Lesson::create(['name' => 'Numbers', 'description' => 'Counting']);
+        Lesson::create(['name' => 'Animals', 'description' => 'Pets']);
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->get(route('admin.exercises.index'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Admin/Exercises/Index')
+                ->where('lessons', fn ($lessons) => collect($lessons)->pluck('name')->all() === ['Animals', 'Numbers']
+                    && array_keys(collect($lessons)->first()) === ['id', 'name'])
+            );
+    }
+
+    public function test_deleting_an_exercise_deletes_its_image_file_and_row(): void
+    {
+        Storage::fake(Images::DISK);
+
+        $exercise = $this->exerciseFor($this->lesson(), [
+            'name' => 'Match the picture',
+            'decision_type' => ExerciseType::IMAGE_MATCHING->value,
+            'clause' => [
+                'options' => ['Куче', 'Котка', 'Птица'],
+                'correct_option' => 0,
+                'explanation' => 'Куче means dog.',
+            ],
+        ]);
+
+        $path = UploadedFile::fake()->image('dog.jpg')->store('exercise-images', Images::DISK);
+        $image = Images::create(['filepath' => $path]);
+        $exercise->images()->attach($image);
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->delete(route('admin.exercises.destroy', $exercise))
+            ->assertRedirect();
+
+        Storage::disk(Images::DISK)->assertMissing($path);
+        $this->assertModelMissing($image);
+        $this->assertModelMissing($exercise);
+        $this->assertDatabaseMissing('exercise_image', ['image_id' => $image->id]);
     }
 
     public function test_image_matching_answer_survives_a_multipart_edit(): void

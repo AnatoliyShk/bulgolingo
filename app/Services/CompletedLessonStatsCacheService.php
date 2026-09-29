@@ -2,22 +2,21 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Container\Attributes\Singleton;
+use Illuminate\Contracts\Cache\Repository;
 
+#[Singleton]
 class CompletedLessonStatsCacheService
 {
     private const TTL_DAYS = 15;
 
     private const SHAPE = ['completed_lessons', 'total_exercises', 'completed_paths'];
 
+    public function __construct(private readonly Repository $store) {}
+
     public static function key(int $userId): string
     {
         return "user:{$userId}:completed_lesson_stats";
-    }
-
-    private static function store()
-    {
-        return Cache::store('redis');
     }
 
     /**
@@ -27,9 +26,9 @@ class CompletedLessonStatsCacheService
      *
      * @return array{completed_lessons: int, total_exercises: int, completed_paths: int}|null
      */
-    public static function get(int $userId): ?array
+    public function get(int $userId): ?array
     {
-        $stats = static::store()->get(static::key($userId));
+        $stats = $this->store->get(static::key($userId));
 
         if (! is_array($stats)) {
             return null;
@@ -47,9 +46,9 @@ class CompletedLessonStatsCacheService
     /**
      * @param  array{completed_lessons: int, total_exercises: int, completed_paths: int}  $stats
      */
-    public static function warm(int $userId, array $stats): void
+    public function warm(int $userId, array $stats): void
     {
-        static::store()->put(static::key($userId), $stats, now()->addDays(self::TTL_DAYS));
+        $this->store->put(static::key($userId), $stats, now()->addDays(self::TTL_DAYS));
     }
 
     /**
@@ -57,8 +56,8 @@ class CompletedLessonStatsCacheService
      * un-completes a whole lesson, so writes invalidate rather than
      * increment/decrement — the next read recomputes and re-warms.
      */
-    public static function forget(int $userId): void
+    public function forget(int $userId): void
     {
-        static::store()->forget(static::key($userId));
+        $this->store->forget(static::key($userId));
     }
 }

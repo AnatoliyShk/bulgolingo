@@ -5,11 +5,17 @@ namespace App\Providers;
 use App\Models\UserExerciseCompletion;
 use App\Observers\UserExerciseCompletionObserver;
 use App\Services\CacheHitRateCacheService;
+use App\Services\CompletedLessonStatsCacheService;
+use App\Services\ExerciseActivityCacheService;
 use App\Services\SiteSettingsService;
+use App\Services\SlowRequestCacheService;
+use App\Services\VitalsCacheService;
 use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Cache\Events\CacheMissed;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Vite;
@@ -21,11 +27,28 @@ use Laravel\Passport\Passport;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * The cache services whose data has to outlive a deploy and be shared by
+     * the web, queue and scheduler processes, whatever CACHE_STORE says.
+     */
+    private const REDIS_CACHE_SERVICES = [
+        CacheHitRateCacheService::class,
+        CompletedLessonStatsCacheService::class,
+        ExerciseActivityCacheService::class,
+        SlowRequestCacheService::class,
+        VitalsCacheService::class,
+    ];
+
+    /**
+     * Gives the cache services their store: this is the one place that picks
+     * Redis for them, so a test can rebind the store, or mock a service
+     * outright, without touching the services themselves. Every other
+     * Repository type-hint keeps the default store.
      */
     public function register(): void
     {
-        //
+        $this->app->when(self::REDIS_CACHE_SERVICES)
+            ->needs(Repository::class)
+            ->give(fn () => Cache::store('redis'));
     }
 
     /**
@@ -40,13 +63,13 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(function (CacheHit $event) {
             if (static::isTrackedCacheEvent($event)) {
-                CacheHitRateCacheService::recordHit();
+                app(CacheHitRateCacheService::class)->recordHit();
             }
         });
 
         Event::listen(function (CacheMissed $event) {
             if (static::isTrackedCacheEvent($event)) {
-                CacheHitRateCacheService::recordMiss();
+                app(CacheHitRateCacheService::class)->recordMiss();
             }
         });
 

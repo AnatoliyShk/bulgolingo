@@ -13,7 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RequestMetrics
 {
-    public function __construct(private CollectorRegistry $registry) {}
+    public function __construct(
+        private CollectorRegistry $registry,
+        private SlowRequestCacheService $slowRequests,
+    ) {}
 
     public function handle(Request $request, Closure $next)
     {
@@ -121,7 +124,7 @@ class RequestMetrics
                 'memory_mb' => $memoryMb,
             ]);
 
-            SlowRequestCacheService::record($area, [
+            $this->slowRequests->record($area, [
                 'method' => $method,
                 'route' => $route,
                 'status' => $status,

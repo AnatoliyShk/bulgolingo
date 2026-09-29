@@ -2,40 +2,33 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Cache;
+use App\Services\Concerns\KeepsCappedList;
+use Illuminate\Container\Attributes\Singleton;
+use Illuminate\Contracts\Cache\Repository;
 
+#[Singleton]
 class VitalsCacheService
 {
+    use KeepsCappedList;
+
     private const TTL_DAYS = 7;
 
     private const MAX_SAMPLES = 500;
+
+    public function __construct(private readonly Repository $store) {}
 
     public static function key(string $name): string
     {
         return "vitals:{$name}";
     }
 
-    private static function store()
+    public function record(string $name, array $sample): void
     {
-        return Cache::store('redis');
+        $this->pushCapped(static::key($name), $sample, self::MAX_SAMPLES, self::TTL_DAYS);
     }
 
-    public static function record(string $name, array $sample): void
+    public function get(string $name): array
     {
-        $key = static::key($name);
-
-        $samples = static::store()->get($key, []);
-        $samples[] = $sample;
-
-        if (count($samples) > self::MAX_SAMPLES) {
-            $samples = array_slice($samples, -self::MAX_SAMPLES);
-        }
-
-        static::store()->put($key, $samples, now()->addDays(self::TTL_DAYS));
-    }
-
-    public static function get(string $name): array
-    {
-        return static::store()->get(static::key($name), []);
+        return $this->cappedList(static::key($name));
     }
 }

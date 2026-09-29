@@ -6,7 +6,6 @@ use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Services\ProgressService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class LessonController extends Controller
@@ -14,28 +13,27 @@ class LessonController extends Controller
     public function __construct(private readonly ProgressService $progressService) {}
 
     /**
-     * Display the specified resource.
+     * A finished lesson shows its summary; otherwise the user is sent to its
+     * earliest exercise they have not completed, which for a guest is simply
+     * the first. A lesson with no exercises has nothing to show, so it sends
+     * the user back. Whether the lesson is finished is decided by
+     * ProgressService::isLessonComplete().
      */
-    public function show(Lesson $lesson)
+    public function show(Request $request, Lesson $lesson)
     {
-        $exerciseIds = $lesson->exercises()->pluck('exercises.id');
+        $firstExerciseId = Lesson::firstExerciseIdIn($lesson->getKey());
 
-        if ($exerciseIds->isEmpty()) {
+        if ($firstExerciseId === null) {
             return redirect()->back();
         }
 
-        $completedIds = DB::table('user_exercise_completions')
-            ->where('user_id', auth()->id())
-            ->whereIn('exercise_id', $exerciseIds)
-            ->pluck('exercise_id');
+        $user = $request->user();
 
-        if ($completedIds->count() >= $exerciseIds->count()) {
+        if ($this->progressService->isLessonComplete($lesson, $user)) {
             return Inertia::render('Lesson/Show', ['lesson' => $lesson]);
         }
 
-        $firstIncompleteId = $exerciseIds->diff($completedIds)->first();
-
-        return redirect()->route('exercise.show', $firstIncompleteId);
+        return redirect()->route('exercise.show', $user ? $lesson->firstIncompleteExerciseId($user) : $firstExerciseId);
     }
 
     /**
