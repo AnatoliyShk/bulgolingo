@@ -4,63 +4,53 @@ namespace App\Policies;
 
 use App\Models\ScriptedDialogue;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
+/**
+ * Scripted dialogues are authored in the admin panel only, so this policy
+ * follows the panel's own access rules: `EnsureIsAdmin` lets admins and admin
+ * visitors in, and `RestrictAdminVisitor` keeps visitors read-only. Students
+ * have no access yet; a student-facing action will need its own rule here.
+ */
 class ScriptedDialoguePolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Admins and admin visitors may browse the dialogues.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->canAccessAdminPanel();
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Viewing one dialogue follows the same rule as the list.
      */
     public function view(User $user, ScriptedDialogue $scriptedDialogue): bool
     {
-        return false;
+        return $user->canAccessAdminPanel();
     }
 
     /**
-     * Determine whether the user can create models.
+     * Only an admin may add a dialogue; a visitor's access is read-only.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Only an admin may change a dialogue; a visitor's access is read-only.
      */
     public function update(User $user, ScriptedDialogue $scriptedDialogue): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Only an admin may delete a dialogue. Dialogues are not soft-deleted, so
+     * there are no restore or force-delete abilities.
      */
     public function delete(User $user, ScriptedDialogue $scriptedDialogue): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, ScriptedDialogue $scriptedDialogue): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, ScriptedDialogue $scriptedDialogue): bool
-    {
-        return false;
+        return $user->isAdmin();
     }
 }

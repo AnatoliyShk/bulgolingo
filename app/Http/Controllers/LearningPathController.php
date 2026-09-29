@@ -12,6 +12,7 @@ use App\Services\ProgressService;
 use App\Services\SiteSettingsService;
 use App\Support\LearningPathFilters;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -103,30 +104,30 @@ class LearningPathController extends Controller
     }
 
     /**
-     * Enrolling is guarded by the same rule as the catalog it is reached from,
-     * so a path a viewer cannot see cannot be joined by posting its id either.
+     * Enrolling is guarded by the same rule as the catalog it is reached from
+     * (`LearningPathPolicy::view`), so a path a viewer cannot see cannot be
+     * joined by posting its id either.
      */
+    #[Authorize('view', 'learningPath')]
     public function start(Request $request, LearningPath $learningPath)
     {
-        abort_unless($learningPath->isVisibleTo($request->user()), 404);
-
         $request->user()->learningPaths()->syncWithoutDetaching([$learningPath->id]);
 
         return redirect()->route('learning-paths.show', $learningPath);
     }
 
     /**
-     * A path hidden from this viewer is a 404 rather than a 403: telling them
-     * the id exists is itself more than the catalog was willing to show.
+     * A path hidden from this viewer is a 404 rather than a 403
+     * (`LearningPathPolicy::view`): telling them the id exists is itself more
+     * than the catalog was willing to show.
      *
      * Each lesson carries an is_completed the map draws its progress from,
      * derived for this viewer alone from the exercises they have completed —
      * a guest, or a student who has done nothing here, sees a fresh path.
      */
+    #[Authorize('view', 'learningPath')]
     public function show(Request $request, LearningPath $learningPath)
     {
-        abort_unless($learningPath->isVisibleTo($request->user()), 404);
-
         $completion = $this->progressService->lessonCompletionMap($learningPath, $request->user());
 
         $lessons = $learningPath->lessons->each(
@@ -143,12 +144,11 @@ class LearningPathController extends Controller
      * Wipes this user's progress on every lesson in the path by deleting the
      * completions of all its exercises, putting the map back to its starting
      * state. Lesson completion is derived from those rows, so nothing else
-     * needs resetting.
+     * needs resetting. A path hidden from this viewer is a 404, as in `show`.
      */
+    #[Authorize('view', 'learningPath')]
     public function restart(Request $request, LearningPath $learningPath)
     {
-        abort_unless($learningPath->isVisibleTo($request->user()), 404);
-
         $lessonIds = $learningPath->lessons()->pluck('lessons.id');
 
         $exerciseIds = DB::table('exercise_lesson')

@@ -9,8 +9,16 @@ use App\Http\Requests\Admin\LearningPathRequest;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Inertia\Inertia;
 
+/**
+ * Every action is authorized through `LearningPathPolicy` by an `#[Authorize]`
+ * attribute, on top of the admin route group's middleware. The pages that
+ * only read, the create and edit forms among them, take `viewAny`, because an
+ * admin visitor may open them and is refused only when submitting; `store`,
+ * `update` and `destroy` take the write abilities that visitors lack.
+ */
 class LearningPathController extends Controller
 {
     private const PER_PAGE = 20;
@@ -23,6 +31,7 @@ class LearningPathController extends Controller
      * value it does not recognise. The filter rides along on the pagination
      * links through withQueryString().
      */
+    #[Authorize('viewAny', LearningPath::class)]
     public function index(Request $request)
     {
         $raw = $request->query('level');
@@ -41,6 +50,7 @@ class LearningPathController extends Controller
         ]);
     }
 
+    #[Authorize('viewAny', LearningPath::class)]
     public function create()
     {
         return Inertia::render('Admin/LearningPaths/Create', [
@@ -49,6 +59,7 @@ class LearningPathController extends Controller
         ]);
     }
 
+    #[Authorize('create', LearningPath::class)]
     public function store(LearningPathRequest $request)
     {
         LearningPath::create($request->pathAttributes());
@@ -62,6 +73,7 @@ class LearningPathController extends Controller
      * would only ever find what that page already showed. Its page parameter is
      * named separately so it cannot collide with the index listing's.
      */
+    #[Authorize('viewAny', LearningPath::class)]
     public function edit(Request $request, LearningPath $learningPath)
     {
         $search = trim((string) $request->input('lesson_search', ''));
@@ -83,6 +95,7 @@ class LearningPathController extends Controller
      * Sending a null level clears it, so an admin can take back a level that
      * was set by mistake.
      */
+    #[Authorize('update', 'learning_path')]
     public function update(LearningPathRequest $request, LearningPath $learningPath)
     {
         $learningPath->update($request->pathAttributes());
@@ -92,6 +105,7 @@ class LearningPathController extends Controller
         return redirect()->route('admin.learning-paths.index')->with('success', 'Learning path updated.');
     }
 
+    #[Authorize('delete', 'learning_path')]
     public function destroy(LearningPath $learningPath)
     {
         $learningPath->delete();

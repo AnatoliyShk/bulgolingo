@@ -10,6 +10,7 @@ use App\Models\Exercise;
 use App\Models\Images;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -60,8 +61,15 @@ class ExerciseController extends Controller
         return redirect()->route('admin.lessons.edit', $exercise->lessons()->first())->with('success', 'Exercise updated.');
     }
 
+    /**
+     * Deletes the exercise with its images, files included. Every image is
+     * authorized through `ImagesPolicy` before the first one goes, so a refusal
+     * cannot leave the exercise with only some of its images.
+     */
     public function destroy(Exercise $exercise)
     {
+        $exercise->images->each(fn (Images $image) => Gate::authorize('delete', $image));
+
         foreach ($exercise->images as $image) {
             Storage::disk(Images::DISK)->delete($image->filepath);
             $image->delete();
@@ -72,11 +80,20 @@ class ExerciseController extends Controller
         return redirect()->back()->with('success', 'Exercise deleted.');
     }
 
+    /**
+     * Replaces the exercise's image when a new file was uploaded, removing the
+     * old images and their files first. The upload and every deletion are
+     * authorized through `ImagesPolicy` before anything changes, so a refusal
+     * leaves the exercise's images as they were.
+     */
     private function syncImage(Request $request, Exercise $exercise): void
     {
         if (! $request->hasFile('image')) {
             return;
         }
+
+        Gate::authorize('create', Images::class);
+        $exercise->images->each(fn (Images $image) => Gate::authorize('delete', $image));
 
         foreach ($exercise->images as $image) {
             Storage::disk(Images::DISK)->delete($image->filepath);

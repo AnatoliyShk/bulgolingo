@@ -9,10 +9,13 @@ class UpdateScriptedDialogueRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * `ScriptedDialoguePolicy` is enforced by the `#[Authorize]` attribute on the
+     * `ScriptedDialogueController` action this request is injected into.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**

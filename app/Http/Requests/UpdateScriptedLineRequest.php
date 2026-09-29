@@ -9,10 +9,13 @@ class UpdateScriptedLineRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * `ScriptedLinePolicy` is enforced by the `#[Authorize]` attribute on the
+     * `ScriptedLineController` action this request is injected into.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**

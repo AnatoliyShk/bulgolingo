@@ -7,10 +7,19 @@ use App\Http\Requests\Admin\ScriptedLineRequest;
 use App\Models\ScriptedDialogue;
 use App\Models\ScriptedLine;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Inertia\Inertia;
 
+/**
+ * Every action is authorized through `ScriptedLinePolicy` by an `#[Authorize]`
+ * attribute, on top of the admin route group's middleware. The pages that
+ * only read, the create and edit forms among them, take `viewAny`, because an
+ * admin visitor may open them and is refused only when submitting; `store`,
+ * `update` and `destroy` take the write abilities that visitors lack.
+ */
 class ScriptedLineController extends Controller
 {
+    #[Authorize('viewAny', ScriptedLine::class)]
     public function index()
     {
         return Inertia::render('Admin/ScriptedLines/Index', [
@@ -23,6 +32,7 @@ class ScriptedLineController extends Controller
      * comes back as the dialogue the form starts on. Anything that is not a
      * positive id leaves the picker empty.
      */
+    #[Authorize('viewAny', ScriptedLine::class)]
     public function create(Request $request)
     {
         return Inertia::render('Admin/ScriptedLines/Create', [
@@ -31,6 +41,7 @@ class ScriptedLineController extends Controller
         ]);
     }
 
+    #[Authorize('create', ScriptedLine::class)]
     public function store(ScriptedLineRequest $request)
     {
         ScriptedLine::create($request->lineAttributes());
@@ -38,6 +49,7 @@ class ScriptedLineController extends Controller
         return redirect()->route('admin.scripted-lines.index')->with('success', 'Line created.');
     }
 
+    #[Authorize('viewAny', ScriptedLine::class)]
     public function edit(ScriptedLine $scriptedLine)
     {
         return Inertia::render('Admin/ScriptedLines/Edit', [
@@ -46,6 +58,7 @@ class ScriptedLineController extends Controller
         ]);
     }
 
+    #[Authorize('update', 'scripted_line')]
     public function update(ScriptedLineRequest $request, ScriptedLine $scriptedLine)
     {
         $scriptedLine->update($request->lineAttributes());
@@ -53,6 +66,7 @@ class ScriptedLineController extends Controller
         return redirect()->route('admin.scripted-lines.index')->with('success', 'Line updated.');
     }
 
+    #[Authorize('delete', 'scripted_line')]
     public function destroy(ScriptedLine $scriptedLine)
     {
         $scriptedLine->delete();

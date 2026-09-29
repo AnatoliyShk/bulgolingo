@@ -6,61 +6,60 @@ use App\Models\LearningPath;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
+/**
+ * Learning paths are reached from two sides. Students open, start and restart
+ * a single path, which `view` decides by the catalog's type visibility. The
+ * admin panel lists and edits every path, which follows the panel's own rules:
+ * `EnsureIsAdmin` lets admins and admin visitors in, and `RestrictAdminVisitor`
+ * keeps visitors read-only. The public catalog needs no ability of its own,
+ * since `LearningPath::visibleTo()` already filters it for guests too.
+ */
 class LearningPathPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * The admin list, which shows every type, `test` paths included, to
+     * admins and admin visitors.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->canAccessAdminPanel();
     }
 
     /**
-     * Determine whether the user can view the model.
+     * A student-facing path is open to whoever the catalog would show it to,
+     * a guest included. A hidden path is a 404 rather than a 403, because
+     * saying the id exists is more than the catalog was willing to show.
      */
-    public function view(User $user, LearningPath $learningPath): bool
+    public function view(?User $user, LearningPath $learningPath): Response
     {
-        return false;
+        return $learningPath->isVisibleTo($user)
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     /**
-     * Determine whether the user can create models.
+     * Only an admin may add a path; a visitor's access is read-only.
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Only an admin may change a path or its lessons; a visitor's access is
+     * read-only.
      */
     public function update(User $user, LearningPath $learningPath): bool
     {
-        return false;
+        return $user->isAdmin();
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Only an admin may delete a path. Learning paths are not soft-deleted, so
+     * there are no restore or force-delete abilities.
      */
     public function delete(User $user, LearningPath $learningPath): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, LearningPath $learningPath): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, LearningPath $learningPath): bool
-    {
-        return false;
+        return $user->isAdmin();
     }
 }

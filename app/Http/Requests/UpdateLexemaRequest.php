@@ -9,10 +9,13 @@ class UpdateLexemaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * `LexemaPolicy` is enforced by the `#[Authorize]` attribute on the
+     * `LexemaController` action this request is injected into.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
