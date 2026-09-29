@@ -4,6 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { useTheme } from '@/composables/useTheme';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import MarqueeWordsForm from '@/Components/Admin/MarqueeWordsForm.vue';
 
 useTheme();
 
@@ -127,6 +128,8 @@ function submit() {
                         </button>
                     </div>
                 </form>
+
+                <MarqueeWordsForm />
             </div>
         </div>
     </AuthenticatedLayout>

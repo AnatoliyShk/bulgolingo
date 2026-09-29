@@ -29,6 +29,16 @@ class SiteSettingsTest extends TestCase
 
         $this->assertTrue($settings->embeddingSearchEnabled());
         $this->assertSame(0.6, $settings->embeddingMinSimilarity());
+        $this->assertSame(SiteSettingsService::DEFAULT_MARQUEE_WORDS, $settings->marqueeWords());
+    }
+
+    public function test_marquee_words_round_trip_through_json(): void
+    {
+        $words = [['bg' => 'Здравей', 'en' => 'hello']];
+
+        app(SiteSettingsService::class)->update([SiteSettingsService::MARQUEE_WORDS => $words]);
+
+        $this->assertSame($words, (new SiteSettingsService)->marqueeWords());
     }
 
     public function test_a_saved_value_survives_a_fresh_instance_with_its_type(): void

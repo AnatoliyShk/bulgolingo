@@ -1,0 +1,73 @@
+/* ══════════════ Admin tutor bot switch on the welcome page ══════════════ */
+/*
+ * Only admins see it. It sits inside .nb-page, so it borrows the welcome
+ * page's ink/paper/accent tokens and their dark override, and floats in the
+ * corner opposite the tutor launcher.
+ */
+
+.admin-tutor-switch {
+    position: fixed;
+    left: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.8rem;
+    background: var(--paper);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    box-shadow: 4px 4px 0 0 var(--ink);
+    font-weight: 800;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.admin-tutor-switch__track {
+    position: relative;
+    width: 2.75rem;
+    height: 1.5rem;
+    padding: 0;
+    background: var(--bg);
+    border: 3px solid var(--ink);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.admin-tutor-switch__track--on {
+    background: var(--green);
+}
+
+.admin-tutor-switch__track:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}
+
+.admin-tutor-switch__track:focus-visible {
+    outline: 3px dashed var(--ink);
+    outline-offset: 3px;
+}
+
+.admin-tutor-switch__knob {
+    position: absolute;
+    top: 0.1rem;
+    left: 0.1rem;
+    width: 1rem;
+    height: 1rem;
+    background: var(--ink);
+    transition: transform 0.15s ease;
+}
+
+.admin-tutor-switch__track--on .admin-tutor-switch__knob {
+    transform: translateX(1.25rem);
+}
+
+.admin-tutor-switch__state {
+    min-width: 2.2em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-tutor-switch__track,
+    .admin-tutor-switch__knob { transition: none; }
+}

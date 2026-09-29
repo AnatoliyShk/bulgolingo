@@ -5,11 +5,13 @@ import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import TopBar from '@/Components/TopBar.vue'
 import TutorBot from '@/Components/TutorBot.vue'
+import TutorBotAdminSwitch from '@/Components/TutorBotAdminSwitch.vue'
 
 const page = usePage()
 const isAuthenticated = computed(() => !!page.props.auth.user)
 const appName = computed(() => page.props.appName)
 const tutorEnabled = computed(() => page.props.tutorEnabled ?? false)
+const isAdmin = computed(() => page.props.auth.isAdmin ?? false)
 const continueLessonId = computed(() => page.props.continueLessonId ?? null)
 const continueHref = computed(() =>
     continueLessonId.value ? `/lesson/${continueLessonId.value}` : '/learning-paths'
@@ -42,43 +44,12 @@ const steps = computed(() => [
     },
 ])
 
-// Marquee vocabulary — repeated twice in the template for a seamless loop.
-// A long list keeps the repeat from being noticeable; duration below scales
-// with its length so the scroll speed per word stays constant.
-const ticker = [
-    { bg: 'Здравей', en: 'hello' },
-    { bg: 'Благодаря', en: 'thank you' },
-    { bg: 'Вода', en: 'water' },
-    { bg: 'Книга', en: 'book' },
-    { bg: 'Приятел', en: 'friend' },
-    { bg: 'Обичам', en: 'I love' },
-    { bg: 'Хляб', en: 'bread' },
-    { bg: 'Мляко', en: 'milk' },
-    { bg: 'Добро утро', en: 'good morning' },
-    { bg: 'Довиждане', en: 'goodbye' },
-    { bg: 'Моля', en: 'please' },
-    { bg: 'Извинете', en: 'excuse me' },
-    { bg: 'Семейство', en: 'family' },
-    { bg: 'Слънце', en: 'sun' },
-    { bg: 'Море', en: 'sea' },
-    { bg: 'Планина', en: 'mountain' },
-    { bg: 'Кафе', en: 'coffee' },
-    { bg: 'Вкусно', en: 'delicious' },
-    { bg: 'Училище', en: 'school' },
-    { bg: 'Работа', en: 'work' },
-    { bg: 'Град', en: 'city' },
-    { bg: 'Село', en: 'village' },
-    { bg: 'Пари', en: 'money' },
-    { bg: 'Време', en: 'time / weather' },
-    { bg: 'Ден', en: 'day' },
-    { bg: 'Нощ', en: 'night' },
-    { bg: 'Дом', en: 'home' },
-    { bg: 'Пътуване', en: 'travel' },
-    { bg: 'Музика', en: 'music' },
-    { bg: 'Радост', en: 'joy' },
-]
+// Marquee vocabulary from the site settings (`marquee.words`, editable by an admin), repeated twice in the
+// template for a seamless loop. The duration scales with the list length so the
+// scroll speed per word stays constant.
+const ticker = computed(() => page.props.ticker ?? [])
 
-const tickerDurationSeconds = computed(() => ticker.length * 3.5)
+const tickerDurationSeconds = computed(() => ticker.value.length * 3.5)
 
 // Cultural motifs — click a doodle to read about it (English info)
 const info = {
@@ -267,6 +238,7 @@ onBeforeUnmount(() => {
         </Transition>
 
         <TutorBot v-if="tutorEnabled" />
+        <TutorBotAdminSwitch v-if="isAdmin" />
 
     </div>
 </template>

@@ -47,6 +47,7 @@ Route::get('/', function (Request $request) {
         'appName' => config('app.name'),
         'continueLessonId' => $continueLessonId,
         'tutorEnabled' => app(SiteSettingsService::class)->tutorBotEnabled(),
+        'ticker' => app(SiteSettingsService::class)->marqueeWords(),
     ]);
 });
 
@@ -110,6 +111,8 @@ Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')-
     Route::prefix('settings')->name('settings.')->controller(AdminSettingsController::class)->group(function () {
         Route::get('/', 'edit')->name('edit');
         Route::put('/', 'update')->name('update');
+        Route::put('/tutor-bot', 'toggleTutorBot')->name('tutor-bot');
+        Route::put('/marquee', 'updateMarqueeWords')->name('marquee');
     });
 
     Route::resource('lessons', AdminLessonController::class);

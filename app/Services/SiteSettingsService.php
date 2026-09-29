@@ -28,6 +28,46 @@ class SiteSettingsService
 
     public const TUTOR_BOT_ENABLED = 'tutor_bot.enabled';
 
+    public const MARQUEE_WORDS = 'marquee.words';
+
+    /**
+     * The welcome page's running line, shown until an admin saves a list of
+     * their own. The list is long on purpose: the line is repeated twice for a
+     * seamless loop, and length keeps the repeat from being noticeable.
+     */
+    public const DEFAULT_MARQUEE_WORDS = [
+        ['bg' => 'Здравей', 'en' => 'hello'],
+        ['bg' => 'Благодаря', 'en' => 'thank you'],
+        ['bg' => 'Вода', 'en' => 'water'],
+        ['bg' => 'Книга', 'en' => 'book'],
+        ['bg' => 'Приятел', 'en' => 'friend'],
+        ['bg' => 'Обичам', 'en' => 'I love'],
+        ['bg' => 'Хляб', 'en' => 'bread'],
+        ['bg' => 'Мляко', 'en' => 'milk'],
+        ['bg' => 'Добро утро', 'en' => 'good morning'],
+        ['bg' => 'Довиждане', 'en' => 'goodbye'],
+        ['bg' => 'Моля', 'en' => 'please'],
+        ['bg' => 'Извинете', 'en' => 'excuse me'],
+        ['bg' => 'Семейство', 'en' => 'family'],
+        ['bg' => 'Слънце', 'en' => 'sun'],
+        ['bg' => 'Море', 'en' => 'sea'],
+        ['bg' => 'Планина', 'en' => 'mountain'],
+        ['bg' => 'Кафе', 'en' => 'coffee'],
+        ['bg' => 'Вкусно', 'en' => 'delicious'],
+        ['bg' => 'Училище', 'en' => 'school'],
+        ['bg' => 'Работа', 'en' => 'work'],
+        ['bg' => 'Град', 'en' => 'city'],
+        ['bg' => 'Село', 'en' => 'village'],
+        ['bg' => 'Пари', 'en' => 'money'],
+        ['bg' => 'Време', 'en' => 'time / weather'],
+        ['bg' => 'Ден', 'en' => 'day'],
+        ['bg' => 'Нощ', 'en' => 'night'],
+        ['bg' => 'Дом', 'en' => 'home'],
+        ['bg' => 'Пътуване', 'en' => 'travel'],
+        ['bg' => 'Музика', 'en' => 'music'],
+        ['bg' => 'Радост', 'en' => 'joy'],
+    ];
+
     /**
      * Search stays on by default so a fresh database behaves as the app did
      * before it could be turned off. The similarity floor was measured against
@@ -42,6 +82,7 @@ class SiteSettingsService
         self::EMBEDDING_SEARCH_ENABLED => true,
         self::EMBEDDING_MIN_SIMILARITY => 0.6,
         self::TUTOR_BOT_ENABLED => false,
+        self::MARQUEE_WORDS => self::DEFAULT_MARQUEE_WORDS,
     ];
 
     private const CACHE_KEY = 'site-settings';
@@ -69,6 +110,14 @@ class SiteSettingsService
     public function tutorBotEnabled(): bool
     {
         return (bool) $this->all()[self::TUTOR_BOT_ENABLED];
+    }
+
+    /**
+     * @return list<array{bg: string, en: string}>
+     */
+    public function marqueeWords(): array
+    {
+        return $this->all()[self::MARQUEE_WORDS];
     }
 
     /**
