@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Enums\ExerciseType;
 use App\Enums\LanguageCode;
 use App\Models\Exercise;
 use App\Services\SiteSettingsService;
@@ -52,10 +51,10 @@ class GenerateExerciseEmbedding implements ShouldQueue
 
     /**
      * One labelled line per clause field that carries language, chosen by the
-     * exercise type since each type stores a different clause shape (see
-     * ExerciseType::dataRules()). The answer is spelled out as words rather than
-     * left as correct_option's index or boolean, which would mean nothing to the
-     * embedding model; the word-pair board order is left out for the same reason.
+     * exercise type since each type stores a different clause shape
+     * (ExerciseDefinition::embeddingFields()). The answer is spelled out as
+     * words rather than left as correct_option's index or boolean, which would
+     * mean nothing to the embedding model.
      *
      * The type's name heads the text in English and in Bulgarian, since the
      * search can be asked in either language, but only once some content line
@@ -66,25 +65,7 @@ class GenerateExerciseEmbedding implements ShouldQueue
         $clause = $this->exercise->clause ?? [];
         $type = $this->exercise->decision_type;
 
-        $fields = match ($type) {
-            ExerciseType::MULTIPLE_CHOICE => [
-                'Word pairs' => $this->wordPairs($clause),
-            ],
-            ExerciseType::TRUE_FALSE => [
-                'Statement' => $clause['sentence'] ?? null,
-                'Answer' => is_bool($clause['correct_option'] ?? null) ? ($clause['correct_option'] ? 'true' : 'false') : null,
-            ],
-            ExerciseType::FILL_IN_THE_BLANK => [
-                'Sentence' => $clause['sentence'] ?? null,
-                'Options' => $this->options($clause),
-                'Answer' => $this->chosenOption($clause),
-            ],
-            ExerciseType::IMAGE_MATCHING => [
-                'Options' => $this->options($clause),
-                'Answer' => $this->chosenOption($clause),
-            ],
-            default => [],
-        };
+        $fields = $this->exercise->asTyped()?->embeddingFields() ?? [];
 
         $lines = collect($fields + ['Explanation' => $clause['explanation'] ?? null])
             ->filter(fn ($value) => is_string($value) && trim($value) !== '')
@@ -99,28 +80,5 @@ class GenerateExerciseEmbedding implements ShouldQueue
                 ->prepend('Тип упражнение: '.$type->getDescription(LanguageCode::BG))
                 ->prepend('Exercise type: '.$type->getDescription(LanguageCode::EN)))
             ->implode("\n");
-    }
-
-    private function wordPairs(array $clause): string
-    {
-        return collect($clause['pairs'] ?? [])
-            ->filter(fn ($pair) => is_array($pair))
-            ->map(fn (array $pair) => implode(' = ', array_filter($pair, 'is_string')))
-            ->implode('; ');
-    }
-
-    private function options(array $clause): string
-    {
-        return collect($clause['options'] ?? [])
-            ->filter(fn ($option) => is_string($option))
-            ->implode(', ');
-    }
-
-    private function chosenOption(array $clause): ?string
-    {
-        $index = $clause['correct_option'] ?? null;
-        $option = is_int($index) ? ($clause['options'][$index] ?? null) : null;
-
-        return is_string($option) ? $option : null;
     }
 }

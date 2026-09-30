@@ -6,6 +6,7 @@ use App\Enums\ExerciseType;
 use App\Enums\LearningPathType;
 use App\Enums\RoleName;
 use App\Enums\UserType;
+use App\Models\MultipleChoiceExercise;
 use App\Models\Role;
 use App\Models\Type;
 use App\Support\LoadTest\ActivityPlan;
@@ -304,7 +305,7 @@ class SeedLoadTestData extends Command
     {
         return match ($type) {
             ExerciseType::MULTIPLE_CHOICE => [
-                'pairs' => array_map(fn ($n) => ['дума'.$i.'-'.$n, 'word'.$i.'-'.$n], range(0, ExerciseType::MIN_WORD_PAIRS - 1)),
+                'pairs' => array_map(fn ($n) => ['дума'.$i.'-'.$n, 'word'.$i.'-'.$n], range(0, MultipleChoiceExercise::MIN_WORD_PAIRS - 1)),
                 'explanation' => 'Generated word pairs.',
             ],
             ExerciseType::TRUE_FALSE => [

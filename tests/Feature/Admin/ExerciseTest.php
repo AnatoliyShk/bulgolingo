@@ -6,6 +6,7 @@ use App\Enums\ExerciseType;
 use App\Models\Exercise;
 use App\Models\Images;
 use App\Models\Lesson;
+use App\Models\MultipleChoiceExercise;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -41,7 +42,7 @@ class ExerciseTest extends TestCase
     /**
      * @return array<int, array{0: string, 1: string}>
      */
-    private function wordPairs(int $count = ExerciseType::MIN_WORD_PAIRS): array
+    private function wordPairs(int $count = MultipleChoiceExercise::MIN_WORD_PAIRS): array
     {
         $words = [
             ['hello', 'здравей'],
@@ -393,7 +394,7 @@ class ExerciseTest extends TestCase
 
         $exercise = Exercise::where('name', 'Everyday words')->firstOrFail();
 
-        $this->assertCount(ExerciseType::MIN_WORD_PAIRS, $exercise->clause['pairs']);
+        $this->assertCount(MultipleChoiceExercise::MIN_WORD_PAIRS, $exercise->clause['pairs']);
     }
 
     public function test_word_pair_exercise_rejects_fewer_than_the_minimum_pairs(): void
@@ -408,7 +409,7 @@ class ExerciseTest extends TestCase
                 'lesson_id' => $lesson->id,
                 'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
                 'clause' => [
-                    'pairs' => $this->wordPairs(ExerciseType::MIN_WORD_PAIRS - 1),
+                    'pairs' => $this->wordPairs(MultipleChoiceExercise::MIN_WORD_PAIRS - 1),
                     'explanation' => 'Match each word to its translation.',
                 ],
             ]);
@@ -461,7 +462,7 @@ class ExerciseTest extends TestCase
                 'name' => $exercise->name,
                 'decision_type' => $exercise->decision_type->value,
                 'clause' => [
-                    'pairs' => $this->wordPairs(ExerciseType::MIN_WORD_PAIRS - 1),
+                    'pairs' => $this->wordPairs(MultipleChoiceExercise::MIN_WORD_PAIRS - 1),
                     'explanation' => 'Match each word to its translation.',
                 ],
             ]);
@@ -469,7 +470,7 @@ class ExerciseTest extends TestCase
         $response->assertSessionHasErrors(['clause.pairs']);
 
         $exercise->refresh();
-        $this->assertCount(ExerciseType::MIN_WORD_PAIRS, $exercise->clause['pairs']);
+        $this->assertCount(MultipleChoiceExercise::MIN_WORD_PAIRS, $exercise->clause['pairs']);
     }
 
     public static function answersOutsideTheOptions(): array
@@ -555,7 +556,7 @@ class ExerciseTest extends TestCase
                 'name' => 'Everyday words, extended',
                 'decision_type' => $exercise->decision_type->value,
                 'clause' => [
-                    'pairs' => $this->wordPairs(ExerciseType::MIN_WORD_PAIRS + 1),
+                    'pairs' => $this->wordPairs(MultipleChoiceExercise::MIN_WORD_PAIRS + 1),
                     'explanation' => 'Match each word to its translation.',
                 ],
             ]);
@@ -564,7 +565,7 @@ class ExerciseTest extends TestCase
 
         $exercise->refresh();
         $this->assertSame('Everyday words, extended', $exercise->name);
-        $this->assertCount(ExerciseType::MIN_WORD_PAIRS + 1, $exercise->clause['pairs']);
+        $this->assertCount(MultipleChoiceExercise::MIN_WORD_PAIRS + 1, $exercise->clause['pairs']);
     }
 
     public function test_shuffled_column_order_is_stored_on_the_clause(): void
@@ -673,8 +674,8 @@ class ExerciseTest extends TestCase
 
         $order = $exercise->fresh()->clause['order'];
 
-        $this->assertEqualsCanonicalizing(range(0, ExerciseType::MIN_WORD_PAIRS - 1), $order['left']);
-        $this->assertEqualsCanonicalizing(range(0, ExerciseType::MIN_WORD_PAIRS - 1), $order['right']);
+        $this->assertEqualsCanonicalizing(range(0, MultipleChoiceExercise::MIN_WORD_PAIRS - 1), $order['left']);
+        $this->assertEqualsCanonicalizing(range(0, MultipleChoiceExercise::MIN_WORD_PAIRS - 1), $order['right']);
     }
 
     /**
@@ -704,7 +705,7 @@ class ExerciseTest extends TestCase
                 'name' => $exercise->name,
                 'decision_type' => $exercise->decision_type->value,
                 'clause' => [
-                    'pairs' => $this->wordPairs(ExerciseType::MIN_WORD_PAIRS + 1),
+                    'pairs' => $this->wordPairs(MultipleChoiceExercise::MIN_WORD_PAIRS + 1),
                     'order' => $exercise->clause['order'],
                     'explanation' => 'Match each word to its translation.',
                 ],
@@ -713,8 +714,8 @@ class ExerciseTest extends TestCase
 
         $order = $exercise->fresh()->clause['order'];
 
-        $this->assertEqualsCanonicalizing(range(0, ExerciseType::MIN_WORD_PAIRS), $order['left']);
-        $this->assertEqualsCanonicalizing(range(0, ExerciseType::MIN_WORD_PAIRS), $order['right']);
+        $this->assertEqualsCanonicalizing(range(0, MultipleChoiceExercise::MIN_WORD_PAIRS), $order['left']);
+        $this->assertEqualsCanonicalizing(range(0, MultipleChoiceExercise::MIN_WORD_PAIRS), $order['right']);
     }
 
     /**
@@ -724,7 +725,7 @@ class ExerciseTest extends TestCase
     public function test_a_dealt_order_never_lines_the_columns_up(): void
     {
         for ($attempt = 0; $attempt < 50; $attempt++) {
-            $order = ExerciseType::shuffledOrder(ExerciseType::MIN_WORD_PAIRS);
+            $order = MultipleChoiceExercise::shuffledOrder(MultipleChoiceExercise::MIN_WORD_PAIRS);
 
             $this->assertNotSame($order['left'], $order['right']);
         }

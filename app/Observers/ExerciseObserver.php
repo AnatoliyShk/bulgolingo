@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Enums\ExerciseType;
 use App\Models\Exercise;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
@@ -57,33 +56,24 @@ class ExerciseObserver
 
     public function updating(Exercise $exercise)
     {
-        $this->reshuffleWordPairs($exercise);
+        $this->applyEditHook($exercise);
         $this->validateClause($exercise);
     }
 
     /**
-     * Every admin save of a word-pair exercise deals the board again, so an
-     * exercise that has just been edited never comes back with the layout a
-     * student may have learned by position. Only admin edits reach this hook:
+     * Gives the exercise's type its say over an admin edit before the clause
+     * is validated (ExerciseDefinition::clauseAfterEdit()); a word-pair
+     * exercise deals its board again there. Only admin edits reach this hook:
      * finishing an exercise writes to pivot tables, never to the exercise row.
-     * A save that changes nothing is not an update as far as Eloquent is
-     * concerned and so leaves the order standing.
+     * The type is the one the edit leaves, which may not be the model's own.
      */
-    private function reshuffleWordPairs(Exercise $exercise): void
+    private function applyEditHook(Exercise $exercise): void
     {
-        if ($exercise->decision_type !== ExerciseType::MULTIPLE_CHOICE) {
-            return;
+        $typed = $exercise->asTyped();
+
+        if ($typed !== null) {
+            $exercise->clause = $typed->clauseAfterEdit();
         }
-
-        $clause = $exercise->clause ?? [];
-        $count = is_array($clause['pairs'] ?? null) ? count($clause['pairs']) : 0;
-
-        if ($count === 0) {
-            return;
-        }
-
-        $clause['order'] = ExerciseType::shuffledOrder($count);
-        $exercise->clause = $clause;
     }
 
     /**
@@ -91,15 +81,18 @@ class ExerciseObserver
      * rather than in a form request — otherwise an edit could reintroduce a
      * shape the create path rejects. The clause is normalized first so a stored
      * column order that has drifted out of step with the pairs is repaired
-     * rather than rejected.
+     * rather than rejected. An exercise without a known type is left to the
+     * database's own constraints.
      */
     private function validateClause(Exercise $exercise): void
     {
-        if (! $exercise->decision_type instanceof ExerciseType) {
+        $typed = $exercise->asTyped();
+
+        if ($typed === null) {
             return;
         }
 
-        $exercise->clause = $exercise->decision_type->normalizeClause($exercise->clause ?? []);
+        $exercise->clause = $typed->normalizedClause();
 
         $prefix = fn (array $items) => collect($items)
             ->mapWithKeys(fn ($value, $key) => ["clause.$key" => $value])
@@ -107,8 +100,8 @@ class ExerciseObserver
 
         Validator::make(
             ['clause' => $exercise->clause ?? []],
-            $prefix($exercise->decision_type->dataRules()),
-            $prefix($exercise->decision_type->dataMessages())
+            $prefix($typed->clauseRules()),
+            $prefix($typed->clauseMessages())
         )->validate();
     }
 

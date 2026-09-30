@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Enums\ExerciseType;
+use App\Models\MultipleChoiceExercise;
 use PHPUnit\Framework\TestCase;
 
 class ExerciseTypeDefaultClauseTest extends TestCase
@@ -41,7 +42,7 @@ class ExerciseTypeDefaultClauseTest extends TestCase
     {
         $pairs = ExerciseType::MULTIPLE_CHOICE->defaultClause()['pairs'];
 
-        $this->assertCount(ExerciseType::MIN_WORD_PAIRS, $pairs);
+        $this->assertCount(MultipleChoiceExercise::MIN_WORD_PAIRS, $pairs);
         $this->assertSame(['', ''], $pairs[0]);
     }
 

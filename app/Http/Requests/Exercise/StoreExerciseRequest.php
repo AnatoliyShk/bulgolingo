@@ -25,12 +25,12 @@ class StoreExerciseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'          => ['required', 'string', 'max:255'],
-            'lesson_id'     => ['required', 'integer', 'exists:lessons,id'],
-            'clause'        => ['required', 'array'],
+            'name' => ['required', 'string', 'max:255'],
+            'lesson_id' => ['required', 'integer', 'exists:lessons,id'],
+            'clause' => ['required', 'array'],
             'decision_type' => ['required', 'string', Rule::enum(ExerciseType::class)],
-            'image'         => [
-                Rule::requiredIf($this->input('decision_type') === ExerciseType::IMAGE_MATCHING->value),
+            'image' => [
+                Rule::requiredIf(ExerciseType::tryFrom((string) $this->input('decision_type'))?->definition()->requiresImage() ?? false),
                 'nullable',
                 'image',
                 'max:5120',

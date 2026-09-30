@@ -3,7 +3,7 @@
 namespace App\Support;
 
 /**
- * One key of an exercise clause as ExerciseType::clauseFields() declares it:
+ * One key of an exercise clause as an ExerciseDefinition's clauseFields() declares it:
  * the validation rules for that key and, for a field an admin fills in, the
  * value a blank clause starts it at. Dotted keys describing the inside of a
  * field, and optional fields such as a word-pair order, carry rules only and
