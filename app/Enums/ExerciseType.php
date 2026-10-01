@@ -4,10 +4,10 @@ namespace App\Enums;
 
 use App\Contracts\ExerciseDefinition;
 use App\Models\Exercise;
-use App\Models\FillInTheBlankExercise;
-use App\Models\ImageMatchingExercise;
-use App\Models\MultipleChoiceExercise;
-use App\Models\TrueFalseExercise;
+use App\Models\Exercise\FillInTheBlankExercise;
+use App\Models\Exercise\ImageMatchingExercise;
+use App\Models\Exercise\MultipleChoiceExercise;
+use App\Models\Exercise\TrueFalseExercise;
 
 /**
  * The stored decision_type of an exercise. Each case has its own model on the

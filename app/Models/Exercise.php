@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * A row of the exercises table, and the base of one model per exercise type
- * (App\Models\*Exercise, each naming its ExerciseType in TYPE and
+ * (App\Models\Exercise\*Exercise, each naming its ExerciseType in TYPE and
  * implementing ExerciseDefinition). Every type shares this one table: a row
  * comes back from any query as its type's model, chosen by decision_type; a
  * type's model starts with its decision_type set and sees only rows of that

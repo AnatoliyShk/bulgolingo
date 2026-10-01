@@ -9,7 +9,7 @@ use App\Support\ClauseField;
  * Everything one exercise type means: its name, the shape of its clause, how a
  * clause is settled before validation, and what the rest of the app reads out
  * of it. Implemented by one Exercise model per ExerciseType case, all on the
- * exercises table (most of it through Concerns\DefinesExerciseType), so a new
+ * exercises table (most of it through App\Models\Exercise\DefinesExerciseType), so a new
  * type is one new model and one new case.
  *
  * The type-level methods need no row and can be asked of a blank instance

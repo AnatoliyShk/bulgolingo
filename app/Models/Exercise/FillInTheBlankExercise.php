@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Exercise;
 
 use App\Contracts\ExerciseDefinition;
 use App\Enums\ExerciseType;
 use App\Enums\LanguageCode;
-use App\Models\Concerns\DefinesExerciseType;
+use App\Models\Exercise;
 use App\Rules\OptionIndex;
 use App\Support\ClauseField;
 

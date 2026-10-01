@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Enums\ExerciseType;
-use App\Models\MultipleChoiceExercise;
+use App\Models\Exercise\MultipleChoiceExercise;
 use PHPUnit\Framework\TestCase;
 
 class ExerciseTypeDefaultClauseTest extends TestCase

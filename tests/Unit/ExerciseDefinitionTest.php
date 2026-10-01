@@ -5,10 +5,10 @@ namespace Tests\Unit;
 use App\Contracts\ExerciseDefinition;
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
-use App\Models\FillInTheBlankExercise;
-use App\Models\ImageMatchingExercise;
-use App\Models\MultipleChoiceExercise;
-use App\Models\TrueFalseExercise;
+use App\Models\Exercise\FillInTheBlankExercise;
+use App\Models\Exercise\ImageMatchingExercise;
+use App\Models\Exercise\MultipleChoiceExercise;
+use App\Models\Exercise\TrueFalseExercise;
 use PHPUnit\Framework\TestCase;
 
 class ExerciseDefinitionTest extends TestCase

@@ -4,10 +4,10 @@ namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
-use App\Models\FillInTheBlankExercise;
+use App\Models\Exercise\FillInTheBlankExercise;
+use App\Models\Exercise\MultipleChoiceExercise;
+use App\Models\Exercise\TrueFalseExercise;
 use App\Models\Lesson;
-use App\Models\MultipleChoiceExercise;
-use App\Models\TrueFalseExercise;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;

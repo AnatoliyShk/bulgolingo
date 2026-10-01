@@ -4,9 +4,9 @@ namespace Tests\Feature\Admin;
 
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
+use App\Models\Exercise\MultipleChoiceExercise;
 use App\Models\Images;
 use App\Models\Lesson;
-use App\Models\MultipleChoiceExercise;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;

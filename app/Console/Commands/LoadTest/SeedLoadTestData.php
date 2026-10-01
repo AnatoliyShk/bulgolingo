@@ -6,7 +6,7 @@ use App\Enums\ExerciseType;
 use App\Enums\LearningPathType;
 use App\Enums\RoleName;
 use App\Enums\UserType;
-use App\Models\MultipleChoiceExercise;
+use App\Models\Exercise\MultipleChoiceExercise;
 use App\Models\Role;
 use App\Models\Type;
 use App\Support\LoadTest\ActivityPlan;
