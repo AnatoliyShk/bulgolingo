@@ -7,6 +7,7 @@ import ExerciseForm from '@/Components/Forms/ExerciseForm.vue';
 defineProps({
     lesson: Object,
     exerciseTypes: Array,
+    languageOptions: Object,
 });
 </script>
 
@@ -26,6 +27,7 @@ defineProps({
                 <section class="admin-card">
                     <ExerciseForm
                         :exercise-types="exerciseTypes"
+                        :language-options="languageOptions"
                         :lesson-id="lesson.id"
                         :submit-route="route('admin.exercises.store', lesson.id)"
                         :cancel-href="route('admin.lessons.edit', lesson.id)"

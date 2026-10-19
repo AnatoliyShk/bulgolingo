@@ -7,13 +7,16 @@ import { MIN_PAIRS, padPairs, useWordPairs } from '@/composables/useWordPairs';
 
 // Without an exercise the form creates one for lessonId; with one it edits
 // it. The clause shape of every type comes from the server with
-// exerciseTypes, so nothing here restates what a clause holds.
+// exerciseTypes, so nothing here restates what a clause holds, and the
+// languages an exercise can teach come with languageOptions the same way, so
+// no language is named here either.
 const props = defineProps({
-    exercise:      { type: Object, default: null },
-    exerciseTypes: { type: Array,  required: true },
-    submitRoute:   { type: String, required: true },
-    lessonId:      { type: Number, default: null },
-    cancelHref:    { type: String, default: null },
+    exercise:        { type: Object, default: null },
+    exerciseTypes:   { type: Array,  required: true },
+    languageOptions: { type: Object, required: true },
+    submitRoute:     { type: String, required: true },
+    lessonId:        { type: Number, default: null },
+    cancelHref:      { type: String, default: null },
 });
 
 const emit = defineEmits(['success', 'cancel']);
@@ -44,9 +47,20 @@ const form = useForm({
     ...(props.lessonId !== null ? { lesson_id: props.lessonId } : {}),
     name: props.exercise?.name ?? '',
     decision_type: props.exercise?.decision_type ?? '',
+    language_id: props.exercise?.language_id ?? props.languageOptions.defaults.language_id,
+    translation_language_id: props.exercise?.translation_language_id ?? props.languageOptions.defaults.translation_language_id,
     clause: clauseFor(props.exercise?.decision_type ?? '', props.exercise?.clause ?? {}),
     image: null,
 });
+
+// The name of a language by id, which labels the two cells of a word pair: the
+// first holds the translation and the second the word being taught.
+function languageName(id) {
+    return props.languageOptions.languages.find(language => language.id === id)?.name ?? '';
+}
+
+const translationCellLabel = computed(() => languageName(form.translation_language_id) || 'Translation');
+const termCellLabel = computed(() => languageName(form.language_id) || 'Word');
 
 const existingImageUrl = computed(() => props.exercise?.images?.[0]?.url ?? null);
 
@@ -111,6 +125,36 @@ function submit() {
             <p v-if="form.errors.decision_type" class="mt-1 text-xs text-red-500">{{ form.errors.decision_type }}</p>
         </div>
 
+        <!-- Language taught (every type) -->
+        <div v-if="form.decision_type">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Language taught</label>
+            <select
+                v-model="form.language_id"
+                class="admin-form__input"
+                data-testid="exercise-language"
+            >
+                <option v-for="language in languageOptions.languages" :key="language.id" :value="language.id">
+                    {{ language.name }}
+                </option>
+            </select>
+            <p v-if="form.errors.language_id" class="mt-1 text-xs text-red-500">{{ form.errors.language_id }}</p>
+        </div>
+
+        <!-- Translation language (word pairs only) -->
+        <div v-if="form.decision_type === 'multiple_choice'">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Translated into</label>
+            <select
+                v-model="form.translation_language_id"
+                class="admin-form__input"
+                data-testid="exercise-translation-language"
+            >
+                <option v-for="language in languageOptions.languages" :key="language.id" :value="language.id">
+                    {{ language.name }}
+                </option>
+            </select>
+            <p v-if="form.errors.translation_language_id" class="mt-1 text-xs text-red-500">{{ form.errors.translation_language_id }}</p>
+        </div>
+
         <!-- Image (image matching only) -->
         <ImageUpload
             v-if="form.decision_type === 'image_matching'"
@@ -136,13 +180,13 @@ function submit() {
                         v-model="pair[0]"
                         type="text"
                         class="admin-form__input--row"
-                        placeholder="Word"
+                        :placeholder="translationCellLabel"
                     />
                     <input
                         v-model="pair[1]"
                         type="text"
                         class="admin-form__input--row"
-                        placeholder="Translation"
+                        :placeholder="termCellLabel"
                     />
                     <button
                         type="button"

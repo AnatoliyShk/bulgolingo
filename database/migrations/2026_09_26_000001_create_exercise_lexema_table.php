@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Exercise;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -16,9 +15,10 @@ return new class extends Migration
      * skipped the word there. The pivot records every exercise a word appears
      * in. It is filled from both sources: each lexema's old exercise_id, and
      * the Cyrillic option words of every exercise matched to existing lexemas,
-     * the same words Exercise::syncLexemasFromOptions() links from now on.
-     * Exercises are read through Eloquent only to reuse the word extraction;
-     * reading fires no observer. The old column goes once the pivot holds it.
+     * the same words Exercise::syncLexemasFromOptions() linked from then on.
+     * The exercises are read from the table and their words picked out here, not
+     * through the Exercise model, so the migration does not change meaning as the
+     * model does. The old column goes once the pivot holds it.
      */
     public function up(): void
     {
@@ -34,8 +34,8 @@ return new class extends Migration
             DB::table('lexemas')->whereNotNull('exercise_id')->select('exercise_id', 'id'),
         );
 
-        Exercise::query()->lazyById()->each(function (Exercise $exercise) {
-            $words = $exercise->cyrillicOptionWords();
+        DB::table('exercises')->orderBy('id')->lazyById()->each(function (object $exercise) {
+            $words = $this->cyrillicOptionWords(json_decode((string) $exercise->clause, true) ?: []);
 
             if ($words === []) {
                 return;
@@ -57,6 +57,25 @@ return new class extends Migration
 
             $table->dropColumn('exercise_id');
         });
+    }
+
+    /**
+     * Unique Cyrillic words of a clause's options, one per word even in
+     * multi-word options, lower-cased with dots stripped so one word never
+     * becomes two lexema rows.
+     *
+     * @return array<int, string>
+     */
+    private function cyrillicOptionWords(array $clause): array
+    {
+        return collect($clause['options'] ?? [])
+            ->filter(fn ($option) => is_string($option))
+            ->flatMap(fn ($option) => preg_split('/\s+/u', trim($option)))
+            ->map(fn ($word) => mb_trim(mb_strtolower(str_replace('.', '', $word))))
+            ->filter(fn ($word) => $word !== '' && preg_match('/\p{Cyrillic}/u', $word))
+            ->unique()
+            ->values()
+            ->all();
     }
 
     /**

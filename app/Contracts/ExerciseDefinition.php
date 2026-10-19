@@ -73,6 +73,33 @@ interface ExerciseDefinition
     public function clauseAfterEdit(): array;
 
     /**
+     * The columns of the exercises row a validated clause's scalar fields are
+     * stored in: prompt, explanation, statement_is_true and
+     * translation_language_id, each set (to null where the type has no such
+     * field) so that an edit which changes the type leaves no value of the old
+     * one behind. A type that keeps a language pair fills in the translation
+     * language when the exercise has none.
+     *
+     * @return array<string, mixed>
+     */
+    public function clauseColumns(array $clause): array;
+
+    /**
+     * Writes the rows the clause's lists are stored in (exercise_options,
+     * exercise_word_pairs), replacing whatever the exercise had, so that rows
+     * of a type the exercise no longer is are removed.
+     */
+    public function storeClauseRows(array $clause): void;
+
+    /**
+     * The clause read back from the columns and rows clauseColumns() and
+     * storeClauseRows() wrote, in the shape clauseFields() declares.
+     *
+     * @return array<string, mixed>
+     */
+    public function storedClause(): array;
+
+    /**
      * Labelled lines of the clause's language content for the search
      * embedding, answers spelled out as words. The explanation is added by the
      * caller for every type.

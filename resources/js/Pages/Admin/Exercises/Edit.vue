@@ -9,6 +9,7 @@ import { computed } from 'vue';
 const props = defineProps({
     exercise: Object,
     exerciseTypes: Array,
+    languageOptions: Object,
 });
 
 const lesson = computed(() => props.exercise.lessons?.[0] ?? null);
@@ -31,6 +32,7 @@ const lesson = computed(() => props.exercise.lessons?.[0] ?? null);
                     <ExerciseForm
                         :exercise="exercise"
                         :exercise-types="exerciseTypes"
+                        :language-options="languageOptions"
                         :submit-route="route('admin.exercises.update', exercise.id)"
                         :cancel-href="lesson ? route('admin.lessons.edit', lesson.id) : route('admin.exercises.index')"
                     />

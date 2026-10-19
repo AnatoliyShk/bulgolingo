@@ -2,8 +2,10 @@
 import { ref, reactive, computed, watch } from 'vue'
 import NextExerciseButton from '@/Components/NextExerciseButton.vue'
 
-// clause.pairs = [[english, bulgarian], ...], clause.explanation = prompt
-// Left column shows pair[0] (English), right column shows pair[1] (Bulgarian).
+// clause.pairs = [[translation, term], ...], clause.explanation = prompt
+// Left column shows pair[0] (the translation), right column shows pair[1] (the
+// word being taught); which languages those are is the exercise's own business
+// and not this player's.
 // User taps one from each side; the pair indices must match to be correct.
 
 const props = defineProps({

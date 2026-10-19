@@ -2,11 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Models\Language;
 use App\Models\Lexema;
 use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -23,6 +26,20 @@ class LexemaWordUniqueTest extends TestCase
         DB::table('lexemas')->insert(['uuid' => (string) Str::uuid7(), 'word' => 'вода']);
     }
 
+    /**
+     * A word is unique per language: the same spelling is a different word in
+     * another language, and creating it there must not collide with the first.
+     */
+    public function test_the_same_spelling_is_a_separate_word_in_another_language(): void
+    {
+        $bulgarian = Lexema::create(['word' => 'пан']);
+        $english = Lexema::create(['word' => 'пан', 'language_id' => Language::idFor('en')]);
+
+        $this->assertNotSame($bulgarian->id, $english->id);
+        $this->assertSame(Language::defaultId(), $bulgarian->language_id);
+        $this->assertSame(2, Lexema::where('word', 'пан')->count());
+    }
+
     public function test_first_or_create_returns_the_existing_word(): void
     {
         $lexema = Lexema::create(['word' => 'вода']);
@@ -32,8 +49,8 @@ class LexemaWordUniqueTest extends TestCase
     }
 
     /**
-     * Drops the index to write three rows for one word, the way a race left
-     * them, with one user holding progress on two of them and another user on
+     * Drops the unique index (now on language and word) to write three rows for
+     * one word, the way a race left them, with one user holding progress on two of them and another user on
      * one, plus a review log on a duplicate. Running the migration forward has
      * to leave the oldest row alone, fold the first user's progress into the
      * most recently reviewed row with summed counters, repoint the second
@@ -43,9 +60,9 @@ class LexemaWordUniqueTest extends TestCase
     public function test_the_migration_merges_duplicate_words_onto_the_oldest_row(): void
     {
         $migration = require database_path('migrations/2026_09_25_000001_add_unique_index_to_lexemas_word.php');
-        $migration->down();
+        Schema::table('lexemas', fn (Blueprint $table) => $table->dropUnique(['language_id', 'word']));
 
-        $lexema = fn () => DB::table('lexemas')->insertGetId(['uuid' => (string) Str::uuid7(), 'word' => 'хляб']);
+        $lexema = fn () => DB::table('lexemas')->insertGetId(['uuid' => (string) Str::uuid7(), 'word' => 'хляб', 'language_id' => Language::defaultId()]);
         $keep = $lexema();
         $older = $lexema();
         $newer = $lexema();

@@ -7,6 +7,7 @@ use App\Enums\RoleName;
 use App\Enums\UserType;
 use App\Models\Bot;
 use App\Models\Exercise;
+use App\Models\Language;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\Lexema;
@@ -80,11 +81,10 @@ class UuidTest extends TestCase
         $exerciseId = DB::table('exercises')->insertGetId([
             'name' => 'Legacy',
             'decision_type' => ExerciseType::TRUE_FALSE->value,
-            'clause' => json_encode([
-                'sentence' => 'Здравей means hello.',
-                'correct_option' => true,
-                'explanation' => 'Greeting.',
-            ]),
+            'language_id' => Language::defaultId(),
+            'prompt' => 'Здравей means hello.',
+            'statement_is_true' => true,
+            'explanation' => 'Greeting.',
         ]);
 
         $botId = DB::table('bots')->insertGetId(['name' => 'Legacy', 'description' => 'D']);
@@ -96,7 +96,7 @@ class UuidTest extends TestCase
             'scripted_dialogue_id' => $dialogueId,
             'clause' => json_encode(['text' => 'Здравей!']),
         ]);
-        $lexemaId = DB::table('lexemas')->insertGetId(['word' => 'легаси']);
+        $lexemaId = DB::table('lexemas')->insertGetId(['word' => 'легаси', 'language_id' => Language::defaultId()]);
 
         $migration->up();
 

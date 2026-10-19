@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ExerciseType;
 use App\Models\Exercise;
+use App\Models\Language;
 use App\Services\ProgressService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,6 +25,7 @@ class ExerciseController extends Controller
         return Inertia::render('Exercise/Show', [
             'exercise' => $exercise->load('images'),
             'exerciseTypes' => ExerciseType::options(),
+            'languageOptions' => $user?->isAdmin() ? Language::formOptions() : null,
             'totalExercises' => $progress['total'],
             'completedCount' => $progress['completed'],
         ]);

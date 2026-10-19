@@ -119,7 +119,7 @@ test.describe('Admin exercise form, editing', () => {
         await expect(page.getByPlaceholder('Exercise name')).not.toHaveValue('');
         await expect(typeSelect(page)).toHaveValue('multiple_choice');
         await expect(page.getByRole('option', { name: 'Select a type' })).toHaveCount(0);
-        await expect(page.getByPlaceholder('Word', { exact: true }).first()).not.toHaveValue('');
+        await expect(page.getByPlaceholder('English', { exact: true }).first()).not.toHaveValue('');
         await expect(explanation(page)).not.toHaveValue('');
         await expect(page.getByRole('button', { name: 'Update Exercise' })).toBeVisible();
     });

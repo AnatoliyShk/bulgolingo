@@ -39,7 +39,7 @@ class LexemaCountUpdate implements ShouldQueue
         $now = Carbon::now();
 
         foreach ($this->exercise->getExerciseWords() as $word) {
-            $lexema = Lexema::firstOrCreate(['word' => $word]);
+            $lexema = Lexema::firstOrCreate(['language_id' => $this->exercise->language_id, 'word' => $word]);
 
             DB::table('user_lexema')->upsert(
                 [[

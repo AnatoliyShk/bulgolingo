@@ -48,6 +48,19 @@ final class ImageMatchingExercise extends Exercise implements ExerciseDefinition
         return $this->clauseWithIndexAnswer();
     }
 
+    public function storeClauseRows(array $clause): void
+    {
+        $this->replaceRows($this->optionRows($clause));
+    }
+
+    public function storedClause(): array
+    {
+        return [
+            ...$this->storedOptions(),
+            'explanation' => $this->explanation,
+        ];
+    }
+
     public function embeddingFields(): array
     {
         return [

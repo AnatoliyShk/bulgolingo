@@ -9,9 +9,13 @@ use App\Models\Exercise;
 use App\Support\ClauseField;
 
 /**
- * Word-pair matching: Bulgarian words and their translations dealt into two
- * columns. The board order is stored in the clause so every student sees the
- * same layout until an admin edits the exercise.
+ * Word-pair matching: the words of the exercise's language and their
+ * translations dealt into two columns. Each pair is stored with its term in the
+ * exercise's own language and its translation in translation_language_id, so
+ * no language is named here; the clause shows a pair as [translation, term],
+ * the translation being the first cell, the one on the left of the board. The
+ * board order is stored with the pairs so every student sees the same layout
+ * until an admin edits the exercise.
  */
 final class MultipleChoiceExercise extends Exercise implements ExerciseDefinition
 {
@@ -112,6 +116,60 @@ final class MultipleChoiceExercise extends Exercise implements ExerciseDefinitio
     }
 
     /**
+     * The explanation and the translation language go on the exercise's own
+     * row; the pairs and their board order go to rows of their own.
+     */
+    public function clauseColumns(array $clause): array
+    {
+        return $this->scalarColumns($clause, translated: true);
+    }
+
+    /**
+     * One row per pair, the clause's [translation, term] cells split into the
+     * two columns, with the stored board order turned into each pair's place
+     * in the left and right column. A clause with no order leaves both places
+     * null, which leaves the player to shuffle.
+     */
+    public function storeClauseRows(array $clause): void
+    {
+        $left = self::columnPlaces($clause['order']['left'] ?? null);
+        $right = self::columnPlaces($clause['order']['right'] ?? null);
+
+        $this->replaceRows(pairs: collect($clause['pairs'] ?? [])
+            ->values()
+            ->map(fn (array $pair, int $position) => [
+                'exercise_id' => $this->getKey(),
+                'position' => $position,
+                'term' => $pair[1],
+                'translation' => $pair[0],
+                'left_position' => $left[$position] ?? null,
+                'right_position' => $right[$position] ?? null,
+            ])
+            ->all());
+    }
+
+    /**
+     * The pairs and, when every pair has a place in both columns, the board
+     * order they describe; without one the order key is left out.
+     */
+    public function storedClause(): array
+    {
+        $pairs = $this->wordPairs;
+        $clause = ['pairs' => $pairs->map(fn ($pair) => [$pair->translation, $pair->term])->all()];
+
+        if ($pairs->isNotEmpty() && $pairs->every(fn ($pair) => $pair->left_position !== null && $pair->right_position !== null)) {
+            $clause['order'] = [
+                'left' => $pairs->sortBy('left_position')->pluck('position')->values()->all(),
+                'right' => $pairs->sortBy('right_position')->pluck('position')->values()->all(),
+            ];
+        }
+
+        $clause['explanation'] = $this->explanation;
+
+        return $clause;
+    }
+
+    /**
      * The pairs as "word = translation", the board order left out since it
      * means nothing to the embedding model.
      */
@@ -150,6 +208,17 @@ final class MultipleChoiceExercise extends Exercise implements ExerciseDefinitio
         shuffle($indices);
 
         return $indices;
+    }
+
+    /**
+     * For a column order given as the pair indexes top to bottom, each pair's
+     * place in the column, keyed by pair index; empty when there is no order.
+     *
+     * @return array<int, int>
+     */
+    private static function columnPlaces(mixed $order): array
+    {
+        return is_array($order) ? array_flip(array_values($order)) : [];
     }
 
     private static function pairCount(array $clause): int

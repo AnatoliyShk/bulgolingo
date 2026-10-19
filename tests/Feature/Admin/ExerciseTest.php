@@ -6,6 +6,7 @@ use App\Enums\ExerciseType;
 use App\Models\Exercise;
 use App\Models\Exercise\MultipleChoiceExercise;
 use App\Models\Images;
+use App\Models\Language;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -750,5 +751,139 @@ class ExerciseTest extends TestCase
 
         $this->assertSame([2, 0, 1, 3, 4], $clause['order']['left']);
         $this->assertSame([4, 0, 1, 2, 3], $clause['order']['right']);
+    }
+
+    public function test_the_create_and_edit_forms_offer_every_language_and_the_defaults(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $lesson = $this->lesson();
+        $exercise = $this->wordPairExercise();
+
+        foreach ([route('admin.exercises.create', $lesson), route('admin.exercises.edit', $exercise)] as $url) {
+            $this->actingAs($admin)->get($url)->assertInertia(fn (Assert $page) => $page
+                ->has('languageOptions.languages', Language::count())
+                ->where('languageOptions.defaults.language_id', Language::defaultId())
+                ->where('languageOptions.defaults.translation_language_id', Language::idFor('en'))
+            );
+        }
+    }
+
+    public function test_the_edit_form_carries_the_exercises_own_languages(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $exercise = $this->wordPairExercise();
+
+        $this->actingAs($admin)->get(route('admin.exercises.edit', $exercise))->assertInertia(fn (Assert $page) => $page
+            ->where('exercise.language_id', Language::idFor('bg'))
+            ->where('exercise.translation_language_id', Language::idFor('en'))
+            ->where('exercise.clause.pairs.0', ['hello', 'здравей'])
+        );
+    }
+
+    public function test_the_player_gives_language_options_to_an_admin_and_not_to_a_student(): void
+    {
+        $exercise = $this->wordPairExercise();
+
+        $this->actingAs(User::factory()->admin()->create())->get(route('exercise.show', $exercise))
+            ->assertInertia(fn (Assert $page) => $page->has('languageOptions.languages'));
+
+        $this->actingAs(User::factory()->create())->get(route('exercise.show', $exercise))
+            ->assertInertia(fn (Assert $page) => $page->where('languageOptions', null));
+    }
+
+    public function test_admin_can_create_a_word_pair_exercise_in_a_language_added_as_a_row(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $lesson = $this->lesson();
+        $french = Language::create(['code' => 'fr', 'name' => 'French', 'unicode_script' => 'Latin']);
+
+        $this->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Animaux',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+                'language_id' => $french->id,
+                'translation_language_id' => Language::idFor('en'),
+                'clause' => [
+                    'pairs' => [['dog', 'chien'], ['cat', 'chat'], ['horse', 'cheval'], ['cow', 'vache'], ['goat', 'chèvre']],
+                    'explanation' => 'Match the animals.',
+                ],
+            ])
+            ->assertSessionHasNoErrors();
+
+        $exercise = Exercise::where('name', 'Animaux')->firstOrFail();
+        $this->assertSame($french->id, $exercise->language_id);
+        $this->assertSame(Language::idFor('en'), $exercise->translation_language_id);
+        $this->assertDatabaseHas('exercise_word_pairs', ['exercise_id' => $exercise->id, 'translation' => 'dog', 'term' => 'chien']);
+    }
+
+    public function test_an_exercise_created_without_a_language_is_made_in_the_default_one(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $lesson = $this->lesson();
+
+        $this->actingAs($admin)->post(route('admin.exercises.store', $lesson), [
+            'name' => 'No language',
+            'lesson_id' => $lesson->id,
+            'decision_type' => ExerciseType::TRUE_FALSE->value,
+            'clause' => ['sentence' => 'Здравей means hello.', 'correct_option' => true, 'explanation' => 'Greeting.'],
+        ])->assertSessionHasNoErrors();
+
+        $this->assertSame(Language::defaultId(), Exercise::where('name', 'No language')->value('language_id'));
+    }
+
+    public function test_a_board_cannot_translate_a_language_into_itself(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $lesson = $this->lesson();
+
+        $this->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Same language',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::MULTIPLE_CHOICE->value,
+                'language_id' => Language::idFor('bg'),
+                'translation_language_id' => Language::idFor('bg'),
+                'clause' => ['pairs' => $this->wordPairs(), 'explanation' => 'e'],
+            ])
+            ->assertSessionHasErrors('translation_language_id');
+
+        $this->assertDatabaseMissing('exercises', ['name' => 'Same language']);
+    }
+
+    public function test_an_unknown_language_is_rejected(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $lesson = $this->lesson();
+
+        $this->actingAs($admin)
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Unknown',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::TRUE_FALSE->value,
+                'language_id' => 9999,
+                'clause' => ['sentence' => 's', 'correct_option' => true, 'explanation' => 'e'],
+            ])
+            ->assertSessionHasErrors('language_id');
+    }
+
+    public function test_an_update_that_omits_the_languages_keeps_them(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $french = Language::create(['code' => 'fr', 'name' => 'French', 'unicode_script' => 'Latin']);
+        $exercise = $this->exerciseFor($this->lesson(), [
+            'name' => 'Frenchish',
+            'decision_type' => ExerciseType::TRUE_FALSE->value,
+            'language_id' => $french->id,
+            'clause' => ['sentence' => 'Chien means dog.', 'correct_option' => true, 'explanation' => 'e'],
+        ]);
+
+        $this->actingAs($admin)->put(route('admin.exercises.update', $exercise), [
+            'name' => 'Renamed',
+            'decision_type' => ExerciseType::TRUE_FALSE->value,
+            'clause' => ['sentence' => 'Chien means dog.', 'correct_option' => true, 'explanation' => 'e'],
+        ])->assertSessionHasNoErrors();
+
+        $this->assertSame($french->id, $exercise->fresh()->language_id);
     }
 }

@@ -15,6 +15,7 @@ const { theme } = useTheme()
 const props = defineProps({
     exercise:       { type: Object, required: true },
     exerciseTypes:  { type: Array,  required: true },
+    languageOptions: { type: Object, default: null },
     totalExercises: { type: Number, default: 0 },
     completedCount: { type: Number, default: 0 },
 })
@@ -106,6 +107,7 @@ function onComplete() {
                     v-if="showForm"
                     :exercise="exercise"
                     :exercise-types="exerciseTypes"
+                    :language-options="languageOptions"
                     :submit-route="route('admin.exercises.update', exercise.id)"
                     @success="showForm = false"
                     @cancel="showForm = false"

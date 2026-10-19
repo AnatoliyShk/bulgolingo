@@ -8,6 +8,7 @@ use App\Http\Requests\Exercise\StoreExerciseRequest;
 use App\Http\Requests\Exercise\UpdateExerciseRequest;
 use App\Models\Exercise;
 use App\Models\Images;
+use App\Models\Language;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -29,6 +30,7 @@ class ExerciseController extends Controller
         return Inertia::render('Admin/Exercises/Create', [
             'lesson' => $lesson,
             'exerciseTypes' => ExerciseType::options(),
+            'languageOptions' => Language::formOptions(),
         ]);
     }
 
@@ -48,6 +50,7 @@ class ExerciseController extends Controller
         return Inertia::render('Admin/Exercises/Edit', [
             'exercise' => $exercise->load('lessons', 'images'),
             'exerciseTypes' => ExerciseType::options(),
+            'languageOptions' => Language::formOptions(),
         ]);
     }
 

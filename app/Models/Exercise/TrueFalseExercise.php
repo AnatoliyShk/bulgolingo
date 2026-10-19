@@ -52,6 +52,25 @@ final class TrueFalseExercise extends Exercise implements ExerciseDefinition
         return $clause;
     }
 
+    /**
+     * The statement is the exercise's prompt and the answer is the
+     * statement_is_true column, a boolean rather than two option rows whose
+     * text would have to be in some language.
+     */
+    public function clauseColumns(array $clause): array
+    {
+        return $this->scalarColumns($clause, statementIsTrue: (bool) ($clause['correct_option'] ?? false));
+    }
+
+    public function storedClause(): array
+    {
+        return [
+            'sentence' => $this->prompt ?? '',
+            'correct_option' => (bool) $this->statement_is_true,
+            'explanation' => $this->explanation,
+        ];
+    }
+
     public function embeddingFields(): array
     {
         $answer = $this->clause['correct_option'] ?? null;

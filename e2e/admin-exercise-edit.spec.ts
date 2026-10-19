@@ -24,7 +24,8 @@ async function login(page: Page, email: string, password: string): Promise<boole
     return !page.url().includes('/login');
 }
 
-const wordInputs = (page: Page) => page.getByPlaceholder('Word', { exact: true });
+// The first cell of a pair is labelled with the translation language, English by default.
+const wordInputs = (page: Page) => page.getByPlaceholder('English', { exact: true });
 
 test.describe('Admin word pair edit form', () => {
     test.beforeEach(async ({ page }) => {

@@ -7,6 +7,7 @@ use App\Enums\LearningPathType;
 use App\Enums\RoleName;
 use App\Enums\UserType;
 use App\Models\Exercise\MultipleChoiceExercise;
+use App\Models\Language;
 use App\Models\Role;
 use App\Models\Type;
 use App\Support\LoadTest\ActivityPlan;
@@ -193,12 +194,13 @@ class SeedLoadTestData extends Command
         $now = now()->toDateTimeString();
         $prefix = RunManifest::NAME_PREFIX;
 
-        $this->writer->write('learning_paths', ['id', 'uuid', 'name', 'language', 'type', 'created_at', 'updated_at'],
+        $this->writer->write('learning_paths', ['id', 'uuid', 'name', 'language', 'language_id', 'type', 'created_at', 'updated_at'],
             (function () use ($paths, $pathStart, $now, $prefix): Generator {
                 $type = LearningPathType::Test->value;
+                $language = Language::defaultId();
 
                 for ($i = 0; $i < $paths; $i++) {
-                    yield [$pathStart + $i, (string) Str::uuid7(), $prefix.' Path '.($i + 1), 'bg', $type, $now, $now];
+                    yield [$pathStart + $i, (string) Str::uuid7(), $prefix.' Path '.($i + 1), 'bg', $language, $type, $now, $now];
                 }
             })());
 
@@ -210,21 +212,48 @@ class SeedLoadTestData extends Command
             })());
 
         $types = ExerciseType::cases();
+        $language = Language::defaultId();
+        $translation = Language::defaultTranslationIdFor($language);
 
-        $this->writer->write('exercises', ['id', 'uuid', 'name', 'clause', 'decision_type', 'created_at', 'updated_at'],
-            (function () use ($exercises, $exerciseStart, $now, $prefix, $types): Generator {
+        $this->writer->write('exercises', ['id', 'uuid', 'name', 'decision_type', 'language_id', 'translation_language_id', 'prompt', 'explanation', 'statement_is_true', 'created_at', 'updated_at'],
+            (function () use ($exercises, $exerciseStart, $now, $prefix, $types, $language, $translation): Generator {
                 for ($i = 0; $i < $exercises; $i++) {
                     $type = $types[$i % count($types)];
+                    $clause = $this->clauseFor($type, $i);
 
                     yield [
                         $exerciseStart + $i,
                         (string) Str::uuid7(),
                         $prefix.' Exercise '.($i + 1),
-                        json_encode($this->clauseFor($type, $i)),
                         $type->value,
+                        $language,
+                        $type === ExerciseType::MULTIPLE_CHOICE ? $translation : null,
+                        $clause['sentence'] ?? null,
+                        $clause['explanation'],
+                        $type === ExerciseType::TRUE_FALSE ? $clause['correct_option'] : null,
                         $now,
                         $now,
                     ];
+                }
+            })());
+
+        $this->writer->write('exercise_options', ['exercise_id', 'position', 'text', 'is_correct'],
+            (function () use ($exercises, $exerciseStart, $types): Generator {
+                for ($i = 0; $i < $exercises; $i++) {
+                    $clause = $this->clauseFor($types[$i % count($types)], $i);
+
+                    foreach ($clause['options'] ?? [] as $position => $text) {
+                        yield [$exerciseStart + $i, $position, $text, $position === $clause['correct_option']];
+                    }
+                }
+            })());
+
+        $this->writer->write('exercise_word_pairs', ['exercise_id', 'position', 'term', 'translation', 'left_position', 'right_position'],
+            (function () use ($exercises, $exerciseStart, $types): Generator {
+                for ($i = 0; $i < $exercises; $i++) {
+                    foreach ($this->clauseFor($types[$i % count($types)], $i)['pairs'] ?? [] as $position => [$translation, $term]) {
+                        yield [$exerciseStart + $i, $position, $term, $translation, null, null];
+                    }
                 }
             })());
 
@@ -274,11 +303,12 @@ class SeedLoadTestData extends Command
 
         $before = $this->writer->sequenceValue('lexemas');
         $now = now()->toDateTimeString();
+        $language = Language::defaultId();
 
-        $this->writer->write('lexemas', ['uuid', 'word', 'created_at', 'updated_at'],
-            (function () use ($rows, $now): Generator {
+        $this->writer->write('lexemas', ['uuid', 'word', 'language_id', 'created_at', 'updated_at'],
+            (function () use ($rows, $now, $language): Generator {
                 foreach ($rows as $row) {
-                    yield [(string) Str::uuid7(), $row[0], $now, $now];
+                    yield [(string) Str::uuid7(), $row[0], $language, $now, $now];
                 }
             })());
 
@@ -296,16 +326,18 @@ class SeedLoadTestData extends Command
     }
 
     /**
-     * Builds a clause that satisfies the type's own dataRules(). COPY bypasses
-     * the model's saving hook, so nothing validates these on the way in — but
-     * the exercise player still has to render them, and the stats page groups by
-     * decision_type, so each type gets a genuine shape rather than a stub.
+     * Builds a clause that satisfies the type's own dataRules(), which the
+     * exercise row, option rows and pair rows are then written from. COPY
+     * bypasses the model's saving hook, so nothing validates these on the way
+     * in — but the exercise player still has to render them, and the stats page
+     * groups by decision_type, so each type gets a genuine shape rather than a
+     * stub. A pair is [translation, term], the order the clause uses.
      */
     private function clauseFor(ExerciseType $type, int $i): array
     {
         return match ($type) {
             ExerciseType::MULTIPLE_CHOICE => [
-                'pairs' => array_map(fn ($n) => ['дума'.$i.'-'.$n, 'word'.$i.'-'.$n], range(0, MultipleChoiceExercise::MIN_WORD_PAIRS - 1)),
+                'pairs' => array_map(fn ($n) => ['word'.$i.'-'.$n, 'дума'.$i.'-'.$n], range(0, MultipleChoiceExercise::MIN_WORD_PAIRS - 1)),
                 'explanation' => 'Generated word pairs.',
             ],
             ExerciseType::TRUE_FALSE => [

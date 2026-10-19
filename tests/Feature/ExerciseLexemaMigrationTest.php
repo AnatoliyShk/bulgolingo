@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\ExerciseType;
+use App\Models\Language;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +20,7 @@ class ExerciseLexemaMigrationTest extends TestCase
             'uuid' => (string) Str::uuid7(),
             'name' => 'Legacy',
             'decision_type' => ExerciseType::FILL_IN_THE_BLANK->value,
+            'language_id' => Language::defaultId(),
             'clause' => json_encode([
                 'sentence' => 'The ___ is an animal.',
                 'options' => $options,
@@ -50,6 +52,7 @@ class ExerciseLexemaMigrationTest extends TestCase
         $lexema = fn (string $word, ?int $exerciseId) => DB::table('lexemas')->insertGetId([
             'uuid' => (string) Str::uuid7(),
             'word' => $word,
+            'language_id' => Language::defaultId(),
             'exercise_id' => $exerciseId,
         ]);
         $dog = $lexema('куче', $first);
@@ -77,7 +80,7 @@ class ExerciseLexemaMigrationTest extends TestCase
     {
         $first = $this->exercise(['Куче']);
         $second = $this->exercise(['Куче']);
-        $dog = DB::table('lexemas')->insertGetId(['uuid' => (string) Str::uuid7(), 'word' => 'куче']);
+        $dog = DB::table('lexemas')->insertGetId(['uuid' => (string) Str::uuid7(), 'word' => 'куче', 'language_id' => Language::defaultId()]);
 
         DB::table('exercise_lexema')->insert([
             ['exercise_id' => $first, 'lexema_id' => $dog],

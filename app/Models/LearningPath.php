@@ -29,6 +29,23 @@ class LearningPath extends Model
     }
 
     /**
+     * Keeps language_id in step with the free-text `language` ('BG') while
+     * both exist: it is looked up, case-insensitively, against
+     * languages.code, and is null when the text names no language. The text
+     * column goes in a later migration, and the relation to Language is added
+     * then, since it would collide with the `language` attribute until it is
+     * gone.
+     */
+    protected static function booted(): void
+    {
+        static::saving(function (LearningPath $path) {
+            if ($path->isDirty('language') || ! $path->exists) {
+                $path->language_id = Language::query()->where('code', mb_strtolower((string) $path->language))->value('id');
+            }
+        });
+    }
+
+    /**
      * Limits paths to the types the viewer may see (null for a guest). Every
      * student-facing listing must go through this.
      */

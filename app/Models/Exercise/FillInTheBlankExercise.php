@@ -42,6 +42,24 @@ final class FillInTheBlankExercise extends Exercise implements ExerciseDefinitio
         return $this->clauseWithIndexAnswer();
     }
 
+    /**
+     * The sentence is the exercise's prompt and the options are rows, the
+     * right one flagged.
+     */
+    public function storeClauseRows(array $clause): void
+    {
+        $this->replaceRows($this->optionRows($clause));
+    }
+
+    public function storedClause(): array
+    {
+        return [
+            'sentence' => $this->prompt ?? '',
+            ...$this->storedOptions(),
+            'explanation' => $this->explanation,
+        ];
+    }
+
     public function embeddingFields(): array
     {
         return [

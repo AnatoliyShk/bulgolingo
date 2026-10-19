@@ -5,6 +5,7 @@ namespace Tests\Feature\Jobs;
 use App\Enums\ExerciseType;
 use App\Jobs\GenerateExerciseEmbedding;
 use App\Models\Exercise;
+use App\Models\Language;
 use App\Services\SiteSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
@@ -189,10 +190,13 @@ class GenerateExerciseEmbeddingTest extends TestCase
             'uuid' => (string) Str::uuid7(),
             'name' => 'Empty',
             'decision_type' => ExerciseType::FILL_IN_THE_BLANK->value,
-            'clause' => json_encode(['sentence' => ' ', 'options' => [''], 'correct_option' => 0, 'explanation' => ' ']),
+            'language_id' => Language::defaultId(),
+            'prompt' => ' ',
+            'explanation' => ' ',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        DB::table('exercise_options')->insert(['exercise_id' => $id, 'position' => 0, 'text' => '', 'is_correct' => true]);
 
         (new GenerateExerciseEmbedding(Exercise::findOrFail($id)))->handle(app(SiteSettingsService::class));
 

@@ -20,6 +20,11 @@ class StoreExerciseRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * Both languages are optional: an exercise sent without one is created in
+     * the default content language, and a word-pair board without a
+     * translation language translates into the default one. A board cannot
+     * translate a language into itself.
+     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -29,6 +34,8 @@ class StoreExerciseRequest extends FormRequest
             'lesson_id' => ['required', 'integer', 'exists:lessons,id'],
             'clause' => ['required', 'array'],
             'decision_type' => ['required', 'string', Rule::enum(ExerciseType::class)],
+            'language_id' => ['nullable', 'integer', 'exists:languages,id'],
+            'translation_language_id' => ['nullable', 'integer', 'exists:languages,id', 'different:language_id'],
             'image' => [
                 Rule::requiredIf(ExerciseType::tryFrom((string) $this->input('decision_type'))?->definition()->requiresImage() ?? false),
                 'nullable',

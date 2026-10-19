@@ -24,8 +24,13 @@ async function login(page: Page, email: string, password: string): Promise<boole
     return !page.url().includes('/login');
 }
 
-const wordInputs = (page: Page) => page.getByPlaceholder('Word', { exact: true });
-const translationInputs = (page: Page) => page.getByPlaceholder('Translation', { exact: true });
+// The two cells of a pair are labelled with the languages the exercise names,
+// English and Bulgarian by default: the first holds the translation and the
+// second the word being taught.
+const translationInputs = (page: Page) => page.getByPlaceholder('English', { exact: true });
+const termInputs = (page: Page) => page.getByPlaceholder('Bulgarian', { exact: true });
+const languageSelect = (page: Page) => page.getByTestId('exercise-language');
+const translationLanguageSelect = (page: Page) => page.getByTestId('exercise-translation-language');
 const removeButtons = (page: Page) => page.getByRole('button', { name: 'Remove' });
 const addPair = (page: Page) => page.getByRole('button', { name: '+ Add pair' });
 const submit = (page: Page) => page.getByRole('button', { name: /Create Exercise/ });
@@ -34,15 +39,16 @@ const shuffle = (page: Page) => page.getByRole('button', { name: 'Shuffle' });
 const preview = (page: Page) => page.getByTestId('student-order');
 const previewColumns = (page: Page) => preview(page).locator('ol');
 
-// Fills every visible pair row with a distinct English/Bulgarian word.
+// Fills every visible pair row with a distinct English translation and
+// Bulgarian word.
 async function fillPairs(page: Page): Promise<void> {
     const english = ['hello', 'thank you', 'water', 'bread', 'friend', 'morning'];
     const bulgarian = ['здравей', 'благодаря', 'вода', 'хляб', 'приятел', 'утро'];
 
-    const count = await wordInputs(page).count();
+    const count = await translationInputs(page).count();
     for (let i = 0; i < count; i++) {
-        await wordInputs(page).nth(i).fill(english[i % english.length]);
-        await translationInputs(page).nth(i).fill(bulgarian[i % bulgarian.length]);
+        await translationInputs(page).nth(i).fill(english[i % english.length]);
+        await termInputs(page).nth(i).fill(bulgarian[i % bulgarian.length]);
     }
 }
 
@@ -58,12 +64,12 @@ test.describe('Admin word pair exercise form', () => {
             .locator('select')
             .filter({ has: page.getByRole('option', { name: 'Select a type' }) })
             .selectOption('multiple_choice');
-        await expect(wordInputs(page).first()).toBeVisible();
+        await expect(translationInputs(page).first()).toBeVisible();
     });
 
     test('opens with the minimum number of pair rows', async ({ page }) => {
-        await expect(wordInputs(page)).toHaveCount(MIN_PAIRS);
         await expect(translationInputs(page)).toHaveCount(MIN_PAIRS);
+        await expect(termInputs(page)).toHaveCount(MIN_PAIRS);
         await expect(counter(page)).toHaveText(`${MIN_PAIRS} pairs · ${MIN_PAIRS * 2} words`);
     });
 
@@ -80,7 +86,7 @@ test.describe('Admin word pair exercise form', () => {
     test('adding a pair re-enables remove and updates the word count', async ({ page }) => {
         await addPair(page).click();
 
-        await expect(wordInputs(page)).toHaveCount(MIN_PAIRS + 1);
+        await expect(translationInputs(page)).toHaveCount(MIN_PAIRS + 1);
         await expect(counter(page)).toHaveText(`${MIN_PAIRS + 1} pairs · ${(MIN_PAIRS + 1) * 2} words`);
         await expect(removeButtons(page).first()).toBeEnabled();
     });
@@ -90,14 +96,14 @@ test.describe('Admin word pair exercise form', () => {
     test('removing never drops below the minimum', async ({ page }) => {
         await addPair(page).click();
         await addPair(page).click();
-        await expect(wordInputs(page)).toHaveCount(MIN_PAIRS + 2);
+        await expect(translationInputs(page)).toHaveCount(MIN_PAIRS + 2);
 
         await removeButtons(page).last().click();
         await removeButtons(page).last().click();
-        await expect(wordInputs(page)).toHaveCount(MIN_PAIRS);
+        await expect(translationInputs(page)).toHaveCount(MIN_PAIRS);
 
         await expect(removeButtons(page).last()).toBeDisabled();
-        await expect(wordInputs(page)).toHaveCount(MIN_PAIRS);
+        await expect(translationInputs(page)).toHaveCount(MIN_PAIRS);
     });
 
     test('submit stays available once the minimum rows are filled', async ({ page }) => {
@@ -122,7 +128,7 @@ test.describe('Admin word pair exercise form', () => {
         await expect(page.getByText('Order the student sees')).toBeVisible();
         await expect(previewColumns(page)).toHaveCount(2);
 
-        const words = await wordInputs(page).evaluateAll((inputs) =>
+        const words = await translationInputs(page).evaluateAll((inputs) =>
             (inputs as HTMLInputElement[]).map((input) => input.value).sort(),
         );
         const previewed = await previewColumns(page).first().locator('li').allInnerTexts();
@@ -150,10 +156,45 @@ test.describe('Admin word pair exercise form', () => {
         await expect(previewColumns(page).last().locator('li')).toHaveCount(MIN_PAIRS);
     });
 
+    test('offers the language taught and the translation language, defaulting to Bulgarian and English', async ({ page }) => {
+        await expect(languageSelect(page).locator('option:checked')).toHaveText('Bulgarian');
+        await expect(translationLanguageSelect(page).locator('option:checked')).toHaveText('English');
+    });
+
+    test('labels the two cells of a pair with the languages chosen', async ({ page }) => {
+        await languageSelect(page).selectOption({ label: 'English' });
+        await translationLanguageSelect(page).selectOption({ label: 'Bulgarian' });
+
+        const cells = page.locator('.admin-form__input--row');
+        await expect(cells.nth(0)).toHaveAttribute('placeholder', 'Bulgarian');
+        await expect(cells.nth(1)).toHaveAttribute('placeholder', 'English');
+    });
+
+    test('hides the translation language for the other types', async ({ page }) => {
+        await page
+            .locator('select')
+            .filter({ has: page.getByRole('option', { name: 'True/False' }) })
+            .selectOption('true_false');
+
+        await expect(languageSelect(page)).toBeVisible();
+        await expect(translationLanguageSelect(page)).toHaveCount(0);
+    });
+
+    test('the server rejects translating a language into itself', async ({ page }) => {
+        await page.getByPlaceholder('Exercise name').fill('E2E same language');
+        await fillPairs(page);
+        await page.getByPlaceholder('Explain the correct answer').fill('Match each word to its translation.');
+        await translationLanguageSelect(page).selectOption({ label: 'Bulgarian' });
+
+        await submit(page).click();
+
+        await expect(page.getByText(/must be different/)).toBeVisible();
+    });
+
     test('the server rejects a duplicated word', async ({ page }) => {
         await page.getByPlaceholder('Exercise name').fill('E2E duplicate words');
         await fillPairs(page);
-        await wordInputs(page).last().fill(await wordInputs(page).first().inputValue());
+        await translationInputs(page).last().fill(await translationInputs(page).first().inputValue());
         await page.getByPlaceholder('Explain the correct answer').fill('Match each word to its translation.');
 
         await submit(page).click();
