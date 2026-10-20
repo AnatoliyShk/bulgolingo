@@ -23,6 +23,7 @@
         "open-telemetry/exporter-otlp": "^1.4",
         "open-telemetry/sdk": "^1.15",
         "promphp/prometheus_client_php": "^2.15",
+        "spatie/laravel-prometheus": "^1.7",
         "tightenco/ziggy": "^2.0",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^15.0"
     },
@@ -98,7 +99,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "tbachert/spi": true
         }
     },
     "minimum-stability": "stable",

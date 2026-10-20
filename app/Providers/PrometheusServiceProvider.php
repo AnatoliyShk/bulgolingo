@@ -2,12 +2,15 @@
 
 namespace App\Providers;
 
+use App\Enums\UserType;
+use App\Models\User;
 use Illuminate\Support\ConfigurationUrlParser;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Prometheus\CollectorRegistry;
 use Prometheus\Storage\Adapter;
 use Prometheus\Storage\Redis;
+use Spatie\Prometheus\Facades\Prometheus;
 
 class PrometheusServiceProvider extends ServiceProvider
 {
@@ -20,6 +23,17 @@ class PrometheusServiceProvider extends ServiceProvider
         $this->app->singleton(CollectorRegistry::class, function ($app) {
             return new CollectorRegistry($app->make(Adapter::class), false);
         });
+    }
+
+    /**
+     * The gauge's closure runs only when /prometheus is scraped, so booting
+     * the app never queries the users table.
+     */
+    public function boot(): void
+    {
+        Prometheus::addGauge('Users')
+            ->helpText('Number of regular users')
+            ->value(fn () => User::whereRelation('type', 'name', UserType::Regular)->count());
     }
 
     /**
