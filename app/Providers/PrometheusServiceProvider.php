@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Enums\UserType;
 use App\Models\User;
+use App\Models\UserExerciseCompletion;
 use Illuminate\Support\ConfigurationUrlParser;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -26,14 +27,18 @@ class PrometheusServiceProvider extends ServiceProvider
     }
 
     /**
-     * The gauge's closure runs only when /prometheus is scraped, so booting
-     * the app never queries the users table.
+     * The gauges' closures run only when /prometheus is scraped, so booting
+     * the app never queries the database.
      */
     public function boot(): void
     {
         Prometheus::addGauge('Users')
             ->helpText('Number of regular users')
             ->value(fn () => User::whereRelation('type', 'name', UserType::Regular)->count());
+
+        Prometheus::addGauge('Completed exercises')
+            ->helpText('Number of exercise completions across all users')
+            ->value(fn () => UserExerciseCompletion::count());
     }
 
     /**
