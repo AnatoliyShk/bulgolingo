@@ -81,4 +81,22 @@ class AdminVisitorTest extends TestCase
 
         $this->assertDatabaseCount('bots', 0);
     }
+
+    /**
+     * The log viewer sits outside the admin route group, so the visitor
+     * restriction never reaches it; its own gate keeps visitors from reading
+     * logs, which can carry user emails, and from deleting log files.
+     */
+    public function test_an_admin_visitor_cannot_read_or_delete_logs(): void
+    {
+        $visitor = $this->visitor();
+
+        $this->actingAs($visitor)->get(route('log-viewer.index'))->assertForbidden();
+        $this->actingAs($visitor)->getJson(route('log-viewer.folders'))->assertForbidden();
+        $this->actingAs($visitor)->deleteJson(route('log-viewer.files.delete', 'any'))->assertForbidden();
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->getJson(route('log-viewer.folders'))
+            ->assertOk();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Models\UserExerciseCompletion;
 use App\Observers\UserExerciseCompletionObserver;
 use App\Services\CacheHitRateCacheService;
@@ -17,6 +18,7 @@ use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -52,10 +54,14 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap any application services. The log viewer is for admins alone:
+     * the read-only admin visitor role is kept out, since logs can carry user
+     * emails and the viewer can delete log files.
      */
     public function boot(): void
     {
+        Gate::define('viewLogViewer', fn (User $user) => $user->isAdmin());
+
         UserExerciseCompletion::observe(UserExerciseCompletionObserver::class);
         if (! function_exists('nativephp_call')) {
             Vite::prefetch(concurrency: 3);

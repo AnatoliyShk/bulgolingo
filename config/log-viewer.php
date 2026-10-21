@@ -3,6 +3,7 @@
 use Opcodes\LogViewer\Enums\SortingMethod;
 use Opcodes\LogViewer\Enums\SortingOrder;
 use Opcodes\LogViewer\Enums\Theme;
+use Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer;
 
 return [
 
@@ -104,6 +105,8 @@ return [
         'web',
         'auth',
         'admin',
+        // `admin` also lets admin visitors in; this checks the viewLogViewer gate (admins only).
+        AuthorizeLogViewer::class,
     ],
 
     /*
@@ -119,6 +122,8 @@ return [
         'web',
         'auth',
         'admin',
+        // `admin` also lets admin visitors in; this checks the viewLogViewer gate (admins only).
+        AuthorizeLogViewer::class,
     ],
 
     'api_stateful_domains' => env('LOG_VIEWER_API_STATEFUL_DOMAINS') ? explode(',', env('LOG_VIEWER_API_STATEFUL_DOMAINS')) : null,
