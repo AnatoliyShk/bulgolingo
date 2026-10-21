@@ -30,6 +30,7 @@ class ListLearningPathsTool extends Tool
         ]);
 
         $paths = LearningPath::query()
+            ->visibleTo($request->user())
             ->when($filters['type'] ?? null, fn ($query, $type) => $query->where('type', $type))
             ->when($filters['level'] ?? null, fn ($query, $level) => $query->where('level', $level))
             ->when($filters['language'] ?? null, fn ($query, $language) => $query->where('language', $language))
@@ -56,7 +57,7 @@ class ListLearningPathsTool extends Tool
         return [
             'type' => $schema->string()
                 ->enum(LearningPathType::class)
-                ->description('Only include paths of this type. Omit to include every type.'),
+                ->description('Only include paths of this type. Omit to include every type you can see.'),
             'level' => $schema->string()
                 ->enum(LanguageLevel::class)
                 ->description('Only include paths at this CEFR level. Omit to include every level.'),

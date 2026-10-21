@@ -26,11 +26,12 @@ class ProgressService
 {
     /**
      * Total and user-completed exercise counts for the exercise's lesson. Uses
-     * the lowest lesson id, as an exercise currently belongs to one lesson.
+     * the lowest lesson id, as an exercise currently belongs to one lesson. A
+     * guest sees the lesson's size with nothing completed.
      *
      * @return array{total: int, completed: int}
      */
-    public function exerciseProgress(Exercise $exercise, User $user): array
+    public function exerciseProgress(Exercise $exercise, ?User $user): array
     {
         $count = $this->lessonCounts($user, fn ($q) => $q
             ->selectRaw('min(lesson_id)')
@@ -137,15 +138,18 @@ class ProgressService
     /**
      * Everything that follows the user answering $exercise correctly: the
      * completion row, the queued XP award and lexema grading, and the day
-     * streak. XP and grading run on every answer, repeats included; only the
-     * first completion counts toward the stats caches. Grading already covers
-     * reps_total, so LexemaCountUpdate is not dispatched.
+     * streak. Grading runs on every answer, repeats included, since a repeat
+     * is still practice; XP is awarded on the first completion only, as the
+     * stats caches are, so replaying one exercise cannot climb the
+     * leaderboard. Grading already covers reps_total, so LexemaCountUpdate is
+     * not dispatched.
      */
     public function completeExercise(User $user, Exercise $exercise): void
     {
-        UserExerciseCompletion::record($user, $exercise);
+        if (UserExerciseCompletion::record($user, $exercise)) {
+            ExperienceCountUpdate::dispatch($user->id, $exercise->id)->onQueue('learning_path');
+        }
 
-        ExperienceCountUpdate::dispatch($user->id, $exercise->id)->onQueue('learning_path');
         LexemaReviewGrade::dispatch($user->id, $exercise->id)->onQueue('learning_path');
 
         $this->recordPractice($user);
@@ -294,17 +298,18 @@ class ProgressService
      * Each lesson's exercise count and how many of those the user has
      * completed, keyed by lesson id: the one query every completion check in
      * this service goes through. $lessonIds is an id list or a subquery that
-     * selects them. A lesson with no exercises has no entry.
+     * selects them. A lesson with no exercises has no entry. For a guest the
+     * join matches no completion (user_id is never null), so completed is 0.
      *
      * @param  array<int, int>|Closure  $lessonIds
      * @return Collection<int, object{total: int, completed: int}>
      */
-    private function lessonCounts(User $user, array|Closure $lessonIds): Collection
+    private function lessonCounts(?User $user, array|Closure $lessonIds): Collection
     {
         return DB::table('exercise_lesson as el')
             ->leftJoin('user_exercise_completions as uec', function ($join) use ($user) {
                 $join->on('uec.exercise_id', '=', 'el.exercise_id')
-                    ->where('uec.user_id', $user->getKey());
+                    ->where('uec.user_id', $user?->getKey());
             })
             ->whereIn('el.lesson_id', $lessonIds)
             ->groupBy('el.lesson_id')

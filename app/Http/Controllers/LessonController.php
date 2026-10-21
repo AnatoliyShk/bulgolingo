@@ -13,7 +13,8 @@ class LessonController extends Controller
     public function __construct(private readonly ProgressService $progressService) {}
 
     /**
-     * A finished lesson shows its summary; otherwise the user is sent to its
+     * A lesson only in paths the user cannot see is a 404
+     * (Lesson::isVisibleTo). A finished lesson shows its summary; otherwise the user is sent to its
      * earliest exercise they have not completed, which for a guest is simply
      * the first. A lesson with no exercises has nothing to show, so it sends
      * the user back. Whether the lesson is finished is decided by
@@ -21,6 +22,8 @@ class LessonController extends Controller
      */
     public function show(Request $request, Lesson $lesson)
     {
+        abort_unless($lesson->isVisibleTo($request->user()), 404);
+
         $firstExerciseId = Lesson::firstExerciseIdIn($lesson->getKey());
 
         if ($firstExerciseId === null) {

@@ -63,6 +63,16 @@ class LearningPath extends Model
     }
 
     /**
+     * The visibleTo rule for content reached through $paths, a query of the
+     * paths a lesson or exercise belongs to: one path the user can see is
+     * enough, and content in no path at all is hidden by none.
+     */
+    public static function admitsTo(Builder $paths, ?User $user): bool
+    {
+        return (clone $paths)->visibleTo($user)->exists() || $paths->doesntExist();
+    }
+
+    /**
      * Every learning path's exercise count, keyed by id. A path with no
      * lessons or no exercises is simply absent rather than zero.
      *

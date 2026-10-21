@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\HasUuidV7;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -126,6 +127,18 @@ class Lesson extends Model
     public function learningPath()
     {
         return $this->belongsToMany(LearningPath::class, 'learning_path_lesson');
+    }
+
+    /**
+     * Whether $user may open this lesson, by the paths it belongs to
+     * (LearningPath::admitsTo).
+     */
+    public function isVisibleTo(?User $user): bool
+    {
+        return LearningPath::admitsTo(
+            LearningPath::whereHas('lessons', fn (Builder $query) => $query->whereKey($this->getKey())),
+            $user,
+        );
     }
 
     public function refreshCompletionStatus(): void

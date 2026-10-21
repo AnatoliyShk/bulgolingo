@@ -198,6 +198,18 @@ class Exercise extends Model
         return self::class;
     }
 
+    /**
+     * Whether $user may open this exercise, by the paths its lessons belong
+     * to (LearningPath::admitsTo).
+     */
+    public function isVisibleTo(?User $user): bool
+    {
+        return LearningPath::admitsTo(
+            LearningPath::whereHas('lessons.exercises', fn (Builder $query) => $query->whereKey($this->getKey())),
+            $user,
+        );
+    }
+
     public function lessons(): BelongsToMany
     {
         return $this->belongsToMany(Lesson::class, 'exercise_lesson')

@@ -14,11 +14,14 @@ class ExerciseController extends Controller
     public function __construct(private readonly ProgressService $progressService) {}
 
     /**
-     * Display the specified resource.
+     * The exercise player. An exercise only in paths the user cannot see is a
+     * 404 (Exercise::isVisibleTo); a guest plays with nothing completed.
      */
     public function show(Request $request, Exercise $exercise)
     {
         $user = $request->user();
+
+        abort_unless($exercise->isVisibleTo($user), 404);
 
         $progress = $this->progressService->exerciseProgress($exercise, $user);
 
@@ -35,11 +38,15 @@ class ExerciseController extends Controller
      * Completes the exercise for the student and sends them on: to the lesson's
      * next incomplete exercise (Lesson::nextIncompleteExerciseId), to the
      * lesson-complete page once none is left, or to the dashboard when the
-     * exercise belongs to no lesson.
+     * exercise belongs to no lesson. One the user cannot see is a 404, as in
+     * show().
      */
     public function complete(Request $request, Exercise $exercise)
     {
         $user = $request->user();
+
+        abort_unless($exercise->isVisibleTo($user), 404);
+
         $lesson = $exercise->lessons()->first();
 
         $this->progressService->completeExercise($user, $exercise);
