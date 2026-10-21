@@ -42,11 +42,11 @@ class ExerciseShowProgressTest extends TestCase
     /**
      * @return array{totalExercises: int, completedCount: int}
      */
-    private function progressFor(User $user, Exercise $exercise): array
+    private function progressFor(?User $user, Exercise $exercise): array
     {
         $props = null;
 
-        $this->actingAs($user)
+        ($user ? $this->actingAs($user) : $this)
             ->get(route('exercise.show', $exercise))
             ->assertOk()
             ->assertInertia(function (Assert $page) use (&$props) {
@@ -75,6 +75,17 @@ class ExerciseShowProgressTest extends TestCase
 
         $this->assertSame(4, $progress['totalExercises']);
         $this->assertSame(2, $progress['completedCount']);
+    }
+
+    public function test_a_guest_sees_the_lesson_size_with_nothing_completed(): void
+    {
+        $lesson = Lesson::create(['name' => 'L', 'description' => 'D']);
+        $exercises = $this->exercisesInLesson($lesson, 3);
+
+        $progress = $this->progressFor(null, $exercises[0]);
+
+        $this->assertSame(3, $progress['totalExercises']);
+        $this->assertSame(0, $progress['completedCount']);
     }
 
     public function test_an_exercise_with_no_lesson_reports_zero_of_zero(): void

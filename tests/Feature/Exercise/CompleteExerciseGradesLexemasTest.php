@@ -83,10 +83,11 @@ class CompleteExerciseGradesLexemasTest extends TestCase
     }
 
     /**
-     * A repeat answer is still practice, so XP and grading are queued again,
-     * while the unique completion row is written only once.
+     * A repeat answer is still practice, so grading is queued again, but XP
+     * is awarded once, with the one completion row, so replaying an exercise
+     * cannot farm the leaderboard.
      */
-    public function test_completing_again_queues_the_jobs_but_records_one_row(): void
+    public function test_completing_again_grades_again_but_awards_xp_once(): void
     {
         Queue::fake();
 
@@ -96,7 +97,7 @@ class CompleteExerciseGradesLexemasTest extends TestCase
         app(ProgressService::class)->completeExercise($user, $exercise);
         app(ProgressService::class)->completeExercise($user, $exercise);
 
-        Queue::assertPushed(ExperienceCountUpdate::class, 2);
+        Queue::assertPushed(ExperienceCountUpdate::class, 1);
         Queue::assertPushed(LexemaReviewGrade::class, 2);
         $this->assertSame(1, UserExerciseCompletion::query()->where('user_id', $user->id)->count());
     }

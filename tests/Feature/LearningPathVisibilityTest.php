@@ -2,9 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Enums\ExerciseType;
 use App\Enums\LanguageLevel;
 use App\Enums\LearningPathType;
+use App\Models\Exercise;
 use App\Models\LearningPath;
+use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -152,6 +155,66 @@ class LearningPathVisibilityTest extends TestCase
             'user_id' => $user->id,
             'learning_path_id' => $paths['premium']->id,
         ]);
+    }
+
+    /**
+     * A lesson of $path with one exercise, for the routes that take a lesson
+     * or exercise id rather than the path's.
+     *
+     * @return array{0: Lesson, 1: Exercise}
+     */
+    private function lessonIn(LearningPath $path): array
+    {
+        $lesson = Lesson::create(['name' => 'L', 'description' => 'D']);
+        $path->lessons()->attach($lesson->id);
+
+        $exercise = Exercise::create([
+            'name' => 'Ex',
+            'decision_type' => ExerciseType::TRUE_FALSE->value,
+            'clause' => [
+                'sentence' => 'Здравей means hello.',
+                'correct_option' => true,
+                'explanation' => 'Greeting.',
+            ],
+        ]);
+        $lesson->attachExerciseAtEnd($exercise);
+
+        return [$lesson, $exercise];
+    }
+
+    public function test_a_hidden_paths_lessons_and_exercises_cannot_be_opened_by_id(): void
+    {
+        $paths = $this->oneOfEachType();
+        $user = User::factory()->create();
+        [$lesson, $exercise] = $this->lessonIn($paths['premium']);
+
+        $this->get(route('lesson.show', $lesson))->assertNotFound();
+        $this->get(route('exercise.show', $exercise))->assertNotFound();
+
+        $this->actingAs($user)->get(route('lesson.show', $lesson))->assertNotFound();
+        $this->actingAs($user)->get(route('exercise.show', $exercise))->assertNotFound();
+        $this->actingAs($user)->post(route('exercise.complete', $exercise))->assertNotFound();
+
+        $this->assertDatabaseMissing('user_exercise_completions', ['user_id' => $user->id]);
+    }
+
+    /**
+     * One visible path is enough: a lesson shared by a premium and a regular
+     * path stays open to everyone, and a premium user opens a premium one.
+     */
+    public function test_a_lesson_opens_through_any_path_the_user_can_see(): void
+    {
+        $paths = $this->oneOfEachType();
+        [, $premiumExercise] = $this->lessonIn($paths['premium']);
+        [$shared, $sharedExercise] = $this->lessonIn($paths['test']);
+        $paths['regular']->lessons()->attach($shared->id);
+
+        $this->get(route('exercise.show', $sharedExercise))->assertOk();
+        $this->get(route('lesson.show', $shared))->assertRedirect(route('exercise.show', $sharedExercise));
+
+        $this->actingAs(User::factory()->premium()->create())
+            ->get(route('exercise.show', $premiumExercise))
+            ->assertOk();
     }
 
     public function test_an_admin_can_set_the_type_through_the_admin_form(): void
