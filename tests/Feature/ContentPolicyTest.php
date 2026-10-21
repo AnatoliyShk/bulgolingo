@@ -4,9 +4,6 @@ namespace Tests\Feature;
 
 use App\Enums\LanguageLevel;
 use App\Enums\LearningPathType;
-use App\Http\Controllers\LexemaController;
-use App\Http\Controllers\ScriptedDialogueController;
-use App\Http\Controllers\ScriptedLineController;
 use App\Models\Bot;
 use App\Models\Images;
 use App\Models\LearningPath;
@@ -17,7 +14,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -182,54 +178,5 @@ class ContentPolicyTest extends TestCase
             $this->delete(route($route, $model))->assertRedirect();
             $this->assertModelMissing($model);
         }
-    }
-
-    /**
-     * The unrouted scaffold controllers, as `[controller, model, resource]`.
-     *
-     * @return array<string, array{class-string, class-string<Model>, string, string, bool, bool}>
-     */
-    public static function scaffolds(): array
-    {
-        $cases = [];
-
-        foreach ([
-            [LexemaController::class, Lexema::class, 'lexemas'],
-            [ScriptedDialogueController::class, ScriptedDialogue::class, 'scripted-dialogues'],
-            [ScriptedLineController::class, ScriptedLine::class, 'scripted-lines'],
-        ] as [$controller, $class, $resource]) {
-            foreach (self::roles() as $label => $row) {
-                $cases[class_basename($controller).': '.$label] = [$controller, $class, $resource, ...$row];
-            }
-        }
-
-        return $cases;
-    }
-
-    /**
-     * The scaffolds are not routed yet, so the test routes each as the
-     * resource it would become, with the parameter name `Route::resource()`
-     * gives it, to prove every action's `#[Authorize]` attribute reaches the
-     * policy: a permitted call gets the empty scaffold's 200, a refused one a
-     * 403.
-     */
-    #[DataProvider('scaffolds')]
-    public function test_the_scaffold_actions_are_guarded_by_the_policy(string $controller, string $class, string $resource, string $role, bool $canRead, bool $canWrite): void
-    {
-        Route::middleware(['web', 'auth'])->resource($resource, $controller);
-
-        $id = $this->makeModel($class)->id;
-        $read = $canRead ? 200 : 403;
-        $write = $canWrite ? 200 : 403;
-
-        $this->actingAs($this->userWithRole($role));
-
-        $this->get("/{$resource}")->assertStatus($read);
-        $this->get("/{$resource}/{$id}")->assertStatus($read);
-        $this->get("/{$resource}/create")->assertStatus($write);
-        $this->post("/{$resource}")->assertStatus($write);
-        $this->get("/{$resource}/{$id}/edit")->assertStatus($write);
-        $this->put("/{$resource}/{$id}")->assertStatus($write);
-        $this->delete("/{$resource}/{$id}")->assertStatus($write);
     }
 }

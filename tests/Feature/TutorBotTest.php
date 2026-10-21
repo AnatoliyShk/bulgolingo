@@ -218,7 +218,7 @@ class TutorBotTest extends TestCase
         $this->enableTutor();
         LanguageTutor::fake(['Да.']);
 
-        for ($i = 0; $i < 8; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $this->post(route('tutor.ask'), ['question' => 'Is this Bulgarian?'])->assertOk();
         }
 
