@@ -62,14 +62,17 @@ class LessonController extends Controller
     /**
      * Wipes this user's progress on the lesson and sends them to its first
      * exercise; ProgressService::resetLesson() removes the completions and
-     * keeps the stats caches in step with them.
+     * keeps the stats caches in step with them. A lesson with no exercises
+     * sends the user back, as show() does.
      */
     public function restart(Request $request, Lesson $lesson)
     {
         $this->progressService->resetLesson($request->user(), $lesson);
 
-        $firstExercise = $lesson->exercises()->first();
+        $firstExerciseId = Lesson::firstExerciseIdIn($lesson->getKey());
 
-        return redirect()->route('exercise.show', $firstExercise->id);
+        return $firstExerciseId === null
+            ? redirect()->back()
+            : redirect()->route('exercise.show', $firstExerciseId);
     }
 }

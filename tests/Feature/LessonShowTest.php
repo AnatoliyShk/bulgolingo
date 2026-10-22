@@ -48,6 +48,14 @@ class LessonShowTest extends TestCase
             ->assertRedirect('/learning-paths');
     }
 
+    public function test_restarting_a_lesson_with_no_exercises_sends_the_user_back(): void
+    {
+        $this->actingAs(User::factory()->create())
+            ->from('/learning-paths')
+            ->post(route('lesson.restart', $this->lesson))
+            ->assertRedirect('/learning-paths');
+    }
+
     public function test_a_guest_starts_at_the_first_exercise(): void
     {
         $first = $this->exercise();

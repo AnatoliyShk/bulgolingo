@@ -338,6 +338,34 @@ class ExerciseTest extends TestCase
         $this->assertSame(2, $exercise->fresh()->clause['correct_option']);
     }
 
+    public function test_saving_an_exercise_in_no_lesson_returns_to_the_exercise_list(): void
+    {
+        $exercise = Exercise::create([
+            'name' => 'Orphan',
+            'decision_type' => ExerciseType::TRUE_FALSE->value,
+            'clause' => [
+                'sentence' => '"Котка" means "cat".',
+                'correct_option' => true,
+                'explanation' => 'Котка means cat.',
+            ],
+        ]);
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => 'Renamed',
+                'decision_type' => ExerciseType::TRUE_FALSE->value,
+                'clause' => [
+                    'sentence' => '"Котка" means "cat".',
+                    'correct_option' => '1',
+                    'explanation' => 'Котка means cat.',
+                ],
+            ])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('admin.exercises.index'));
+
+        $this->assertSame('Renamed', $exercise->fresh()->name);
+    }
+
     public function test_true_false_answer_survives_a_multipart_edit(): void
     {
         Storage::fake(Images::DISK);

@@ -54,13 +54,22 @@ class ExerciseController extends Controller
         ]);
     }
 
+    /**
+     * Saves the exercise and returns to its lesson's edit page, or to the
+     * exercise list when it belongs to no lesson.
+     */
     public function update(UpdateExerciseRequest $request, Exercise $exercise)
     {
         $exercise->update($request->safe()->except('image', 'lesson_id'));
 
         $this->syncImage($request, $exercise);
 
-        return redirect()->route('admin.lessons.edit', $exercise->lessons()->first())->with('success', 'Exercise updated.');
+        $lesson = $exercise->lessons()->first();
+
+        return ($lesson
+            ? redirect()->route('admin.lessons.edit', $lesson)
+            : redirect()->route('admin.exercises.index')
+        )->with('success', 'Exercise updated.');
     }
 
     /**
