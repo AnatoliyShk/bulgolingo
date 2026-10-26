@@ -28,7 +28,7 @@ Route::get('/metrics', function (CollectorRegistry $registry) {
 
     return response($renderer->render($registry->getMetricFamilySamples()))
         ->header('Content-Type', RenderTextFormat::MIME_TYPE);
-});
+})->middleware(config('prometheus.middleware'));
 
 Route::get('/', WelcomeController::class);
 

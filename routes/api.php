@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\DesiredTopicController;
 use App\Http\Controllers\Api\VitalsController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/vitals', [VitalsController::class, 'store']);
+Route::post('/vitals', [VitalsController::class, 'store'])->middleware('throttle:60,1');
 
 Route::middleware('auth:sanctum')->prefix('desired-topics')->name('desired-topics.')
     ->controller(DesiredTopicController::class)

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuthorizeMetrics;
 use Spatie\Prometheus\Actions\RenderCollectorsAction;
 use Spatie\Prometheus\Http\Middleware\AllowIps;
 
@@ -22,6 +23,12 @@ return [
     ],
 
     /*
+     * The bearer token a scraper must send (AuthorizeMetrics). Unset, the
+     * metrics urls answer 403 everywhere except the local environment.
+     */
+    'token' => env('PROMETHEUS_TOKEN'),
+
+    /*
      * This is the default namespace that will be
      * used by all metrics
      */
@@ -32,6 +39,7 @@ return [
      */
     'middleware' => [
         AllowIps::class,
+        AuthorizeMetrics::class,
     ],
 
     /*
