@@ -27,12 +27,15 @@ class TeardownLoadTestData extends Command
      * and the column its recorded range applies to: rows the run owns outright
      * are cut by their own primary key, while rows keyed on a user are cut by
      * the contiguous user id block, which the completions primary key covers.
+     * review_logs and user_lexema go by user too, not by the id range recorded
+     * for them: that range is the sequence read either side of the seed's
+     * write, and a real review written meanwhile takes an id inside it.
      *
      * @var array<int, array{0: string, 1: string, 2: string}>
      */
     private const ORDER = [
-        ['review_logs', 'id', 'review_logs'],
-        ['user_lexema', 'id', 'user_lexema'],
+        ['review_logs', 'user_id', 'users'],
+        ['user_lexema', 'user_id', 'users'],
         ['user_exercise_completions', 'user_id', 'users'],
         ['learning_path_user', 'user_id', 'users'],
         ['users', 'id', 'users'],
@@ -112,7 +115,9 @@ class TeardownLoadTestData extends Command
      * statement per table. A single unbounded DELETE over tens of millions of
      * rows would hold one transaction and its locks for the whole run, and the
      * foreign keys pointing at users are unindexed, so letting the cascade do
-     * the work would mean a sequential scan per parent row.
+     * the work would mean a sequential scan per parent row. Lexemas are also
+     * held to the words carrying this run's id, since their range is sampled
+     * from the sequence the same way and can hold a word a real exercise made.
      */
     private function purge(RunManifest $run): void
     {
@@ -125,7 +130,10 @@ class TeardownLoadTestData extends Command
                 continue;
             }
 
-            $this->deleteInBatches($table, $column, fn ($q) => $q->whereBetween($column, [$range['start'], $range['end']]));
+            $this->deleteInBatches($table, $column, fn ($q) => $q
+                ->whereBetween($column, [$range['start'], $range['end']])
+                ->when($table === 'lexemas', fn ($q) => $q->where('word', 'like', '%-'.$run->id.'-%'))
+            );
         }
 
         $run->forget();

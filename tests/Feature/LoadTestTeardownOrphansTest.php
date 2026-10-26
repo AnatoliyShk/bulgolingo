@@ -166,4 +166,41 @@ class LoadTestTeardownOrphansTest extends TestCase
 
         $this->assertDatabaseHas('users', ['id' => $filler->id]);
     }
+
+    /**
+     * A real student reviewing while the seed writes takes review_logs,
+     * user_lexema and lexemas ids inside the ranges the run records for those
+     * tables, since each range is the sequence read either side of the write.
+     * The manifest here spans the real rows to stand for that, and teardown
+     * still removes only the run's own: by its user block, and for lexemas by
+     * the run id their words carry.
+     */
+    public function test_a_manifested_run_spares_real_rows_inside_its_sampled_ranges(): void
+    {
+        $realUser = User::factory()->create();
+        $real = $this->tree('', $realUser);
+        $filler = User::factory()->filler()->create();
+
+        $manifest = RunManifest::start('small');
+        $this->tree(RunManifest::NAME_PREFIX.' ', $filler);
+        $runLexema = Lexema::create(['word' => 'вода-'.$manifest->id.'-0-0']);
+
+        foreach (['review_logs', 'user_lexema', 'lexemas'] as $table) {
+            $ids = DB::table($table)->pluck('id');
+            $manifest->recordBlock($table, $ids->min(), $ids->max() - $ids->min() + 1);
+        }
+        $manifest->recordBlock('users', $filler->id, 1);
+        $manifest->save();
+
+        $this->artisan('loadtest:teardown', ['run' => $manifest->id, '--force' => true])
+            ->assertSuccessful();
+
+        $this->assertDatabaseMissing('review_logs', ['user_id' => $filler->id]);
+        $this->assertDatabaseMissing('user_lexema', ['user_id' => $filler->id]);
+        $this->assertDatabaseMissing('lexemas', ['id' => $runLexema->id]);
+
+        $this->assertDatabaseHas('review_logs', ['user_id' => $realUser->id]);
+        $this->assertDatabaseHas('user_lexema', ['user_id' => $realUser->id]);
+        $this->assertDatabaseHas('lexemas', ['id' => $real['lexema']->id]);
+    }
 }
