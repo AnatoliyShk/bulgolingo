@@ -21,19 +21,28 @@ final class GradeLexemeReviewService
         private OutcomeToRating $mapper,
     ) {}
 
+    /**
+     * Records one review of $lexema by $user: a review log, and the word's
+     * memory state moved on by FSRS. The row is inserted bare first, if it is
+     * missing, so the locked read always finds one to lock; locking a row that
+     * does not exist locks nothing, and two workers grading the same new word
+     * would both insert and one would fail on the unique index. A row without
+     * a stability has never been reviewed, so it is graded as a first review.
+     */
     public function grade(User $user, Lexema $lexema, bool $isCorrect, bool $hintUsed, int $responseMs): void
     {
         $rating = $this->mapper->map($isCorrect, $hintUsed, $responseMs);
         $now = now();
 
         DB::transaction(function () use ($user, $lexema, $rating, $now) {
-            $row = UserLexema::query()->lockForUpdate()->firstOrNew([
-                'user_id' => $user->id,
-                'lexema_id' => $lexema->id,
-            ]);
+            $key = ['user_id' => $user->id, 'lexema_id' => $lexema->id];
 
-            $before = $row->exists
-                ? new MemoryState((float) $row->stability, (float) $row->difficulty)
+            UserLexema::query()->insertOrIgnore([...$key, 'created_at' => $now, 'updated_at' => $now]);
+
+            $row = UserLexema::query()->where($key)->lockForUpdate()->firstOrFail();
+
+            $before = $row->stability !== null
+                ? new MemoryState($row->stability, (float) $row->difficulty)
                 : null;
 
             $elapsedDays = $row->last_reviewed_at

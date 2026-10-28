@@ -60,4 +60,25 @@ class GradeLexemeReviewTest extends TestCase
 
         $this->assertSame(2, ReviewLog::query()->count());
     }
+
+    /**
+     * Another worker grading the same new word may have inserted the row a
+     * moment earlier, still without a memory state. Grading then goes through
+     * rather than failing on the unique index, keeps the one row, and counts
+     * as the word's first review.
+     */
+    public function test_a_row_inserted_without_a_memory_state_is_graded_as_a_first_review(): void
+    {
+        $user = User::factory()->create();
+        $lexema = Lexema::factory()->create(['word' => 'хляб']);
+        UserLexema::query()->insert(['user_id' => $user->id, 'lexema_id' => $lexema->id]);
+
+        app(GradeLexemeReviewService::class)->grade($user, $lexema, isCorrect: true, hintUsed: false, responseMs: 1000);
+
+        $rows = UserLexema::query()->where('user_id', $user->id)->where('lexema_id', $lexema->id)->get();
+        $this->assertCount(1, $rows);
+        $this->assertSame(1, $rows[0]->reps_total);
+        $this->assertGreaterThan(0, $rows[0]->stability);
+        $this->assertNull(ReviewLog::query()->sole()->stability_before);
+    }
 }
