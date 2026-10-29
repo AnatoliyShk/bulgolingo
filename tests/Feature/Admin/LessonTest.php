@@ -116,4 +116,18 @@ class LessonTest extends TestCase
         $this->assertDatabaseCount('lessons', 1);
         $this->assertSame('Basic greetings', $lesson->fresh()->description);
     }
+
+    /**
+     * None of the admin resource controllers has a show action, so the
+     * resources register none, and their show URL is a 404 rather than a
+     * "method does not exist" 500.
+     */
+    public function test_admin_resources_have_no_show_page(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        foreach (['lessons', 'learning-paths', 'bots', 'scripted-dialogues', 'scripted-lines', 'messengers'] as $resource) {
+            $this->actingAs($admin)->get("/admin/{$resource}/1")->assertNotFound();
+        }
+    }
 }

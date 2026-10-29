@@ -96,8 +96,8 @@ Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')-
         Route::put('/marquee', 'updateMarqueeWords')->name('marquee');
     });
 
-    Route::resource('lessons', AdminLessonController::class);
-    Route::resource('learning-paths', AdminLearningPathController::class);
+    Route::resource('lessons', AdminLessonController::class)->except('show');
+    Route::resource('learning-paths', AdminLearningPathController::class)->except('show');
 
     Route::name('exercises.')->controller(AdminExerciseController::class)->group(function () {
         Route::prefix('exercises')->group(function () {
@@ -113,10 +113,10 @@ Route::middleware(['auth', 'admin', 'admin.visitor-restrict'])->prefix('admin')-
         });
     });
 
-    Route::resource('bots', AdminBotController::class);
-    Route::resource('scripted-dialogues', AdminScriptedDialogueController::class);
-    Route::resource('scripted-lines', AdminScriptedLineController::class);
-    Route::resource('messengers', AdminMessengerController::class);
+    Route::resource('bots', AdminBotController::class)->except('show');
+    Route::resource('scripted-dialogues', AdminScriptedDialogueController::class)->except('show');
+    Route::resource('scripted-lines', AdminScriptedLineController::class)->except('show');
+    Route::resource('messengers', AdminMessengerController::class)->except('show');
 });
 
 Route::prefix('exercise')->name('exercise.')->controller(ExerciseController::class)->where(['exercise' => '[0-9]+'])->group(function () {
