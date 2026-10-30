@@ -12,8 +12,6 @@ class MetricsAccessTest extends TestCase
 {
     use RefreshDatabase;
 
-    private const ENDPOINTS = ['/metrics', '/prometheus'];
-
     /**
      * No token configured means closed, so forgetting PROMETHEUS_TOKEN on a
      * deploy cannot leave the metrics public.
@@ -22,20 +20,16 @@ class MetricsAccessTest extends TestCase
     {
         config(['prometheus.token' => null]);
 
-        foreach (self::ENDPOINTS as $url) {
-            $this->get($url)->assertForbidden();
-        }
+        $this->get('/prometheus')->assertForbidden();
     }
 
     public function test_only_the_configured_bearer_token_opens_the_metrics(): void
     {
         config(['prometheus.token' => 'scrape-secret']);
 
-        foreach (self::ENDPOINTS as $url) {
-            $this->get($url)->assertForbidden();
-            $this->withToken('wrong')->get($url)->assertForbidden();
-            $this->withToken('scrape-secret')->get($url)->assertOk();
-        }
+        $this->get('/prometheus')->assertForbidden();
+        $this->withToken('wrong')->get('/prometheus')->assertForbidden();
+        $this->withToken('scrape-secret')->get('/prometheus')->assertOk();
     }
 
     /**
@@ -46,9 +40,7 @@ class MetricsAccessTest extends TestCase
         config(['prometheus.token' => null]);
         $this->app['env'] = 'local';
 
-        foreach (self::ENDPOINTS as $url) {
-            $this->get($url)->assertOk();
-        }
+        $this->get('/prometheus')->assertOk();
     }
 
     /**

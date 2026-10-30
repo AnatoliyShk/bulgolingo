@@ -20,15 +20,6 @@ use App\Http\Controllers\TutorController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Prometheus\CollectorRegistry;
-use Prometheus\RenderTextFormat;
-
-Route::get('/metrics', function (CollectorRegistry $registry) {
-    $renderer = new RenderTextFormat;
-
-    return response($renderer->render($registry->getMetricFamilySamples()))
-        ->header('Content-Type', RenderTextFormat::MIME_TYPE);
-})->middleware(config('prometheus.middleware'));
 
 Route::get('/', WelcomeController::class);
 

@@ -40,7 +40,7 @@ class RequestMetrics
         DB::disableQueryLog();
         DB::flushQueryLog();
 
-        if ($request->is('metrics', 'up', 'health', 'telescope*', 'horizon*')) {
+        if ($request->is('up', 'health', 'telescope*', 'horizon*')) {
             return;
         }
 
