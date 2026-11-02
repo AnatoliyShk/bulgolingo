@@ -15,7 +15,7 @@ Backend API: [bulgolingo-api](https://github.com/AnatoliyShk/bulgolingo-api)
 
 ## Features
 - Lesson and vocabulary browsing
-- Spaced-repetition practice sessions
+- Spaced-repetition memory tracking per word (FSRS); review sessions are not built yet
 - User progress tracking
 - Semantic search over exercises and learning paths (RAG)
 
@@ -25,9 +25,11 @@ Scheduling uses FSRS-6. Every word a user has met carries two numbers:
 - **Stability** — roughly how many days until the chance of recalling it falls to 90%.
 - **Difficulty** — 1 to 10, governing how much each successful review grows that stability.
 
-Rather than asking the user to rate their own recall, the grade is inferred from how they answered: a wrong answer is `Again`, a hint is `Hard`, a correct answer under three seconds is `Easy`, anything else is `Good`. `GradeLexemeReviewService` hands that to the scheduler, which updates both numbers and inverts the forgetting curve to find the next due date at the user's target retention (0.9 by default). Intervals get a small random fuzz so reviews don't pile up on a single day.
+Rather than asking the user to rate their own recall, the grade is meant to be inferred from how they answered: a wrong answer is `Again`, a hint is `Hard`, a correct answer under three seconds is `Easy`, anything else is `Good` (`OutcomeToRating`). `GradeLexemeReviewService` hands that to the scheduler, which updates both numbers and inverts the forgetting curve to find the next due date at the user's target retention (0.9 by default). Intervals get a small random fuzz so reviews don't pile up on a single day.
 
 Every review is appended to `review_logs` with the memory state before and after it, so the 21 model parameters can be re-fitted against real answer history later.
+
+**What runs today.** Grading happens only when an exercise is completed, through the queued `LexemaReviewGrade` job, and the player does not report wrong answers, hints or response time yet. So every review is graded `Easy`, and `review_logs` holds no `Again`, `Hard` or `Good` rows to fit against. The due dates are stored in `user_lexema.due_at`, but nothing reads them: no page brings a due word back for review.
 
 ## Semantic search (RAG)
 Exercise and learning-path search is retrieval over embeddings, not keyword matching — no generation, just ranking existing content by meaning. Two features use it:
