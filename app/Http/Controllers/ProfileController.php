@@ -116,7 +116,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete the user's account.
+     * Delete the user's account, and their avatar file with it: the row is
+     * the only record of that file, so nothing could find it afterwards. The
+     * file goes after the row, so a failed delete keeps a working avatar.
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -129,6 +131,10 @@ class ProfileController extends Controller
         Auth::logout();
 
         $user->delete();
+
+        if ($user->avatar_path) {
+            Images::deleteFile($user->avatar_path);
+        }
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

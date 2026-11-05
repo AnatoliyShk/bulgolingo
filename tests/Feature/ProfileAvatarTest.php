@@ -154,4 +154,19 @@ class ProfileAvatarTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page->where('avatarUrl', null));
     }
+
+    public function test_deleting_the_account_deletes_the_avatar_object(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post(route('profile.avatar.update'), ['avatar' => $this->image()]);
+        $path = $user->fresh()->avatar_path;
+
+        $this->actingAs($user)
+            ->delete(route('profile.destroy'), ['password' => 'password'])
+            ->assertRedirect('/');
+
+        $this->assertNull(User::find($user->id));
+        Storage::disk(Images::DISK)->assertMissing($path);
+    }
 }
