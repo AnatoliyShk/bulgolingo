@@ -140,9 +140,4 @@ class Lesson extends Model
             $user,
         );
     }
-
-    public function refreshCompletionStatus(): void
-    {
-        //
-    }
 }
