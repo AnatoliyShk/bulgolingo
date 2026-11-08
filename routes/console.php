@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\CreateReviewLogPartitions;
 use Database\Seeders\E2eSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +43,10 @@ Schedule::call(function () {
         ->where('expiration', '<=', now()->getTimestamp())
         ->delete();
 })->hourly()->name('prune-expired-cache-rows')->onOneServer();
+
+// review_logs has no DEFAULT partition, so each month's partition must exist
+// before its first log; daily keeps three months ahead even if runs are missed.
+Schedule::command(CreateReviewLogPartitions::class)->daily()->onOneServer();
 
 // Prints the ids of the E2eSeeder fixtures as KEY=value lines, so CI can
 // append them to $GITHUB_ENV for the Playwright specs to read.
