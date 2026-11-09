@@ -40,11 +40,51 @@ services:
             POSTGRES_DB: '${DB_DATABASE}'
             POSTGRES_USER: '${DB_USERNAME}'
             POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+        # The image's pg_hba only allows replication from localhost; this one
+        # also lets pgsql-replica stream from the compose network.
+        command: ['postgres', '-c', 'hba_file=/etc/postgresql/pg_hba.conf']
         volumes:
             - 'sail-pgsql:/var/lib/postgresql'
             - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+            - './docker/pgsql/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro'
         networks:
             - sail
+        healthcheck:
+            test:
+                - CMD
+                - pg_isready
+                - '-q'
+                - '-d'
+                - '${DB_DATABASE}'
+                - '-U'
+                - '${DB_USERNAME}'
+            retries: 3
+            timeout: 5s
+    # Read-only streaming replica of pgsql. On an empty volume it clones the
+    # primary with pg_basebackup (-R writes standby.signal and the connection
+    # back to pgsql), then follows its WAL. If it falls too far behind to catch
+    # up, remove the sail-pgsql-replica volume and it re-clones on next start.
+    # Laravel reads from it only when DB_READ_HOST=pgsql-replica is set.
+    pgsql-replica:
+        image: 'pgvector/pgvector:pg18'
+        user: postgres
+        environment:
+            PGPASSWORD: '${DB_PASSWORD:-secret}'
+        entrypoint:
+            - bash
+            - '-c'
+            - |
+                if [ ! -s "$$PGDATA/PG_VERSION" ]; then
+                    pg_basebackup -h pgsql -U '${DB_USERNAME}' -D "$$PGDATA" -R -X stream || exit 1
+                fi
+                exec postgres
+        volumes:
+            - 'sail-pgsql-replica:/var/lib/postgresql'
+        networks:
+            - sail
+        depends_on:
+            pgsql:
+                condition: service_healthy
         healthcheck:
             test:
                 - CMD
@@ -130,6 +170,8 @@ volumes:
     sail-mysql:
         driver: local
     sail-pgsql:
+        driver: local
+    sail-pgsql-replica:
         driver: local
     sail-redis:
         driver: local

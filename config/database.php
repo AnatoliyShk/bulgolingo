@@ -97,6 +97,12 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            // Reads go to DB_READ_HOST only when it is set; sticky sends a request's reads to the primary after it writes.
+            ...(env('DB_READ_HOST') ? [
+                'read' => ['host' => [env('DB_READ_HOST')]],
+                'write' => [],
+                'sticky' => true,
+            ] : []),
         ],
 
         'sqlsrv' => [
