@@ -7,7 +7,7 @@ Web application for learning Bulgarian vocabulary and grammar.
 A Laravel 13 backend serves a Vue 3 single-page frontend over Inertia 2.
 
 The frontend is built with Vite; component styles are hand-written BEM SCSS,
-and the stats dashboard uses vue-data-ui and ApexCharts. Playwright covers the
+and the stats dashboard uses vue-data-ui. Playwright covers the
 components end to end. The same codebase also ships as a native iOS and Android
 build through NativePHP for Mobile.
 
