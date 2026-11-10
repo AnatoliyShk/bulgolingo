@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Bot;
+use App\Models\ScriptedDialogue;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -57,6 +59,30 @@ class AdminVisitorTest extends TestCase
         $this->actingAs($this->visitor())
             ->get(route('admin.users.index'))
             ->assertForbidden();
+    }
+
+    /**
+     * The dialogue forms fill a user dropdown; a visitor may open them but gets
+     * no names, while an admin still gets the full list.
+     */
+    public function test_an_admin_visitor_gets_no_user_names_on_the_dialogue_forms(): void
+    {
+        User::factory()->create(['name' => 'Private Person']);
+        $dialogue = ScriptedDialogue::create([
+            'bot_id' => Bot::create(['name' => 'Ivan', 'description' => 'Baker'])->id,
+            'user_id' => User::factory()->create()->id,
+        ]);
+
+        foreach ([route('admin.scripted-dialogues.create'), route('admin.scripted-dialogues.edit', $dialogue)] as $url) {
+            $this->actingAs($this->visitor())
+                ->get($url)
+                ->assertOk()
+                ->assertInertia(fn (Assert $page) => $page->has('users', 0));
+        }
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->get(route('admin.scripted-dialogues.create'))
+            ->assertInertia(fn (Assert $page) => $page->where('users', fn ($users) => collect($users)->contains('name', 'Private Person')));
     }
 
     public function test_an_admin_visitor_is_forbidden_from_the_messengers_list(): void

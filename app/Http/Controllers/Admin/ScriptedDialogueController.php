@@ -67,7 +67,9 @@ class ScriptedDialogueController extends Controller
     }
 
     /**
-     * The picker lists the create and edit forms share.
+     * The picker lists the create and edit forms share. An admin visitor gets
+     * no user list: the role is kept from user information, and being
+     * read-only it could never submit the form anyway.
      *
      * @return array<string, mixed>
      */
@@ -75,7 +77,7 @@ class ScriptedDialogueController extends Controller
     {
         return [
             'bots' => Bot::pickerOptions(),
-            'users' => User::pickerOptions(),
+            'users' => request()->user()->isAdminVisitor() ? [] : User::pickerOptions(),
         ];
     }
 }
