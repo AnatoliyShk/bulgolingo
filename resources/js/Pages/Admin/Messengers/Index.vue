@@ -1,17 +1,16 @@
 <script setup>
 import '@/assets/scss/components/admin/messengers.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import { confirmVisit } from '@/confirmVisit';
 
 defineProps({
     messengers: Array,
 });
 
 function deleteMessenger(id) {
-    if (confirm('Delete this messenger?')) {
-        router.delete(route('admin.messengers.destroy', id));
-    }
+    confirmVisit('Delete this messenger?', route('admin.messengers.destroy', id));
 }
 </script>
 

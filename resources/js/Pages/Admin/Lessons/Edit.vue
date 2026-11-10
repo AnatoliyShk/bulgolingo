@@ -1,28 +1,18 @@
 <script setup>
 import '@/assets/scss/components/admin/lessons.scss';
-import { useForm, router, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import LessonForm from '@/Components/Forms/LessonForm.vue';
+import { confirmVisit } from '@/confirmVisit';
 
-const props = defineProps({
+defineProps({
     lesson: Object,
     exerciseTypes: Array,
 });
 
-// ── Lesson form ────────────────────────────────────────────────────────
-const lessonForm = useForm({
-    name: props.lesson.name,
-    description: props.lesson.description ?? '',
-});
-
-function saveLesson() {
-    lessonForm.patch(route('admin.lessons.update', props.lesson.id));
-}
-
 function deleteExercise(exerciseId) {
-    if (confirm('Delete this exercise?')) {
-        router.delete(route('admin.exercises.destroy', exerciseId));
-    }
+    confirmVisit('Delete this exercise?', route('admin.exercises.destroy', exerciseId));
 }
 </script>
 
@@ -36,41 +26,13 @@ function deleteExercise(exerciseId) {
             ]" />
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-3xl space-y-8 px-4 sm:px-6 lg:px-8">
+        <div class="admin-page__body">
+            <div class="admin-page__container--medium">
 
                 <!-- ── Lesson details ───────────────────────────────── -->
                 <section class="admin-card">
-                    <h3 class="mb-4 text-base font-semibold text-gray-800 dark:text-gray-200">Lesson Details</h3>
-                    <form @submit.prevent="saveLesson" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
-                            <input
-                                v-model="lessonForm.name"
-                                type="text"
-                                class="admin-form__input"
-                            />
-                            <p v-if="lessonForm.errors.name" class="mt-1 text-xs text-red-500">{{ lessonForm.errors.name }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
-                            <textarea
-                                v-model="lessonForm.description"
-                                rows="3"
-                                class="admin-form__input"
-                            />
-                            <p v-if="lessonForm.errors.description" class="mt-1 text-xs text-red-500">{{ lessonForm.errors.description }}</p>
-                        </div>
-                        <div class="flex justify-end">
-                            <button
-                                type="submit"
-                                :disabled="lessonForm.processing"
-                                class="admin-btn--primary"
-                            >
-                                {{ lessonForm.processing ? 'Saving…' : 'Save' }}
-                            </button>
-                        </div>
-                    </form>
+                    <h3 class="admin-card__title">Lesson Details</h3>
+                    <LessonForm :lesson="lesson" />
                 </section>
 
                 <!-- ── Exercises ───────────────────────────────────── -->

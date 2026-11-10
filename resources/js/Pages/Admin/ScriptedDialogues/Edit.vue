@@ -1,28 +1,19 @@
 <script setup>
 import '@/assets/scss/components/admin/scripted-dialogues.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, useForm, router } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import ScriptedDialogueForm from '@/Components/Forms/ScriptedDialogueForm.vue';
+import { confirmVisit } from '@/confirmVisit';
 
-const props = defineProps({
+defineProps({
     dialogue: Object,
     bots: Array,
     users: Array,
 });
 
-const form = useForm({
-    bot_id: props.dialogue.bot_id,
-    user_id: props.dialogue.user_id,
-});
-
-function submit() {
-    form.patch(route('admin.scripted-dialogues.update', props.dialogue.id));
-}
-
 function deleteLine(id) {
-    if (confirm('Delete this line?')) {
-        router.delete(route('admin.scripted-lines.destroy', id));
-    }
+    confirmVisit('Delete this line?', route('admin.scripted-lines.destroy', id));
 }
 </script>
 
@@ -42,29 +33,7 @@ function deleteLine(id) {
                 <section class="admin-card">
                     <h3 class="admin-card__title">Dialogue Details</h3>
 
-                    <form @submit.prevent="submit" class="admin-form__body">
-                        <div class="admin-form__field">
-                            <label class="admin-form__label">Bot</label>
-                            <select v-model="form.bot_id" class="admin-form__select">
-                                <option v-for="bot in bots" :key="bot.id" :value="bot.id">{{ bot.name }}</option>
-                            </select>
-                            <p v-if="form.errors.bot_id" class="admin-form__error">{{ form.errors.bot_id }}</p>
-                        </div>
-
-                        <div class="admin-form__field">
-                            <label class="admin-form__label">User</label>
-                            <select v-model="form.user_id" class="admin-form__select">
-                                <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }}</option>
-                            </select>
-                            <p v-if="form.errors.user_id" class="admin-form__error">{{ form.errors.user_id }}</p>
-                        </div>
-
-                        <div class="admin-form__actions">
-                            <button type="submit" :disabled="form.processing" class="admin-btn--primary">
-                                {{ form.processing ? 'Saving…' : 'Save' }}
-                            </button>
-                        </div>
-                    </form>
+                    <ScriptedDialogueForm :dialogue="dialogue" :bots="bots" :users="users" />
                 </section>
 
                 <section class="admin-card">

@@ -1,17 +1,16 @@
 <script setup>
 import '@/assets/scss/components/admin/scripted-lines.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import { confirmVisit } from '@/confirmVisit';
 
 defineProps({
     lines: Array,
 });
 
 function deleteLine(id) {
-    if (confirm('Delete this line?')) {
-        router.delete(route('admin.scripted-lines.destroy', id));
-    }
+    confirmVisit('Delete this line?', route('admin.scripted-lines.destroy', id));
 }
 </script>
 

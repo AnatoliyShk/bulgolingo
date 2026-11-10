@@ -20,12 +20,18 @@ class MetricsController extends Controller
 
     public function adminRequests(CollectorRegistry $registry): Response
     {
-        return Inertia::render('Admin/Metrics/AdminRequests', $this->pageProps($registry, 'admin'));
+        return Inertia::render('Admin/Metrics/Requests', [
+            'title' => 'Admin Request Metrics',
+            ...$this->pageProps($registry, 'admin'),
+        ]);
     }
 
     public function userRequests(CollectorRegistry $registry): Response
     {
-        return Inertia::render('Admin/Metrics/UserRequests', $this->pageProps($registry, 'user'));
+        return Inertia::render('Admin/Metrics/Requests', [
+            'title' => 'User Request Metrics',
+            ...$this->pageProps($registry, 'user'),
+        ]);
     }
 
     private function pageProps(CollectorRegistry $registry, string $area): array

@@ -1,17 +1,16 @@
 <script setup>
 import '@/assets/scss/components/admin/bots.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import { confirmVisit } from '@/confirmVisit';
 
 defineProps({
     bots: Array,
 });
 
 function deleteBot(id) {
-    if (confirm('Delete this bot?')) {
-        router.delete(route('admin.bots.destroy', id));
-    }
+    confirmVisit('Delete this bot?', route('admin.bots.destroy', id));
 }
 </script>
 

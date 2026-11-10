@@ -1,10 +1,11 @@
 <script setup>
 import '@/assets/scss/components/admin/learning-paths.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, router, useForm } from '@inertiajs/vue3';
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { router } from '@inertiajs/vue3';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 import Pagination from '@/Components/Admin/Pagination.vue';
+import LearningPathForm from '@/Components/Forms/LearningPathForm.vue';
 
 const props = defineProps({
     learningPath: Object,
@@ -13,16 +14,6 @@ const props = defineProps({
     types: Array,
     levels: Array,
 });
-
-const form = useForm({
-    name: props.learningPath.name,
-    language: props.learningPath.language,
-    type: props.learningPath.type,
-    level: props.learningPath.level ?? null,
-    lesson_ids: props.learningPath.lessons.map(l => l.id),
-});
-
-const attachedIds = computed(() => new Set(form.lesson_ids));
 
 const lessonSearch = ref(props.lessonSearch ?? '');
 
@@ -44,16 +35,12 @@ watch(lessonSearch, (value) => {
 
 onBeforeUnmount(() => clearTimeout(searchTimer));
 
-function toggleLesson(id) {
-    if (attachedIds.value.has(id)) {
+function toggleLesson(form, id) {
+    if (form.lesson_ids.includes(id)) {
         form.lesson_ids = form.lesson_ids.filter(i => i !== id);
     } else {
         form.lesson_ids = [...form.lesson_ids, id];
     }
-}
-
-function submit() {
-    form.put(route('admin.learning-paths.update', props.learningPath.id));
 }
 </script>
 
@@ -67,65 +54,19 @@ function submit() {
             ]" />
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-3xl space-y-8 px-4 sm:px-6 lg:px-8">
-
-                <!-- Path details -->
+        <div class="admin-page__body">
+            <div class="admin-page__container--medium">
                 <section class="admin-card">
-                    <h3 class="mb-4 text-base font-semibold text-gray-800 dark:text-gray-200">Path Details</h3>
+                    <h3 class="admin-card__title">Path Details</h3>
 
-                    <form @submit.prevent="submit" class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
-                            <input
-                                v-model="form.name"
-                                type="text"
-                                class="admin-form__input"
-                            />
-                            <p v-if="form.errors.name" class="mt-1 text-xs text-red-500">{{ form.errors.name }}</p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Language</label>
-                            <input
-                                v-model="form.language"
-                                type="text"
-                                class="admin-form__input"
-                            />
-                            <p v-if="form.errors.language" class="mt-1 text-xs text-red-500">{{ form.errors.language }}</p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
-                            <select
-                                v-model="form.type"
-                                class="admin-form__input"
-                            >
-                                <option v-for="option in types" :key="option.value" :value="option.value">{{ option.label }}</option>
-                            </select>
-                            <p v-if="form.errors.type" class="mt-1 text-xs text-red-500">{{ form.errors.type }}</p>
-                        </div>
-
-                        <div>
-                            <label for="learning-path-level" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Level</label>
-                            <select
-                                id="learning-path-level"
-                                v-model="form.level"
-                                class="admin-form__input"
-                            >
-                                <option :value="null">Not set</option>
-                                <option v-for="option in levels" :key="option.value" :value="option.value">{{ option.label }}</option>
-                            </select>
-                            <p v-if="form.errors.level" class="mt-1 text-xs text-red-500">{{ form.errors.level }}</p>
-                        </div>
-
-                        <!-- Lessons picker -->
+                    <LearningPathForm :learning-path="learningPath" :types="types" :levels="levels" v-slot="{ form }">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lessons</label>
+                                <label for="lesson-search" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lessons</label>
                                 <span class="text-xs text-gray-400 dark:text-gray-500">{{ form.lesson_ids.length }} selected</span>
                             </div>
                             <input
+                                id="lesson-search"
                                 v-model="lessonSearch"
                                 type="text"
                                 placeholder="Search lessons…"
@@ -139,15 +80,15 @@ function submit() {
                                         v-for="lesson in lessons.data"
                                         :key="lesson.id"
                                         class="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/40 cursor-pointer"
-                                        @click="toggleLesson(lesson.id)"
+                                        @click="toggleLesson(form, lesson.id)"
                                     >
                                         <div
                                             class="w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors"
-                                            :class="attachedIds.has(lesson.id)
+                                            :class="form.lesson_ids.includes(lesson.id)
                                                 ? 'bg-indigo-600 border-indigo-600'
                                                 : 'border-gray-300 dark:border-gray-500'"
                                         >
-                                            <svg v-if="attachedIds.has(lesson.id)" class="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                            <svg v-if="form.lesson_ids.includes(lesson.id)" class="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
@@ -162,21 +103,7 @@ function submit() {
                             </div>
                             <p v-if="form.errors.lesson_ids" class="mt-1 text-xs text-red-500">{{ form.errors.lesson_ids }}</p>
                         </div>
-
-                        <div class="flex items-center justify-end gap-3 pt-1">
-                            <Link
-                                :href="route('admin.learning-paths.index')"
-                                class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400"
-                            >Cancel</Link>
-                            <button
-                                type="submit"
-                                :disabled="form.processing"
-                                class="admin-btn--primary"
-                            >
-                                {{ form.processing ? 'Saving…' : 'Save' }}
-                            </button>
-                        </div>
-                    </form>
+                    </LearningPathForm>
                 </section>
 
             </div>

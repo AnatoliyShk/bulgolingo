@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, reactive, watch } from 'vue'
+import ExerciseFeedback from '@/Components/ExerciseFeedback.vue'
 import NextExerciseButton from '@/Components/NextExerciseButton.vue'
 
 const props = defineProps({
@@ -91,16 +92,14 @@ function retry() {
             </button>
         </div>
 
-        <div v-if="state.checked && !isCorrect" class="nb-ex-feedback nb-ex-feedback--wrong">
-            <p class="nb-ex-feedback__title">✗ Incorrect — try again</p>
-            <p class="nb-ex-feedback__body">Correct answer: <strong>{{ question.answer }}</strong></p>
-            <p v-if="explanation" class="nb-ex-feedback__body">{{ explanation }}</p>
-        </div>
-
-        <div v-if="state.checked && isCorrect" class="nb-ex-feedback nb-ex-feedback--correct">
-            <p class="nb-ex-feedback__title">✓ Correct!</p>
-            <p v-if="explanation" class="nb-ex-feedback__body">{{ explanation }}</p>
-        </div>
+        <ExerciseFeedback
+            v-if="state.checked"
+            :correct="isCorrect"
+            :explanation="explanation"
+            wrong-title="✗ Incorrect — try again"
+        >
+            <p v-if="!isCorrect" class="nb-ex-feedback__body">Correct answer: <strong>{{ question.answer }}</strong></p>
+        </ExerciseFeedback>
 
         <NextExerciseButton v-if="state.checked && isCorrect" @advance="emit('complete')" />
 

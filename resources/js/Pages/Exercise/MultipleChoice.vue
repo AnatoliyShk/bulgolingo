@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
+import ExerciseFeedback from '@/Components/ExerciseFeedback.vue'
 import NextExerciseButton from '@/Components/NextExerciseButton.vue'
 
 // clause.pairs = [[translation, term], ...], clause.explanation = prompt
@@ -140,10 +141,7 @@ function tryMatch() {
 
         <p class="nb-ex-tally">{{ state.matched.length }} / {{ total }} matched</p>
 
-        <div v-if="state.matched.length === total" class="nb-ex-feedback nb-ex-feedback--correct">
-            <p class="nb-ex-feedback__title">✓ Correct!</p>
-            <p v-if="prompt" class="nb-ex-feedback__body">{{ prompt }}</p>
-        </div>
+        <ExerciseFeedback v-if="state.matched.length === total" correct :explanation="prompt" />
 
         <NextExerciseButton v-if="state.matched.length === total" @advance="emit('complete')" />
     </div>

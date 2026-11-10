@@ -1,17 +1,16 @@
 <script setup>
 import '@/assets/scss/components/admin/lessons.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, router, usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import { confirmVisit } from '@/confirmVisit';
 
 defineProps({
     lessons: Array,
 });
 
 function deleteLesson(id) {
-    if (confirm('Delete this lesson?')) {
-        router.delete(route('admin.lessons.destroy', id));
-    }
+    confirmVisit('Delete this lesson?', route('admin.lessons.destroy', id));
 }
 </script>
 

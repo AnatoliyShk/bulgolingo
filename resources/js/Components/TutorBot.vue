@@ -26,7 +26,7 @@ const suggestions = [
 const canSend = computed(() => question.value.trim().length >= 2 && !streaming.value)
 
 // The layout carries no csrf-token meta tag, so the token comes from the
-// XSRF-TOKEN cookie Laravel sets on every web response — the same one axios
+// XSRF-TOKEN cookie Laravel sets on every web response — the same one Inertia
 // reads for the rest of the app. It arrives url-encoded.
 function csrfToken() {
     const cookie = document.cookie.split('; ').find((c) => c.startsWith('XSRF-TOKEN='))

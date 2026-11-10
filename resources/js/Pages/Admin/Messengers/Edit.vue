@@ -1,24 +1,13 @@
 <script setup>
-import '@/assets/scss/components/admin/messengers.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, useForm } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import MessengerForm from '@/Components/Forms/MessengerForm.vue';
 
-const props = defineProps({
+defineProps({
     messenger: Object,
     users: Array,
     messengerNames: { type: Array, required: true },
 });
-
-const form = useForm({
-    user_id: props.messenger.user_id,
-    messenger_name: props.messenger.messenger_name,
-    messenger_user_id: props.messenger.messenger_user_id,
-});
-
-function submit() {
-    form.patch(route('admin.messengers.update', props.messenger.id));
-}
 </script>
 
 <template>
@@ -35,38 +24,7 @@ function submit() {
             <div class="admin-page__container--narrow">
                 <section class="admin-card">
                     <h3 class="admin-card__title">Messenger Details</h3>
-
-                    <form @submit.prevent="submit" class="admin-form__body">
-                        <div class="admin-form__field">
-                            <label for="user_id" class="admin-form__label">User</label>
-                            <select id="user_id" v-model="form.user_id" class="admin-form__select">
-                                <option value="" disabled>Select a user</option>
-                                <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }}</option>
-                            </select>
-                            <p v-if="form.errors.user_id" class="admin-form__error">{{ form.errors.user_id }}</p>
-                        </div>
-
-                        <div class="admin-form__field">
-                            <label for="messenger_name" class="admin-form__label">Messenger Name</label>
-                            <select id="messenger_name" v-model="form.messenger_name" class="admin-form__select">
-                                <option v-for="option in messengerNames" :key="option.value" :value="option.value">{{ option.label }}</option>
-                            </select>
-                            <p v-if="form.errors.messenger_name" class="admin-form__error">{{ form.errors.messenger_name }}</p>
-                        </div>
-
-                        <div class="admin-form__field">
-                            <label for="messenger_user_id" class="admin-form__label">Messenger User ID</label>
-                            <input id="messenger_user_id" v-model="form.messenger_user_id" type="text" class="admin-form__input" />
-                            <p v-if="form.errors.messenger_user_id" class="admin-form__error">{{ form.errors.messenger_user_id }}</p>
-                        </div>
-
-                        <div class="admin-form__actions">
-                            <Link :href="route('admin.messengers.index')" class="admin-btn--cancel">Cancel</Link>
-                            <button type="submit" :disabled="form.processing" class="admin-btn--primary">
-                                {{ form.processing ? 'Saving…' : 'Save' }}
-                            </button>
-                        </div>
-                    </form>
+                    <MessengerForm :messenger="messenger" :users="users" :messenger-names="messengerNames" />
                 </section>
             </div>
         </div>

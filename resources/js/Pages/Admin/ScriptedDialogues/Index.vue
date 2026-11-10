@@ -1,17 +1,16 @@
 <script setup>
 import '@/assets/scss/components/admin/scripted-dialogues.scss';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import { confirmVisit } from '@/confirmVisit';
 
 defineProps({
     dialogues: Array,
 });
 
 function deleteDialogue(id) {
-    if (confirm('Delete this dialogue? All its lines will also be deleted.')) {
-        router.delete(route('admin.scripted-dialogues.destroy', id));
-    }
+    confirmVisit('Delete this dialogue? All its lines will also be deleted.', route('admin.scripted-dialogues.destroy', id));
 }
 </script>
 

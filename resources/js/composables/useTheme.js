@@ -2,8 +2,8 @@ import { ref } from 'vue'
 
 const theme = ref(
     typeof localStorage !== 'undefined'
-        ? (localStorage.getItem('theme') || 'light')
-        : 'light'
+        ? (localStorage.getItem('theme') || 'dark')
+        : 'dark'
 )
 
 // cc--darkmode is how vanilla-cookieconsent picks its palette, so the consent

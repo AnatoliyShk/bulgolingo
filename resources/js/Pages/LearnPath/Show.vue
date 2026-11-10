@@ -1,9 +1,10 @@
 <script setup>
 import '@/assets/scss/components/learn-path/show.scss'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { Head, Link, router, usePage } from '@inertiajs/vue3'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 import { useTheme } from '@/composables/useTheme'
 import ThemeToggle from '@/Components/ThemeToggle.vue'
+import { confirmVisit } from '@/confirmVisit'
 
 const props = defineProps({
     learningPath: Object,
@@ -97,8 +98,11 @@ function nodeStyle(node) {
 }
 
 function restartPath() {
-    if (!confirm(`Restart "${props.learningPath.name}"? Your progress on this path will be reset.`)) return
-    router.post(route('learning-paths.restart', props.learningPath.id))
+    confirmVisit(
+        `Restart "${props.learningPath.name}"? Your progress on this path will be reset.`,
+        route('learning-paths.restart', props.learningPath.id),
+        'post',
+    )
 }
 
 function labelStyle(node) {

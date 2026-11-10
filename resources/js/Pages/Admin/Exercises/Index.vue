@@ -4,6 +4,7 @@ import { computed, ref } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
+import { confirmVisit } from '@/confirmVisit';
 
 const props = defineProps({
     exercises:     Array,
@@ -58,9 +59,7 @@ function typeLabel(value) {
 }
 
 function deleteExercise(id) {
-    if (confirm('Delete this exercise?')) {
-        router.delete(route('admin.exercises.destroy', id));
-    }
+    confirmVisit('Delete this exercise?', route('admin.exercises.destroy', id));
 }
 </script>
 

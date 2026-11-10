@@ -1,0 +1,34 @@
+.image-upload {
+    &__label    { @apply mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300; }
+
+    &__dropzone {
+        @apply rounded-xl border-2 border-dashed border-gray-300 bg-transparent p-5 transition-colors duration-200 dark:border-gray-600;
+
+        &--active { @apply border-indigo-500 bg-indigo-500/5 dark:border-indigo-400 dark:bg-indigo-500/10; }
+        &--error  { @apply border-red-500; }
+    }
+
+    &__preview-wrap { @apply relative inline-block; }
+    &__preview-img  { @apply block h-32 w-32 rounded-lg border border-gray-200 object-cover dark:border-gray-700; }
+
+    &__overlay {
+        @apply absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-lg bg-black/45 opacity-0 transition-opacity duration-200;
+    }
+
+    &__preview-wrap:hover &__overlay { @apply opacity-100; }
+
+    &__change-btn,
+    &__clear-btn { @apply cursor-pointer rounded-md border-none px-3 py-1 text-xs font-semibold text-white; }
+
+    &__change-btn { @apply bg-indigo-500; }
+    &__clear-btn  { @apply bg-white/15 hover:bg-red-500/70; }
+
+    &__placeholder { @apply flex flex-col items-center gap-2 py-4; }
+    &__icon        { @apply h-10 w-10 text-gray-400 dark:text-gray-500; }
+    &__cta         { @apply text-sm text-gray-500 dark:text-gray-400; }
+    &__browse      { @apply cursor-pointer font-semibold text-indigo-500 underline underline-offset-2 dark:text-indigo-400; }
+    &__formats     { @apply text-[0.72rem] tracking-wider text-gray-400; }
+    &__file-input  { @apply hidden; }
+    &__hint        { @apply mt-2 text-xs text-gray-500 dark:text-gray-400; }
+    &__error       { @apply mt-1.5 text-xs text-red-500; }
+}

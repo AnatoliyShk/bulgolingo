@@ -5,6 +5,7 @@ import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 import Pagination from '@/Components/Admin/Pagination.vue';
+import { confirmVisit } from '@/confirmVisit';
 
 const props = defineProps({
     learningPaths: Object,
@@ -25,9 +26,7 @@ function filterByLevel() {
 }
 
 function deletePath(id) {
-    if (confirm('Delete this learning path?')) {
-        router.delete(route('admin.learning-paths.destroy', id));
-    }
+    confirmVisit('Delete this learning path?', route('admin.learning-paths.destroy', id));
 }
 </script>
 

@@ -1,6 +1,8 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { computed } from 'vue'
+import ExerciseFeedback from '@/Components/ExerciseFeedback.vue'
 import NextExerciseButton from '@/Components/NextExerciseButton.vue'
+import { useChoice } from '@/composables/useChoice'
 
 const props = defineProps({
     clause:   { type: Object, required: true },
@@ -13,26 +15,7 @@ const options     = computed(() => props.clause.options ?? [])
 const correctIdx  = computed(() => props.clause.correct_option ?? 0)
 const explanation = computed(() => props.clause.explanation ?? '')
 
-const chosen  = ref(null)
-const checked = ref(false)
-
-watch(() => props.clause, () => {
-    chosen.value  = null
-    checked.value = false
-}, { deep: true })
-
-const isCorrect = computed(() => checked.value && chosen.value === correctIdx.value)
-
-function select(idx) {
-    if (checked.value) return
-    chosen.value  = idx
-    checked.value = true
-}
-
-function retry() {
-    chosen.value  = null
-    checked.value = false
-}
+const { chosen, checked, isCorrect, select, retry } = useChoice(() => props.clause, correctIdx)
 </script>
 
 <template>
@@ -73,15 +56,7 @@ function retry() {
             </button>
         </div>
 
-        <div v-if="checked && !isCorrect" class="nb-ex-feedback nb-ex-feedback--wrong">
-            <p class="nb-ex-feedback__title">✗ Incorrect</p>
-            <p v-if="explanation" class="nb-ex-feedback__body">{{ explanation }}</p>
-        </div>
-
-        <div v-if="checked && isCorrect" class="nb-ex-feedback nb-ex-feedback--correct">
-            <p class="nb-ex-feedback__title">✓ Correct!</p>
-            <p v-if="explanation" class="nb-ex-feedback__body">{{ explanation }}</p>
-        </div>
+        <ExerciseFeedback v-if="checked" :correct="isCorrect" :explanation="explanation" />
 
         <button v-if="checked && !isCorrect" class="nb-ex-action" @click="retry">Try Again</button>
         <NextExerciseButton v-if="checked && isCorrect" @advance="emit('complete')" />
