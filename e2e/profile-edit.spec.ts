@@ -121,13 +121,13 @@ test.describe('Profile edit page', () => {
         });
 
         test('follows the theme toggle', async ({ page }) => {
-            const light = await sheet(page).evaluate((el) => getComputedStyle(el).backgroundColor);
+            const dark = await sheet(page).evaluate((el) => getComputedStyle(el).backgroundColor);
 
             await page.locator('.nb-toggle').click();
-            await expect(sheet(page)).toHaveClass(/dark/);
+            await expect(sheet(page)).toHaveClass(/light/);
 
-            const dark = await sheet(page).evaluate((el) => getComputedStyle(el).backgroundColor);
-            expect(dark).not.toBe(light);
+            const light = await sheet(page).evaluate((el) => getComputedStyle(el).backgroundColor);
+            expect(light).not.toBe(dark);
         });
     });
 });

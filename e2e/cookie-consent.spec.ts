@@ -75,20 +75,20 @@ test.describe('Cookie consent', () => {
 
     // The modals read their palette from cc--darkmode, which useTheme keeps on
     // the html element alongside its own dark/light classes. A first-time
-    // visitor lands on the light theme, so the class has to follow the toggle
+    // visitor lands on the dark theme, so the class has to follow the toggle
     // in both directions.
     test('the modals follow the page theme', async ({ page }) => {
         const html = page.locator('html');
-
-        await expect(html).not.toHaveClass(/cc--darkmode/);
-
-        await page.locator('.nb-page button[title*="Switch to dark"]').first().click();
 
         await expect(html).toHaveClass(/cc--darkmode/);
 
         await page.locator('.nb-page button[title*="Switch to light"]').first().click();
 
         await expect(html).not.toHaveClass(/cc--darkmode/);
+
+        await page.locator('.nb-page button[title*="Switch to dark"]').first().click();
+
+        await expect(html).toHaveClass(/cc--darkmode/);
     });
 
     test('the site no longer ships the previous cookie bar', async ({ page }) => {

@@ -46,7 +46,7 @@ const forms: FormCase[] = [
         index: '/admin/messengers',
         labels: ['User', 'Messenger Name', 'Messenger User ID'],
         createButton: 'Create Messenger',
-        required: ['user', 'messenger name'],
+        required: ['user id', 'messenger name'],
         editMethod: 'PATCH',
     },
     {
@@ -72,7 +72,7 @@ const forms: FormCase[] = [
         index: '/admin/scripted-dialogues',
         labels: ['Bot', 'User'],
         createButton: 'Create Dialogue',
-        required: ['bot', 'user'],
+        required: ['bot id', 'user id'],
         editId: process.env.E2E_SCRIPTED_DIALOGUE_ID,
         editMethod: 'PATCH',
     },
@@ -118,7 +118,7 @@ test.describe('Admin shared forms', () => {
             await form(page).getByRole('button', { name: c.createButton }).click();
 
             for (const field of c.required) {
-                await expect(form(page).locator('.admin-form__error', { hasText: new RegExp(field, 'i') })).toBeVisible();
+                await expect(form(page).locator('.admin-form__error', { hasText: new RegExp(`^The ${field} field`) })).toBeVisible();
             }
             await expect(page).toHaveURL(`${BASE}${c.index}/create`);
         });
