@@ -10,9 +10,14 @@ use App\Models\Exercise;
 use App\Models\Images;
 use App\Models\Language;
 use App\Models\Lesson;
+use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use RuntimeException;
+use Throwable;
 
 class ExerciseController extends Controller
 {
@@ -36,11 +41,13 @@ class ExerciseController extends Controller
 
     public function store(StoreExerciseRequest $request, Lesson $lesson)
     {
-        $exercise = Exercise::create($request->safe()->except('image', 'lesson_id'));
+        $this->saveWithImage($request, collect(), function () use ($request, $lesson) {
+            $exercise = Exercise::create($request->safe()->except('image', 'lesson_id'));
 
-        $lesson->attachExerciseAtEnd($exercise);
+            $lesson->attachExerciseAtEnd($exercise);
 
-        $this->syncImage($request, $exercise);
+            return $exercise;
+        });
 
         return redirect()->route('admin.lessons.edit', $lesson)->with('success', 'Exercise created.');
     }
@@ -60,9 +67,15 @@ class ExerciseController extends Controller
      */
     public function update(UpdateExerciseRequest $request, Exercise $exercise)
     {
-        $exercise->update($request->safe()->except('image', 'lesson_id'));
+        $this->saveWithImage(
+            $request,
+            $request->hasFile('image') ? $exercise->images : collect(),
+            function () use ($request, $exercise) {
+                $exercise->update($request->safe()->except('image', 'lesson_id'));
 
-        $this->syncImage($request, $exercise);
+                return $exercise;
+            },
+        );
 
         $lesson = $exercise->lessons()->first();
 
@@ -85,25 +98,56 @@ class ExerciseController extends Controller
     }
 
     /**
-     * Replaces the exercise's image when a new file was uploaded, removing the
-     * old images and their files first. The upload is authorized through
-     * `ImagesPolicy` before anything changes, and deleteImages() authorizes
-     * every deletion before the first, so a refusal leaves the exercise's
-     * images as they were.
+     * Runs $save (which writes the exercise and returns it) and, when a file
+     * was uploaded, links the new image in the same transaction, then removes
+     * $replaced. The order is what keeps content from being lost:
+     *
+     * - the upload and every deletion are authorized through `ImagesPolicy`
+     *   before anything changes, so a refusal changes nothing;
+     * - the new file is stored first, and the bucket disk does not throw
+     *   (`throw => false`), so a false path is turned into an exception before
+     *   any row is written or old image removed;
+     * - a failed transaction removes the file it just stored, so no object is
+     *   left that nothing points to;
+     * - the old images go only after the new one is committed, so a failure at
+     *   any earlier step leaves the exercise with the image it had.
+     *
+     * @param  Collection<int, Images>  $replaced
+     * @param  Closure(): Exercise  $save
      */
-    private function syncImage(Request $request, Exercise $exercise): void
+    private function saveWithImage(Request $request, Collection $replaced, Closure $save): Exercise
     {
-        if (! $request->hasFile('image')) {
-            return;
+        $path = null;
+
+        if ($request->hasFile('image')) {
+            Gate::authorize('create', Images::class);
+            $replaced->each(fn (Images $image) => Gate::authorize('delete', $image));
+
+            $path = $request->file('image')->store('exercise-images', Images::DISK)
+                ?: throw new RuntimeException('The exercise image could not be uploaded.');
         }
 
-        Gate::authorize('create', Images::class);
+        try {
+            $exercise = DB::transaction(function () use ($save, $path) {
+                $exercise = $save();
 
-        $this->deleteImages($exercise);
+                if ($path !== null) {
+                    $exercise->images()->attach(Images::create(['filepath' => $path]));
+                }
 
-        $path = $request->file('image')->store('exercise-images', Images::DISK);
+                return $exercise;
+            });
+        } catch (Throwable $e) {
+            if ($path !== null) {
+                Images::deleteFile($path);
+            }
 
-        $exercise->images()->attach(Images::create(['filepath' => $path]));
+            throw $e;
+        }
+
+        $replaced->each->deleteWithFile();
+
+        return $exercise;
     }
 
     /**

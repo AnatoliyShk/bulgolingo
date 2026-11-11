@@ -13,6 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
+use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -258,6 +259,76 @@ class ExerciseTest extends TestCase
         $exercise->refresh();
         $this->assertCount(1, $exercise->images);
         Storage::disk(Images::DISK)->assertExists($exercise->images->first()->filepath);
+    }
+
+    /**
+     * Swaps the bucket disk for one whose uploads fail the way S3 does with
+     * `throw => false`: putFileAs, which UploadedFile::store() writes
+     * through, returns false instead of throwing.
+     */
+    private function failUploads(): void
+    {
+        $disk = Mockery::mock(Storage::fake(Images::DISK))->makePartial();
+        $disk->shouldReceive('putFileAs')->andReturnFalse();
+
+        Storage::set(Images::DISK, $disk);
+    }
+
+    public function test_a_failed_upload_keeps_the_old_image_on_update(): void
+    {
+        Storage::fake(Images::DISK);
+
+        $lesson = $this->lesson();
+        $exercise = $this->exerciseFor($lesson, [
+            'name' => 'Match the picture',
+            'decision_type' => ExerciseType::IMAGE_MATCHING->value,
+            'clause' => [
+                'options' => ['Куче', 'Котка', 'Птица'],
+                'correct_option' => 0,
+                'explanation' => 'Куче means dog.',
+            ],
+        ]);
+        $oldPath = UploadedFile::fake()->image('dog.jpg')->store('exercise-images', Images::DISK);
+        $exercise->images()->attach(Images::create(['filepath' => $oldPath]));
+
+        $this->failUploads();
+        Storage::disk(Images::DISK)->put($oldPath, 'old image');
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->put(route('admin.exercises.update', $exercise), [
+                'name' => 'Renamed',
+                'decision_type' => $exercise->decision_type->value,
+                'clause' => $exercise->clause,
+                'image' => UploadedFile::fake()->image('cat.jpg'),
+            ])
+            ->assertServerError();
+
+        Storage::disk(Images::DISK)->assertExists($oldPath);
+        $this->assertSame([$oldPath], $exercise->fresh()->images->pluck('filepath')->all());
+        $this->assertSame('Match the picture', $exercise->fresh()->name);
+    }
+
+    public function test_a_failed_upload_creates_no_exercise(): void
+    {
+        $lesson = $this->lesson();
+        $this->failUploads();
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->post(route('admin.exercises.store', $lesson), [
+                'name' => 'Match the picture',
+                'lesson_id' => $lesson->id,
+                'decision_type' => ExerciseType::IMAGE_MATCHING->value,
+                'clause' => [
+                    'options' => ['Куче', 'Котка', 'Птица'],
+                    'correct_option' => 0,
+                    'explanation' => 'Куче means dog.',
+                ],
+                'image' => UploadedFile::fake()->image('dog.jpg'),
+            ])
+            ->assertServerError();
+
+        $this->assertSame(0, $lesson->exercises()->count());
+        $this->assertDatabaseCount('images', 0);
     }
 
     public function test_the_index_offers_every_lesson_by_name_as_id_and_name_only(): void
