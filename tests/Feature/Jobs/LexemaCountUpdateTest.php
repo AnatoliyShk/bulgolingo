@@ -41,7 +41,7 @@ class LexemaCountUpdateTest extends TestCase
         $user = User::factory()->create();
         $exercise = $this->makeFillInBlankExercise(['Куче', 'Котка']);
 
-        (new LexemaCountUpdate($user, $exercise))->handle();
+        (new LexemaCountUpdate($user, $exercise, now()))->handle();
 
         $this->assertDatabaseHas('lexemas', ['word' => 'куче']);
         $this->assertCount(1, $user->fresh()->lexemas);
@@ -52,7 +52,7 @@ class LexemaCountUpdateTest extends TestCase
         $user = User::factory()->create();
         $exercise = $this->makeFillInBlankExercise(['Куче']);
 
-        (new LexemaCountUpdate($user, $exercise))->handle();
+        (new LexemaCountUpdate($user, $exercise, now()))->handle();
 
         $wordId = Lexema::where('word', 'куче')->value('id');
         $count = DB::table('user_lexema')
@@ -68,8 +68,8 @@ class LexemaCountUpdateTest extends TestCase
         $user = User::factory()->create();
         $exercise = $this->makeFillInBlankExercise(['Куче']);
 
-        (new LexemaCountUpdate($user, $exercise))->handle();
-        (new LexemaCountUpdate($user, $exercise))->handle();
+        (new LexemaCountUpdate($user, $exercise, now()))->handle();
+        (new LexemaCountUpdate($user, $exercise, now()))->handle();
 
         $wordId = Lexema::where('word', 'куче')->value('id');
         $count = DB::table('user_lexema')
@@ -85,8 +85,8 @@ class LexemaCountUpdateTest extends TestCase
         [$user1, $user2] = User::factory()->count(2)->create();
         $exercise = $this->makeFillInBlankExercise(['Куче']);
 
-        (new LexemaCountUpdate($user1, $exercise))->handle();
-        (new LexemaCountUpdate($user2, $exercise))->handle();
+        (new LexemaCountUpdate($user1, $exercise, now()))->handle();
+        (new LexemaCountUpdate($user2, $exercise, now()))->handle();
 
         $this->assertDatabaseCount('lexemas', 1);
         $this->assertCount(1, $user1->fresh()->lexemas);
@@ -109,7 +109,7 @@ class LexemaCountUpdateTest extends TestCase
 
         $lesson->attachExerciseAtEnd($exercise);
 
-        (new LexemaCountUpdate($user, $exercise))->handle();
+        (new LexemaCountUpdate($user, $exercise, now()))->handle();
 
         $this->assertDatabaseCount('lexemas', 0);
         $this->assertCount(0, $user->lexemas);

@@ -17,6 +17,18 @@ class StreakTest extends TestCase
     use DatabaseTransactions;
 
     /**
+     * Pins the clock to noon in the learner time zone, so fixtures written as
+     * "yesterday" or "two hours ago" land on the day they mean whatever hour
+     * the suite runs at.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Carbon::setTestNow(Carbon::now(config('learning.timezone'))->setTime(12, 0)->utc());
+    }
+
+    /**
      * Any frozen clock is released here rather than at the end of the test that
      * set it: a failure part-way through would otherwise leak that time into
      * every test after it.
@@ -154,17 +166,18 @@ class StreakTest extends TestCase
     }
 
     /**
-     * The boundary is the calendar day, not a rolling 24 hours: practice just
-     * before midnight and again just after it are consecutive days, however few
-     * minutes apart they were.
+     * The boundary is the learner's calendar day, not a rolling 24 hours nor
+     * the UTC day: practice at 23:55 and again at 00:05 Sofia time are
+     * consecutive days, although in UTC both fall on the same date.
      */
     public function test_yesterday_counts_however_late_in_the_day_it_was(): void
     {
-        Carbon::setTestNow(Carbon::today()->setTime(0, 5));
+        $midnight = Carbon::today(config('learning.timezone'));
+        Carbon::setTestNow($midnight->copy()->setTime(0, 5)->utc());
 
         $user = User::factory()->create([
             'streak_counter' => 2,
-            'latest_exercise_at' => Carbon::yesterday()->setTime(23, 55),
+            'latest_exercise_at' => $midnight->copy()->subMinutes(5)->utc(),
         ]);
 
         $this->complete($user, $this->enrolledExercise($user));
@@ -246,6 +259,23 @@ class StreakTest extends TestCase
                 ->where('practisedToday', false)
                 ->where('streakCounter', 12)
             );
+    }
+
+    /**
+     * 01:30 in Sofia is still the day before in UTC, so a UTC check would leave
+     * the flame cold for practice done after local midnight.
+     */
+    public function test_the_profile_lights_the_flame_for_practice_after_local_midnight(): void
+    {
+        $user = User::factory()->create([
+            'streak_counter' => 3,
+            'latest_exercise_at' => Carbon::today(config('learning.timezone'))->setTime(1, 30)->utc(),
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->where('practisedToday', true));
     }
 
     public function test_the_profile_leaves_the_flame_cold_when_there_is_no_practice_at_all(): void

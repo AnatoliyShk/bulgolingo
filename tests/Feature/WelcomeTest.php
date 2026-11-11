@@ -90,7 +90,7 @@ class WelcomeTest extends TestCase
         [$next] = $this->lessonIn($path);
         $user->learningPaths()->attach($path->id);
 
-        UserExerciseCompletion::record($user, $done);
+        UserExerciseCompletion::record($user, $done, now());
 
         $this->actingAs($user)->get('/')->assertInertia(fn (Assert $page) => $page
             ->where('continueLessonId', $next->id)
@@ -109,7 +109,7 @@ class WelcomeTest extends TestCase
 
         $user->learningPaths()->attach($open->id, ['created_at' => now()->subDay()]);
         $user->learningPaths()->attach($finished->id, ['created_at' => now()]);
-        UserExerciseCompletion::record($user, $finishedExercise);
+        UserExerciseCompletion::record($user, $finishedExercise, now());
 
         $this->actingAs($user)->get('/')->assertInertia(fn (Assert $page) => $page
             ->where('continueLessonId', $openLesson->id)
@@ -123,7 +123,7 @@ class WelcomeTest extends TestCase
         [, $exercise] = $this->lessonIn($path);
         $user->learningPaths()->attach($path->id);
 
-        UserExerciseCompletion::record($user, $exercise);
+        UserExerciseCompletion::record($user, $exercise, now());
 
         $this->actingAs($user)->get('/')->assertInertia(fn (Assert $page) => $page
             ->where('continueLessonId', null)

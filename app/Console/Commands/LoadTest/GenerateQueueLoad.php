@@ -96,7 +96,7 @@ class GenerateQueueLoad extends Command
         }
 
         if ($job === 'both' || $job === 'lexema') {
-            LexemaCountUpdate::dispatch($user, $exercise)->onConnection($connection)->onQueue($queue);
+            LexemaCountUpdate::dispatch($user, $exercise, now())->onConnection($connection)->onQueue($queue);
         }
     }
 

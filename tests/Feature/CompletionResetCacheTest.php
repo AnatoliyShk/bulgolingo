@@ -106,9 +106,9 @@ class CompletionResetCacheTest extends TestCase
         ));
 
         $this->travel(-1)->days();
-        UserExerciseCompletion::record($user, $trueFalse);
+        UserExerciseCompletion::record($user, $trueFalse, now());
         $this->travelBack();
-        UserExerciseCompletion::record($user, $multipleChoice);
+        UserExerciseCompletion::record($user, $multipleChoice, now());
 
         app(CompletedLessonStatsCacheService::class)->warm($user->id, ['completed_lessons' => 1, 'total_exercises' => 2, 'completed_paths' => 1]);
 
@@ -185,7 +185,7 @@ class CompletionResetCacheTest extends TestCase
         $this->path->users()->attach($user->id);
 
         foreach ($this->lesson->exercises as $exercise) {
-            UserExerciseCompletion::record($user, $exercise);
+            UserExerciseCompletion::record($user, $exercise, now());
         }
 
         $this->restart($user, $route);

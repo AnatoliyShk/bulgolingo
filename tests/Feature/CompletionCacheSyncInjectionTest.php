@@ -44,8 +44,8 @@ class CompletionCacheSyncInjectionTest extends TestCase
                 ->with($user->id, $exercise->id, now()->toDateString(), ExerciseType::TRUE_FALSE->value);
         });
 
-        $this->assertTrue(UserExerciseCompletion::record($user, $exercise));
-        $this->assertFalse(UserExerciseCompletion::record($user, $exercise));
+        $this->assertTrue(UserExerciseCompletion::record($user, $exercise, now()));
+        $this->assertFalse(UserExerciseCompletion::record($user, $exercise, now()));
     }
 
     public function test_clearing_completions_tells_the_sync_once_per_removed_row(): void
@@ -61,7 +61,7 @@ class CompletionCacheSyncInjectionTest extends TestCase
                 ->with($user->id, $done->id, now()->toDateString(), ExerciseType::TRUE_FALSE->value);
         });
 
-        UserExerciseCompletion::record($user, $done);
+        UserExerciseCompletion::record($user, $done, now());
 
         $this->assertSame(1, UserExerciseCompletion::clear($user, [$done->id, $untouched->id]));
     }

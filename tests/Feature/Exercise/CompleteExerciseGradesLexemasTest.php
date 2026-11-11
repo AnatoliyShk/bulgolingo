@@ -58,7 +58,7 @@ class CompleteExerciseGradesLexemasTest extends TestCase
         $user = User::factory()->create();
         $exercise = $this->fillInBlankExercise(['Куче', 'Котка']);
 
-        app(ProgressService::class)->completeExercise($user, $exercise);
+        app(ProgressService::class)->completeExercise($user, $exercise, now());
 
         Queue::assertPushedOn('learning_path', LexemaReviewGrade::class);
         $this->assertSame(0, ReviewLog::query()->count());
@@ -72,7 +72,7 @@ class CompleteExerciseGradesLexemasTest extends TestCase
         $user = User::factory()->create();
         $exercise = $this->fillInBlankExercise(['Куче']);
 
-        app(ProgressService::class)->completeExercise($user, $exercise);
+        app(ProgressService::class)->completeExercise($user, $exercise, now());
 
         Queue::assertPushedOn('learning_path', ExperienceCountUpdate::class);
         Queue::assertPushedOn('learning_path', LexemaReviewGrade::class);
@@ -94,8 +94,8 @@ class CompleteExerciseGradesLexemasTest extends TestCase
         $user = User::factory()->create();
         $exercise = $this->fillInBlankExercise(['Куче']);
 
-        app(ProgressService::class)->completeExercise($user, $exercise);
-        app(ProgressService::class)->completeExercise($user, $exercise);
+        app(ProgressService::class)->completeExercise($user, $exercise, now());
+        app(ProgressService::class)->completeExercise($user, $exercise, now());
 
         Queue::assertPushed(ExperienceCountUpdate::class, 1);
         Queue::assertPushed(LexemaReviewGrade::class, 2);

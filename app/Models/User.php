@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Enums\RoleName;
 use App\Enums\UserType;
 use App\Models\Concerns\HasUuidV7;
+use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -73,6 +74,18 @@ class User extends Authenticatable implements OAuthenticatable
             'streak_counter' => 'integer',
             'latest_exercise_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Whether the last practice fell on the same day as $now in the learner
+     * time zone, the day boundary ProgressService::recordPractice() advances
+     * the streak by.
+     */
+    public function practisedToday(CarbonInterface $now): bool
+    {
+        $timezone = config('learning.timezone');
+
+        return (bool) $this->latest_exercise_at?->setTimezone($timezone)->isSameDay($now->copy()->setTimezone($timezone));
     }
 
     /**

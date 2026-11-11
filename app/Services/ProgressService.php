@@ -10,6 +10,7 @@ use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
 use App\Models\UserExerciseCompletion;
+use Carbon\CarbonInterface;
 use Closure;
 use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Collection;
@@ -142,17 +143,17 @@ class ProgressService
      * is still practice; XP is awarded on the first completion only, as the
      * stats caches are, so replaying one exercise cannot climb the
      * leaderboard. Grading already covers reps_total, so LexemaCountUpdate is
-     * not dispatched.
+     * not dispatched. $at is when the answer was given, read once by the caller.
      */
-    public function completeExercise(User $user, Exercise $exercise): void
+    public function completeExercise(User $user, Exercise $exercise, CarbonInterface $at): void
     {
-        if (UserExerciseCompletion::record($user, $exercise)) {
+        if (UserExerciseCompletion::record($user, $exercise, $at)) {
             ExperienceCountUpdate::dispatch($user->id, $exercise->id)->onQueue('learning_path');
         }
 
         LexemaReviewGrade::dispatch($user->id, $exercise->id)->onQueue('learning_path');
 
-        $this->recordPractice($user);
+        $this->recordPractice($user, $at);
     }
 
     /**
@@ -199,11 +200,13 @@ class ProgressService
      * Stamps practice and advances the day streak: +1 after a yesterday
      * completion, reset to 1 after a gap, unchanged (but at least 1) on a repeat
      * the same day. A single conditional UPDATE so concurrent answers cannot both
-     * advance it, with day bounds from the app clock; refresh to read the result.
+     * advance it, with day bounds drawn in the learner time zone
+     * (`learning.timezone`) and converted back to UTC, the zone the column is
+     * stored in; refresh to read the result.
      */
-    public function recordPractice(User $user): void
+    public function recordPractice(User $user, CarbonInterface $now): void
     {
-        $now = now();
+        $today = $now->copy()->setTimezone(config('learning.timezone'))->startOfDay();
 
         DB::update(
             'update '.$user->getTable().' set
@@ -215,8 +218,8 @@ class ProgressService
                 latest_exercise_at = ?
              where id = ?',
             [
-                $now->copy()->startOfDay(),
-                $now->copy()->subDay()->startOfDay(),
+                $today->copy()->utc(),
+                $today->copy()->subDay()->utc(),
                 $now,
                 $user->getKey(),
             ]

@@ -48,7 +48,7 @@ class ProfileController extends Controller
             'user' => $user,
             'avatarUrl' => $user->avatarUrl(),
             'streakCounter' => (int) $user->streak_counter,
-            'practisedToday' => (bool) $user->latest_exercise_at?->isToday(),
+            'practisedToday' => $user->practisedToday(now()),
             'activeLearningPath' => $unfinished->first(),
             'enrolledCount' => $unfinished->count(),
             'finishedCount' => $paths->where('is_finished', true)->count(),
@@ -82,7 +82,7 @@ class ProfileController extends Controller
             ],
             'avatarUrl' => $user->avatarUrl(),
             'streakCounter' => (int) $user->streak_counter,
-            'practisedToday' => (bool) $user->latest_exercise_at?->isToday(),
+            'practisedToday' => $user->practisedToday(now()),
             'isPublic' => true,
         ]);
     }

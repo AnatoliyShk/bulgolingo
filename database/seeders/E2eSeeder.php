@@ -175,7 +175,7 @@ class E2eSeeder extends Seeder
         $student->learningPaths()->syncWithoutDetaching([$path->id]);
 
         foreach ($lesson->exercises as $exercise) {
-            app(ProgressService::class)->completeExercise($student, $exercise);
+            app(ProgressService::class)->completeExercise($student, $exercise, now());
         }
     }
 

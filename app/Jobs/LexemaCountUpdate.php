@@ -5,9 +5,9 @@ namespace App\Jobs;
 use App\Models\Exercise;
 use App\Models\Lexema;
 use App\Models\User;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class LexemaCountUpdate implements ShouldQueue
@@ -15,15 +15,14 @@ class LexemaCountUpdate implements ShouldQueue
     use Queueable;
 
     /**
-     * Create a new job instance.
+     * $at is when the practice happened, taken by the dispatcher, so the
+     * stamp does not drift to whenever a worker picks the job up.
      */
     public function __construct(
         protected User $user,
         protected Exercise $exercise,
-        protected mixed $dateLimit = null,
-    ) {
-        $this->dateLimit ??= Carbon::now()->subDays(30);
-    }
+        protected CarbonInterface $at,
+    ) {}
 
     /**
      * Execute the job.
@@ -36,8 +35,6 @@ class LexemaCountUpdate implements ShouldQueue
      */
     public function handle(): void
     {
-        $now = Carbon::now();
-
         foreach ($this->exercise->getExerciseWords() as $word) {
             $lexema = Lexema::firstOrCreate(['language_id' => $this->exercise->language_id, 'word' => $word]);
 
@@ -46,13 +43,13 @@ class LexemaCountUpdate implements ShouldQueue
                     'user_id' => $this->user->id,
                     'lexema_id' => $lexema->id,
                     'reps_total' => 1,
-                    'created_at' => $now,
-                    'updated_at' => $now,
+                    'created_at' => $this->at,
+                    'updated_at' => $this->at,
                 ]],
                 ['user_id', 'lexema_id'],
                 [
                     'reps_total' => DB::raw('user_lexema.reps_total + 1'),
-                    'updated_at' => $now,
+                    'updated_at' => $this->at,
                 ],
             );
         }

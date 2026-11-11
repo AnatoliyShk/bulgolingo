@@ -49,7 +49,7 @@ class ExerciseController extends Controller
 
         $lesson = $exercise->lessons()->first();
 
-        $this->progressService->completeExercise($user, $exercise);
+        $this->progressService->completeExercise($user, $exercise, now());
 
         if (! $lesson) {
             return redirect()->route('dashboard');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\CompletionCacheSyncService;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\DB;
@@ -17,15 +18,13 @@ class UserExerciseCompletion extends Pivot
     ];
 
     /**
-     * Marks $exercise done for $user, returning whether this was the first
-     * time. A repeat is ignored by the unique key rather than checked for
+     * Marks $exercise done for $user at $completedAt, returning whether this
+     * was the first time. A repeat is ignored by the unique key rather than checked for
      * first. The raw insert skips UserExerciseCompletionObserver, so the stats
      * caches are synced here, for new rows only.
      */
-    public static function record(User $user, Exercise $exercise): bool
+    public static function record(User $user, Exercise $exercise, CarbonInterface $completedAt): bool
     {
-        $completedAt = now();
-
         $recorded = DB::table((new static)->getTable())->insertOrIgnore([
             'user_id' => $user->getKey(),
             'exercise_id' => $exercise->getKey(),

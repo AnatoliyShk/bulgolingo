@@ -194,6 +194,12 @@ When creating a Vue component always:
 ### Infrastructure
 The Docker Compose setup (`compose.yaml`) uses Laravel Sail's **PHP 8.5** runtime (`vendor/laravel/sail/runtimes/8.5`) with **PostgreSQL 18** and **Redis**. The NativePHP mobile build embeds PHP 8.5 too, pinned in `nativephp.lock`. The local dev default (without Docker) uses **SQLite** (`database/database.sqlite`). Queue driver defaults to `database`; jobs are dispatched for word count updates.
 
+## Current time
+- Read the clock (`now()`, `Carbon::now()`, `today()`) only where work enters the app: a controller action, an artisan command, a scheduled closure, a seeder, or the code that dispatches a job
+- Pass that moment down as a `CarbonInterface` parameter (`$at`, `$completedAt`) to services, models and jobs; they never call `now()` themselves
+- A job takes its time from the dispatcher through its constructor, so a queued run stamps when the work happened, not when a worker picked it up
+- Tests pass a fixed time instead of relying on `Carbon::setTestNow()` wherever the code under test takes one
+
 ## Comments
 - No explanatory comments inside function bodies
 - The reasoning goes above the function — a PHP docblock, or a `//` block above the `function` / arrow-function / Playwright `test(...)` line
