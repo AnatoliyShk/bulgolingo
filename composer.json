@@ -10,7 +10,7 @@
         "aws/aws-sdk-php": "^3.394",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/ai": "^0.11.0",
-        "laravel/framework": "^13.19",
+        "laravel/framework": "13.30.0.0",
         "laravel/horizon": "^5.47",
         "laravel/mcp": "^1.0",
         "laravel/passport": "^13.7",
