@@ -146,4 +146,27 @@ class CompletedLessonStatsCacheTest extends TestCase
             ->where('completedExercises', 1)
         );
     }
+
+    /**
+     * A second path made of a lesson the user already finished is complete as
+     * soon as it is joined, so joining has to drop the cached count rather
+     * than leave /stats a path short until the entry expires.
+     */
+    public function test_joining_a_path_of_finished_lessons_refreshes_completed_paths(): void
+    {
+        $user = User::factory()->create();
+        $lesson = $this->enrolledLesson($user);
+        $this->actingAs($user)->post(route('exercise.complete', $this->exercise($lesson)));
+
+        $this->actingAs($user)->get(route('stats.show'))
+            ->assertInertia(fn (Assert $page) => $page->where('completedLearningPaths', 1));
+
+        $second = LearningPath::create(['name' => 'Greetings Again', 'language' => 'bg']);
+        $second->lessons()->attach($lesson->id);
+
+        $this->actingAs($user)->post(route('learning-paths.start', $second))->assertRedirect();
+
+        $this->actingAs($user)->get(route('stats.show'))
+            ->assertInertia(fn (Assert $page) => $page->where('completedLearningPaths', 2));
+    }
 }

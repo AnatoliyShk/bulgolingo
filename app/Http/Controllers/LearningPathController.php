@@ -6,6 +6,7 @@ use App\Http\Requests\LearningPath\GetLearningPathRequest;
 use App\Models\LearningPath;
 use App\Models\Lesson;
 use App\Models\User;
+use App\Services\CompletedLessonStatsCacheService;
 use App\Services\LearningPathCatalogService;
 use App\Services\LearningPathSearchService;
 use App\Services\ProgressService;
@@ -105,12 +106,15 @@ class LearningPathController extends Controller
     /**
      * Enrolling is guarded by the same rule as the catalog it is reached from
      * (`LearningPathPolicy::view`), so a path a viewer cannot see cannot be
-     * joined by posting its id either.
+     * joined by posting its id either. The cached /stats counts cover enrolled
+     * paths only, so they are dropped: a path made of lessons already finished
+     * elsewhere is complete the moment it is joined.
      */
     #[Authorize('view', 'learningPath')]
-    public function start(Request $request, LearningPath $learningPath)
+    public function start(Request $request, LearningPath $learningPath, CompletedLessonStatsCacheService $lessonStats)
     {
         $request->user()->learningPaths()->syncWithoutDetaching([$learningPath->id]);
+        $lessonStats->forget($request->user()->id);
 
         return redirect()->route('learning-paths.show', $learningPath);
     }

@@ -8,7 +8,8 @@ use Illuminate\Contracts\Cache\Repository;
 #[Singleton]
 class CompletedLessonStatsCacheService
 {
-    private const TTL_DAYS = 15;
+    // Completions and enrolment clear the entry; admin edits to a path's lessons or a lesson's exercises do not, so the TTL bounds how long those stay stale.
+    private const TTL_SECONDS = 3600;
 
     private const SHAPE = ['completed_lessons', 'total_exercises', 'completed_paths'];
 
@@ -48,7 +49,7 @@ class CompletedLessonStatsCacheService
      */
     public function warm(int $userId, array $stats): void
     {
-        $this->store->put(static::key($userId), $stats, now()->addDays(self::TTL_DAYS));
+        $this->store->put(static::key($userId), $stats, self::TTL_SECONDS);
     }
 
     /**
