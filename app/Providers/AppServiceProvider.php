@@ -79,6 +79,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        RateLimiter::for('api', static::apiLimit(...));
         RateLimiter::for('learning-path-search', static::learningPathSearchLimit(...));
         RateLimiter::for('stats-view', static::statsViewLimit(...));
         RateLimiter::for('exercise-completion', static::exerciseCompletionLimit(...));
@@ -88,6 +89,27 @@ class AppServiceProvider extends ServiceProvider
             ->withToken(config('services.balkanbuddy.mcp_token')));
 
         Passport::authorizationView(fn (array $parameters) => view('mcp::authorize', $parameters));
+    }
+
+    /**
+     * Every API request is capped at 1000 a minute per access token, or per
+     * address without one. Routes listed in $strict (route name => requests
+     * per minute) get a second, tighter cap of their own on the same key.
+     *
+     * @return list<Limit>
+     */
+    private static function apiLimit(Request $request): array
+    {
+        $key = $request->user()?->currentAccessToken()?->id ?? $request->ip();
+
+        $strict = ['exports.store' => 20];
+
+        $limits = [Limit::perMinute(1000)->by("key:$key")];
+        if ($max = $strict[$request->route()?->getName()] ?? null) {
+            $limits[] = Limit::perMinute($max)->by("route:{$request->route()->getName()}:$key");
+        }
+
+        return $limits;
     }
 
     /**

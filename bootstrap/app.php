@@ -4,6 +4,7 @@ use App\Http\Middleware\EnsureIsAdmin;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequestMetrics;
 use App\Http\Middleware\RestrictAdminVisitor;
+use App\Http\Middleware\SlidingWindowThrottle;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,6 +28,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => EnsureIsAdmin::class,
             'admin.visitor-restrict' => RestrictAdminVisitor::class,
         ]);
+    })
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->throttleApi();
+        $middleware->alias(['throttle' => SlidingWindowThrottle::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
