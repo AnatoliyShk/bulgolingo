@@ -2,6 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\RedisScript;
+use Closure;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
 class SlidingWindowThrottle extends ThrottleRequests
