@@ -26,6 +26,7 @@ class ListLessonsTool extends Tool
         ]);
 
         $lessons = Lesson::query()
+            ->visibleTo($request->user())
             ->when(
                 $filters['learning_path'] ?? null,
                 fn ($query, $uuid) => $query->whereHas(

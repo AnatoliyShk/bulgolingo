@@ -4,11 +4,13 @@ namespace Tests\Feature\Mcp;
 
 use App\Enums\ExerciseType;
 use App\Enums\LanguageLevel;
+use App\Enums\LearningPathType;
 use App\Mcp\Servers\ContentServer;
 use App\Mcp\Tools\SearchContentTool;
 use App\Models\Exercise;
 use App\Models\LearningPath;
 use App\Models\Lesson;
+use App\Models\User;
 use App\Services\SiteSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
@@ -87,6 +89,30 @@ class SearchContentToolTest extends TestCase
             });
 
         return $results;
+    }
+
+    // A premium path's exercise, and the path's name, reach a premium caller only: search follows the catalog's visibility, not just the similarity floor.
+    public function test_it_hides_exercises_in_paths_the_caller_cannot_see(): void
+    {
+        $this->fakeQueryAlongAxisZero();
+        $this->pathWithExercise('Open', $this->axis(0));
+        $this->pathWithExercise('Paid', $this->axis(0));
+        LearningPath::where('name', 'Paid')->update(['type' => LearningPathType::Premium->value]);
+
+        $this->assertSame(['Open exercise'], array_column($this->search(), 'name'));
+
+        $results = [];
+        ContentServer::actingAs(User::factory()->premium()->create())
+            ->tool(SearchContentTool::class, ['query' => 'food'])
+            ->assertOk()
+            ->assertStructuredContent(function (AssertableJson $json) use (&$results) {
+                $results = $json->toArray()['results'];
+
+                $json->etc();
+            });
+
+        $this->assertEqualsCanonicalizing(['Open exercise', 'Paid exercise'], array_column($results, 'name'));
+        $this->assertContains('Paid', Arr::pluck($results, 'learning_paths.0.name'));
     }
 
     public function test_it_returns_related_exercises_closest_first(): void

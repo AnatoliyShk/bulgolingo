@@ -44,7 +44,7 @@ class SearchContentTool extends Tool
             'limit' => ['sometimes', 'integer', 'min:1', 'max:50'],
         ]);
 
-        $exercises = $this->search->search($arguments['query'], $arguments['limit'] ?? 10);
+        $exercises = $this->search->search($arguments['query'], $request->user(), $arguments['limit'] ?? 10);
 
         if ($exercises === null) {
             return Response::error('Search is unavailable: the query could not be embedded.');

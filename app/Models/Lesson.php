@@ -130,6 +130,17 @@ class Lesson extends Model
     }
 
     /**
+     * The isVisibleTo() rule as a query: lessons in at least one path the user
+     * can see, or in no path at all.
+     */
+    public function scopeVisibleTo(Builder $query, ?User $user): Builder
+    {
+        return $query->where(fn (Builder $query) => $query
+            ->whereHas('learningPath', fn (Builder $paths) => $paths->visibleTo($user))
+            ->orWhereDoesntHave('learningPath'));
+    }
+
+    /**
      * Whether $user may open this lesson, by the paths it belongs to
      * (LearningPath::admitsTo).
      */

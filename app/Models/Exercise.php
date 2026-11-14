@@ -210,6 +210,17 @@ class Exercise extends Model
         );
     }
 
+    /**
+     * The isVisibleTo() rule as a query: exercises in at least one lesson the
+     * user can see (Lesson::scopeVisibleTo), or in no lesson at all.
+     */
+    public function scopeVisibleTo(Builder $query, ?User $user): Builder
+    {
+        return $query->where(fn (Builder $query) => $query
+            ->whereHas('lessons', fn (Builder $lessons) => $lessons->visibleTo($user))
+            ->orWhereDoesntHave('lessons'));
+    }
+
     public function lessons(): BelongsToMany
     {
         return $this->belongsToMany(Lesson::class, 'exercise_lesson')

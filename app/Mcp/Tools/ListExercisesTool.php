@@ -30,6 +30,7 @@ class ListExercisesTool extends Tool
         ]);
 
         $exercises = Exercise::query()
+            ->visibleTo($request->user())
             ->when(
                 $filters['lesson'] ?? null,
                 fn ($query, $uuid) => $query->whereHas(

@@ -8,6 +8,7 @@ use App\Models\LearningPath;
 use App\Services\ExerciseSearchService;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
@@ -34,7 +35,7 @@ class SearchCatalog implements Tool
      */
     public function handle(Request $request): Stringable|string
     {
-        $exercises = $this->search->search((string) $request['topic'], limit: 25);
+        $exercises = $this->search->search((string) $request['topic'], Auth::user(), limit: 25);
 
         if ($exercises === null) {
             return 'The catalog search is unavailable right now. Answer from your own knowledge and do not name any learning path.';

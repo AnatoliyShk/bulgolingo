@@ -28,7 +28,7 @@ class LessonResource extends Resource implements HasUriTemplate
      */
     public function handle(Request $request): Response
     {
-        $lesson = Lesson::query()->where('uuid', $request->get('uuid'))->first();
+        $lesson = Lesson::query()->visibleTo($request->user())->where('uuid', $request->get('uuid'))->first();
 
         if (! $lesson) {
             return Response::error("Lesson [{$request->get('uuid')}] not found.");

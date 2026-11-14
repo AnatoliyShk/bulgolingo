@@ -3,9 +3,11 @@
 namespace Tests\Feature\Mcp;
 
 use App\Enums\ExerciseType;
+use App\Enums\LearningPathType;
 use App\Mcp\Resources\LessonResource;
 use App\Mcp\Servers\ContentServer;
 use App\Models\Exercise;
+use App\Models\LearningPath;
 use App\Models\Lesson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -21,6 +23,17 @@ class LessonResourceTest extends TestCase
             'decision_type' => ExerciseType::TRUE_FALSE->value,
             'clause' => ['sentence' => 'Здравей means hello.', 'correct_option' => true, 'explanation' => 'E.'],
         ]);
+    }
+
+    // A lesson only in a premium path reads as not found for a guest, exactly like a uuid that does not exist.
+    public function test_a_lesson_in_a_hidden_path_is_not_found(): void
+    {
+        $path = LearningPath::create(['name' => 'Paid', 'language' => 'bg', 'type' => LearningPathType::Premium->value]);
+        $lesson = Lesson::create(['name' => 'Secret', 'description' => 'D']);
+        $path->lessons()->attach($lesson->id);
+
+        ContentServer::resource(LessonResource::class, ['uuid' => $lesson->uuid])
+            ->assertHasErrors(["Lesson [{$lesson->uuid}] not found."]);
     }
 
     public function test_it_reads_a_lesson_by_uuid(): void
