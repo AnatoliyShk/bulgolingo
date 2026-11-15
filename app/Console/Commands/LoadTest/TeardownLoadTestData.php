@@ -37,6 +37,7 @@ class TeardownLoadTestData extends Command
         ['review_logs', 'user_id', 'users'],
         ['user_lexema', 'user_id', 'users'],
         ['user_exercise_completions', 'user_id', 'users'],
+        ['experience_awards', 'user_id', 'users'],
         ['learning_path_user', 'user_id', 'users'],
         ['users', 'id', 'users'],
         ['lexemas', 'id', 'lexemas'],
@@ -162,6 +163,7 @@ class TeardownLoadTestData extends Command
             ['review_logs', 'id', fn ($q) => $q->whereIn('user_id', $fillers)],
             ['user_lexema', 'id', fn ($q) => $q->whereIn('user_id', $fillers)],
             ['user_exercise_completions', 'user_id', fn ($q) => $q->whereIn('user_id', $fillers)],
+            ['experience_awards', 'user_id', fn ($q) => $q->whereIn('user_id', $fillers)],
             ['learning_path_user', 'user_id', fn ($q) => $q->whereIn('user_id', $fillers)],
             ['users', 'id', fn ($q) => $q->where('type_id', $fillerTypeId)],
             ['lexemas', 'id', fn ($q) => $q

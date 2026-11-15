@@ -141,14 +141,15 @@ class ProgressService
      * completion row, the queued XP award and lexema grading, and the day
      * streak. Grading runs on every answer, repeats included, since a repeat
      * is still practice; XP is awarded on the first completion only, as the
-     * stats caches are, so replaying one exercise cannot climb the
+     * stats caches are, and only once per exercise ever (ExperienceCountUpdate),
+     * so neither replaying an exercise nor restarting its lesson can climb the
      * leaderboard. Grading already covers reps_total, so LexemaCountUpdate is
      * not dispatched. $at is when the answer was given, read once by the caller.
      */
     public function completeExercise(User $user, Exercise $exercise, CarbonInterface $at): void
     {
         if (UserExerciseCompletion::record($user, $exercise, $at)) {
-            ExperienceCountUpdate::dispatch($user->id, $exercise->id)->onQueue('learning_path');
+            ExperienceCountUpdate::dispatch($user->id, $exercise->id, $at)->onQueue('learning_path');
         }
 
         LexemaReviewGrade::dispatch($user->id, $exercise->id)->onQueue('learning_path');

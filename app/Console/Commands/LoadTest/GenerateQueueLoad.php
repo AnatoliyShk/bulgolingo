@@ -92,7 +92,7 @@ class GenerateQueueLoad extends Command
         $job = $this->option('job');
 
         if ($job === 'both' || $job === 'experience') {
-            ExperienceCountUpdate::dispatch($user->id, $exercise->id)->onConnection($connection)->onQueue($queue);
+            ExperienceCountUpdate::dispatch($user->id, $exercise->id, now())->onConnection($connection)->onQueue($queue);
         }
 
         if ($job === 'both' || $job === 'lexema') {
