@@ -40,8 +40,6 @@ return new class extends Migration
                 $month->copy()->addMonth()->toDateString(),
             ));
         }
-
-        $this->swapIn(['id', 'reviewed_at']);
     }
 
     /**
