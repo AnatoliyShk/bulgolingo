@@ -95,6 +95,34 @@ class Exercise extends Model
     }
 
     /**
+     * Deletes the exercise, and with it, by the database's cascade, every
+     * user's completion of it. A cascade skips UserExerciseCompletionObserver,
+     * so the completions are read in the same transaction just before the
+     * delete and taken back out of the stats caches once it has committed
+     * (UserExerciseCompletion::syncRemoved()); otherwise /stats would keep
+     * counting them until the caches expire. Nothing is synced when the
+     * delete did not happen.
+     */
+    public function delete()
+    {
+        $completions = collect();
+
+        $deleted = DB::transaction(function () use (&$completions) {
+            $completions = DB::table('user_exercise_completions')
+                ->where('exercise_id', $this->getKey())
+                ->get(['user_id', 'exercise_id', 'created_at']);
+
+            return parent::delete();
+        });
+
+        if ($deleted) {
+            UserExerciseCompletion::syncRemoved($completions, [$this->getKey() => $this->decision_type?->value]);
+        }
+
+        return $deleted;
+    }
+
+    /**
      * Saves the row and the options and word pairs its clause is stored in as
      * one unit, since the observer writes the child rows once the row itself
      * is saved: a failure in between must not leave an exercise without its

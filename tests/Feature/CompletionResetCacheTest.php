@@ -177,6 +177,22 @@ class CompletionResetCacheTest extends TestCase
         $this->assertSame(0, $this->activityTotal($user));
     }
 
+    // Deleting an exercise removes its completions by cascade, which skips the observer, so the delete must take them out of each learner's caches itself and leave the other exercise's count alone.
+    public function test_deleting_an_exercise_takes_its_completions_out_of_the_stats_caches(): void
+    {
+        $user = $this->learnerWithWarmCaches();
+        $trueFalse = $this->lesson->exercises->firstWhere('decision_type', ExerciseType::TRUE_FALSE);
+
+        $this->actingAs(User::factory()->admin()->create())
+            ->delete(route('admin.exercises.destroy', $trueFalse))
+            ->assertRedirect();
+
+        $this->assertDatabaseMissing('user_exercise_completions', ['exercise_id' => $trueFalse->id]);
+        $this->assertSame(0, app(ExerciseActivityCacheService::class)->get($user->id, $this->days())['true_false']->sum());
+        $this->assertSame(1, $this->activityTotal($user));
+        $this->assertNull(app(CompletedLessonStatsCacheService::class)->get($user->id));
+    }
+
     #[DataProvider('restarts')]
     public function test_restarting_leaves_another_learners_caches_alone(string $route): void
     {

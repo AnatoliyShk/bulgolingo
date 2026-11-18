@@ -65,7 +65,7 @@ class UserExerciseCompletion extends Pivot
                 ->where('user_id', $user->getKey())
                 ->whereIn('exercise_id', $exerciseIds)
                 ->lockForUpdate()
-                ->get(['exercise_id', 'created_at']);
+                ->get(['user_id', 'exercise_id', 'created_at']);
 
             DB::table($table)
                 ->where('user_id', $user->getKey())
@@ -75,21 +75,35 @@ class UserExerciseCompletion extends Pivot
             return $rows;
         });
 
-        $types = DB::table('exercises')
+        static::syncRemoved($removed, DB::table('exercises')
             ->whereIn('id', $removed->pluck('exercise_id'))
-            ->pluck('decision_type', 'id');
-
-        $sync = app(CompletionCacheSyncService::class);
-
-        foreach ($removed as $row) {
-            $sync->removed(
-                $user->getKey(),
-                $row->exercise_id,
-                Carbon::parse($row->created_at)->toDateString(),
-                $types[$row->exercise_id] ?? null,
-            );
-        }
+            ->pluck('decision_type', 'id'));
 
         return $removed->count();
+    }
+
+    /**
+     * Takes completions that are already gone from the table back out of the
+     * stats caches, each on the day it was completed. For deletes that skip
+     * UserExerciseCompletionObserver: clear()'s raw query, and the cascade
+     * when an exercise is deleted (Exercise::delete()). $rows carry user_id,
+     * exercise_id and created_at; $types maps exercise id to decision_type.
+     *
+     * @param  iterable<int, object{user_id: int, exercise_id: int, created_at: string}>  $rows
+     * @param  iterable<int, string>  $types
+     */
+    public static function syncRemoved(iterable $rows, iterable $types): void
+    {
+        $sync = app(CompletionCacheSyncService::class);
+        $types = collect($types);
+
+        foreach ($rows as $row) {
+            $sync->removed(
+                (int) $row->user_id,
+                (int) $row->exercise_id,
+                Carbon::parse($row->created_at)->toDateString(),
+                $types->get($row->exercise_id),
+            );
+        }
     }
 }
